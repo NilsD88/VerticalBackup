@@ -1,0 +1,31 @@
+<div class="top-menu">
+  <div class="container" style="display: flex;">
+    <div class="top-menu-items">
+      <ng-content></ng-content>
+    </div>
+    <div class="top-menu-statics">
+      <ng-content select="pxs-top-menu-actions"></ng-content>
+      <span class="top-menu-contact" (click)="emitContact()" *ngIf="config.contact.visible">
+      <span class="visible-md-inline visible-lg-inline">{{config.contact?.label}}</span>
+    </span>
+      <span class="top-menu-search" *ngIf="config.search.visible">
+      <pxs-icon class="top-menu-clear-search" icon="close" *ngIf="searchbarVisible"
+                (click)="searchModel = ''; searchbarVisible = false;"></pxs-icon>
+      <input [placeholder]="config.search.placeholder" (keyup)="checkEnter($event)"  class="top-menu-search-input" type="text" *ngIf="searchbarVisible" [(ngModel)]="searchModel"
+             (focusout)="searchFocusOut()">
+      <span (click)="toggleSearchBar()">
+        <pxs-icon icon="search"></pxs-icon>
+      </span>
+    </span>
+
+      <span class="top-menu-language" *ngIf="config.languageVisible" [matMenuTriggerFor]="languageMenu">
+      {{activeLanguage.label}}
+        <pxs-icon icon="chevron-down" style="display: inline-block;"></pxs-icon>
+    </span>
+      <mat-menu #languageMenu="matMenu">
+        <button mat-menu-item *ngFor="let language of config.languages"
+                (click)="emitLanguageChange(language)">{{language.label}}</button>
+      </mat-menu>
+    </div>
+  </div>
+</div>

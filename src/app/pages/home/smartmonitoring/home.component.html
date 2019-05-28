@@ -1,0 +1,54 @@
+<div class="home">
+  <div class="main-image" [style.background-image]="'url(\'assets/smartmonitoring/images/home/main.jpg\')'">
+    <div class="main-image-overlay">
+      <h2 class="app-title">
+        {{'GENERAL.APP_NAME' | translate}} <br>
+        <small>{{'GENERAL.APP_SUBTITLE' | translate}}</small>
+      </h2>
+
+      <div class="home-checklist">
+        <div class="home-checklist-item" *ngFor="let item of checklistItems">
+          <pxs-icon icon="check-o"></pxs-icon>
+          <div class="home-checklist-item-content">{{'HOME.CHECKLIST_ITEMS.' + item | translate}}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="home-sensor-slides">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-white pxs-title pxs-slideshow-title">{{'HOME.SENSORS.TITLE' | translate}}</h1>
+        <pxs-slideshow class="pxs-slideshow">
+          <pxs-slideshow-slide class="fade" *ngFor="let item of homesliderItems">
+            <div class="home-sensor-slide">
+              <img class="home-sensor-slide-icon"
+                   src="assets/smartmonitoring/images/icons/icon-{{item.icon}}-white.svg" alt="">
+              <div class="slide-content">
+                <h3>{{'HOME.SENSORS.SENSOR' + item.translationPostfix + '.TITLE' | translate}}</h3>
+                <p>{{'HOME.SENSORS.SENSOR' + item.translationPostfix + '.DESCRIPTION' | translate}}</p>
+              </div>
+            </div>
+          </pxs-slideshow-slide>
+        </pxs-slideshow>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container product-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 class="pxs-title">{{'HOME.PRODUCTS.TITLE' | translate}}</h1>
+    </div>
+    <div class="col-md-4" *ngFor="let product of products">
+      <div class="product-card">
+        <img [src]="product.image" alt="">
+        <h4>{{'HOME.PRODUCTS.PRODUCT' + product.translationPostfix + '.TITLE' | translate}}</h4>
+        <p>{{'HOME.PRODUCTS.PRODUCT' + product.translationPostfix + '.DESCRIPTION' | translate}}</p>
+      </div>
+    </div>
+  </div>
+</div>

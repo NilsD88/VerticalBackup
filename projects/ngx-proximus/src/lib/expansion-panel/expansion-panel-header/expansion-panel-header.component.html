@@ -1,0 +1,7 @@
+<div class="pxs-expansion-panel-header">
+  <pxs-icon [icon]="'chevron-down'" class="pxs-expansion-panel-header-icon"></pxs-icon>
+  <div class="pxs-expansion-panel-header-content">
+    <h5 *ngIf="title" class="pxs-expansion-panel-header-title">{{title}}</h5>
+    <ng-content></ng-content>
+  </div>
+</div>

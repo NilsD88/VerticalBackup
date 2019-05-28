@@ -1,0 +1,53 @@
+
+.alerts-table-asset-name {
+  font-size : 1rem;
+}
+
+.alerts-table-date {
+  font-size   : .8rem;
+  font-family : ProximusLight, sans-serif;
+}
+
+.alert-message-wrapper {
+  display       : flex;
+  align-content : center;
+  height        : 100%;
+}
+
+.alert-threshold-template {
+  display       : inline-flex;
+  align-self    : center;
+  padding       : .2em .5em;
+  border-radius : 0 0 10px 0;
+  font-size     : .6rem;
+}
+
+.alert-threshold-template-wrapper {
+  height        : 100%;
+  display       : flex;
+  align-content : center;
+}
+
+.alert-icon {
+  display      : inline-flex;
+  max-height   : 2em;
+  width        : 2em;
+  align-self   : center;
+  margin-right : 1em;
+}
+
+.alert-message {
+  display    : inline-flex;
+  align-self : center;
+}
+
+.alerts-filter-container {
+  display       : flex;
+  align-self: end;
+  align-content : center;
+  height        : 100%;
+  .alerts-filter-input {
+    width : 100%;
+  }
+}
+

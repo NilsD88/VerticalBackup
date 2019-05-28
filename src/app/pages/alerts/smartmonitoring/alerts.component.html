@@ -1,0 +1,272 @@
+<div class="container">
+  <div class="row" style="margin-top: 1rem;">
+    <div class="col-md-3"><h1 class="pxs-title">Alerts</h1></div>
+    <div class="col-md-9 alerts-filter-container">
+      <div class="row">
+        <div class="col-xl-4 col-lg-6 col-md-6">
+          <pxs-date-range-selection (dateChange)="dateRangeChanged($event)"></pxs-date-range-selection>
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+          <ng-select [multiple]="true"
+                     [clearable]="true"
+                     [items]="filterOptions.sensorTypes"
+                     [(ngModel)]="filter.sensorTypes"
+                     bindLabel="name"
+                     bindValue="id"
+                     [loading]="sensorTypesLoading"
+                     [hideSelected]="true"
+                     (change)="alertsFilterChange('unread', null)"
+                     [placeholder]="'Sensors'">
+          </ng-select>
+
+
+          <!--<mat-form-field class="alerts-filter-input">
+            <mat-select placeholder="Type" >
+              <mat-option value="1">
+                <div style="display: flex;">
+                  <img class="alert-icon"
+                       src="assets/smartmonitoring/images/icons/icon-temperature.svg"
+                       alt="">Temperature
+                </div>
+              </mat-option>
+              <mat-option value="2">
+                <div style="display: flex;">
+
+                  <img class="alert-icon"
+                       src="assets/smartmonitoring/images/icons/icon-humidity.svg"
+                       alt="">Humidity
+                </div>
+              </mat-option>
+              <mat-option value="3">
+                <div style="display: flex;">
+                  <img class="alert-icon"
+                       src="assets/smartmonitoring/images/icons/icon-luminosity.svg"
+                       alt="">Luminosity
+                </div>
+              </mat-option>
+              <mat-option value="4">
+                <div style="display: flex;">
+                  <img class="alert-icon"
+                               src="assets/smartmonitoring/images/icons/icon-motion.svg"
+                               alt="">Motion
+                </div>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>-->
+        </div>
+        <div class="col-xl-3 col-lg-6 col-md-6">
+          <mat-form-field class="alerts-filter-input">
+            <mat-select placeholder="Location Type">
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-xl-2 col-lg-6 col-md-6">
+          <mat-form-field class="alerts-filter-input">
+            <mat-select placeholder="Read">
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alerts-section">
+    <div class="alerts-section-header">
+      <h6>Unread alerts
+        <small><sup class="unread-alerts-badge">{{unreadAlertsTotal}}</sup></small>
+      </h6>
+    </div>
+    <div class="alerts-section-content">
+      <div class="row">
+        <div class="col-12">
+          <div class="alerts-select-all">
+            <mat-checkbox>Select all</mat-checkbox>
+          </div>
+          <button mat-button matTooltip="Mark selection as read">
+            <mat-icon color="accent">drafts</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row" *ngIf="unreadAlertsLoading">
+        <div class="col-md-4 offset-md-4">
+          <pxs-loader loadingText="Loading..."></pxs-loader>
+        </div>
+      </div>
+      <div *ngIf="!unreadAlertsLoading && !unreadAlerts.length">
+        <img class="no-data-image" src="assets/smartmonitoring/images/general/no-data.svg" alt="no data icon">
+        <div class="no-data-text">No results found for selected filter</div>
+      </div>
+      <div class="table">
+        <div class="row p-1 table-row" *ngFor="let item of unreadAlerts">
+          <div class="col-md-1">
+            <mat-checkbox></mat-checkbox>
+          </div>
+          <div class="col-md-3">
+            <div class="alerts-table-asset-name">{{item.asset.name}}</div>
+            <div class="alerts-table-date">{{item.sensorReading.timestamp | date : 'dd/MM/yyyy - HH:mm'}} </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="alert-message-wrapper">
+              <img class="alert-icon"
+                   src="assets/smartmonitoring/images/icons/icon-{{item?.thresholdAlert?.sensorType?.name}}.svg"
+                   alt="">
+              <div class="alert-message">
+                {{'SENSORTYPES.' + item?.thresholdAlert?.sensorType?.name | translate}}
+                {{sharedAlertsService.getAlertType(item.sensorReading.value, item.thresholdAlert.high, item.thresholdAlert.low) | translate}}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <div class="alert-threshold-template-wrapper">
+          <span class="alert-threshold-template">
+              {{item.asset.thresholdTemplate.isCustom ? 'Custom' : item.asset.thresholdTemplate.name }}
+          </span>
+            </div>
+          </div>
+
+          <div class="col-md-3 ">
+            <div class="alert-location-wrapper">
+              <div>
+                <div class="alert-sublocation">{{item?.sublocation?.name ? item.sublocation.name : '-' }}</div>
+                <div class="alert-locations">
+              <span
+                class="alert-location pr-1">{{item?.sublocation?.location?.name ? item.sublocation.location.name : '' }}</span>
+                  <span class="alert-location-type">
+              {{item?.sublocation?.location?.locationType?.name ? item.sublocation.location.locationType.name : '' }}
+            </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1 ">
+            <div class="alerts-read-wrapper">
+              <mat-icon color="primary">mail</mat-icon>
+              <div class="alert-unread-status">Unread</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="alerts-select-all">
+            <mat-checkbox>Select all</mat-checkbox>
+          </div>
+          <button mat-button matTooltip="Mark selection as read">
+            <mat-icon color="accent">drafts</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="alerts-section-footer">
+      <mat-paginator [length]="unreadAlertsTotal"
+                     [pageSize]="unreadAlertsPageSize"
+                     [pageSizeOptions]="unreadAlertsPageSizeOptions"
+                     (page)="alertsFilterChange('unread', $event)">
+      </mat-paginator>
+    </div>
+  </div>
+
+
+  <div class="alerts-section">
+    <div class="alerts-section-header">
+      <h6>Read alerts</h6>
+    </div>
+    <div class="alerts-section-content">
+      <div class="row">
+        <div class="col-12">
+          <div class="alerts-select-all">
+            <mat-checkbox>Select all</mat-checkbox>
+          </div>
+          <button mat-button matTooltip="Mark selection as unread">
+            <mat-icon color="primary">mail</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="row" *ngIf="readAlertsLoading">
+        <div class="col-md-4 offset-md-4">
+          <pxs-loader loadingText="Loading..."></pxs-loader>
+        </div>
+      </div>
+      <div *ngIf="!readAlertsLoading && !readAlerts.length">
+        <img class="no-data-image" src="assets/smartmonitoring/images/general/no-data.svg" alt="no data icon">
+        <div class="no-data-text">No results found for selected filter</div>
+      </div>
+      <div class="table">
+        <div class="row p-1 table-row" *ngFor="let item of readAlerts">
+          <div class="col-md-1">
+            <mat-checkbox></mat-checkbox>
+          </div>
+          <div class="col-md-3">
+            <div class="alerts-table-asset-name">{{item.asset.name}}</div>
+            <div class="alerts-table-date">{{item.sensorReading.timestamp | date : 'dd/MM/yyyy - HH:mm'}} </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="alert-message-wrapper">
+              <img class="alert-icon"
+                   src="assets/smartmonitoring/images/icons/icon-{{item?.thresholdAlert?.sensorType?.name}}.svg"
+                   alt="">
+              <div class="alert-message">
+                {{'SENSORTYPES.' + item?.thresholdAlert?.sensorType?.name | translate}}
+                {{sharedAlertsService.getAlertType(item.sensorReading.value, item.thresholdAlert.high, item.thresholdAlert.low) | translate}}
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1">
+            <div class="alert-threshold-template-wrapper">
+          <span class="alert-threshold-template">
+              {{item.asset.thresholdTemplate.isCustom ? 'Custom' : item.asset.thresholdTemplate.name }}
+          </span>
+            </div>
+          </div>
+
+          <div class="col-md-3 ">
+            <div class="alert-location-wrapper">
+              <div>
+                <div class="alert-sublocation">{{item?.sublocation?.name ? item.sublocation.name : '-' }}</div>
+                <div class="alert-locations">
+              <span
+                class="alert-location pr-1">{{item?.sublocation?.location?.name ? item.sublocation.location.name : '' }}</span>
+                  <span class="alert-location-type">
+              {{item?.sublocation?.location?.locationType?.name ? item.sublocation.location.locationType.name : '' }}
+            </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1 ">
+            <div class="alerts-read-wrapper">
+              <mat-icon color="secondary">drafts</mat-icon>
+              <div class="alert-unread-status">read</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="alerts-select-all">
+            <mat-checkbox>Select all</mat-checkbox>
+          </div>
+          <button mat-button matTooltip="Mark selection as read">
+            <mat-icon color="primary">mail</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="alerts-section-footer">
+      <mat-paginator [length]="readAlertsTotal"
+                     [pageSize]="readAlertsPageSize"
+                     [pageSizeOptions]="readAlertsPageSizeOptions"
+                     (page)="alertsFilterChange('read', $event)">
+      </mat-paginator>
+    </div>
+  </div>
+
+</div>

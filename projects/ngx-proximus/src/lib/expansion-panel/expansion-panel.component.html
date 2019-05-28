@@ -1,0 +1,12 @@
+<div class="pxs-expansion-panel">
+  <div (click)="triggerToggle()" [ngClass]="{'pxs-expansion-panel-hidden-header': !visible}">
+    <ng-content select="pxs-expansion-panel-header"></ng-content>
+  </div>
+  <div class="pxs-expansion-panel-content-container"
+       [ngClass]="{'pxs-expansion-panel-content-visible': visible, 'pxs-expansion-panel-content-hidden': !visible}">
+    <div class="pxs-expansion-panel-content">
+      <ng-content select="pxs-expansion-panel-content"></ng-content>
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

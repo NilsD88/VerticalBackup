@@ -1,0 +1,9 @@
+{
+  "name": "ngx-proximus",
+  "version": "0.0.3",
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "@angular/material": "^7.3.7"
+  }
+}

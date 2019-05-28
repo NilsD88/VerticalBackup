@@ -1,0 +1,27 @@
+.expansion-panel {
+  margin-bottom: 20px;
+}
+
+.pxs-expansion-panel-content-visible {
+  opacity: 1;
+  max-height: 600px;
+}
+
+.pxs-expansion-panel-content-hidden {
+  max-height: 0;
+  opacity: 0;
+}
+
+.pxs-expansion-panel-content-container {
+  height:auto;
+  transition: max-height .5s ease-out, opacity .8s ease-out;
+  overflow: hidden;
+}
+
+.pxs-expansion-panel-content {
+  padding: 5px;
+  padding-left: 30px;
+}
+
+
+

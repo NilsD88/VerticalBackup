@@ -1,0 +1,26 @@
+<pxs-top-menu *ngIf="topMenuConfig" (languageChange)="sharedLayoutService.changeLanguage($event)"
+              [config]="topMenuConfig">
+  <pxs-menu-item label="Proximus" (action)="navigateTo('destination')"></pxs-menu-item>
+  <pxs-menu-item label="MyThings" (action)="navigateTo('destination')"></pxs-menu-item>
+  <pxs-top-menu-actions>
+    <pxs-menu-item (action)="navigateTo('destination')">
+      <pxs-icon icon="user"></pxs-icon>
+      <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ACCOUNT'"></span>
+    </pxs-menu-item>
+    <pxs-menu-item (action)="navigateTo('destination')">
+      <pxs-icon icon="cog"></pxs-icon>
+      <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ADMIN'"></span>
+    </pxs-menu-item>
+  </pxs-top-menu-actions>
+</pxs-top-menu>
+
+<pxs-main-menu>
+  <pxs-menu-item *ngFor="let item of menuItems" [label]="item.label" (action)="navigateTo(item.url)"
+                 [badge]="item.badge"></pxs-menu-item>
+</pxs-main-menu>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<pxs-footer [config]="footerConfig"></pxs-footer>

@@ -1,0 +1,5 @@
+<span (click)="menuItemClicked()" class="pxs-menu-item">
+  {{label}}
+  <span *ngIf="!label"><ng-content></ng-content></span>
+  <sup class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
+</span>

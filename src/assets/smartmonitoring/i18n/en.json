@@ -1,0 +1,74 @@
+{
+  "GENERAL": {
+    "APP_NAME": "Smart Monitoring",
+    "APP_SUBTITLE": "Surroundings measurements"
+  },
+  "TOP_MENU": {
+    "CONTACT": "Contact",
+    "ADMIN": "Admin",
+    "ACCOUNT": "Account",
+    "SEARCH_PLACEHOLDER": "Search"
+  },
+  "DISCLAIMER": {
+    "ALL_RIGHTS_RESERVED": "All rights reserved.",
+    "TERMS_AND_CONDITIONS": "General terms and conditions, consumer info and privacy",
+    "COOKIE_POLICY": "Cookie policy",
+    "BELGIAN_LAW": "This site was created and is managed in accordance with Belgian law.",
+    "ADDRESS": "Koning Albert II-Laan, 27 - B-1030 Brussels"
+  },
+  "HOME": {
+    "CHECKLIST_ITEMS": {
+      "ITEM1": "Effortless. link any sensor to your account and gather specific data about your assets.",
+      "ITEM2": "Automatic. All the data from the sensor is automatically sent to your server– the data is secure and only accessible to you. Or predefined profiles.",
+      "ITEM3": "Clear view. The online dashboard gives a real-time view of your assets and a complete history. ",
+      "ITEM4": "Versatile. The supplied APIs inject the Smart Monitoring data into your systems. That way, you can optimize all your processes from A to Z. ",
+      "ITEM5": "Assistance with placement and installation."
+    },
+    "SENSORS": {
+      "TITLE": "Monitor your environment",
+      "SENSOR1": {
+        "TITLE": "Temperature",
+        "DESCRIPTION": "High temperatures can cause chemical damages and increase degradation rate of art, and are good conditions for insects and moldgrowth. Low temperatures can cause condensation of moisture. Temperature fluctuations can effect humidity levels"
+      },
+      "SENSOR2": {
+        "TITLE": "Humidity",
+        "DESCRIPTION": "High humidity can cause moldgrowth or corrosion, and creates good conditions for insects. Low humidity causes risk of mechanical deformation and brittleness of hygroscopic materials. Fluctuations of humidity increase risk of mechanical damage."
+      },
+      "SENSOR3": {
+        "TITLE": "Luminosity",
+        "DESCRIPTION": "High light values can cause discolouration and increase risk of chemical damage of paint layers and varnishes."
+      },
+      "SENSOR4": {
+        "TITLE": "Motion",
+        "DESCRIPTION": "Vibration and shocks create a risk of mechanical damage."
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "Smart monitoring products",
+      "PRODUCT1": {
+        "TITLE": "Smart Monitoring",
+        "DESCRIPTION": "Do you have a complete view of your assets? Are quality controls of high importance to you? Or do you need to meet specific certifications?\n\nSmart Monitoring offers a unique view of your assets in order to manage them efficiently. It provides the relevant information to make calculated decisions. Want more information about specific assets? We will identify the sensor for you to generate the right insights."
+      },
+      "PRODUCT2": {
+        "TITLE": "Smart Tank Monitoring",
+        "DESCRIPTION": "Do you spend a lot of time planning and calculating how much fuel you need to deliver at a certain place and time? Smart Tank makes life easier: this solution measures the level of each tank daily. And notifies you or your customer when it’s time to tank up. Unexpected deliveries? They won’t disrupt your planning anymore."
+      },
+      "PRODUCT3": {
+        "TITLE": "Smart Care",
+        "DESCRIPTION": "We offer SmartCare, a small discrete datalogger that does not require a sim card or registration. This logger measures temperature, relative humidity and light values. It uses the LoRaWAN® network of Proximus, which allows a long battery lifetime and avoids the need for additional cables."
+      }
+    }
+  },
+  "SENSORTYPES": {
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "motion": "Motion",
+    "luminosity": "Luminosity",
+    "battery": "Battery",
+    "range": "range"
+  },
+  "ALERT_TYPE": {
+    "high": "high",
+    "low": "low"
+  }
+}

@@ -2,8 +2,67 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import {PublicLayoutComponent} from '../app/layout/smartmonitoring/public.layout.component';
+import {PrivateLayoutComponent} from '../app/layout/smartmonitoring/private.layout.component';
+import {PublicAuthGuard} from '../app/app.routing';
+
 export const environment = {
-  production: false
+  production: false,
+  baseUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/api/',
+  loginUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/auth/login',
+  authUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/auth/',
+  assetPrefix: 'smartmonitoring',
+
+
+  // ROUTES
+
+  routes: [
+    {
+      path: '',
+      redirectTo: 'home',
+      pathMatch: 'full'
+    },
+    {
+      path: '',
+      component: PublicLayoutComponent,
+      canActivate: [PublicAuthGuard],
+      children: [{
+        path: 'home',
+        loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
+      }]
+    },
+    {
+      path: 'private',
+      component: PrivateLayoutComponent,
+      children: [{
+        path: 'home',
+/*
+        canActivate: [UserAuthGuard],
+*/
+        loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
+      }, {
+        path: 'alerts',
+        /*
+                canActivate: [UserAuthGuard],
+        */
+        loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
+      }, {
+        path: 'admin',
+        children: [
+          {
+            path: '**',
+            redirectTo: '/error/404'
+          }
+        ]
+      }, {
+        path: '**',
+        redirectTo: '/error/404'
+      }]
+    },
+    {
+      path: '**',
+      redirectTo: '/error/404'
+    }]
 };
 
 /*

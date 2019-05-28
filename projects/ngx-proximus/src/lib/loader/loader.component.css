@@ -1,0 +1,10 @@
+svg{
+  max-width: 150px;
+  max-height: 150px;
+  display: flex;
+  justify-self: center;
+  margin-left: auto;
+  margin-right: auto
+}
+
+
