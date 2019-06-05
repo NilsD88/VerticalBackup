@@ -65,6 +65,8 @@
     "motion": "Motion",
     "luminosity": "Luminosity",
     "battery": "Battery",
+    "pulse": "Pulse",
+    "counter": "counter",
     "range": "range"
   },
   "ALERT_TYPE": {

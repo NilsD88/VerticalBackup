@@ -27,6 +27,7 @@ div {
 }
 
 $primary : #5C2D91;
+$dark-primary : #210C3D;
 $inactive : #D1BBDA;
 $accent : #00BCEE;
 $link : #0214C1;
@@ -45,8 +46,7 @@ $table-header-border : darken($primary, 20%);
 $table-border : #D9D9D9;
 $row-bg : #F9F9F9;
 $table-hover : #EEEAF4;
-
-
+$page-background : #F7F7F7;
 body {
   font-family : ProximusRegular, sans-serif;
   font-size   : 14px;
@@ -868,6 +868,11 @@ pxs-menu-item {
   border-color     : $primary;
 }
 
+input.mat-input-element {
+  line-height : 1.85rem;
+  color       : $primary;
+}
+
 .alerts-section {
   margin-top    : -30px;
   margin-bottom : 70px;
@@ -932,9 +937,11 @@ pxs-menu-item {
 }
 
 .ngx-mat-drp-date-display {
+  /*
   margin-top : -.6rem;
-  width      : 100%;
-  max-width  : 100%;
+  */
+  width     : 100%;
+  max-width : 100%;
 
   .mat-form-field-label-wrapper {
     top         : -.25em;
@@ -948,7 +955,7 @@ pxs-menu-item {
   input.mat-input-element {
     margin-top  : 0;
     padding-top : .1875em;
-    line-height : 1.6;
+    line-height : 1.759;
   }
 }
 
@@ -1046,5 +1053,185 @@ pxs-loader {
   color       : $primary;
   text-align  : center;
   font-family : ProximusLight, sans-serif;
+}
+
+
+.ng-select {
+  /*  border        : 0;
+	min-height    : 0;
+	border-radius : 0;*/
+  width : 100%;
+}
+
+.ng-select .ng-select-container {
+  /*  min-height    : 0;
+	border-radius : 0;*/
+  width : 100%;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  background-color : $primary;
+  border-radius    : 0 0 8px 0;
+}
+
+.mat-calendar-next-button[disabled] {
+  background-color : darken($primary, 5%) !important;
+}
+
+.success-snackbar {
+  background-color : $success !important;
+}
+
+.error-snackbar {
+  background-color : $error !important;
+}
+
+.info-snackbar {
+  background-color : $accent !important;
+}
+
+.primary-snackbar {
+  background-color : $primary !important;
+}
+
+.warning-snackbar {
+  background-color : $warn !important;
+}
+
+
+.detail-header {
+  background-image    : url("smartmonitoring/images/detail/header-background.png");
+  background-position : center center;
+  background-repeat   : no-repeat;
+  background-size     : cover;
+
+  h1 {
+    line-height : 0;
+
+    sup {
+      background-color : $promo;
+      margin-left      : .5rem;
+      font-size        : .5em;
+      padding          : .2em .5em;
+      border-radius    : 0 0 10px 0;
+    }
+  }
+
+  h4 {
+    font-family : ProximusLight, sans-serif;
+  }
+
+  .detail-header-wrapper {
+    padding       : 2rem;
+    display       : flex;
+    align-content : space-between;
+  }
+
+}
+
+.last-measurements-wrapper {
+  margin-left    : auto;
+  display        : flex;
+  flex-direction : row;
+
+  .last-measurement {
+    img {
+      height  : 3rem;
+      padding : .5rem;
+    }
+
+    margin         : .5rem;
+    text-align     : center;
+    display        : flex;
+    flex-direction : column;
+    color          : $white;
+
+    .last-measurement-date {
+      color : $accent;
+    }
+
+    .last-measurement-time {
+      color : $accent;
+    }
+  }
+}
+
+.detail-main-content {
+  background-color : $page-background;
+
+  #asset-image {
+    width               : 100%;
+    background-repeat   : no-repeat;
+    background-size     : cover;
+    background-position : center;
+    height              : 14rem;
+  }
+
+}
+
+.last-alert-container {
+  width            : 100%;
+  background-color : $dark-primary;
+  padding          : 1rem;
+
+  .last-alert-title {
+    color       : $white;
+    font-size   : 1.6rem;
+    line-height : 1.6rem;
+    font-family : ProximusRegular, sans-serif;
+  }
+
+  .last-alert-wrapper {
+    display : flex;
+
+    img {
+      height     : 5rem;
+      align-self : center;
+      padding    : 1rem;
+    }
+
+    .last-alert-content {
+      flex    : 1;
+      padding : 1rem;
+    }
+
+    .last-alert-description {
+      color       : $white;
+      font-size   : 1.1rem;
+      font-family : ProximusBold, sans-serif;
+
+      .last-alert-date {
+        display       : inline-block;
+        font-family   : ProximusLight, sans-serif;
+        font-size     : .7rem;
+        padding       : .2em .8em;
+        border-radius : 0 0 10px 0;
+        margin-top    : .4rem;
+        color         : $white;
+        background    : $promo;
+      }
+    }
+  }
+
+  .last-alert-values {
+    display     : flex;
+    width       : 100%;
+    padding     : 1rem;
+    padding-top : .6rem;
+
+    .last-alert-value {
+      background-color : $accent;
+      color            : $white;
+      margin-right     : 1rem;
+      padding          : .4rem;
+      border-radius    : 0 0 10px 0;
+      flex             : 1;
+      display          : inline-flex;
+      flex-direction   : column;
+    }
+
+  }
+
+
 }
 

@@ -32,7 +32,13 @@ export class Thing implements IThing {
       this.batteryPercentage = null;
     }
     this.unreadAlerts = Alert.createArray(_thing ? _thing.unreadAlerts : null);
-    this.sensors = Sensor.createArray(_thing ? _thing.sensors : null);
+    this.sensors = Sensor.createArray(_thing ? _thing.sensors : null)
+      .sort((a: Sensor, b: Sensor): number => {
+        /* sort sensors by their sensortype name*/
+        const A = a.sensorType.name.toUpperCase();
+        const B = b.sensorType.name.toUpperCase();
+        return (A < B) ? -1 : (A > B) ? 1 : 0;
+      });
   }
 
   public static createArray(values: IThing[]): Thing[] {

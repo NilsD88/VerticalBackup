@@ -102,6 +102,14 @@ export class AdminAuthGuard implements CanActivate {
 
 export const AppRoutes: Routes = [
   {
+    path: 'dev',
+    component: PublicLayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: './pages/devtest/devtest.module#DevtestModule'
+    }]
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
@@ -124,8 +132,12 @@ export const AppRoutes: Routes = [
       loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
     }, {
       path: 'alerts',
-              canActivate: [UserAuthGuard],
+      canActivate: [UserAuthGuard],
       loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
+    }, {
+      path: 'detail/:id',
+      canActivate: [UserAuthGuard],
+      loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
     }, {
       path: 'admin',
       children: [

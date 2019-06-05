@@ -3,70 +3,37 @@
     <div class="col-md-3"><h1 class="pxs-title">Alerts</h1></div>
     <div class="col-md-9 alerts-filter-container">
       <div class="row">
+        <div class="col-xl-12 col-lg-6 col-md-6">
+          <mat-form-field class="w-100">
+            <input type="text" (change)="filterNameChange($event)" placeholder="Asset name" matInput [(ngModel)]="filter.name">
+          </mat-form-field>
+        </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
           <pxs-date-range-selection (dateChange)="dateRangeChanged($event)"></pxs-date-range-selection>
         </div>
-        <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="col-xl-4 col-lg-6 col-md-6">
           <ng-select [multiple]="true"
                      [clearable]="true"
                      [items]="filterOptions.sensorTypes"
                      [(ngModel)]="filter.sensorTypes"
-                     bindLabel="name"
                      bindValue="id"
                      [loading]="sensorTypesLoading"
                      [hideSelected]="true"
                      (change)="alertsFilterChange('unread', null)"
                      [placeholder]="'Sensors'">
           </ng-select>
-
-
-          <!--<mat-form-field class="alerts-filter-input">
-            <mat-select placeholder="Type" >
-              <mat-option value="1">
-                <div style="display: flex;">
-                  <img class="alert-icon"
-                       src="assets/smartmonitoring/images/icons/icon-temperature.svg"
-                       alt="">Temperature
-                </div>
-              </mat-option>
-              <mat-option value="2">
-                <div style="display: flex;">
-
-                  <img class="alert-icon"
-                       src="assets/smartmonitoring/images/icons/icon-humidity.svg"
-                       alt="">Humidity
-                </div>
-              </mat-option>
-              <mat-option value="3">
-                <div style="display: flex;">
-                  <img class="alert-icon"
-                       src="assets/smartmonitoring/images/icons/icon-luminosity.svg"
-                       alt="">Luminosity
-                </div>
-              </mat-option>
-              <mat-option value="4">
-                <div style="display: flex;">
-                  <img class="alert-icon"
-                               src="assets/smartmonitoring/images/icons/icon-motion.svg"
-                               alt="">Motion
-                </div>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>-->
         </div>
-        <div class="col-xl-3 col-lg-6 col-md-6">
-          <mat-form-field class="alerts-filter-input">
-            <mat-select placeholder="Location Type">
-
-            </mat-select>
-          </mat-form-field>
-        </div>
-        <div class="col-xl-2 col-lg-6 col-md-6">
-          <mat-form-field class="alerts-filter-input">
-            <mat-select placeholder="Read">
-
-            </mat-select>
-          </mat-form-field>
+        <div class="col-xl-4 col-lg-6 col-md-6">
+          <ng-select [multiple]="true"
+                     [clearable]="true"
+                     [items]="filterOptions.thresholdTemplates"
+                     [(ngModel)]="filter.thresholdTemplates"
+                     bindValue="id"
+                     [loading]="thresholdTemplatesLoading"
+                     [hideSelected]="true"
+                     (change)="alertsFilterChange('unread', null)"
+                     [placeholder]="'Threshold templates'">
+          </ng-select>
         </div>
       </div>
     </div>
@@ -82,9 +49,10 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox>Select all</mat-checkbox>
+            <mat-checkbox [(ngModel)]="allUnreadSelected" (change)="allSelectedChanged($event, 'unread')">Select all
+            </mat-checkbox>
           </div>
-          <button mat-button matTooltip="Mark selection as read">
+          <button mat-button matTooltip="Mark selection as read" (click)="markSelection(true)">
             <mat-icon color="accent">drafts</mat-icon>
           </button>
         </div>
@@ -101,10 +69,11 @@
       <div class="table">
         <div class="row p-1 table-row" *ngFor="let item of unreadAlerts">
           <div class="col-md-1">
-            <mat-checkbox></mat-checkbox>
+            <mat-checkbox matTooltip="Select" [(ngModel)]="item.selected"
+                          (change)="singleSelection($event, 'unread')"></mat-checkbox>
           </div>
           <div class="col-md-3">
-            <div class="alerts-table-asset-name">{{item.asset.name}}</div>
+            <div class="alerts-table-asset-name" routerLink="/private/detail/{{item.asset.id}}">{{item.asset.name}}</div>
             <div class="alerts-table-date">{{item.sensorReading.timestamp | date : 'dd/MM/yyyy - HH:mm'}} </div>
           </div>
 
@@ -154,9 +123,10 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox>Select all</mat-checkbox>
+            <mat-checkbox [(ngModel)]="allUnreadSelected" (change)="allSelectedChanged($event, 'unread')">Select all
+            </mat-checkbox>
           </div>
-          <button mat-button matTooltip="Mark selection as read">
+          <button mat-button matTooltip="Mark selection as read" (click)="markSelection(true)">
             <mat-icon color="accent">drafts</mat-icon>
           </button>
         </div>
@@ -180,9 +150,10 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox>Select all</mat-checkbox>
+            <mat-checkbox [(ngModel)]="allReadSelected" (change)="allSelectedChanged($event, 'read')">Select all
+            </mat-checkbox>
           </div>
-          <button mat-button matTooltip="Mark selection as unread">
+          <button mat-button matTooltip="Mark selection as unread" (click)="markSelection(false)">
             <mat-icon color="primary">mail</mat-icon>
           </button>
         </div>
@@ -199,7 +170,8 @@
       <div class="table">
         <div class="row p-1 table-row" *ngFor="let item of readAlerts">
           <div class="col-md-1">
-            <mat-checkbox></mat-checkbox>
+            <mat-checkbox matTooltip="Select" [(ngModel)]="item.selected"
+                          (change)="singleSelection($event, 'read')"></mat-checkbox>
           </div>
           <div class="col-md-3">
             <div class="alerts-table-asset-name">{{item.asset.name}}</div>
@@ -243,8 +215,8 @@
 
           <div class="col-md-1 ">
             <div class="alerts-read-wrapper">
-              <mat-icon color="secondary">drafts</mat-icon>
-              <div class="alert-unread-status">read</div>
+              <mat-icon color="accent">drafts</mat-icon>
+              <div class="alert-read-status">read</div>
             </div>
           </div>
         </div>
@@ -252,9 +224,10 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox>Select all</mat-checkbox>
+            <mat-checkbox [(ngModel)]="allReadSelected" (change)="allSelectedChanged($event, 'read')">Select all
+            </mat-checkbox>
           </div>
-          <button mat-button matTooltip="Mark selection as read">
+          <button mat-button matTooltip="Mark selection as read" (click)="markSelection(false)">
             <mat-icon color="primary">mail</mat-icon>
           </button>
         </div>

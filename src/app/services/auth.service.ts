@@ -19,7 +19,6 @@ export class AuthService {
   public isLoggedIn(): Promise<User> {
     return new Promise((resolve, reject) => {
       try {
-        console.log('checking session');
         this.http.get(`${environment.authUrl}checksession`, {withCredentials: true})
           .subscribe((result: IUser) => {
             window.localStorage.setItem('user', JSON.stringify(result));
