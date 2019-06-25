@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let item of things">
+
+      <div class="thing-card">
+        <span class="thing-card-name">{{item.name}}</span>
+        <span class="thing-card-deveui">{{item.devEui}}</span>
+
+        <div class="thing-icon-container">
+          <div class="thing-icon" *ngFor="let sensor of item.sensors">
+            <img src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType.name}}.svg" src-fallback="assets/smartmonitoring/images/icons/icon-default.svg">
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

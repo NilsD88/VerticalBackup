@@ -3,6 +3,7 @@
 @import "breakpoints";
 @import "visibility";
 @import "grid";
+@import "~nouislider/distribute/nouislider.min.css";
 
 @font-face {
   font-family : ProximusLight;
@@ -115,6 +116,10 @@ h6 {
   font-size     : 18px;
   line-height   : 22px;
   margin-bottom : 10px;
+}
+
+strong {
+  font-family : ProximusBold, sans-serif;
 }
 
 .pxs-title {
@@ -1235,3 +1240,127 @@ pxs-loader {
 
 }
 
+.noUi-horizontal {
+  height : 10px;
+}
+
+.noUi-connect {
+  background : $primary;
+}
+
+[disabled] .noUi-connect {
+  background : $dark-primary;
+}
+
+.noUi-horizontal .noUi-handle {
+  height        : 20px;
+  width         : 20px;
+  top           : -5px;
+  border-radius : 50%;
+}
+
+.noUi-handle::after, .noUi-handle::before {
+  height : 10px;
+  width  : 1px;
+  left   : 10px;
+  top    : 5px;
+}
+
+.highcharts-root {
+  font-family : ProximusRegular, sans-serif !important;
+}
+
+
+.detail-thresholds {
+  background    : $white;
+  padding-left  : 2rem;
+  padding-right : 2rem;
+  padding-top   : 1px;
+}
+
+.range-slider-values {
+  margin-top  : -1rem;
+  margin-left : auto;
+  font-size   : .8rem;
+}
+
+.range-slider-wrapper {
+  display        : flex;
+  flex-direction : column;
+}
+
+.range-slider-slider {
+  display : block;
+  width   : 100%;
+}
+
+.aggregated-values {
+  .aggregated-value-card {
+
+    background    : $promo;
+    color         : $white;
+    margin        : .5rem;
+    padding       : 1rem;
+    align-content : center;
+
+    img {
+      padding      : 5px;
+      display      : flex;
+      justify-self : center;
+      align-self   : center;
+
+    }
+  }
+
+  padding : 1rem 0;
+
+}
+
+.aggregated-value {
+  font-family : ProximusLight, sans-serif;
+}
+
+mat-form-field {
+  width : 100%;
+}
+
+.image-button-container {
+  display : flex;
+
+  button {
+    flex : 1;
+  }
+}
+
+.mat-icon-button.mat-accent {
+  color : $accent;
+}
+
+.mat-icon-button.mat-primary {
+  color : $primary;
+}
+
+.mat-fab.mat-accent, .mat-flat-button.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+  background-color : $accent;
+  color            : $white;
+}
+
+.mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary {
+  background-color : $primary;
+  color            : $white;
+}
+
+.mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label, .mat-accent .mat-slider-track-fill {
+  background-color : $accent;
+  color            : $white;
+}
+
+.mat-primary .mat-slider-thumb, .mat-primary .mat-slider-thumb-label, .mat-primary .mat-slider-track-fill {
+  background-color : $primary;
+  color            : $white;
+}
+
+.badge{
+  background-color : $primary;
+  color            : $white;
+}

@@ -47,4 +47,8 @@ export class SharedLayoutService {
     this.authService.login('enco');
   }
 
+  public logout() {
+    this.authService.logout();
+  }
+
 }

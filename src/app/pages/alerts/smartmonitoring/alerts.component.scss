@@ -43,12 +43,14 @@
 
 .alerts-filter-container {
   display       : flex;
-  align-self: end;
+  align-self    : end;
   align-content : center;
   height        : 100%;
+
   .row {
-    flex: 1;
+    flex : 1;
   }
+
   .alerts-filter-input {
     width : 100%;
   }

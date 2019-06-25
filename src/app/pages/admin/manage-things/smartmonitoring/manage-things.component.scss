@@ -1,0 +1,31 @@
+.thing-card {
+  .thing-card-name {
+
+  }
+  .thing-card-deveui {
+
+  }
+
+  margin : 10px;
+  .thing-icon-container {
+    display         : flex;
+    flex-direction  : row;
+    align-content   : center;
+    justify-content : space-between;
+    width           : 100%;
+    padding         : 10px;
+    height          : 20px;
+
+    .thing-icon {
+      width  : 15px;
+      height : 15px;
+
+      img {
+        display : flex;
+        width   : 100%;
+        height  : 100%;
+      }
+    }
+
+  }
+}

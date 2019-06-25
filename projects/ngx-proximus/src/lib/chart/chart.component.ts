@@ -8,6 +8,7 @@ const noData = require('highcharts/modules/no-data-to-display');
 const More = require('highcharts/highcharts-more');
 const exporting = require('highcharts/modules/exporting');
 const exportData = require('highcharts/modules/export-data');
+
 Boost(Highcharts);
 noData(Highcharts);
 More(Highcharts);
@@ -52,6 +53,9 @@ export class ChartComponent implements OnInit, OnChanges {
       chart: {
         zoomType: 'xy',
         height: this.height
+      },
+      rangeSelector: {
+        selected: 4
       },
       title: {
         text: this.title

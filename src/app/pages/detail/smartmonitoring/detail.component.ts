@@ -5,19 +5,10 @@ import {AssetService} from '../../../services/asset.service';
 import {isNullOrUndefined} from 'util';
 import {SharedAlertsService} from '../../alerts/shared-alerts.service';
 import {Alert} from '../../../models/alert.model';
-import * as Highcharts from 'highcharts';
-import * as moment from 'moment';
-import * as numeral from 'numeral';
-import {Sensor} from '../../../models/sensor.model';
 import {TranslateService} from '@ngx-translate/core';
-import {LogsService} from '../../../services/logs-service.service';
-
-declare var require: any;
-declare var chart: any;
-require('highcharts/highcharts-more')(Highcharts);
-require('highcharts/modules/exporting')(Highcharts);
-require('highcharts/modules/export-data')(Highcharts);
-require('highcharts/modules/no-data-to-display')((Highcharts));
+import {LogsService} from '../../../services/logs.service';
+import * as moment from 'moment';
+import {icon, marker} from 'leaflet';
 
 export interface SensorReadingFilter {
   deveui: string;
@@ -35,113 +26,15 @@ export interface SensorReadingFilter {
 export class DetailComponent implements OnInit {
   public asset: Asset;
   public lastAlert: Alert;
-  public Highcharts = Highcharts; // required
-  public chartConstructor = 'list-image.png'; // optional string, defaults to 'chart'
-  public chartOptions = {
-    chart: {
-      zoomType: 'xy'
-    },
-    exporting: {
-      csv: {
-        dateFormat: '%d-%m-%Y %H:%M:%S'
-      },
-      enabled: true
-    },
-    yAxis: [{ // Temperature yAxis
-      opposite: false,
-      showEmpty: false,
-      title: {
-        text: 'Temperature'
-      },
-      softMin: 0,
-      softMax: 40
-    }, { // humidity yAxis
-      opposite: true,
-      showEmpty: false,
-      title: {
-        text: 'Humidity'
-      },
-      softMin: 0,
-      softMax: 100
-    }, { // Luminosity yAxis
-      opposite: false,
-      showEmpty: false,
-      title: {
-        text: 'Luminosity'
-      },
-      softMin: 0,
-      softMax: 500
-    }, { // motion yAxis
-      opposite: true,
-      showEmpty: false,
-      title: {
-        text: 'Motion'
-      },
-      softMin: 0,
-      softMax: 1000
-    }],
-    xAxis: {
-      type: 'datetime'
-    },
-    credits: {
-      enabled: false
-    },
-    title: {
-      text: 'Detail chart'
-    },
-    tooltip: {
-      crosshairs: true,
-      shared: true
-    },
-
-    legend: {},
-
-    series: []
-  }; // required
+  public chartSensorOptions = [];
   public chartLoading = false;
-  public chartCallback = null; // optional function, defaults to null
-  public updateFlag = false; // optional boolean
-  public oneToOneFlag = true; // optional boolean, defaults to false
+  public chartData = [];
+  public chartDateRange = {fromDate: moment(new Date()).startOf('d').toDate(), toDate: moment(new Date()).endOf('d').toDate()};
+  public standardDeviations = [];
 
-  public chartSensorOptions: Sensor[] = [];
-  public chartConfig: { dateRange: any; chartSensors: { deveui: string; sensorTypeId: string }[]; chartType: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY' } = {
-    dateRange: {fromDate: moment(new Date()).startOf('d').toDate(), toDate: moment(new Date()).endOf('d').toDate()},
-    chartSensors: [],
-    chartType: 'HOURLY'
-  };
-  public chartTypes = [
-    {
-      label: 'DETAIL.CHARTTYPES.HOURLY',
-      value: 'HOURLY'
-    },
-    {
-      label: 'DETAIL.CHARTTYPES.DAILY',
-      value: 'DAILY'
-    },
-    {
-      label: 'DETAIL.CHARTTYPES.WEEKLY',
-      value: 'WEEKLY'
-    },
-    {
-      label: 'DETAIL.CHARTTYPES.MONTHLY',
-      value: 'MONTHLY'
-    },
-    {
-      label: 'DETAIL.CHARTTYPES.YEARLY',
-      value: 'YEARLY'
-    }];
-  public selectedSensorTypes = [];
+  public mapLayers = [];
 
-  public chartData: {
-    label: string;
-    series: {
-      label: string;
-      avg: number;
-      min: number;
-      max: number;
-    }[];
-  }[] = [];
-
+  public mapConfig;
 
   constructor(public activeRoute: ActivatedRoute,
               private assetService: AssetService,
@@ -158,17 +51,14 @@ export class DetailComponent implements OnInit {
       const lastAlertPromise = this.sharedAlertsService.getLastAlertByAssetId(id);
       this.asset = await assetPromise;
       this.lastAlert = await lastAlertPromise;
-      this.chartSensorOptions = this.asset.sensors ? this.asset.sensors : [];
-      this.selectedSensorTypes = this.chartSensorOptions.map((val) => {
+      this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
         return {
           deveui: val.devEui,
           sensorTypeId: val.sensorType.id
         };
-      });
+      }) : [];
       this.getChartData();
-      Highcharts.chart('container', this.chartOptions as any);
-
-      console.log(this.Highcharts);
+      this.createMarkerOnMap();
 
     } catch (err) {
       this.router.navigate(['/error/404']);
@@ -187,90 +77,42 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  // CHART
-
   public async getChartData() {
     this.chartLoading = true;
     const logsPromises = [];
-    console.log(this.selectedSensorTypes);
-    for (const sensorType of this.selectedSensorTypes) {
+    const standardDeviationPromises = [];
+
+    for (const sensorType of this.chartSensorOptions) {
       const filter: SensorReadingFilter = {
         deveui: sensorType.deveui,
         sensortypeid: sensorType.sensorTypeId,
-        from: this.chartConfig.dateRange.fromDate.getTime(),
-        to: this.chartConfig.dateRange.toDate.getTime(),
-        interval: this.chartConfig.chartType
+        from: this.chartDateRange.fromDate.getTime(),
+        to: this.chartDateRange.toDate.getTime(),
+        interval: 'HOURLY'
       };
       logsPromises.push(this.logsService.getSensorReadings(filter));
+      standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
     }
+
+    this.standardDeviations = await Promise.all(standardDeviationPromises);
     this.chartData = await Promise.all(logsPromises);
-    this.chartOptions.series = [];
-    this.chartData.forEach(async (item) => {
-      const rangeTranslation = await new Promise((resolve) => {
-        this.translateService.get('SENSORTYPES.range').subscribe((result) => {
-          resolve(result);
-        });
-      });
-      const labelTranslation = await new Promise((resolve) => {
-        this.translateService.get('SENSORTYPES.' + item.label).subscribe((result) => {
-          resolve(result);
-        });
-      });
-      this.chartOptions.series.push({
-        name: labelTranslation,
-        yAxis: this.getYAxisByLabel(item.label),
-        zIndex: 1,
-        data: item.series.map((serie) => {
-          let label = this.filterInt(serie.label);
-          if (label === NaN) {
-            console.warn('Unable to perse timestamp for chart, using default value of 0');
-            label = 0;
-          }
-          return [label, parseFloat(serie.avg.toFixed(2))];
-        })
-      });
-      this.chartOptions.series.push({
-        name: labelTranslation + ' ' + rangeTranslation,
-        type: 'arearange',
-        yAxis: this.getYAxisByLabel(item.label),
-        lineWidth: 0,
-        linkedTo: ':previous',
-        fillOpacity: 0.3,
-        zIndex: 0,
-        marker: {
-          enabled: false
-        },
-        data: item.series.map((serie) => {
-          let label = this.filterInt(serie.label);
-          if (label === NaN) {
-            console.warn('Unable to perse timestamp for chart, using default value of 0');
-            label = 0;
-          }
-          return [label, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-        })
-      });
-    });
-    this.updateFlag = true;
+    console.log(this.chartData);
     this.chartLoading = false;
   }
 
-  public filterInt(value: string) {
-    if (/^(-|\+)?(\d+|Infinity)$/.test(value)) {
-      return Number(value);
-    }
-    return NaN;
+  public createMarkerOnMap() {
+    const m = marker([50.860305, 4.357905], {
+      icon: icon({
+        iconSize: [25, 41],
+        iconAnchor: [13, 41],
+        iconUrl: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE4LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMzY1IDU2MCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMzY1IDU2MCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZmlsbD0iIzAwQUVFRiIgZD0iTTE4Mi45LDU1MS43YzAsMC4xLDAuMiwwLjMsMC4yLDAuM1MzNTguMywyODMsMzU4LjMsMTk0LjZjMC0xMzAuMS04OC44LTE4Ni43LTE3NS40LTE4Ni45ICAgQzk2LjMsNy45LDcuNSw2NC41LDcuNSwxOTQuNmMwLDg4LjQsMTc1LjMsMzU3LjQsMTc1LjMsMzU3LjRTMTgyLjksNTUxLjcsMTgyLjksNTUxLjd6IE0xMjIuMiwxODcuMmMwLTMzLjYsMjcuMi02MC44LDYwLjgtNjAuOCAgIGMzMy42LDAsNjAuOCwyNy4yLDYwLjgsNjAuOFMyMTYuNSwyNDgsMTgyLjksMjQ4QzE0OS40LDI0OCwxMjIuMiwyMjAuOCwxMjIuMiwxODcuMnoiLz4KPC9nPgo8L3N2Zz4='
+      }).bindPopup(
+        `
+        <h6>${this.asset.name}</h6>
+        `
+      )
+    });
+    this.mapLayers = [m];
   }
 
-  public getYAxisByLabel(label: string) {
-    switch (label) {
-      case 'temperature':
-        return 0;
-      case 'humidity':
-        return 1;
-      case 'luminosity':
-        return 2;
-      case 'motion':
-        return 3;
-    }
-  }
 }

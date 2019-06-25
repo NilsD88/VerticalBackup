@@ -30,37 +30,41 @@
   </div>
 
   <div class="detail-main-content">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-7">
-
-            <div *ngIf="!chartOptions?.series?.length" style="display: flex; height: 100%;">
-              <h4 *ngIf="!chartLoading"
-                  style="text-align: center; margin-top: auto;margin-bottom: auto; width: 100%"
-                  [translate]="'DETAIL.NO_CHART_DATA'"></h4>
-              <pxs-loader></pxs-loader>
-            </div>
-            <highcharts-chart
-              *ngIf="chartOptions?.series?.length"
-              [Highcharts]="Highcharts"
-              [constructorType]="chartConstructor"
-              [options]="chartOptions"
-              [callbackFunction]="chartCallback"
-              [(update)]="updateFlag"
-              [oneToOne]="oneToOneFlag"
-              style=" display: block; height: 400px;"
-            ></highcharts-chart>
-
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div *ngIf="!chartData?.length" style="display: flex; height: 100%;">
+            <h4 *ngIf="!chartLoading"
+                style="text-align: center; margin-top: auto;margin-bottom: auto; width: 100%"
+                [translate]="'DETAIL.NO_CHART_DATA'"></h4>
+            <pxs-loader></pxs-loader>
           </div>
-          <div class="col-lg-4 col-md-5">
-            <div id="asset-image" [style.background-image]="'url('+asset.pictureBase64+')'"></div>
-            <div class="last-alert-container" *ngIf="lastAlert">
-              <span class="last-alert-title">Last Alert</span>
-              <div class="last-alert-wrapper">
-                <img
-                  [src]="'assets/smartmonitoring/images/icons/icon-'+ lastAlert.thresholdAlert.sensorType.name + '-white.svg'"
-                  alt="">
-                <div class="last-alert-content">
+          <pxs-chart style="padding: 2rem; padding-bottom: 0;"
+                     *ngIf="chartData?.length"
+                     [height]="400"
+                     [title]="'Data'"
+                     [chartData]="chartData">
+          </pxs-chart>
+
+          <pxs-aggregated-values [chartData]="chartData"></pxs-aggregated-values>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-md-7">
+
+          <pxs-map [height]="400" [(layers)]="mapLayers" [config]="mapConfig"></pxs-map>
+
+
+        </div>
+        <div class="col-lg-4 col-md-5">
+          <div id="asset-image" [style.background-image]="'url('+asset.pictureBase64+')'"></div>
+          <div class="last-alert-container" *ngIf="lastAlert">
+            <span class="last-alert-title">Last Alert</span>
+            <div class="last-alert-wrapper">
+              <img
+                [src]="'assets/smartmonitoring/images/icons/icon-'+ lastAlert.thresholdAlert.sensorType.name + '-white.svg'"
+                alt="">
+              <div class="last-alert-content">
                 <span class="last-alert-description">
                   {{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}
                   {{sharedAlertsService.getAlertType(lastAlert.sensorReading.value, lastAlert.thresholdAlert.high, lastAlert.thresholdAlert.low) | translate}}
@@ -70,28 +74,44 @@
                   </span>
                 </span>
 
-                </div>
               </div>
-              <div class="last-alert-values">
-                <div class="last-alert-value">
-                  <span>Value</span>
-                  <span>{{lastAlert.sensorReading.value}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
-                </div>
-                <div class="last-alert-value"
-                     [ngClass]="{'background-error':lastAlert.sensorReading.value < lastAlert.thresholdAlert.low }">
-                  <span>Low</span>
-                  <span>{{lastAlert.thresholdAlert.low}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
-                </div>
-                <div class="last-alert-value"
-                     [ngClass]="{'background-error':lastAlert.sensorReading.value > lastAlert.thresholdAlert.low }">
-                  <span>High</span>
-                  <span>{{lastAlert.thresholdAlert.high}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
-                </div>
+            </div>
+            <div class="last-alert-values">
+              <div class="last-alert-value">
+                <span>Value</span>
+                <span>{{lastAlert.sensorReading.value}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
               </div>
+              <div class="last-alert-value"
+                   [ngClass]="{'background-error':lastAlert.sensorReading.value < lastAlert.thresholdAlert.low }">
+                <span>Low</span>
+                <span>{{lastAlert.thresholdAlert.low}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
+              </div>
+              <div class="last-alert-value"
+                   [ngClass]="{'background-error':lastAlert.sensorReading.value > lastAlert.thresholdAlert.low }">
+                <span>High</span>
+                <span>{{lastAlert.thresholdAlert.high}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="detail-thresholds">
+            <h6>
+              {{asset?.thresholdTemplate?.isCustom ? 'Custom' : asset?.thresholdTemplate?.name}}
+            </h6>
+            <div *ngFor="let item of asset?.thresholdTemplate?.thresholds">
+              <span>{{'SENSORTYPES.' + item.sensorType?.name | translate}}</span>
+              <pxs-range-slider
+                [min]="item.sensorType?.min"
+                [max]="item.sensorType?.max"
+                [from]="item.low"
+                [to]="item.high"
+                [postfix]="item.sensorType?.postfix"
+                [disabled]="true">
+              </pxs-range-slider>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </div>
 

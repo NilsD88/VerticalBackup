@@ -45,7 +45,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     // this.router.unsubscribe();
   }
 
-  navigateTo(url: string) {
-    this.router.navigate([url]);
+  navigateTo(url: string[]) {
+    this.router.navigate(url);
   }
 }

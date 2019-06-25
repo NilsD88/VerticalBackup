@@ -142,6 +142,13 @@ export const AppRoutes: Routes = [
       path: 'admin',
       children: [
         {
+          path: 'manage-assets',
+          loadChildren: './pages/admin/manage-assets/smartmonitoring/manage-assets.module#ManageAssetsModule'
+        }, {
+          path: 'manage-things',
+          loadChildren: './pages/admin/manage-things/smartmonitoring/manage-things.module#ManageThingsModule'
+        },
+        {
           path: '**',
           redirectTo: '/error/404'
         }

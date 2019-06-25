@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row" style="margin-top: 1rem;">
+    <div class="col-md-4"><h1 class="pxs-title">Manage assets</h1></div>
+    <div class="col-md-8 alerts-filter-container">
+      <div class="row">
+        <mat-form-field class="w-100">
+          <input type="text" (change)="filterNameChange($event)" placeholder="Asset name" matInput
+                 [(ngModel)]="filter.name">
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="alerts-section-content">
+
+      <div class="table">
+        <div class="row p-1 table-row" *ngFor="let item of assets">
+          <div class="col-md-9">
+            <div class="alerts-table-asset-name">
+              {{item.name}}
+              <pxs-badge>{{item.thresholdTemplate.isCustom ? 'Custom' : item.thresholdTemplate.name}}</pxs-badge>
+            </div>
+            <div class="alerts-table-date">{{item.sublocation.name}} - {{item.sublocation.location.name}}</div>
+          </div>
+          <div class="col-md-3">
+            <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/detail/{{item.id}}">
+              <pxs-icon icon="eye"></pxs-icon>
+            </button>
+            <button mat-icon-button matTooltip="Edit asset" color="accent"
+                    routerLink="/private/admin/manage-assets/{{item.id}}">
+              <pxs-icon icon="edit"></pxs-icon>
+            </button>
+            <button mat-icon-button matTooltip="Delete asset" color="warn" (click)="deleteAsset(item)">
+              <pxs-icon icon="trash"></pxs-icon>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="alerts-section-footer">
+      <mat-paginator [length]="totalItems"
+                     [pageSize]="pagesize"
+                     [pageSizeOptions]="pageSizeOptions"
+                     (page)="pageChanged($event)">
+      </mat-paginator>
+    </div>
+  </div>
+
+</div>

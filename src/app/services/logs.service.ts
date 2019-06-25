@@ -38,4 +38,20 @@ export class LogsService {
         });
     });
   }
+
+  getStandardDeviation(filter: SensorReadingFilter) {
+    return new Promise(async (resolve, reject) => {
+      this.http.get(
+        `${environment.baseUrl}sensorreadings/standarddeviation?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&from=${filter.from}&to=${filter.to}`)
+        .subscribe((response: any) => {
+          if (!isNullOrUndefined(response)) {
+            resolve(response);
+          } else {
+            this.sharedService.rejectPromise('LogsService: Invalid server response', reject);
+          }
+        }, () => {
+          this.sharedService.rejectPromise('Error! Failed to fetch standard deviation data. Please retry.', reject);
+        });
+    });
+  }
 }

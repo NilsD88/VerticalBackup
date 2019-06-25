@@ -3,7 +3,7 @@
   <pxs-menu-item label="Proximus" (action)="navigateTo('destination')"></pxs-menu-item>
   <pxs-menu-item label="MyThings" (action)="navigateTo('destination')"></pxs-menu-item>
   <pxs-top-menu-actions>
-    <pxs-menu-item [mat-menu-trigger-for]="user" (action)="navigateTo('destination')">
+    <pxs-menu-item [mat-menu-trigger-for]="user">
       <pxs-icon icon="user"></pxs-icon>
       <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ACCOUNT'"></span>
 
@@ -18,10 +18,6 @@
         </div>
       </mat-menu>
 
-    </pxs-menu-item>
-    <pxs-menu-item (action)="navigateTo('destination')">
-      <pxs-icon icon="cog"></pxs-icon>
-      <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ADMIN'"></span>
     </pxs-menu-item>
   </pxs-top-menu-actions>
 </pxs-top-menu>

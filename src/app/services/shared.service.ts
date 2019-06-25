@@ -217,14 +217,6 @@ export class SharedService {
        return localStorage.setItem(type, JSON.stringify(filter));
      }
 
-     public getHeaders(): Promise<HttpHeaders> {
-       return new Promise((resolve, reject) => {
-         const headers: HttpHeaders = new HttpHeaders();
-         resolve(headers);
-       });
-
-     }
-
      public filterInt(value: string) {
        if (/^(-|\+)?(\d+|Infinity)$/.test(value)) {
          return Number(value);
