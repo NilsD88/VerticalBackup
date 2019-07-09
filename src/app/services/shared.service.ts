@@ -145,6 +145,14 @@ export class SharedService {
       });
   }
 
+  public getDefaultFilter(type: 'ALERTFILTER' | 'INVENTORYFILTER' | 'LOCATIONSFILTER'): any {
+    return JSON.parse(localStorage.getItem(type));
+  }
+
+  public setDefaultFilter(type: 'ALERTFILTER' | 'INVENTORYFILTER' | 'LOCATIONSFILTER', filter: any) {
+    return localStorage.setItem(type, JSON.stringify(filter));
+  }
+
   /*
      get windowWidth() {
        return Math.max(
@@ -209,13 +217,8 @@ export class SharedService {
        return query;
      }
 
-     public getDefaultFilter(type: 'ALERTFILTER' | 'INVENTORYFILTER' | 'LOCATIONSFILTER'): any {
-       return JSON.parse(localStorage.getItem(type));
-     }
 
-     public setDefaultFilter(type: 'ALERTFILTER' | 'INVENTORYFILTER' | 'LOCATIONSFILTER', filter: any) {
-       return localStorage.setItem(type, JSON.stringify(filter));
-     }
+
 
      public filterInt(value: string) {
        if (/^(-|\+)?(\d+|Infinity)$/.test(value)) {

@@ -48,9 +48,9 @@ export class SharedAlertsService {
       filter.thresholdTemplates.length ?
         `asset.thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})` :
         undefined;
-    const readQuery = !isNullOrUndefined(filter.read) ?
+    /*const readQuery = !isNullOrUndefined(filter.read) ?
       `read==${filter.read}` :
-      undefined;
+      undefined;*/
     const nameQuery =
       filter.name.length ?
         `asset.name=="*${filter.name.toLowerCase()}*"` :
@@ -60,7 +60,6 @@ export class SharedAlertsService {
         `thresholdAlert.sensorType.id=in=(${filter.sensorTypes.toString()})` :
         undefined;
     const query = this.sharedService.buildFilterQuery([
-      readQuery,
       thresholdTemplateQuery,
       nameQuery,
       dateRangeQuery,

@@ -72,5 +72,24 @@
   "ALERT_TYPE": {
     "high": "high",
     "low": "low"
+  },
+  "INVENTORY": {
+    "TITLE": "Inventory",
+    "NONE_FOUND": "No assets to be displayed",
+    "FILTER": {
+      "PLACEHOLDERS": {
+        "NAME": "Asset name"
+      }
+    }
+  },
+  "THRESHOLD_TEMPLATES": {
+    "CUSTOM": "Custom"
+  },
+  "FILTER": {
+    "THRESHOLD_TEMPLATES": {
+      "NOT_FOUND": "Not found",
+      "LOADING_TEXT": "Loading text",
+      "PLACEHOLDER":  "Placeholder"
+    }
   }
 }

@@ -5,6 +5,8 @@ import {ManageThingsComponent} from './manage-things.component';
 import {ManageThingsRoutes} from './manage-things.routing';
 import {FormsModule} from '@angular/forms';
 import {ImgFallbackModule} from 'ngx-img-fallback';
+import {MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTooltipModule} from '@angular/material';
+import {LoaderModule} from '../../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
 
 @NgModule({
   declarations: [ManageThingsComponent],
@@ -12,7 +14,13 @@ import {ImgFallbackModule} from 'ngx-img-fallback';
     CommonModule,
     RouterModule.forChild(ManageThingsRoutes),
     FormsModule,
-    ImgFallbackModule
+    ImgFallbackModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    LoaderModule,
+    MatButtonModule
   ]
 })
 export class ManageThingsModule {

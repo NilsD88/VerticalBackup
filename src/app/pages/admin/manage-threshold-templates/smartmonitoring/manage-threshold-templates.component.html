@@ -1,0 +1,14 @@
+<pxs-loader *ngIf="!item"></pxs-loader>
+<div class="container-fluid" *ngIf="item">
+  <div class="row">
+    <div class="col-12">
+      <h2>Threshold template</h2>
+    </div>
+
+    <div class="col-md-9">
+      <mat-form-field>
+        <input type="text" matInput [(ngModel)]="item.name" placeholder="Asset name">
+      </mat-form-field>
+    </div>
+  </div>
+</div>

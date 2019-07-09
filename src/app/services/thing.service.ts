@@ -4,6 +4,7 @@ import {MatSnackBar} from '@angular/material';
 import {Thing} from '../models/thing.model';
 import {SharedService} from './shared.service';
 import {environment} from '../../environments/environment';
+import {isNullOrUndefined} from 'util';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,25 @@ export class ThingService {
   constructor(public http: HttpClient, public sharedService: SharedService, public snackBar: MatSnackBar) {
   }
 
-  public getAll(filter?): Promise<Thing[]> {
+  public getAll(): Promise<Thing[]> {
     return new Promise(async (resolve, reject) => {
       this.http.get(`${environment.baseUrl}things/`)
+        .subscribe((response: any) => {
+          resolve(Thing.createArray(response.content));
+        }, () => {
+          this.sharedService.rejectPromise('Error! Failed to fetch devices. Please reload.', reject);
+        });
+    });
+  }
+
+  public getByFilter(filter): Promise<Thing[]> {
+    const uidQuery = filter.devEui.length ? `devEui=="*${filter.devEui}*"` : undefined;
+
+    const query = this.sharedService.buildFilterQuery([uidQuery]);
+    const url = `${this.sharedService.baseUrl}things/${query}`;
+
+    return new Promise(async (resolve, reject) => {
+      this.http.get(url)
         .subscribe((response: any) => {
           resolve(Thing.createArray(response.content));
         }, () => {

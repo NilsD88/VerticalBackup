@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <h1 class="pxs-title">Manage threshold templates</h1>
+    </div>
+    <div class="col-md-8 manage-things-filter-container">
+      <div class="row">
+        <div class="col-12">
+          <!-- <mat-form-field>
+             <input class="name-filter-input" type="text" matInput [(ngModel)]="filter.devEui" (change)="getThings()"
+                    [placeholder]="'Thing mac address'">
+           </mat-form-field>-->
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="itemsLoading">
+    <div class="col-12">
+      <pxs-loader></pxs-loader>
+    </div>
+  </div>
+
+
+  <div class="table" *ngIf="!itemsLoading">
+    <div class="row p-1 table-row" *ngFor="let item of items">
+
+      <div class="col-md-5">
+        <span class="text-primary">{{item.name}}</span>
+      </div>
+
+      <div class="col-md-5">
+        <div class="thresholds-container">
+          <div class="threshold">
+            <img *ngFor="let threshold of item.thresholds"
+                 [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name + '.svg'"
+                 [matTooltip]="threshold.sensorType.name + ' ' + threshold.low + threshold.sensorType.postfix + ' - '+ threshold.high + threshold.sensorType.postfix"
+                 [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button mat-icon-button matTooltip="Edit threshold template" color="accent"
+                routerLink="/private/admin/manage-threshold-templates/{{item.id}}">
+          <pxs-icon icon="edit"></pxs-icon>
+        </button>
+        <button mat-icon-button matTooltip="Delete threshold template" color="warn" (click)="deleteItem(item)">
+          <pxs-icon icon="trash"></pxs-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+</div>

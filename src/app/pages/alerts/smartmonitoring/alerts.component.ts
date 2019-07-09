@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ALERTS_MOCK} from '../mockdata';
 import {SharedAlertsService} from '../shared-alerts.service';
 import {Range} from 'ngx-mat-daterange-picker';
-import * as moment from 'moment';
 import {PageEvent} from '@angular/material';
-import {ISensorType, SensorType} from '../../../models/sensor.model';
 import {FilterService} from '../../../services/filter.service';
 
 @Component({

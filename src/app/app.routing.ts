@@ -106,7 +106,7 @@ export const AppRoutes: Routes = [
     component: PublicLayoutComponent,
     children: [{
       path: '',
-      loadChildren: './pages/devtest/devtest.module#DevtestModule'
+      loadChildren: environment.paths.home
     }]
   },
   {
@@ -131,6 +131,10 @@ export const AppRoutes: Routes = [
       canActivate: [UserAuthGuard],
       loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
     }, {
+      path: 'inventory',
+      canActivate: [UserAuthGuard],
+      loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+    }, {
       path: 'alerts',
       canActivate: [UserAuthGuard],
       loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
@@ -147,6 +151,9 @@ export const AppRoutes: Routes = [
         }, {
           path: 'manage-things',
           loadChildren: './pages/admin/manage-things/smartmonitoring/manage-things.module#ManageThingsModule'
+        }, {
+          path: 'manage-threshold-templates',
+          loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
         },
         {
           path: '**',

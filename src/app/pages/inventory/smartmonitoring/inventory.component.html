@@ -1,0 +1,75 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4"><h1 class="pxs-title">{{'INVENTORY.TITLE' | translate}}</h1></div>
+    <div class="col-md-8 inventory-filter-container">
+      <div class="row">
+        <div class="col-xl-12 col-lg-6 col-md-6">
+          <mat-form-field>
+            <input type="text" matInput [(ngModel)]="filter.name" (change)="getPagedAssets()"
+                   [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.NAME' | translate">
+          </mat-form-field>
+        </div>
+        <div class="col-xl-12 col-lg-6 col-md-6">
+          <ng-select [multiple]="true"
+                     [clearable]="true"
+                     [items]="filterOptions.thresholdTemplateOptions"
+                     [loading]="thresholdTemplatesLoading"
+                     [(ngModel)]="filter.thresholdTemplates"
+                     [hideSelected]="true"
+                     (change)="getPagedAssets()"
+                     bindValue="id" bindLabel="name"
+                     [notFoundText]="'FILTER.THRESHOLD_TEMPLATES.NOT_FOUND' | translate"
+                     [loadingText]="'FILTER.THRESHOLD_TEMPLATES.LOADING_TEXT' | translate"
+                     [placeholder]="'FILTER.THRESHOLD_TEMPLATES.PLACEHOLDER' | translate">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+
+    <!--No Assets Found-->
+    <div *ngIf="!assets.length && !assetsLoading" class="text-center col-12">
+      {{'INVENTORY.NONE_FOUND' | translate}}
+    </div>
+
+    <!--Assets Loading-->
+    <div *ngIf="assetsLoading" class="col-12">
+      <div class="assets-loading-container">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+      </div>
+    </div>
+
+    <!-- Asset Results -->
+    <div *ngFor="let asset of assets" class="card col-12 col-lg-4"
+         routerLink="/private/detail/{{asset.id}}">
+      <div class="wrapper" style="background: url('') center / cover no-repeat;"
+           [ngStyle]="{ 'background-image': 'url(' + asset.pictureBase64 + ')'}">
+        <div class="header">
+          <div class="locations">
+            <span class="location">{{asset.sublocation?.location?.name}} -</span>
+            <span class="sublocation">{{asset.sublocation?.name}}</span>
+            <small class="locationType">({{asset.sublocation?.location?.locationType?.name}})</small>
+          </div>
+        </div>
+        <div class="data">
+          <div class="content">
+              <span
+                class="author">{{!asset.thresholdTemplate?.isCustom ? asset.thresholdTemplate?.name : ('THRESHOLD_TEMPLATES.CUSTOM' | translate)}}</span>
+            <h1 class="title"><a routerLink="/private/detail/{{asset.id}}" [matTooltip]="asset.name">{{asset.name}}</a></h1>
+            <p class="text">{{asset.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Paginator -->
+  <mat-paginator [(length)]="totalItems"
+                 [(pageIndex)]="page"
+                 (page)="pageChanged($event)"
+                 [pageSize]="pagesize"
+                 [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  </mat-paginator>
+
+</div>

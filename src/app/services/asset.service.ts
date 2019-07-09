@@ -11,7 +11,6 @@ export interface IAssetFilter {
   thresholdTemplates: string[];
   locationType: string;
   locations: string[];
-  statuses: string[];
 }
 
 @Injectable({
@@ -56,13 +55,8 @@ export class AssetService {
         `sublocation.location.id=in=(${filter.locations.toString()})` :
         undefined;
 
-      let statusQuery;
-      if (filter.statuses.length) {
-        if (filter.statuses.length === 1) {
-          statusQuery = `alerts=statusOk=${filter.statuses[0].toLowerCase() === 'ok'}`;
-        }
-      }
-      query = this.sharedService.buildFilterQuery([nameQuery, thresholdTemplateQuery, locationTypeQuery, locationsQuery, statusQuery]);
+
+      query = this.sharedService.buildFilterQuery([nameQuery, thresholdTemplateQuery, locationTypeQuery, locationsQuery]);
     }
 
     const url = `${environment.baseUrl}assets/${query ? query : ''}${query ? '&' : '?'}page=${pageIndex}&size=${pageSize}`;

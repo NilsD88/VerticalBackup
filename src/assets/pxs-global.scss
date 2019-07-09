@@ -1360,7 +1360,97 @@ mat-form-field {
   color            : $white;
 }
 
-.badge{
+.badge {
   background-color : $primary;
   color            : $white;
+}
+
+
+.thing-list-item {
+  background-color : $promo;
+
+  .mat-checkbox-frame {
+    border-color : $white;
+  }
+
+  .thing-list-item-devEui {
+    color       : $white;
+    font-size   : .8rem;
+    font-family : ProximusBold, sans-serif;
+  }
+
+  .thing-list-item-name {
+    color       : $white;
+    font-size   : .8rem;
+    font-family : ProximusLight, sans-serif;
+
+  }
+}
+
+
+.card {
+  color : $white;
+
+  .title {
+    color : $white;
+
+    a {
+      color : $white;
+    }
+  }
+
+  .wrapper {
+    .header {
+      .locations {
+        background-color : $accent;
+        color            : $white;
+
+        .location {}
+
+        .sublocation {}
+
+        .locationType {
+          color       : $white;
+          font-family : ProximusLight, sans-serif;
+        }
+      }
+    }
+  }
+
+  .menu-content {
+    a {
+      color : $white;
+    }
+
+    span {
+      font-family : ProximusRegular, sans-serif;
+    }
+  }
+
+  .wrapper {
+    background-color : $white;
+  }
+
+  .author {
+    background-color : $primary;
+    color            : $white;
+    border-radius    : 0 0 10px 0;
+  }
+}
+
+.thing-card {
+  background-color : $primary;
+  color            : $white;
+
+  .thing-card-name {
+    font-family : ProximusLight, sans-serif;
+
+    mat-icon {
+      color : $white;
+    }
+  }
+
+  .thing-card-deveui {
+    font-family : ProximusBold, sans-serif;
+  }
 }

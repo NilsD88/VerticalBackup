@@ -23,6 +23,8 @@ import {AuthService} from './services/auth.service';
 import {SharedLayoutService} from './layout/shared-layout.service';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FilterService} from './services/filter.service';
+import {ThresholdTemplateService} from './services/threshold-template.service';
+import { ManageThresholdTemplatesListComponent } from './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates-list.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -65,6 +67,7 @@ export function createTranslateLoader(http: HttpClient) {
     SharedService,
     AuthService,
     FilterService,
+    ThresholdTemplateService,
     SharedLayoutService
   ],
   bootstrap: [AppComponent]

@@ -46,7 +46,7 @@
                      [chartData]="chartData">
           </pxs-chart>
 
-          <pxs-aggregated-values [chartData]="chartData"></pxs-aggregated-values>
+          <pxs-aggregated-values *ngIf="chartData" [chartData]="chartData"></pxs-aggregated-values>
         </div>
       </div>
       <div class="row">

@@ -13,7 +13,6 @@ import {ThingService} from '../../../../services/thing.service';
 })
 export class ManageAssetsComponent implements OnInit {
   public asset: Asset;
-
   public thingsList: Thing[] = [];
 
   constructor(
@@ -48,4 +47,7 @@ export class ManageAssetsComponent implements OnInit {
       });
   }
 
+  public thingsListChanged(evt) {
+    this.asset.things = evt;
+  }
 }

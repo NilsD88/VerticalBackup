@@ -12,9 +12,9 @@ import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/
 export class PrivateLayoutComponent implements OnInit, OnDestroy {
   public topMenuConfig: TopMenuConfig;
   public menuItems: { label: string; url: string; badge?: { label: string; class: string; } }[] = [
-    {label: 'Home', url: '/home'},
-    {label: 'Inventory', url: '/inventory'},
-    {label: 'Locations', url: '/locations'},
+    {label: 'Home', url: '/private/home'},
+    {label: 'Inventory', url: '/private/inventory'},
+    {label: 'Locations', url: '/private/locations'},
     {label: 'Alerts', url: '/private/alerts', badge: {label: '4', class: 'bg-error text-white'}}
   ];
   public footerConfig: IFooterConfig;

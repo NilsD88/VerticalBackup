@@ -16,8 +16,12 @@
                   placeholder="Asset description"></textarea>
       </mat-form-field>
     </div>
-    <div class="col-md-6">
-      <pxs-things-list [(things)]="asset.things" [list]="thingsList"></pxs-things-list>
+    <div class="col-md-4">
+      <pxs-things-list [(things)]="asset.things"
+                       [(list)]="thingsList"
+                       [editable]="true"
+                       (change)="thingsListChanged($event)">
+      </pxs-things-list>
     </div>
   </div>
 </div>

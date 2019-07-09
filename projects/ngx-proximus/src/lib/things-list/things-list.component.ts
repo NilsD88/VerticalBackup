@@ -1,5 +1,9 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
-import {Thing} from '../../../../../src/app/models/thing.model';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {IThing, Thing} from '../../../../../src/app/models/thing.model';
+
+interface IItem extends IThing {
+  selected: boolean;
+}
 
 @Component({
   selector: 'pxs-things-list',
@@ -9,15 +13,41 @@ import {Thing} from '../../../../../src/app/models/thing.model';
 export class ThingsListComponent implements OnInit, OnChanges {
   @Input() things: Thing[] = [];
   @Input() list: Thing[] = [];
+  @Input() editable: boolean;
+
+  @Output() change: EventEmitter<IThing[]> = new EventEmitter();
+
+  public itemList: IItem[];
 
   constructor() {
   }
 
   ngOnInit() {
+    this.setItemList();
   }
 
   ngOnChanges() {
-    console.log(this.list, this.things);
+  }
+
+  private setItemList() {
+    this.itemList = [];
+    this.list.forEach((item) => {
+      const result: IItem = {...item, selected: false};
+      if (this.things.find(i => i.id === item.id)) {
+        result.selected = true;
+      }
+      this.itemList.push(result);
+    });
+  }
+
+  public itemSelectChanged(item, evt) {
+
+    this.itemList[this.itemList.findIndex(i => i.id === item.id)].selected = evt.checked;
+    console.log(this.itemList);
+    this.change.emit(this.itemList.filter(i => i.selected).map((i) => {
+      delete i.selected;
+      return (i as IThing);
+    }));
   }
 
 }

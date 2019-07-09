@@ -96,7 +96,6 @@ export class DetailComponent implements OnInit {
 
     this.standardDeviations = await Promise.all(standardDeviationPromises);
     this.chartData = await Promise.all(logsPromises);
-    console.log(this.chartData);
     this.chartLoading = false;
   }
 

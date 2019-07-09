@@ -1,6 +1,10 @@
 import {ISensorType, SensorType} from './sensor.model';
 import {isNullOrUndefined} from 'util';
-
+export interface IPagedThresholdTemplates {
+  thresholdTemplates: ThresholdTemplate[];
+  pageNumber: number;
+  totalElements: number;
+}
 export interface IThresholdAlert {
   sensorType: ISensorType | SensorType;
   type: 'DOUBLE' | 'INTEGER' | 'LONG' | 'NUMBER' | 'STRING' | 'BOOLEAN';
@@ -134,6 +138,21 @@ export class ThresholdTemplate implements ThresholdTemplate {
       });
     } else {
       return [];
+    }
+  }
+
+  public static createPagedArray(response: any): IPagedThresholdTemplates {
+    if (!isNullOrUndefined(response.content)) {
+      const thresholdTemplates = response.content.map((value) => {
+        return new ThresholdTemplate(value);
+      });
+
+      const pageNumber = response.number ? response.number : 0;
+      const totalElements = response.totalElements ? response.totalElements : 0;
+
+      return {thresholdTemplates, pageNumber, totalElements};
+    } else {
+      return {thresholdTemplates: [], pageNumber: 0, totalElements: 0};
     }
   }
 }

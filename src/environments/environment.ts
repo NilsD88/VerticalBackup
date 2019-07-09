@@ -13,63 +13,8 @@ export const environment = {
   authUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/auth/',
   assetPrefix: 'smartmonitoring',
 
+  paths: {
+    home: './pages/devtest/devtest.module#DevtestModule'
+  }
 
-  // ROUTES
-
-  routes: [
-    {
-      path: '',
-      redirectTo: 'home',
-      pathMatch: 'full'
-    },
-    {
-      path: '',
-      component: PublicLayoutComponent,
-      canActivate: [PublicAuthGuard],
-      children: [{
-        path: 'home',
-        loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
-      }]
-    },
-    {
-      path: 'private',
-      component: PrivateLayoutComponent,
-      children: [{
-        path: 'home',
-/*
-        canActivate: [UserAuthGuard],
-*/
-        loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
-      }, {
-        path: 'alerts',
-        /*
-                canActivate: [UserAuthGuard],
-        */
-        loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
-      }, {
-        path: 'admin',
-        children: [
-          {
-            path: '**',
-            redirectTo: '/error/404'
-          }
-        ]
-      }, {
-        path: '**',
-        redirectTo: '/error/404'
-      }]
-    },
-    {
-      path: '**',
-      redirectTo: '/error/404'
-    }]
 };
-
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.

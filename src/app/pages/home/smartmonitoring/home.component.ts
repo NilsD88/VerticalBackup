@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
   ];
 
   public products = [
-    {translationPostfix: '1', image: 'assets/smartmonitoring/images/home/smart-monitoring.jpg'},
+    {translationPostfix: '1', image: 'assets/smartmonitoring/images/home/smartmonitoring.jpg'},
     {translationPostfix: '2', image: 'assets/smartmonitoring/images/home/smart-tank-monitoring.jpg'},
     {translationPostfix: '3', image: 'assets/smartmonitoring/images/home/smart-care.jpg'},
   ];

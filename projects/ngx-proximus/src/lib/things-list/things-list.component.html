@@ -1,3 +1,18 @@
-<p>
-  things-list works!
-</p>
+<div class="thing-list">
+  <div *ngFor="let item of itemList" class="thing-list-item">
+    <div class="thing-list-item-selector" *ngIf="editable">
+      <mat-checkbox [value]="item.selected" (change)="itemSelectChanged(item, $event)"></mat-checkbox>
+    </div>
+    <div class="thing-list-item-content">
+      <span class="thing-list-item-devEui">{{item.devEui}}</span>
+      <span class="thing-list-item-name" *ngIf="item.name">({{item.name}})</span>
+      <div class="thing-list-sensors">
+        <img *ngFor="let sensor of item.sensors"
+             [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '-white.svg'"
+             [matTooltip]="sensor.sensorType.name" alt="{{sensor.sensorType.name}}"
+             [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'">
+      </div>
+    </div>
+  </div>
+
+</div>
