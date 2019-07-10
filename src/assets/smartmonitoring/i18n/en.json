@@ -1,7 +1,10 @@
 {
   "GENERAL": {
     "APP_NAME": "Smart Monitoring",
-    "APP_SUBTITLE": "Surroundings measurements"
+    "APP_SUBTITLE": "Surroundings measurements",
+    "SELECT_ALL": "Select all",
+    "NO_RESULTS_FOUND_FILTER": "No results found for selected filter",
+    "LOADING": "Loading..."
   },
   "TOP_MENU": {
     "CONTACT": "Contact",
@@ -89,7 +92,25 @@
     "THRESHOLD_TEMPLATES": {
       "NOT_FOUND": "Not found",
       "LOADING_TEXT": "Loading text",
-      "PLACEHOLDER":  "Placeholder"
+      "PLACEHOLDER": "Placeholder"
+    }
+  },
+  "DETAIL": {
+    "LAST_ALERT": {
+      "TITLE": "Last Alert",
+      "VALUE": "Value",
+      "LOW": "Low",
+      "HIGH": "High"
+    }
+  },
+  "ALERTS": {
+    "TITLE": "Alerts",
+    "UNREAD_ALERTS": "Unread alerts",
+    "READ_ALERTS": "Read alerts",
+    "FILTER": {
+      "NAME": "Asset name",
+      "SENSORS": "Sensors",
+      "THRESHOLD_TEMPLATES": "Threshold templates"
     }
   }
 }

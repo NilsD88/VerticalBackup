@@ -1,11 +1,12 @@
 <div class="container">
   <div class="row" style="margin-top: 1rem;">
-    <div class="col-md-3"><h1 class="pxs-title">Alerts</h1></div>
+    <div class="col-md-3"><h1 class="pxs-title">{{'ALERTS.TITLE' | translate}}</h1></div>
     <div class="col-md-9 alerts-filter-container">
       <div class="row">
         <div class="col-xl-12 col-lg-6 col-md-6">
           <mat-form-field class="w-100">
-            <input type="text" (change)="filterNameChange($event)" placeholder="Asset name" matInput [(ngModel)]="filter.name">
+            <input type="text" (change)="filterNameChange($event)" [placeholder]="'ALERTS.FILTER.NAME' | translate"
+                   matInput [(ngModel)]="filter.name">
           </mat-form-field>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
@@ -20,7 +21,7 @@
                      [loading]="sensorTypesLoading"
                      [hideSelected]="true"
                      (change)="alertsFilterChange('unread', null)"
-                     [placeholder]="'Sensors'">
+                     [placeholder]="'ALERTS.FILTER.SENSORs' | translate">
           </ng-select>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
@@ -32,7 +33,7 @@
                      [loading]="thresholdTemplatesLoading"
                      [hideSelected]="true"
                      (change)="alertsFilterChange('unread', null)"
-                     [placeholder]="'Threshold templates'">
+                     [placeholder]="'ALERTS.FILTER.SENSORs' | translate">
           </ng-select>
         </div>
       </div>
@@ -41,7 +42,7 @@
 
   <div class="alerts-section">
     <div class="alerts-section-header">
-      <h6>Unread alerts
+      <h6>{{'ALERTS.UNREAD_ALERTS' | translate}}
         <small><sup class="unread-alerts-badge">{{unreadAlertsTotal}}</sup></small>
       </h6>
     </div>
@@ -49,7 +50,8 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox [(ngModel)]="allUnreadSelected" (change)="allSelectedChanged($event, 'unread')">Select all
+            <mat-checkbox [(ngModel)]="allUnreadSelected"
+                          (change)="allSelectedChanged($event, 'unread')">{{'GENERAL.SELECT_ALL' |translate}}
             </mat-checkbox>
           </div>
           <button mat-button matTooltip="Mark selection as read" (click)="markSelection(true)">
@@ -59,12 +61,12 @@
       </div>
       <div class="row" *ngIf="unreadAlertsLoading">
         <div class="col-md-4 offset-md-4">
-          <pxs-loader loadingText="Loading..."></pxs-loader>
+          <pxs-loader loadingText="{{'GENERAL.LOADING' | translate}}"></pxs-loader>
         </div>
       </div>
       <div *ngIf="!unreadAlertsLoading && !unreadAlerts.length">
         <img class="no-data-image" src="assets/smartmonitoring/images/general/no-data.svg" alt="no data icon">
-        <div class="no-data-text">No results found for selected filter</div>
+        <div class="no-data-text">{{'GENERAL.NO_RESULTS_FOUND_FILTER' | translate}}</div>
       </div>
       <div class="table">
         <div class="row p-1 table-row" *ngFor="let item of unreadAlerts">
@@ -73,7 +75,8 @@
                           (change)="singleSelection($event, 'unread')"></mat-checkbox>
           </div>
           <div class="col-md-3">
-            <div class="alerts-table-asset-name" routerLink="/private/detail/{{item.asset.id}}">{{item.asset.name}}</div>
+            <div class="alerts-table-asset-name"
+                 routerLink="/private/detail/{{item.asset.id}}">{{item.asset.name}}</div>
             <div class="alerts-table-date">{{item.sensorReading.timestamp | date : 'dd/MM/yyyy - HH:mm'}} </div>
           </div>
 
@@ -123,7 +126,8 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox [(ngModel)]="allUnreadSelected" (change)="allSelectedChanged($event, 'unread')">Select all
+            <mat-checkbox [(ngModel)]="allUnreadSelected"
+                          (change)="allSelectedChanged($event, 'unread')">{{'GENERAL.SELECT_ALL' |translate}}
             </mat-checkbox>
           </div>
           <button mat-button matTooltip="Mark selection as read" (click)="markSelection(true)">
@@ -144,13 +148,14 @@
 
   <div class="alerts-section">
     <div class="alerts-section-header">
-      <h6>Read alerts</h6>
+      <h6>{{'ALERTS.READ_ALERTS' | translate}}</h6>
     </div>
     <div class="alerts-section-content">
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox [(ngModel)]="allReadSelected" (change)="allSelectedChanged($event, 'read')">Select all
+            <mat-checkbox [(ngModel)]="allReadSelected"
+                          (change)="allSelectedChanged($event, 'read')">{{'GENERAL.SELECT_ALL' |translate}}
             </mat-checkbox>
           </div>
           <button mat-button matTooltip="Mark selection as unread" (click)="markSelection(false)">
@@ -160,12 +165,12 @@
       </div>
       <div class="row" *ngIf="readAlertsLoading">
         <div class="col-md-4 offset-md-4">
-          <pxs-loader loadingText="Loading..."></pxs-loader>
+          <pxs-loader loadingText="{{'GENERAL.LOADING' | translate}}"></pxs-loader>
         </div>
       </div>
       <div *ngIf="!readAlertsLoading && !readAlerts.length">
         <img class="no-data-image" src="assets/smartmonitoring/images/general/no-data.svg" alt="no data icon">
-        <div class="no-data-text">No results found for selected filter</div>
+        <div class="no-data-text">{{'GENERAL.NO_RESULTS_FOUND_FILTER' | translate}}</div>
       </div>
       <div class="table">
         <div class="row p-1 table-row" *ngFor="let item of readAlerts">
@@ -174,7 +179,8 @@
                           (change)="singleSelection($event, 'read')"></mat-checkbox>
           </div>
           <div class="col-md-3">
-            <div class="alerts-table-asset-name">{{item.asset.name}}</div>
+            <div class="alerts-table-asset-name"
+                 routerLink="/private/detail/{{item.asset.id}}">{{item.asset.name}}</div>
             <div class="alerts-table-date">{{item.sensorReading.timestamp | date : 'dd/MM/yyyy - HH:mm'}} </div>
           </div>
 
@@ -224,7 +230,8 @@
       <div class="row">
         <div class="col-12">
           <div class="alerts-select-all">
-            <mat-checkbox [(ngModel)]="allReadSelected" (change)="allSelectedChanged($event, 'read')">Select all
+            <mat-checkbox [(ngModel)]="allReadSelected"
+                          (change)="allSelectedChanged($event, 'read')">{{'GENERAL.SELECT_ALL' |translate}}
             </mat-checkbox>
           </div>
           <button mat-button matTooltip="Mark selection as read" (click)="markSelection(false)">
