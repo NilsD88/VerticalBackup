@@ -29,6 +29,13 @@ export interface IAsset {
   organization?: IOrganization;
   lastMeasurements?: any[]; // TODO: lastMeasurements
   timeLastMeasurementReceived?: Date;
+  geolocation: IGeolocation;
+}
+
+export interface IGeolocation {
+  lat: number;
+  lng: number;
+  zoom: number;
 }
 
 export interface IPagedAssets {
@@ -77,6 +84,7 @@ export class Asset implements IAsset {
   organization: Organization;
   lastMeasurements: any[]; // TODO: lastMeasurements
 
+  geolocation: IGeolocation;
 
   get timeLastMeasurementReceived(): Date {
     if (this.lastMeasurements && this.lastMeasurements.length) {
@@ -139,6 +147,7 @@ export class Asset implements IAsset {
     this.sublocation = new Sublocation(_asset ? _asset.sublocation : null);
     this.thresholdTemplate = new ThresholdTemplate(_asset ? _asset.thresholdTemplate : null);
     this.organization = new Organization(_asset ? _asset.organization : null);
+    this.geolocation = new Geolocation(_asset ? _asset.geolocation : null);
   }
 
   public static createArray(values: IAsset[]): Asset[] {
@@ -188,6 +197,27 @@ export class Asset implements IAsset {
       thresholds: thresholds,
       things: this.things
     };
+  }
+
+
+}
+
+export class Geolocation implements IGeolocation {
+  lat: number;
+  lng: number;
+  zoom: number;
+
+  constructor(private geolocation: IGeolocation) {
+    if (!isNullOrUndefined(geolocation)) {
+      this.lat = geolocation.lat;
+      this.lng = geolocation.lng;
+      this.zoom = geolocation.zoom;
+    } else {
+      this.lat = 50.860305; // TODO: Replace hardcoded default values
+      this.lng = 4.357905;
+      this.zoom = 15;
+    }
+
   }
 
 

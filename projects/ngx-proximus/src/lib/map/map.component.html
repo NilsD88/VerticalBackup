@@ -1,10 +1,19 @@
 <div class="row">
-  <div class="col-12">
-    <div style="height: 300px;"
-         [style.height]="height + 'px'"
-         leaflet
-         [leafletOptions]="config"
-         [leafletLayers]="layers">
-    </div>
+  <div class="col-12" style="height: {{height ? height : '300px'}};">
+    <!-- <div style="height: 300px;"
+          [style.height]="height + 'px'"
+          leaflet
+          [leafletOptions]="config"
+          [leafletLayers]="layers">
+     </div>-->
+
+    <mgl-map
+      [style]="'mapbox://styles/mapbox/streets-v9'"
+      [zoom]="[9]"
+      [center]="[50.860305, 4.357905]"
+    >
+      <mgl-marker *ngFor="let layer of layers" [lngLat]="[layer.lat, layer.lng]"></mgl-marker>
+    </mgl-map>
+
   </div>
 </div>
