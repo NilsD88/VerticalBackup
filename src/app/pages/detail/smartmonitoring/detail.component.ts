@@ -100,7 +100,7 @@ export class DetailComponent implements OnInit {
   }
 
   public createMarkerOnMap() {
-    const m = marker([50.860305, 4.357905], {
+    /*const m = marker(, {
       icon: icon({
         iconSize: [25, 41],
         iconAnchor: [13, 41],
@@ -110,8 +110,9 @@ export class DetailComponent implements OnInit {
         <h6>${this.asset.name}</h6>
         `
       )
-    });
-    this.mapLayers = [m];
+    });*/
+
+    this.mapLayers = [{lat: this.asset.geolocation.lat, lng: this.asset.geolocation.lng}];
   }
 
 }
