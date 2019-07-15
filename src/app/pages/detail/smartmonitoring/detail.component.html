@@ -33,7 +33,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div *ngIf="!chartData?.length" style="display: flex; height: 100%;">
+          <div *ngIf="!chartData?.length" style="display: flex; /*height: 100%;*/">
             <h4 *ngIf="!chartLoading"
                 style="text-align: center; margin-top: auto;margin-bottom: auto; width: 100%"
                 [translate]="'DETAIL.NO_CHART_DATA'"></h4>
@@ -45,16 +45,12 @@
                      [title]="'Data'"
                      [chartData]="chartData">
           </pxs-chart>
-
           <pxs-aggregated-values *ngIf="chartData" [chartData]="chartData"></pxs-aggregated-values>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-8 col-md-7">
-
-          <pxs-map [height]="400" [layers]="mapLayers"></pxs-map>
-
-
+          <pxs-map-asset [height]="400" [assets]="[asset]"></pxs-map-asset>
         </div>
         <div class="col-lg-4 col-md-5">
           <div id="asset-image" [style.background-image]="'url('+asset.pictureBase64+')'"></div>

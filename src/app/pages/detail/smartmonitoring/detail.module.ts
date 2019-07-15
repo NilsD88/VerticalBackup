@@ -12,7 +12,7 @@ import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/
 import {ChartModule} from '../../../../../projects/ngx-proximus/src/lib/chart/chart.module';
 import {RangeSliderModule} from '../../../../../projects/ngx-proximus/src/lib/range-slider/range-slider.module';
 import {AggregatedValuesModule} from '../../../../../projects/ngx-proximus/src/lib/aggregated-values/aggregated-values.module';
-import {MapModule} from '../../../../../projects/ngx-proximus/src/lib/map/map.module';
+import {MapAssetModule} from '../../../../../projects/ngx-proximus/src/lib/map-asset/map-asset.module';
 import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 
@@ -28,7 +28,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     LoaderModule,
     ChartModule,
     AggregatedValuesModule,
-    MapModule,
+    MapAssetModule,
     IconModule,
     FlexLayoutModule,
     RangeSliderModule
