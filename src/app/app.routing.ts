@@ -129,10 +129,6 @@ export const AppRoutes: Routes = [
     children: [{
       path: 'home',
       canActivate: [UserAuthGuard],
-      loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
-    }, {
-      path: 'inventory',
-      canActivate: [UserAuthGuard],
       loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
     }, {
       path: 'alerts',

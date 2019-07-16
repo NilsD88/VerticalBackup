@@ -20,6 +20,7 @@ import {
   MatProgressSpinnerModule,
   MatTooltipModule
 } from '@angular/material';
+import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
 
 
 @NgModule({
@@ -33,10 +34,10 @@ import {
     HttpClientModule,
     MatCardModule,
     MatTooltipModule,
+    LoaderModule,
     MatMenuModule,
     MatIconModule,
     MatPaginatorModule,
-    MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule
 

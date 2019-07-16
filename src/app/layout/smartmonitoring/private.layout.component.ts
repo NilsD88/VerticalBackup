@@ -53,4 +53,12 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   navigateTo(url: string[]) {
     this.router.navigate(url);
   }
+
+  pxsClicked() {
+    window.open('https://www.proximus.be/', '_blank');
+  }
+
+  mtClicked() {
+    window.open('https://mythings.proximus.be/', '_blank');
+  }
 }

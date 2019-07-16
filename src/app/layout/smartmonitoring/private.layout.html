@@ -1,7 +1,7 @@
 <pxs-top-menu *ngIf="topMenuConfig" (languageChange)="sharedLayoutService.changeLanguage($event)"
               [config]="topMenuConfig">
-  <pxs-menu-item label="Proximus" (action)="navigateTo('destination')"></pxs-menu-item>
-  <pxs-menu-item label="MyThings" (action)="navigateTo('destination')"></pxs-menu-item>
+  <pxs-menu-item label="Proximus" (action)="pxsClicked()"></pxs-menu-item>
+  <pxs-menu-item label="MyThings" (action)="mtClicked()"></pxs-menu-item>
   <pxs-top-menu-actions>
     <pxs-menu-item [mat-menu-trigger-for]="user">
       <pxs-icon icon="user"></pxs-icon>
@@ -52,9 +52,8 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item [label]="'Inventory'" (action)="navigateTo(['/private/inventory'])"></pxs-menu-item>
+  <pxs-menu-item [label]="'Monitoring'" (action)="navigateTo(['/private/home'])"></pxs-menu-item>
   <pxs-menu-item [label]="'Alerts'" (action)="navigateTo(['/private/alerts'])"></pxs-menu-item>
-  <pxs-menu-item [label]="'Monitoring'" *ngIf="hasFeature('monitoring')"></pxs-menu-item>
   <pxs-menu-item [label]="'Tank monitoring'" *ngIf="hasFeature('fill')"
                  [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
   <pxs-menu-item [label]="'Visitor counting'" *ngIf="hasFeature('counting')"
