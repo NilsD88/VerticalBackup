@@ -8,7 +8,6 @@ import {Alert} from '../../../models/alert.model';
 import {TranslateService} from '@ngx-translate/core';
 import {LogsService} from '../../../services/logs.service';
 import * as moment from 'moment';
-import {icon, marker} from 'leaflet';
 
 export interface SensorReadingFilter {
   deveui: string;
@@ -111,8 +110,6 @@ export class DetailComponent implements OnInit {
         `
       )
     });*/
-
-    this.mapLayers = [{lat: this.asset.geolocation.lat, lng: this.asset.geolocation.lng}];
   }
 
 }

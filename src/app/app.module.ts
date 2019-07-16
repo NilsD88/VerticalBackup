@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, Injector} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';
@@ -24,6 +24,8 @@ import {SharedLayoutService} from './layout/shared-layout.service';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {FilterService} from './services/filter.service';
 import {ThresholdTemplateService} from './services/threshold-template.service';
+import { MapAssetPopupComponent } from 'projects/ngx-proximus/src/lib/map-asset-popup/map-asset-popup.component';
+import { createCustomElement } from '@angular/elements';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -33,7 +35,8 @@ export function createTranslateLoader(http: HttpClient) {
   declarations: [
     AppComponent,
     PrivateLayoutComponent,
-    PublicLayoutComponent
+    PublicLayoutComponent,
+    MapAssetPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +72,12 @@ export function createTranslateLoader(http: HttpClient) {
     ThresholdTemplateService,
     SharedLayoutService
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [MapAssetPopupComponent],
 })
 export class AppModule {
+  constructor(private injector: Injector) {
+    const PopupElement = createCustomElement(MapAssetPopupComponent, {injector});
+    customElements.define('popup-element', PopupElement);
+  }
 }
