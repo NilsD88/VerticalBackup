@@ -47,12 +47,67 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item *ngFor="let item of menuItems" [label]="item.label" (action)="navigateTo([item.url])"
-                 [badge]="item.badge"></pxs-menu-item>
+  <pxs-menu-item [label]="'Inventory'" (action)="navigateTo(['/private/inventory'])"></pxs-menu-item>
+  <pxs-menu-item [label]="'Alerts'" (action)="navigateTo(['/private/alerts'])"></pxs-menu-item>
+  <pxs-menu-item [label]="'Monitoring'"></pxs-menu-item>
+  <pxs-menu-item [label]="'Tank monitoring'" [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
+  <pxs-menu-item [label]="'Visitor counting'" [mat-menu-trigger-for]="visitorCounting"></pxs-menu-item>
+  <pxs-menu-item [label]="'Asset tracking'" [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
 </pxs-main-menu>
 
 <main>
   <router-outlet></router-outlet>
 </main>
+<mat-menu #tankMonitoring="matMenu" style="margin-top: 20px;">
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Consumptions
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus" ></pxs-icon><span style="margin-left: 10px;">New Tank</span>
+    </button>
+  </div>
+</mat-menu>
+<mat-menu #visitorCounting="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Visitor counts
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Manage
+    </button>
+  </div>
+</mat-menu>
+<mat-menu #assetTracking="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Locations
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus" ></pxs-icon><span style="margin-left: 10px;">New Asset</span>
+    </button>
+  </div>
+</mat-menu>
 
 <pxs-footer [config]="footerConfig"></pxs-footer>

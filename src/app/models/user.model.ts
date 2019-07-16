@@ -1,10 +1,11 @@
-import {isNullOrUndefined} from "util";
+import {isNullOrUndefined} from 'util';
 
 export interface IUser {
   firstName: string;
   lastName: string;
   email: string;
   impersonation: boolean;
+  features: Array<'fill' | 'counting' | 'tracking'>;
   roles: string[];
 }
 
@@ -14,14 +15,16 @@ export class User implements IUser {
   public lastName: string;
   public impersonation: boolean;
   public roles: string[];
+  public features = [];
 
-  constructor(private _user: IUser) {
+  constructor(private user: IUser) {
     try {
-      this.firstName = _user.firstName ? _user.firstName : '';
-      this.lastName = _user.lastName ? _user.lastName : '';
-      this.email = _user.email ? _user.email : '';
-      this.impersonation = _user.impersonation ? _user.impersonation : false;
-      this.roles = (_user.roles && _user.roles.length) ? _user.roles : [];
+      this.firstName = user.firstName ? user.firstName : '';
+      this.lastName = user.lastName ? user.lastName : '';
+      this.email = user.email ? user.email : '';
+      this.impersonation = user.impersonation ? user.impersonation : false;
+      this.roles = (user.roles && user.roles.length) ? user.roles : [];
+      this.features = ['fill'];
     } catch (err) {
       console.error('UserModel: Invalid user model, cannot create user from passed object');
     }
@@ -46,6 +49,6 @@ export class User implements IUser {
   }
 
   get exists(): boolean {
-    return !isNullOrUndefined(this._user) && !isNullOrUndefined(this._user.roles);
+    return !isNullOrUndefined(this.user) && !isNullOrUndefined(this.user.roles);
   }
 }

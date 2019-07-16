@@ -112,5 +112,34 @@
       "SENSORS": "Sensors",
       "THRESHOLD_TEMPLATES": "Threshold templates"
     }
+  },
+  "ALERT_DEF": {
+    "TITLE": "Alert definitions",
+    "EMAIL_SETTINGS": "Email settings",
+    "ENABLED": "Enabled",
+    "DELETE_RECIPIENT": "Delete recipient",
+    "ADD_RECIPIENT": "Add recipient",
+    "SUBJECT": "Subject",
+    "BODY": "Body",
+    "PLACEHOLDERS": "Placeholders",
+    "RECIPIENT": "Recipient",
+    "ASSET": "asset",
+    "LOG": "Log",
+    "THRESHOLD_TEMPLATE": "Threshold template",
+    "CATEGORY": "Category",
+    "SAVE_EMAIL": "Save email settings",
+    "SMS_SETTINGS": "SMS settings",
+    "SAVE_SMS": "Save SMS settings",
+    "BUTTON_LABELS": {
+      "ASSET_NAME": "Asset name",
+      "LOCATION_NAME": "Location name",
+      "SUBLOCATION_NAME": "Sublocation name",
+      "DEVICE_ID": "Device ID",
+      "TIMESTAMP": "Timestamp",
+      "VALUE": "Value",
+      "MATERIAL_NAME": "Threshold template name",
+      "THRESHOLD_MIN": "Threshold Min",
+      "THRESHOLD_MAX": "Threshold Max"
+    }
   }
 }

@@ -154,6 +154,9 @@ export const AppRoutes: Routes = [
         }, {
           path: 'manage-threshold-templates',
           loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
+        },{
+          path: 'manage-alert-definition',
+          loadChildren: './pages/admin/alert-definition/smartmonitoring/alert-definition.module#AlertDefinitionModule'
         },
         {
           path: '**',
