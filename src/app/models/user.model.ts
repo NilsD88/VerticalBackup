@@ -24,7 +24,7 @@ export class User implements IUser {
       this.email = user.email ? user.email : '';
       this.impersonation = user.impersonation ? user.impersonation : false;
       this.roles = (user.roles && user.roles.length) ? user.roles : [];
-      this.features = ['fill'];
+      this.features = ['fill', 'monitoring'];
     } catch (err) {
       console.error('UserModel: Invalid user model, cannot create user from passed object');
     }

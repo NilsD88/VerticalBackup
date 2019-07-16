@@ -54,11 +54,7 @@
           </div>
           <div class="col-8">
             <small class="text-faded">{{'ALERT_DEF.BODY' | translate}}</small>
-<!--
-            <p-editor [(ngModel)]="alertDefinitionModel.email.body" [style]="{'height':'320px'}"></p-editor>
--->
             <ckeditor [editor]="Editor" [(ngModel)]="alertDefinitionModel.email.body"></ckeditor>
-
           </div>
           <div class="col-3">
             <small class="text-faded" [translate]="'ALERT_DEF.PLACEHOLDERS'"></small>
@@ -149,18 +145,3 @@
 
 </div>
 
-
-
-
-
-
-<!--
-
-
-
-
-
-
-  </mat-card-content>
-</mat-card>
--->

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {SharedService} from '../services/shared.service';
 import {AuthService} from '../services/auth.service';
+import {User} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +10,9 @@ import {AuthService} from '../services/auth.service';
 export class SharedLayoutService {
   public currentLang: { label: string; value: string };
   public languages: string[] = [];
+  public user: User = this.sharedService.user;
 
-  constructor(private translateService: TranslateService, public authService: AuthService) {
+  constructor(private translateService: TranslateService, public authService: AuthService, public sharedService: SharedService) {
     this.currentLang = this.mapLanguage(this.translateService.currentLang);
     this.languages = this.translateService.langs;
   }

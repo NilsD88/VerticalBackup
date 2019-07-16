@@ -144,6 +144,7 @@ export const AppRoutes: Routes = [
       loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
     }, {
       path: 'admin',
+      canActivate: [AdminAuthGuard],
       children: [
         {
           path: 'manage-assets',
@@ -154,7 +155,7 @@ export const AppRoutes: Routes = [
         }, {
           path: 'manage-threshold-templates',
           loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
-        },{
+        }, {
           path: 'manage-alert-definition',
           loadChildren: './pages/admin/alert-definition/smartmonitoring/alert-definition.module#AlertDefinitionModule'
         },

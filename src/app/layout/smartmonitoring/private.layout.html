@@ -27,6 +27,11 @@
           Admin
         </div>
         <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-alert-definition'])">
+            Alert definition
+          </button>
+        </div>
+        <div mat-menu-item>
           <button mat-menu-item (click)="navigateTo(['/private','admin','manage-assets'])">
             Manage assets
           </button>
@@ -49,10 +54,13 @@
 <pxs-main-menu>
   <pxs-menu-item [label]="'Inventory'" (action)="navigateTo(['/private/inventory'])"></pxs-menu-item>
   <pxs-menu-item [label]="'Alerts'" (action)="navigateTo(['/private/alerts'])"></pxs-menu-item>
-  <pxs-menu-item [label]="'Monitoring'"></pxs-menu-item>
-  <pxs-menu-item [label]="'Tank monitoring'" [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
-  <pxs-menu-item [label]="'Visitor counting'" [mat-menu-trigger-for]="visitorCounting"></pxs-menu-item>
-  <pxs-menu-item [label]="'Asset tracking'" [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
+  <pxs-menu-item [label]="'Monitoring'" *ngIf="hasFeature('monitoring')"></pxs-menu-item>
+  <pxs-menu-item [label]="'Tank monitoring'" *ngIf="hasFeature('fill')"
+                 [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
+  <pxs-menu-item [label]="'Visitor counting'" *ngIf="hasFeature('counting')"
+                 [mat-menu-trigger-for]="visitorCounting"></pxs-menu-item>
+  <pxs-menu-item [label]="'Asset tracking'" *ngIf="hasFeature('tracking')"
+                 [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
 </pxs-main-menu>
 
 <main>
@@ -71,7 +79,8 @@
   </div>
   <div mat-menu-item>
     <button mat-menu-item>
-      <pxs-icon icon="plus" ></pxs-icon><span style="margin-left: 10px;">New Tank</span>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New Tank</span>
     </button>
   </div>
 </mat-menu>
@@ -105,7 +114,8 @@
   </div>
   <div mat-menu-item>
     <button mat-menu-item>
-      <pxs-icon icon="plus" ></pxs-icon><span style="margin-left: 10px;">New Asset</span>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New Asset</span>
     </button>
   </div>
 </mat-menu>

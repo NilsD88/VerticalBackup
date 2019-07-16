@@ -6,10 +6,6 @@ import {User} from '../models/user.model';
 import {promise} from 'selenium-webdriver';
 import IRejectedCallback = promise.IRejectedCallback;
 import {MatSnackBar, MatSnackBarRef} from '@angular/material';
-// import {NgxPicaService} from '@digitalascetic/ngx-pica';
-
-/*declare let svgAsDataUri: any;
-declare let canvg: any;*/
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +19,6 @@ export class SharedService {
 
   constructor(
     public snackBar: MatSnackBar
-    // private pica: NgxPicaService
   ) {
     this.user = JSON.parse(window.localStorage.getItem('user'));
   }
