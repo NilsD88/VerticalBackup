@@ -1437,8 +1437,24 @@ mat-form-field {
 }
 
 .leaflet-popup-content-wrapper {
-  border-radius: 4px !important;
+  border-radius : 4px !important;
 }
+
 .ck-editor__editable_inline {
-  min-height: 300px;
+  min-height : 300px;
+}
+
+
+.mat-menu-header {
+  background-color : $primary;
+  color            : $white;
+  cursor           : default !important;
+
+  &:hover {
+    background-color : $primary !important;
+  }
+}
+
+.main-menu-dropdown {
+  margin-top : 47px;
 }

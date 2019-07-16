@@ -18,7 +18,10 @@
         <span class="last-measurements-wrapper">
         <span *ngFor="let measurement of asset?.lastMeasurements" class="last-measurement">
           
-          <img src="assets/smartmonitoring/images/icons/icon-{{measurement.sensorType.name}}-white.svg" alt="">
+          <img
+            [matTooltip]="measurement.sensorType.name"
+            [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
+            src="assets/smartmonitoring/images/icons/icon-{{measurement.sensorType.name}}-white.svg" alt="">
           <span class="last-measurement-value">{{measurement.value}} {{measurement.sensorType.postfix}}</span>
           <small class="last-measurement-date">{{measurement.timestamp | date : 'd/M/yy'}}</small>
           <small class="last-measurement-time">{{measurement.timestamp | date : 'H:mm'}}</small>

@@ -8,7 +8,7 @@
       <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ACCOUNT'"></span>
 
       <mat-menu #user="matMenu">
-        <div mat-menu-item>
+        <div mat-menu-item class="mat-menu-header">
           Account
         </div>
         <div mat-menu-item>
@@ -23,7 +23,7 @@
       <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ADMIN'"></span>
 
       <mat-menu #admin="matMenu">
-        <div mat-menu-item>
+        <div mat-menu-item class="mat-menu-header">
           Admin
         </div>
         <div mat-menu-item>
@@ -65,7 +65,7 @@
 <main>
   <router-outlet></router-outlet>
 </main>
-<mat-menu #tankMonitoring="matMenu" style="margin-top: 20px;">
+<mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
     <button mat-menu-item>
       Dashboard

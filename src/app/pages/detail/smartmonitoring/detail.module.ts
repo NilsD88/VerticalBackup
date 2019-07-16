@@ -4,7 +4,7 @@ import {DetailComponent} from './detail.component';
 import {RouterModule} from '@angular/router';
 import {DetailRoutes} from './detail.routing';
 import {TranslateModule} from '@ngx-translate/core';
-import {MatDividerModule, MatExpansionModule} from '@angular/material';
+import {MatDividerModule, MatExpansionModule, MatTooltipModule} from '@angular/material';
 import {SharedAlertsService} from '../../alerts/shared-alerts.service';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {LogsService} from '../../../services/logs.service';
@@ -15,6 +15,7 @@ import {AggregatedValuesModule} from '../../../../../projects/ngx-proximus/src/l
 import {MapAssetModule} from '../../../../../projects/ngx-proximus/src/lib/map-asset/map-asset.module';
 import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {ImgFallbackModule} from 'ngx-img-fallback';
 
 @NgModule({
   declarations: [DetailComponent],
@@ -31,6 +32,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     MapAssetModule,
     IconModule,
     FlexLayoutModule,
+    MatTooltipModule,
+    ImgFallbackModule,
     RangeSliderModule
   ],
   providers: [SharedAlertsService, LogsService]

@@ -69,7 +69,7 @@ export class AdminAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    /*try {
+    try {
       this.sharedService.user = await this.authService.isLoggedIn();
       if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
         this.sharedService.showNotification('Unauthorized, admin rights needed to perform this action', 'warning', 3000);
@@ -93,7 +93,7 @@ export class AdminAuthGuard implements CanActivate {
           this.router.navigate(['/error/500']);
       }
       return false;
-    }*/
+    }
     return true;
   }
 
