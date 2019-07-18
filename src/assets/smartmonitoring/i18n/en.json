@@ -92,7 +92,7 @@
     "THRESHOLD_TEMPLATES": {
       "NOT_FOUND": "Not found",
       "LOADING_TEXT": "Loading text",
-      "PLACEHOLDER": "Placeholder"
+      "PLACEHOLDER": "Threshold templates"
     }
   },
   "DETAIL": {

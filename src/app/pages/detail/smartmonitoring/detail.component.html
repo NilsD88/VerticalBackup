@@ -1,36 +1,5 @@
 <div class="detail-page" *ngIf="asset">
-
-  <div class="detail-header">
-    <div class="container">
-      <div class="detail-header-wrapper">
-     <span>
-        <h1 class="text-white">
-        {{asset.name}}
-          <sup>{{asset.thresholdTemplate.isCustom ? 'Custom' : asset.thresholdTemplate.name}}</sup>
-        </h1>
-        <h4 class="text-accent">
-          {{asset.sublocation.location.name}} - {{asset.sublocation.name}}
-          <span *ngIf="asset.sublocation.location.locationType.name">
-            ({{asset.sublocation.location.locationType.name}})
-          </span>
-        </h4>
-     </span>
-        <span class="last-measurements-wrapper">
-        <span *ngFor="let measurement of asset?.lastMeasurements" class="last-measurement">
-          
-          <img
-            [matTooltip]="measurement.sensorType.name"
-            [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
-            src="assets/smartmonitoring/images/icons/icon-{{measurement.sensorType.name}}-white.svg" alt="">
-          <span class="last-measurement-value">{{measurement.value}} {{measurement.sensorType.postfix}}</span>
-          <small class="last-measurement-date">{{measurement.timestamp | date : 'd/M/yy'}}</small>
-          <small class="last-measurement-time">{{measurement.timestamp | date : 'H:mm'}}</small>
-
-        </span>
-      </span>
-      </div>
-    </div>
-  </div>
+  <pxs-detail-header [asset]="asset"></pxs-detail-header>
 
   <div class="detail-main-content">
     <div class="container">

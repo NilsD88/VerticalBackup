@@ -54,11 +54,11 @@
 <pxs-main-menu>
   <pxs-menu-item [label]="'Monitoring'" (action)="navigateTo(['/private/home'])"></pxs-menu-item>
   <pxs-menu-item [label]="'Alerts'" (action)="navigateTo(['/private/alerts'])"></pxs-menu-item>
-  <pxs-menu-item [label]="'Tank monitoring'" *ngIf="hasFeature('fill')"
+  <pxs-menu-item [label]="'Tank monitoring'" *ngIf="sharedLayoutService.user.hasFeature('fill')"
                  [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
-  <pxs-menu-item [label]="'Visitor counting'" *ngIf="hasFeature('counting')"
+  <pxs-menu-item [label]="'Visitor counting'" *ngIf="sharedLayoutService.user.hasFeature('counting')"
                  [mat-menu-trigger-for]="visitorCounting"></pxs-menu-item>
-  <pxs-menu-item [label]="'Asset tracking'" *ngIf="hasFeature('tracking')"
+  <pxs-menu-item [label]="'Asset tracking'" *ngIf="sharedLayoutService.user.hasFeature('tracking')"
                  [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
 </pxs-main-menu>
 
@@ -96,7 +96,8 @@
   </div>
   <div mat-menu-item>
     <button mat-menu-item>
-      Manage
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New location</span>
     </button>
   </div>
 </mat-menu>

@@ -16,6 +16,7 @@ import {MapAssetModule} from '../../../../../projects/ngx-proximus/src/lib/map-a
 import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ImgFallbackModule} from 'ngx-img-fallback';
+import {DetailHeaderModule} from '../../../../../projects/ngx-proximus/src/lib/detail-header/detail-header.module';
 
 @NgModule({
   declarations: [DetailComponent],
@@ -34,6 +35,7 @@ import {ImgFallbackModule} from 'ngx-img-fallback';
     FlexLayoutModule,
     MatTooltipModule,
     ImgFallbackModule,
+    DetailHeaderModule,
     RangeSliderModule
   ],
   providers: [SharedAlertsService, LogsService]

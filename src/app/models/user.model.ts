@@ -24,7 +24,7 @@ export class User implements IUser {
       this.email = user.email ? user.email : '';
       this.impersonation = user.impersonation ? user.impersonation : false;
       this.roles = (user.roles && user.roles.length) ? user.roles : [];
-      this.features = ['fill', 'monitoring'];
+      this.features = ['fill', 'counting'];
     } catch (err) {
       console.error('UserModel: Invalid user model, cannot create user from passed object');
     }
@@ -50,5 +50,9 @@ export class User implements IUser {
 
   get exists(): boolean {
     return !isNullOrUndefined(this.user) && !isNullOrUndefined(this.user.roles);
+  }
+
+  public hasFeature(feature: string): boolean {
+    return this.features.indexOf(feature) >= 0;
   }
 }

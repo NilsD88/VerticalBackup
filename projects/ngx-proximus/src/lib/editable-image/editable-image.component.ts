@@ -10,6 +10,7 @@ import {EditImageDialogComponent} from './edit-image-dialog/edit-image-dialog.co
 export class EditableImageComponent implements OnInit {
   @Input() image = '';
   @Input() dialogTitle = 'Edit image';
+  @Input() ratio: number;
   @Input() change: EventEmitter<string> = new EventEmitter();
 
   constructor(private dialog: MatDialog) {
@@ -20,7 +21,7 @@ export class EditableImageComponent implements OnInit {
 
   async openEditImageDialog() {
     const dialogRef = this.dialog.open(EditImageDialogComponent, {
-      data: {image: this.image, title: this.dialogTitle},
+      data: {image: this.image, title: this.dialogTitle, ratio: this.ratio},
       width: '100vw',
     });
 

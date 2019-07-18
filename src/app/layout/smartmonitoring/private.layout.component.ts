@@ -46,10 +46,6 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     // this.router.unsubscribe();
   }
 
-  hasFeature(feature: string): boolean {
-    return this.sharedLayoutService.user.features.indexOf(feature) >= 0;
-  }
-
   navigateTo(url: string[]) {
     this.router.navigate(url);
   }
