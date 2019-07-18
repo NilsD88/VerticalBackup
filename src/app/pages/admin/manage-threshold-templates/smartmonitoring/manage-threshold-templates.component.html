@@ -5,10 +5,33 @@
       <h2>Threshold template</h2>
     </div>
 
-    <div class="col-md-9">
+    <div class="col-md-12">
       <mat-form-field>
         <input type="text" matInput [(ngModel)]="item.name" placeholder="Asset name">
       </mat-form-field>
     </div>
+    <div class="col-md-12">
+      <div class="row" *ngFor="let threshold of item.thresholds">
+        <div class="col-md-6">
+          <pxs-range-slider [min]="threshold.sensorType.min" [max]="threshold.sensorType.max" [from]="threshold.low"
+                            [to]="threshold.high"></pxs-range-slider>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-select [placeholder]="'THRESHOLD_TEMPLATE.SEVERITY.PLACEHOLDER' | translate">
+              <mat-option></mat-option>
+            </mat-select>
+          </mat-form-field>
+
+        </div>
+        <div class="col-md-3">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+    </div>
+
   </div>
 </div>

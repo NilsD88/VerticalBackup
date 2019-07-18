@@ -18,7 +18,11 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   async ngOnInit() {
     this.id = await this.getRouteId();
-    this.loadItem();
+    if (!isNullOrUndefined(this.id) && this.id !== 'null') {
+      this.loadItem();
+    } else {
+      this.item = new ThresholdTemplate(null);
+    }
   }
 
   private async loadItem() {
@@ -31,7 +35,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
         if (!isNullOrUndefined(params.id)) {
           resolve(params.id);
         } else {
-          reject('ManageThresholdTemplatesComponent: No \'id\' parameter in route.');
+          resolve();
         }
       }, reject);
     });
