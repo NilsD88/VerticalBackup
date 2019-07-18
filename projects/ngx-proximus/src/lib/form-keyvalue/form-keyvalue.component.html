@@ -1,0 +1,44 @@
+<div [formGroup]="parentFormGroup">
+  <div class="row">
+    <div class="col-xs-12 col-md-6 mx-auto">
+      <h6>Key Value</h6>
+    </div>
+  </div>
+  <div class="row" *ngFor="let keyValue of keyValues; index as i;">
+    <div class="col-xs-12 col-md-6 mx-auto">
+      <div class="flex-inline-container">
+        <div>
+          <mat-form-field class="mat-form-field-select">
+            <mat-select (selectionChange)="updateKey(keyValue[3], $event.value)" placeholder="Select" [(value)]="keyValue[0]" formControlName="kv_k{{keyValue[3]}}" required>
+              <mat-option value="option1">Option 1</mat-option>
+              <mat-option value="option2">Option 2</mat-option>
+              <mat-option value="other">Other</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div *ngIf="keyValue[0] === 'other'">
+          <mat-form-field>
+            <input matInput placeholder="Key" formControlName="kv_kc{{keyValue[3]}}" required>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <input matInput placeholder="Value" formControlName="kv_v{{keyValue[3]}}" required>
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-mini-fab color="warn" (click)="removeKeyValue(i)">
+            <pxs-icon icon="remove-o"></pxs-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 mx-auto">
+      <button mat-fab color="primary" (click)="addKeyValue()">
+        <pxs-icon icon="plus-o"></pxs-icon>
+      </button>
+    </div>
+  </div>
+<div>

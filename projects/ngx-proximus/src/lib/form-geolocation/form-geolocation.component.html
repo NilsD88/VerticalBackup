@@ -1,0 +1,13 @@
+<div class="row" [formGroup]="parentFormGroup">
+  <div class="col-xs-12 col-md-6 mx-auto">
+    <pxs-map-new-location (notify)="onNotify($event)"></pxs-map-new-location>
+    <div style="display: none;">
+        <mat-form-field>
+          <input type="number" #inputLat matInput formControlName="latitudeCtrl" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="number" #inputLng matInput formControlName="longitudeCtrl" required>
+        </mat-form-field>
+    </div>
+  </div>
+</div>

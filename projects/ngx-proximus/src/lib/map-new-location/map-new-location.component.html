@@ -1,0 +1,9 @@
+<div class="container" style="height:400px;">
+    <div style="height:400px;" *ngIf="options"
+      leaflet 
+      [leafletOptions]="options"
+      [leafletLayers]="markers"
+      (leafletMapReady)="onMapReady($event)"
+    >
+    </div>
+</div>

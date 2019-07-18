@@ -124,12 +124,25 @@ export const AppRoutes: Routes = [
     }]
   },
   {
+    path: 'playground',
+    component: PublicLayoutComponent,
+    canActivate: [PublicAuthGuard],
+    children: [{
+      path: '',
+      loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
+    }]
+  },
+  {
     path: 'private',
     component: PrivateLayoutComponent,
     children: [{
       path: 'home',
       canActivate: [UserAuthGuard],
       loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+    }, {
+      path: 'locations',
+      canActivate: [UserAuthGuard],
+      loadChildren: './pages/locations/smartmonitoring/locations.module#LocationsModule'
     }, {
       path: 'alerts',
       canActivate: [UserAuthGuard],

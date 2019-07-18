@@ -38,6 +38,7 @@
     "highcharts-angular": "^2.4.0",
     "highcharts-more": "^0.1.7",
     "leaflet": "^1.5.1",
+    "leaflet-geosearch": "^2.7.0",
     "moment": "^2.24.0",
     "ng2-nouislider": "^1.8.2",
     "ngx-img": "^10.19.0",

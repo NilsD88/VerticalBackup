@@ -35,7 +35,6 @@ export interface IAsset {
 export interface IGeolocation {
   lat: number;
   lng: number;
-  zoom: number;
 }
 
 export interface IPagedAssets {
@@ -211,11 +210,9 @@ export class Geolocation implements IGeolocation {
     if (!isNullOrUndefined(geolocation)) {
       this.lat = geolocation.lat;
       this.lng = geolocation.lng;
-      this.zoom = geolocation.zoom;
     } else {
       this.lat = 50.860305; // TODO: Replace hardcoded default values
       this.lng = 4.357905;
-      this.zoom = 15;
     }
 
   }
