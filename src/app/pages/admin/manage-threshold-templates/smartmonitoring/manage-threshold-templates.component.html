@@ -36,10 +36,12 @@
               </pxs-range-slider>
             </div>
             <div class="col-md-3">
-              <mat-select [(ngModel)]="threshold.severity" placeholder="Severity">
-                <mat-option *ngFor="let severity of severities" [value]="severity"><span
-                  style="text-transform: capitalize">{{severity}}</span></mat-option>
-              </mat-select>
+              <mat-form-field>
+                <mat-select [(ngModel)]="threshold.severity" placeholder="Severity">
+                  <mat-option *ngFor="let severity of severities" [value]="severity"><span
+                    style="text-transform: capitalize">{{severity}}</span></mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
             <div class="col-md-3" style="display: flex; justify-content: space-between;">
               <mat-checkbox [(ngModel)]="threshold.alert.notification">
