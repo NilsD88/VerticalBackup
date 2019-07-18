@@ -1070,3 +1070,36 @@ export const ALERTS_MOCK = {
   'sort': null,
   'numberOfElements': 10
 };
+
+
+
+
+export const THRESHOLD_MOCK = {
+  name: "Threshold mock",
+  sensors: [
+    {
+      sensorType: {
+        id: "id00000",
+        name: "Temperature",
+        postfix: "C",
+        min: -10,
+        max: 60,
+        type: 0
+      },
+      thresholds: [
+        {
+          range: {
+            from: 0,
+            to: 5
+          },
+          severity: "LOW",
+          alert: {
+            notification: true,
+            sms: false,
+            mail: false
+          }
+        }
+      ]
+    }
+  ]
+}
