@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+  <mat-select [(ngModel)]="item" placeholder="Sensor types">
+    <mat-option *ngFor="let item of items" [value]="item">{{item.name}}</mat-option>
+  </mat-select>
+
+  <button mat-raised-button color="primary" (click)="submit()">
+    Submit
+  </button>
+  <button mat-raised-button (click)="cancel()">
+    Cancel
+  </button>
+</div>
