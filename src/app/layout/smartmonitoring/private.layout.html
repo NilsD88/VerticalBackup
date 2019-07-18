@@ -67,7 +67,7 @@
 </main>
 <mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','tankmonitoring', 'dashboard'])">
       Dashboard
     </button>
   </div>

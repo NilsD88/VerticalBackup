@@ -139,6 +139,13 @@ export const AppRoutes: Routes = [
       canActivate: [UserAuthGuard],
       loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
     }, {
+      path: 'tankmonitoring',
+      canActivate: [UserAuthGuard],
+      children: [{
+        path: 'dashboard',
+        loadChildren: './pages/dashboard/tankmonitoring/dashboard.module#DashboardModule'
+      }]
+    }, {
       path: 'admin',
       canActivate: [AdminAuthGuard],
       children: [

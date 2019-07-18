@@ -41,7 +41,7 @@ export class User implements IUser {
   }
 
   get isAdmin(): boolean {
-    return this.roles.indexOf('iotap_localadmin') >= 0;
+    return this.roles.indexOf('pxs:iot:localadmin') >= 0;
   }
 
   get isUser(): boolean {
