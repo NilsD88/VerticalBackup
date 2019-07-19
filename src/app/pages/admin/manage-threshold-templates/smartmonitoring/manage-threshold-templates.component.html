@@ -1,5 +1,5 @@
 <pxs-loader *ngIf="!item"></pxs-loader>
-<div class="container-fluid" *ngIf="item">
+<div class="container" *ngIf="item">
   <div class="row">
     <div class="col-12">
       <h2>Threshold template</h2>
@@ -11,22 +11,31 @@
       </mat-form-field>
     </div>
 
-    <div class="col-md-6">Sensors</div>
-    <div class="col-md-6">
-      <button mat-raised-button (click)="addSensor()">
+    <div class="col-md-12" style="display:flex; justify-content: space-between; margin-bottom: 20px;">
+      <h4 style="margin: 0; padding: 0;">Sensors</h4>
+      <button style="height: 40px; " mat-raised-button color="primary" (click)="addSensor()">
         <pxs-icon icon="plus-o"></pxs-icon>
         Add sensor
       </button>
     </div>
-    <div class="col-12">
-      <mat-card *ngFor="let sensor of item.sensors; let sensorIndex = index;">
-        <mat-card-header><h5>{{sensor.sensorType.name}}</h5></mat-card-header>
+    <div class="col-md-12" *ngIf="!item.sensors || !item.sensors.length">
+      No sensors added yet
+    </div>
+    <div class="col-md-12" *ngFor="let sensor of item.sensors; let sensorIndex = index;">
+      <mat-card>
+        <mat-card-header style="display: flex; align-content: center;">
+          <h5 style="margin: 0;">{{sensor.sensorType.name}}</h5>
+          <button style="margin-left: auto;" mat-icon-button color="warn" (click)="deleteSensor(sensorIndex)">
+            <pxs-icon icon="trash"></pxs-icon>
+          </button>
+        </mat-card-header>
         <button mat-raised-button (click)="addThreshold(sensorIndex)">
           <pxs-icon icon="plus-o"></pxs-icon>
-          add threshold
+          Add threshold
         </button>
         <mat-card-content>
-          <div class="row" *ngFor="let threshold of sensor.thresholds; let thresholdIndex = index;">
+          <div class="row" *ngFor="let threshold of sensor.thresholds; let thresholdIndex = index;"
+               style="margin-bottom: 30px;">
             <div class="col-md-5">
               <pxs-range-slider [min]="sensor.sensorType.min"
                                 [max]="sensor.sensorType.max"
@@ -35,7 +44,7 @@
                                 [postfix]="sensor.sensorType.postfix">
               </pxs-range-slider>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-5">
               <mat-form-field>
                 <mat-select [(ngModel)]="threshold.severity" placeholder="Severity">
                   <mat-option *ngFor="let severity of severities" [value]="severity"><span
@@ -43,27 +52,27 @@
                 </mat-select>
               </mat-form-field>
             </div>
-            <div class="col-md-3" style="display: flex; justify-content: space-between;">
-              <mat-checkbox [(ngModel)]="threshold.alert.notification">
-                Alert
-              </mat-checkbox>
-              <mat-checkbox [(ngModel)]="threshold.alert.mail">Mail</mat-checkbox>
-              <mat-checkbox [(ngModel)]="threshold.alert.sms">Sms</mat-checkbox>
-            </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
               <button color="warn" mat-icon-button (click)="deleteThreshold(sensorIndex,thresholdIndex)">
                 <pxs-icon icon="trash"></pxs-icon>
               </button>
             </div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-4">
+                  <mat-checkbox [(ngModel)]="threshold.alert.notification">Alert</mat-checkbox>
+                </div>
+                <div class="col-md-4">
+                  <mat-checkbox [(ngModel)]="threshold.alert.mail">Mail</mat-checkbox>
+                </div>
+                <div class="col-md-4">
+                  <mat-checkbox [(ngModel)]="threshold.alert.sms">Sms</mat-checkbox>
+                </div>
+              </div>
+            </div>
           </div>
-
         </mat-card-content>
-
-
       </mat-card>
-    </div>
-
-    <div class="col-md-12">
     </div>
 
   </div>

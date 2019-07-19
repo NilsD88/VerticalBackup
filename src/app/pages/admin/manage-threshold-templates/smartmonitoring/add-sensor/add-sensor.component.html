@@ -1,7 +1,11 @@
+<h1 mat-dialog-title>Add sensor</h1>
 <div mat-dialog-content>
-  <mat-select [(ngModel)]="item" placeholder="Sensor types">
-    <mat-option *ngFor="let item of items" [value]="item">{{item.name}}</mat-option>
-  </mat-select>
+  
+  <mat-form-field>
+    <mat-select [(ngModel)]="item" placeholder="Select sensor type">
+      <mat-option *ngFor="let item of items" [value]="item">{{item.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
 
   <button mat-raised-button color="primary" (click)="submit()">
     Submit

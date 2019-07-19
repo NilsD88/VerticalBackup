@@ -141,5 +141,15 @@
       "THRESHOLD_MIN": "Threshold Min",
       "THRESHOLD_MAX": "Threshold Max"
     }
+  },
+  "DASHBOARD": {
+    "SMART_TANK": {
+      "STATUS": {
+        "OK": "No problems",
+        "LOW": "No data recently",
+        "HIGH": "Low fuel",
+        "CRITICAL": "Empty fuel"
+      }
+    }
   }
 }

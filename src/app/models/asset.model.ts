@@ -30,6 +30,7 @@ export interface IAsset {
   lastMeasurements?: any[]; // TODO: lastMeasurements
   timeLastMeasurementReceived?: Date;
   geolocation: IGeolocation;
+  status: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
 }
 
 export interface IGeolocation {
@@ -78,10 +79,11 @@ export class Asset implements IAsset {
   mapPosition: MapPosition;
   alerts: Alert[];
   things: Thing[];
-  sublocation: Sublocation;
+  sublocation: ISublocation | Sublocation;
   thresholdTemplate: ThresholdTemplate;
   organization: Organization;
   lastMeasurements: any[]; // TODO: lastMeasurements
+  status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
 
   geolocation: IGeolocation;
 
@@ -124,6 +126,7 @@ export class Asset implements IAsset {
       this.largeImage = _asset.largeImage;
       this.pictureBase64 = _asset.pictureBase64;
       this.lastMeasurements = _asset.lastMeasurements; // TODO: Last measurements
+      this.status = _asset.status ? _asset.status : 'OK';
     } else {
       this.id = null;
       this.name = '';
@@ -135,6 +138,7 @@ export class Asset implements IAsset {
       this.thumbnail = '';
       this.mediumImage = '';
       this.largeImage = '';
+      this.status = 'OK';
       this.lastMeasurements = []; // TODO: Last measurements
     }
 

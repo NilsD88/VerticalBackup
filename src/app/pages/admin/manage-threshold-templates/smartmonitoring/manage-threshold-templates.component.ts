@@ -53,6 +53,10 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     this.item.sensors[sensorIdx].thresholds.splice(thresholdIdx, 1);
   }
 
+  public deleteSensor(sensorIdx: number) {
+    this.item.sensors.splice(sensorIdx, 1);
+  }
+
   public addSensor() {
     const ref = this.dialog.open(AddSensorComponent, {
       width: '90vw'
