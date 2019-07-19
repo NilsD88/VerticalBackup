@@ -1,3 +1,27 @@
-<p>
-  dashboard works!
-</p>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5">
+      <pxs-pie-chart [series]="chartData" (filter)="pieClicked($event)"></pxs-pie-chart>
+    </div>
+    <div class="col-md-7">
+      <pxs-map-asset *ngIf="items.length" [assets]="items"></pxs-map-asset>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="col-md-12"><h1 class="pxs-title">Smart Tank Monitoring</h1></div>
+
+
+
+  <div class="table">
+    <div class="row table-row" *ngFor="let item of items">
+      <div class="col-md-4">
+        {{item.name}}
+      </div>
+      <div class="col-md-2">
+        {{'DASHBOARD.SMART_TANK.STATUS.' + item.status | translate}}
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -11,6 +11,7 @@ export interface IAssetFilter {
   thresholdTemplates: string[];
   locationType: string;
   locations: string[];
+  status?: string;
 }
 
 @Injectable({
@@ -29,6 +30,56 @@ export class AssetService {
         }, (err) => {
           const snackBarRef = this.snackBar.open(
             'Error! Failed to fetch asset data. Please reload.',
+            null, {
+              duration: 3000,
+              panelClass: 'error-snackbar'
+            });
+          console.error('AssetService: ' + err.message);
+          reject(err);
+        });
+    });
+  }
+
+  public getAssets(filter?: IAssetFilter): Promise<Asset[]> {
+    const query = '';
+    /*if (!isNullOrUndefined(filter)) {
+      const nameQuery = filter.name.length ? `name=="*${filter.name.toLowerCase()}*"` : undefined;
+      const statusQuery = filter.status.length ? `status=="${filter.status}"` : undefined;
+      const thresholdTemplateQuery = filter.thresholdTemplates.length ?
+        `thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})`
+        : undefined;
+
+      const locationTypeQuery = !isNullOrUndefined(filter.locationType) ?
+        `sublocation.location.locationType.id==${filter.locationType}`
+        : undefined;
+
+      const locationsQuery = filter.locations.length ?
+        `sublocation.location.id=in=(${filter.locations.toString()})` :
+        undefined;
+
+      let statusQuery;
+      if (filter.statuses.length) {
+        if (filter.statuses.length === 1) {
+          statusQuery = `alerts=statusOk=${filter.statuses[0].toLowerCase() === 'ok'}`;
+        }
+      }
+      query = this.sharedService.buildFilterQuery([
+      nameQuery,statusQuery,
+      thresholdTemplateQuery,
+      locationTypeQuery,
+      locationsQuery,
+      statusQuery]);
+    }*/
+
+    const url = `${environment.baseUrl}assets/${query ? query : ''}`;
+
+    return new Promise(async (resolve, reject) => {
+      this.http.get(url)
+        .subscribe((response: any) => {
+          resolve(Asset.createArray(response.content));
+        }, (err) => {
+          const snackBarRef = this.snackBar.open(
+            'Error! Failed to fetch assets. Please reload.',
             null, {
               duration: 3000,
               panelClass: 'error-snackbar'
