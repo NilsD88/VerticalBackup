@@ -17,7 +17,6 @@ export class MapAssetComponent implements OnInit {
 
   currentMap:Map;
   geolocation: IGeolocation;
-  layers: any[];
   options: any;
   markers: Layer[] = [];
   imageBounds: LatLngBounds;
@@ -49,12 +48,10 @@ export class MapAssetComponent implements OnInit {
       image.src = this.imageUrl;
       image.onload = () => {
         this.imageBounds = latLngBounds([0, 0], [image.width/100, image.height/100]);
-        this.layers = [];
         const imageMap = imageOverlay(this.imageUrl, this.imageBounds);
-        this.layers[0] = imageMap;
         this.options = {
           crs: CRS.Simple,
-          layers: this.layers,
+          layers: [imageMap],
           zoom:20,
         };
       }

@@ -130,6 +130,7 @@ export const AppRoutes: Routes = [
     children: [{
       path: '',
       loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
+      //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
     }]
   },
   {

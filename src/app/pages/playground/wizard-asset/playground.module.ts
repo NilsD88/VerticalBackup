@@ -10,7 +10,6 @@ import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon
 import { FormKeyvalueModule } from '../../../../../projects/ngx-proximus/src/lib/form-keyvalue/form-keyvalue.module';
 import { FormGeolocationModule } from '../../../../../projects/ngx-proximus/src/lib/form-geolocation/form-geolocation.module';
 import { EditableImageModule } from '../../../../../projects/ngx-proximus/src/lib/editable-image/editable-image.module';
-import { LocationExplorerModule } from '../../../../../projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 @NgModule({
   declarations: [
     PlaygroundComponent,
@@ -28,8 +27,7 @@ import { LocationExplorerModule } from '../../../../../projects/ngx-proximus/src
     IconModule,
     FormKeyvalueModule,
     FormGeolocationModule,
-    EditableImageModule,
-    LocationExplorerModule,
+    EditableImageModule
   ]
 })
 export class PlaygroundModule { }
