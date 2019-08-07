@@ -109,6 +109,23 @@ export const AppRoutes: Routes = [
       loadChildren: environment.paths.home
     }]
   },
+  
+  {
+    path: 'contact',
+    component: PublicLayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: './pages/contact/contact.module#ContactModule'
+    }]
+  },
+  {
+    path: 'privacy',
+    component: PublicLayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: './pages/privacy/privacy.module#PrivacyModule'
+    }]
+  },
   {
     path: '',
     redirectTo: 'home',
@@ -129,40 +146,48 @@ export const AppRoutes: Routes = [
     canActivate: [PublicAuthGuard],
     children: [{
       path: '',
-      loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
-      //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
+      //loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
+      loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
     }]
   },
   {
     path: 'private',
     component: PrivateLayoutComponent,
-    children: [{
-      path: 'home',
-      canActivate: [UserAuthGuard],
-      loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
-    }, {
-      path: 'locations',
-      canActivate: [UserAuthGuard],
-      loadChildren: './pages/locations/smartmonitoring/locations.module#LocationsModule'
-    }, {
-      path: 'alerts',
-      canActivate: [UserAuthGuard],
-      loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
-    }, {
-      path: 'detail/:id',
-      canActivate: [UserAuthGuard],
-      loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
-    }, {
-      path: 'tankmonitoring',
-      canActivate: [UserAuthGuard],
-      children: [{
-        path: 'dashboard',
-        loadChildren: './pages/dashboard/tankmonitoring/dashboard.module#DashboardModule'
-      }]
+    children: [
+      {
+        path: 'test',
+        canActivate: [UserAuthGuard],
+        loadChildren:'./pages/playground/wizard-asset/playground.module#PlaygroundModule'
+      },
+      {
+        path: 'home',
+        canActivate: [UserAuthGuard],
+        loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+      }, {
+        path: 'alerts',
+        canActivate: [UserAuthGuard],
+        loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
+      }, {
+        path: 'detail/:id',
+        canActivate: [UserAuthGuard],
+        loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
+      },
+      {
+        path: 'tankmonitoring',
+        canActivate: [UserAuthGuard],
+        children: [{
+          path: 'dashboard',
+          loadChildren: './pages/dashboard/tankmonitoring/dashboard.module#DashboardModule'
+      },
+    ]
     }, {
       path: 'admin',
       canActivate: [AdminAuthGuard],
       children: [
+        {
+          path: 'manage-locations',
+          loadChildren: './pages/admin/manage-locations/manage-locations.module#ManageLocationsModule'
+        },
         {
           path: 'manage-assets',
           loadChildren: './pages/admin/manage-assets/smartmonitoring/manage-assets.module#ManageAssetsModule'

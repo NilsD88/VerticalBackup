@@ -26,6 +26,8 @@ import {FilterService} from './services/filter.service';
 import {ThresholdTemplateService} from './services/threshold-template.service';
 import { MapAssetPopupComponent } from 'projects/ngx-proximus/src/lib/map-asset-popup/map-asset-popup.component';
 import { createCustomElement } from '@angular/elements';
+import { AssetService } from './services/asset.service';
+import { SharedModule } from './shared/shared.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -59,8 +61,10 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    
     MainMenuModule,
-    IconModule
+    IconModule,
+    SharedModule,
   ],
   providers: [
     PublicAuthGuard,
@@ -70,7 +74,8 @@ export function createTranslateLoader(http: HttpClient) {
     AuthService,
     FilterService,
     ThresholdTemplateService,
-    SharedLayoutService
+    SharedLayoutService,
+    AssetService,
   ],
   bootstrap: [AppComponent],
   entryComponents: [MapAssetPopupComponent],

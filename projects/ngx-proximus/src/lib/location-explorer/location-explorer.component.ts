@@ -18,6 +18,7 @@ export class LocationExplorerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.locations);
     this.tabs = [{
       name: "Locations",
       sublocations: this.locations
@@ -30,7 +31,9 @@ export class LocationExplorerComponent implements OnInit {
   }
 
   goToSublocation(location){
-    this.selectLocation(location);
+    if(this.selectLocation != location) {
+      this.selectLocation(location);
+    }
     this.selectedIndex = this.tabs.length;
     this.tabs.push(location);
   }
@@ -40,6 +43,7 @@ export class LocationExplorerComponent implements OnInit {
     this.selectedIndex=index;
     if(index<length){
       this.tabs.splice(index+1,length-index+1);
+      this.selectLocation(null);
     }
   }
 

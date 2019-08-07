@@ -5,6 +5,7 @@ import {AssetService} from '../../../services/asset.service';
 import {FilterService} from '../../../services/filter.service';
 import {SharedService} from '../../../services/shared.service';
 import {LocationsService} from '../../../services/locations.service';
+import { ILocation, ISublocation } from 'src/app/models/locations.model';
 
 @Component({
   selector: 'pvf-inventory',
@@ -16,10 +17,12 @@ export class InventoryComponent implements OnInit {
     name: '',
     thresholdTemplates: [],
     locationType: null,
-    locations: []
+    locations: [],
+    sublocations: []
   };
 
   public showFilter = false;
+  public showLocationExplorer = false;
 
   public thresholdTemplatesLoading = false;
   public locationsLoading = false;
@@ -39,6 +42,7 @@ export class InventoryComponent implements OnInit {
   public totalItems = 0;
   public pagesize = 10;
 
+
   constructor(public assetService: AssetService,
               public filterService: FilterService,
               public sharedService: SharedService,
@@ -56,9 +60,12 @@ export class InventoryComponent implements OnInit {
     try {
       const thresholdTemplatePromise = this.filterService.getThresholdTemplates();
       const locationTypesPromise = this.locationsService.getLocationTypes();
+      const locationsPromise = this.locationsService.getLocations();
 
       this.filterOptions.thresholdTemplateOptions = await thresholdTemplatePromise;
       this.filterOptions.locationTypesOptions = await locationTypesPromise;
+      this.filterOptions.locationsOptions = await locationsPromise;
+
       this.submitFilter();
     } catch (err) {
       this.assetsLoading = false;
@@ -67,12 +74,14 @@ export class InventoryComponent implements OnInit {
   }
 
   public async onLocationTypeChange() {
-    this.filter.locations = [];
     if (this.filter.locationType) {
-      this.filterOptions.locationsOptions = await this.locationsService.getLocations();
+      this.filterOptions.locationsOptions = await this.locationsService.getLocations(this.filter.locationType);
     } else {
-      this.filterOptions.locationsOptions = [];
+      this.filterOptions.locationsOptions = await this.locationsService.getLocations();
     }
+    this.filter.locations = [];
+    this.filter.sublocations = [];
+    this.getPagedAssets();
   }
 
   public setDefaultFilter() {
@@ -86,6 +95,7 @@ export class InventoryComponent implements OnInit {
       thresholdTemplates: [],
       locationType: null,
       locations: [],
+      sublocations: [],
       statuses: []
     };
   }
@@ -108,8 +118,7 @@ export class InventoryComponent implements OnInit {
     try {
       this.assetsLoading = true;
       const assetsResult = await this.assetService.getPagedAssets(this.filter, this.page, this.pagesize);
-      console.log(assetsResult);
-      this.assets = assetsResult.assets;
+      this.assets = assetsResult.data;
       this.totalItems = assetsResult.totalElements;
       this.page = assetsResult.pageNumber;
 
@@ -120,4 +129,21 @@ export class InventoryComponent implements OnInit {
     }
   }
 
+  public updateLocation(location: ILocation|ISublocation) {
+    switch(location.constructor.name) {
+      case "Sublocation": 
+        this.filter.sublocations = [location.id];
+        this.filter.locations = [];
+        break;
+      case "Location": 
+        this.filter.locations = [location.id];
+        this.filter.sublocations = [];
+        break
+      default :
+        this.filter.locations = [];
+        this.filter.sublocations = [];
+    }
+    this.getPagedAssets();
+  }
+  
 }

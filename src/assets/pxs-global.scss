@@ -699,14 +699,6 @@ button[disabled], button:disabled {
   @media only screen and (max-width : $screen-sm) {
     font-size : .7em;
   }
-
-  .top-menu-search-input {
-    border    : none;
-    margin    : 0;
-    height    : 100%;
-    font-size : .95em;
-    color     : $primary
-  }
 }
 
 pxs-menu-item {
@@ -1204,6 +1196,7 @@ pxs-loader {
     width       : 100%;
     padding     : 1rem;
     padding-top : .6rem;
+    overflow-x: scroll;
 
     .last-alert-value {
       background-color : $accent;
@@ -1280,7 +1273,6 @@ pxs-loader {
 
     background    : $promo;
     color         : $white;
-    margin        : .5rem;
     padding       : 1rem;
     align-content : center;
 
@@ -1457,4 +1449,13 @@ mat-form-field {
 
 .main-menu-dropdown {
   margin-top : 47px;
+}
+
+
+// ADMIN : Manage pages
+
+.manage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

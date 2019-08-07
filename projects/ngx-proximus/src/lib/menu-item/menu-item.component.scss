@@ -2,6 +2,7 @@
   cursor  : pointer;
   display : inline-block;
   margin  : 0 5px;
+  outline: none;
 }
 
 .pxs-menu-item::after {
@@ -15,10 +16,12 @@
   transition  : width .4s, margin-left .4s;
 }
 
-.pxs-menu-item:hover::after {
-  width       : 100%;
-  margin-left : 0;
-  transition  : width .4s, margin-left .4s;
+.pxs-menu-item:hover, .pxs-menu-item.active {
+  &::after {
+    width       : 100%;
+    margin-left : 0;
+    transition  : width .4s, margin-left .4s;
+  }
 }
 
 .pxs-menu-item-badge {

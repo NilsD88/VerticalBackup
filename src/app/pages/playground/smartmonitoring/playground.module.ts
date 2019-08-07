@@ -11,6 +11,7 @@ import { FormKeyvalueModule } from '../../../../../projects/ngx-proximus/src/lib
 import { FormGeolocationModule } from '../../../../../projects/ngx-proximus/src/lib/form-geolocation/form-geolocation.module';
 import { EditableImageModule } from '../../../../../projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import { LocationExplorerModule } from '../../../../../projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
+import { MapAssetModule } from 'projects/ngx-proximus/src/lib/map-asset/map-asset.module';
 @NgModule({
   declarations: [
     PlaygroundComponent,
@@ -18,18 +19,7 @@ import { LocationExplorerModule } from '../../../../../projects/ngx-proximus/src
   imports: [
     CommonModule,
     RouterModule.forChild(PlaygroundRoutes),
-    FormsModule,
-    ReactiveFormsModule,
-    MatStepperModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    IconModule,
-    FormKeyvalueModule,
-    FormGeolocationModule,
-    EditableImageModule,
-    LocationExplorerModule,
+    MapAssetModule
   ]
 })
 export class PlaygroundModule { }

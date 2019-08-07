@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 export interface TopMenuConfig {
   languages?: { label: string; value: string }[];
@@ -17,7 +18,7 @@ export interface TopMenuConfig {
 @Component({
   selector: 'pxs-top-menu',
   templateUrl: './top-menu.component.html',
-  styleUrls: ['./top-menu.component.css']
+  styleUrls: ['./top-menu.component.scss']
 })
 export class TopMenuComponent implements OnInit {
   @Input() config: TopMenuConfig = {
@@ -26,7 +27,7 @@ export class TopMenuComponent implements OnInit {
       visible: true
     },
     search: {
-      visible: true,
+      visible: false,
       placeholder: 'Search'
     },
     languages: [{label: 'EN', value: 'en'}, {label: 'NL', value: 'nl'}, {label: 'FR', value: 'fr'}],
@@ -34,12 +35,20 @@ export class TopMenuComponent implements OnInit {
     languageVisible: true
   };
 
+  @Input() searchResults: any[];
+
+  @ViewChild('inputSearch') set content(content: ElementRef) {
+    this.inputSearch = content;
+  }
+
   @Output() search: EventEmitter<string> = new EventEmitter();
+  @Output() autocompleteClick: EventEmitter<any> = new EventEmitter();
   @Output() contactClick: EventEmitter<void> = new EventEmitter();
   @Output() languageChange: EventEmitter<{ label: string; value: string; }> = new EventEmitter();
 
-  searchModel = '';
-
+  inputSearch: ElementRef;
+  searchText: string;
+  myControl = new FormControl();
   searchbarVisible = false;
 
   get activeLanguage() {
@@ -54,26 +63,19 @@ export class TopMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    
   }
 
-  // Catch enter key for emitting search event
-  checkEnter(event: KeyboardEvent) { // with type info
-    if (this.searchModel.length) {
-      if (event.code === 'Enter') {
-        this.emitSearch();
-      }
-    } else {
-      this.searchbarVisible = false;
-    }
-  }
 
-  emitSearch() {
-    this.search.emit(this.searchModel);
+  emitSearch(event) {
+    this.search.emit(event);
   }
 
   emitContact() {
     this.contactClick.emit();
   }
+
+
 
   emitLanguageChange(language) {
     this.activeLanguage = language;
@@ -82,12 +84,31 @@ export class TopMenuComponent implements OnInit {
 
   toggleSearchBar() {
     this.searchbarVisible = !this.searchbarVisible;
+    setTimeout(()=>{
+      if(this.inputSearch)
+      this.inputSearch.nativeElement.focus();
+    },200);
   }
 
+  searchChanged(event) {
+    if(event){
+      if(event.length>2) {
+        this.emitSearch(event);
+      }
+    }
+  }
+  
   searchFocusOut() {
-    if (this.searchbarVisible && !this.searchModel) {
+    if (this.searchbarVisible) {
       this.searchbarVisible = false;
     }
   }
+
+  selectAnAutocompletedOption(option){
+    this.searchbarVisible = false;
+    this.searchText = "";
+    this.autocompleteClick.emit(option);
+  }
+  
 
 }

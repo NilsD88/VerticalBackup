@@ -24,7 +24,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   async ngOnInit() {
     this.id = await this.getRouteId();
-    if (!isNullOrUndefined(this.id) && this.id !== 'null') {
+    if (!isNullOrUndefined(this.id) && this.id !== 'add') {
       this.loadItem();
     } else {
       this.item = new NewThresholdTemplate(null);
@@ -34,6 +34,21 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   private async loadItem() {
     // this.item = await this.thresholdTemplateService.getThresholdTemplate(this.id);
+  }
+
+  public validateThresholdTemplate():boolean {
+    let value = false;
+    if(this.item.name){
+      if(this.item.sensors && this.item.sensors.length > 0) {
+        for(let i = 0; i < this.item.sensors.length; ++i) {
+          if(this.item.sensors[i].thresholds && this.item.sensors[i].thresholds.length > 0) {
+            value = true;
+            break;
+          }
+        }
+      }
+    }
+    return value;
   }
 
   public addThreshold(sensorIdx: number) {
@@ -63,7 +78,6 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     });
     ref.afterClosed().subscribe((result) => {
       if (result) {
-
         if (!this.item.sensors.find((item) => {
           return item.sensorType.name === result.name;
         })) {
@@ -82,7 +96,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
         if (!isNullOrUndefined(params.id)) {
           resolve(params.id);
         } else {
-          resolve();
+          reject();
         }
       }, reject);
     });

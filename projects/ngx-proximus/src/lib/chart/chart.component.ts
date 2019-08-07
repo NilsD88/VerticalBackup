@@ -1,6 +1,22 @@
-import {AfterContentInit, Component, Input, OnChanges, OnInit} from '@angular/core';
-import * as Highcharts from 'highcharts';
+import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+import {ISensorReadingFilter} from '../../../../../src/app/models/sensor.model';
+import * as moment from 'moment';
+import * as mTZ from 'moment-timezone';
+import { formatDate } from '@angular/common';
+
+
+require('highcharts/modules/exporting');
+var Highcharts = require('highcharts/highstock');
+
+
+declare global {
+  interface Window { moment: any; }
+}
+
+moment.locale('nl-be');
+window.moment = moment;
+mTZ();
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -16,10 +32,18 @@ noData(Highcharts);
 exporting(Highcharts);
 exportData(Highcharts);
 
+
+interface IFilterChartData {
+  interval?: string;
+  from?: number;
+  to?: number;
+}
+
+
 @Component({
   selector: 'pxs-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.css']
+  styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit, OnChanges {
   @Input() chartData: {
@@ -28,6 +52,8 @@ export class ChartComponent implements OnInit, OnChanges {
   }[];
 
 
+  @Input() filter:IFilterChartData;
+  @Input() loading:boolean;
   @Input() height = 700;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
@@ -40,7 +66,13 @@ export class ChartComponent implements OnInit, OnChanges {
     '#9BDE7E', '#7FA06F'
   ];
 
+  
+  @Output() updateChartData = new EventEmitter<IFilterChartData>();
+
+
+  public intervals: string[] = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
   public options: any;
+  public chart: any;
 
   constructor(public translateService: TranslateService) {
   }
@@ -50,12 +82,15 @@ export class ChartComponent implements OnInit, OnChanges {
 
   public async ngOnChanges() {
     this.options = {
+      navigator: {
+        enabled: true      
+      },
+      time: {
+        timezone: 'Europe/Brussels'
+      },
       chart: {
         zoomType: 'xy',
-        height: this.height
-      },
-      rangeSelector: {
-        selected: 4
+        height: this.height,
       },
       title: {
         text: this.title
@@ -169,7 +204,8 @@ export class ChartComponent implements OnInit, OnChanges {
 
     await Promise.all(chartDataPromises);
 
-    Highcharts.chart('chart-container', this.options);
+    this.chart = Highcharts.chart('chart-container', this.options);
+  
 
   }
 
@@ -191,6 +227,21 @@ export class ChartComponent implements OnInit, OnChanges {
       case 'motion':
         return 3;
     }
+  }
+
+  
+  public intervalChanged(event) {
+    this.updateChartData.emit({
+      interval: event.value
+    });
+  }
+
+  public dateRangeChanged(range: {fromDate:Date; toDate:Date;}) {
+    const {fromDate, toDate} = range;
+    this.updateChartData.emit({
+      from: fromDate.getTime(),
+      to: toDate.getTime(),
+    });
   }
 
 

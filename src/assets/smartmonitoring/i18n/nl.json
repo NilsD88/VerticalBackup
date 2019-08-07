@@ -1,6 +1,376 @@
-{
+﻿{
+  "COOKIE": {
+    "MESSAGE": "Deze website gebruikt enkel cookies die noodzakelijk zijn voor hun functionaliteit.",
+    "DISMISS": "Accepteren!",
+    "LINK": "Leer meer"
+  },
+  "DISCLAIMER": {
+    "ALL_RIGHTS_RESERVED": "Alle rechten voorbehouden.",
+    "TERMS_AND_CONDITIONS": "Algemene voorwaarden, consumenteninfo en privacy",
+    "COOKIE_POLICY": "Cookiebeleid",
+    "BELGIAN_LAW": "Deze website is gecreëerd en wordt beheerd conform het Belgisch recht.",
+    "ADDRESS": "Koning Albert II-Laan, 27 - B-1030 Brussels"
+  },
+  "HOME": {
+    "INTRO": {
+      "TITLE": "Smart Monitoring",
+      "SUBTITLE": "Omgevingsmetingen",
+      "P1": "Heb je een volledig overzicht van je assets? Is het garanderen van kwaliteit belangrijk voor jou? Of moet je voldoen aan bepaalde certificaten?",
+      "P2": "Smart Monitoring biedt een uniek inzicht in je assets zodat je ze efficient kan beheren. Het levert relevante informatie om berekende beslissingen te maken. Wil je meer informatie over specifieke assets? Wij identificeren de juiste sensor voor jou om de juiste informatie te leveren.",
+      "P3": "We bieden een kleine, discrete datalogger aan die geen sim kaart of registratie vereist. Deze logger meet temperatuur, relatieve vochtigheid en licht sterkte. De logger gebruikt het LoRaWAN® netwerk van Proximus, dit netwerk laat een lange batterij levensduur toe en vermijdt de nood voor additionele kabels.",
+      "P4": "Spendeer je veel tijd om te plannen en berekenen hoe veel brandstof je moet leveren op een bepaalde plaats en tijdstip? Smart Tank maakt je leven gemakkelijker: deze oplossing meet dagelijks het niveau van elke tank. De applicatie geeft jou of je klant een notificatie wanneer de tank bijgevuld moet worden. Onverwachte leveringen zullen je planning niet meer in de war brengen!",
+      "BUTTON": {
+        "LABEL": "Test het nu uit"
+      }
+    },
+    "HOVER": {
+      "MORE_INFO" : "Click here for more info"
+    },
+    "LIST": {
+      "L1": "Moeiteloos. Link elke sensor aan je account en verzamel data over je assets",
+      "L2": "Automatisch. Al de data van de sensor wordt automatisch naar je server verzonden– de data is veilig en alleen toegankelijk voor jou of voorgedefinieerde profielen.",
+      "L3": "Duidelijk overzicht. De online dashboards geven een real-time overzicht van je assets en de complete geschiedenis van je data.",
+      "L4": "Veelzijdig. De bijgeleverde APIs integreren de Smart Monitoring data in je systemen. Op deze manier kan je al je processen optimalizeren van A tot Z.",
+      "L5": "Assistentie bij installatie en plaatsing van de sensoren."
+    },
+    "SENSORS": {
+      "TITLE": {
+        "ONESENSOR": "Een sensor",
+        "OPPORTUNITY": "Vele opportuniteiten"
+      },
+      "TYPES": {
+        "TEMPERATURE": "Temperatuur",
+        "HUMIDITY": "Humiditeit",
+        "LUMINOSITY": "Luminositeit",
+        "MOTION": "Beweging",
+        "BATTERY": "Batterij"
+      }
+    }
+  },
+  "MENU-ITEMS": {
+    "About": "Over ons",
+    "Alerts": "Alarmen",
+    "Inventory": "Inventaris",
+    "Locations": "Locatie"
+  },
   "GENERAL": {
-    "APP_NAME":"Smart Monitoring",
-    "APP_SUBTITLE": "Omgevingsmetingen"
-  }
+    "MORE": "Meer opties",
+    "BACK": "Terug",
+    "EXPORT_PDF": "Exporteren naar PDF",
+    "EXPORT_CSV": "Exporteren naar CSV",
+    "SUBMIT": "Indienen",
+    "CANCEL": "Annuleren",
+    "EDIT": "Bewerken",
+    "DELETE": "Verwijderen",
+    "SHOW": "Tonen"
+  },
+  "LAYOUT": {
+    "SEARCH": "Zoek assests",
+    "FULL_SCREEN": "Volledig scherm",
+    "EXIT_FULL_SCREEN": "Volledig scherm verlaten",
+    "ADMINISTRATION": "Administratie",
+    "MANAGE_ASSETS": "Beheer assets",
+    "MANAGE_LOCATIONS": "Beheer locaties",
+    "MANAGE_THINGS": "Beheer objecten",
+    "MANAGE_THRESHOLD_TEMPLATES": "Beheer alarm templates",
+    "ALERT_DEFINITIONS": "Alarm definities",
+    "ALERTS": "Alarmen",
+    "LANGUAGE": "Talen",
+    "ACCOUNT": "Account",
+    "CONTACT": "Contact",
+    "SIGN_OUT": "Uitloggen",
+    "SIGN_IN": "Inloggen",
+    "STOP_IMPERSONATION": "Stop impersonatie",
+    "SIGN_IN_ENCO": "EnCo",
+    "SIGN_IN_MYPROXIMUS": "MyProximus",
+    "PRIVACY_POLICY": "Privacybeleid",
+    "TODAY": "Vandaag",
+    "NO_ALERTS_TODAY": "Geen alarmen vandaag",
+    "UNREAD_ALERTS": "Ongelezen alarmen",
+    "NO_UNREAD_ALERTS": "Geen ongelezen alarmen",
+    "ADMIN": "Admin"
+  },
+  "FILTER": {
+    "TITLE": "Filter",
+    "TOGGLE": "Wisselen van filter",
+    "SAVE_AS_DEFAULT": "Als standaard filter opslagen",
+    "REVERT_DEFAULT": "Terugkeren naar standaard filter",
+    "PLACEHOLDER_SENSORTYPE": "Sensor type selecteren",
+    "PLACEHOLDER_THRESHOLD_TEMPLATE": "Alarm template selecteren",
+    "THRESHOLD_TEMPLATES": {
+      "NOT_FOUND": "Geen alarm template gevonden",
+      "PLACEHOLDER": "Selecteer een alarm template",
+      "LOADING_TEXT": "Alarm template aan het laden"
+    },
+    "LOCATION": "Locatie",
+    "LOCATION_TYPE": {
+      "NOT_FOUND": "Geen locatie type gevonden",
+      "PLACEHOLDER": "Selecteer een locatie type",
+      "LOADING_TEXT": "Locatie types aan het laden"
+    },
+    "STATUS": {
+      "NOT_FOUND": "Geen status gevonden",
+      "PLACEHOLDER": "Selecteer status",
+      "LOADING_TEXT": "Status aan het laden"
+    },
+    "NAME": {
+      "PLACEHOLDER": "Naam"
+    },
+    "SUBMIT": "Indienen"
+  },
+  "ALERTS": {
+    "MARK_AS_READ": "Markeer als gelezen",
+    "MARK_AS_UNREAD": "Markeer als ongelezen",
+    "TITLE": "Alarmen",
+    "ASSET": "Object",
+    "LOCATION_TYPE": "Locatie type",
+    "DATE": "Datum",
+    "MESSAGE": "Bericht",
+    "THRESHOLD_TEMPLATE": "Grenswaarde template",
+    "MARK_SELECTED_READ": "Markeer als gelezen",
+    "MARK_SELECTED_UNREAD": "Markeer als ongelezen"
+  },
+  "SENSORTYPES": {
+    "range": "min/max"
+  },
+  "ALERT_TYPE": {
+    "high": "Hoog",
+    "low": "Laag"
+  },
+  "LOCATIONTYPE_SELECT": {
+    "NOT_FOUND_TEXT": "Geen locatie type gevonden",
+    "LOADING_TEXT": "Locatie types aan het laden",
+    "PLACEHOLDER": "Selecteer Locatie type"
+  },
+  "THRESHOLD_TEMPLATE_INPUT": {
+    "CUSTOM": "Aangepast",
+    "ENABLED": "Ingeschakeld",
+    "DISABLED": "Uitgeschakeld"
+  },
+  "INVENTORY": {
+    "TITLE": "Inventaris",
+    "NONE_FOUND": "Geen assets gevonden.",
+    "FILTER": {
+      "PLACEHOLDERS": {
+        "NAME": "Asset name"
+      }
+    }
+  },
+  "LOCATIONS": {
+    "TITLE": "Assets per locatie",
+    "TOGGLE_MAP": "Wissel grondplan",
+    "NAME": {
+      "PLACEHOLDER": "Zoek op asset naam voor geselecteerde locatie"
+    }
+  },
+  "PRIVACY_POLICY": {
+    "TITLE": "Privacybeleid",
+    "P1": "Proximus opereert een publiek Internet of Things netwerk waar sensoren data verzenden naar het MyThings platform van Proximus. Voor privacy redenen is deze dienst niet geschikt voor het traceren van mensen.",
+    "P2": "Wanneer u inlogt op Smart Monitoring, zal de volgende informatie bijgehouden worden om u te identificeren en authentiseren:",
+    "P3": "Al uw acties op Smart Monitoring worden één maand voor veiligheidsredenen getraceerd.",
+    "P4": "Uw e-mailadres wordt gebruikt om u te informeren van nieuwigheden en updates van onze diensten, tenzij u zich uitschrijft via de gebruikersinstellingen.",
+    "P5": "Uw accountinformatie zal bewaard worden zolang uw account actief is. Als uw account inactief is voor 2 jaar, zal deze verwijderd worden.",
+    "P6": "Voor het uitoefenen van uw privacy rechten kan u een e-mail verzenden naar:",
+    "UL": {
+      "LI1": "Uw inloggegevens",
+      "LI2": "Uw e-mailadres",
+      "LI3": "Uw achter- en voornaam",
+      "LI4": "De naam van het bedrijf waarvoor u inlogt"
+    }
+  },
+  "BROWSER_NOT_SUPPORTED_MODAL": {
+    "TITLE": "Browser wordt niet ondersteund",
+    "P1": "Helaas ondersteunen we deze versie van uw browser niet en dit zou u beter ook niet doen!",
+    "P2": "Dit bericht verschijnt omdat u een niet-ondersteunde of verouderde versie van uw browser gebruikt. Kijk in de lijst van de ondersteunde browsers voor deze functionaliteit. Als uw browser wel in deze lijst staat, kijk dan na of u de laatste versie geïnstalleerd heeft.",
+    "P3": "Als uw browser in de lijst van ondersteunde browsers staat en de laatste versie is, contacteer onze hulpdienst dan.",
+    "SUPPORTED_BROWSERS": "Ondersteunde browsers",
+    "SUPPORTED": "Ondersteund",
+    "NOT_SUPPORTED": "Niet ondersteund",
+    "LATEST_RELEASE": "Laatste versie",
+    "GET_LATEST": "Haal de laatste versie",
+    "CONTINUE": "Verder"
+  },
+  "DETAIL": {
+    "LOADING_UNREAD_ALERTS": "Ongelezen alarmen laden",
+    "NO_CHART_DATA": "Geen data beschikbaar voor de geselecteerde filter",
+    "PLACEHOLDER_CHARTTYPE": "Grafiek type",
+    "THRESHOLD_TEMPLATE": "Grenswaarde template",
+    "NO_ASSET_ALERTS": "Geen alarmen",
+    "DESCRIPTION": "Omschrijving",
+    "NO_DESCRIPTION": "Geen omschrijving voor deze asset",
+    "LAST_MEASUREMENTS": "Laatste meting",
+    "NO_LAST_MEASURE": "Nog geen laatste meting beschikbaar",
+    "DATA_CHART": "Data grafiek",
+    "PLACEHOLDER_SENSORTYPE": "Selecteer sensor grafiek",
+    "THRESHOLDS": "Drempels",
+    "CHART_CONFIGURATION": "Grafiek",
+    "ALERTS": "Alarmen",
+    "RECEIVED_VALUE": "Ontvangen waardes",
+    "THRESHOLD_LOW": "Lage drempel",
+    "THRESHOLD_HIGH": "Hoge drempel",
+    "LINKED_THINGS": "Gekoppelde objecten",
+    "CHART": "Grafiek",
+    "CONFIGURATIONS": "Configuratie",
+    "CHARTTYPES": {
+      "24HOURS" : "Alle gegevens van de afgelopen 24 uur",
+      "HOURLY": "Per uur",
+      "DAILY": "Dagelijks",
+      "WEEKLY": "Wekelijks",
+      "MONTHLY": "Maandelijks",
+      "YEARLY": "Jaarlijks"
+    },
+    "AGGREGATED": {
+      "MEASUREMENT" : "Meting",
+      "MAX" : "Max",
+      "MIN" : "Min",
+      "AVERAGE" : "Gem",
+      "STANDARDDEVIATION" : "StD"
+    }
+  },
+  "DELETE_CONFIRM": {
+    "TITLE": "Bevestig",
+    "CONFIRM": "Bevestig",
+    "CANCEL": "Annuleer"
+  },
+  "IMAGE_INPUT": {
+    "SELECT_IMAGE": "Selecteer afbeelding",
+    "CHANGE": "Wijzig",
+    "REMOVE": "Verwijder"
+  },
+  "ALERT_DEF": {
+    "TITLE": "Alarm definities",
+    "EMAIL_SETTINGS": "E-mailinstellingen",
+    "ENABLED": "Ingeschakeld",
+    "DELETE_RECIPIENT": "Verwijder ontvanger",
+    "ADD_RECIPIENT": "Voeg ontvanger toe",
+    "SUBJECT": "Onderwerp",
+    "BODY": "Tekst",
+    "RECIPIENT": "Ontvangers",
+    "PLACEHOLDERS": "Placeholders",
+    "ASSET": "Asset",
+    "LOG": "Log",
+    "THRESHOLD_TEMPLATE": "Alarm template",
+    "CATEGORY": "Categorie",
+    "SAVE_EMAIL": "Sla e-mailinstellingen op",
+    "SMS_SETTINGS": "SMS instellingen",
+    "SAVE_SMS": "Sla SMS instellingen op",
+    "BUTTON_LABELS": {
+      "ASSET_NAME": "Asset naam",
+      "LOCATION_NAME": "Locatienaam",
+      "SUBLOCATION_NAME": "Sublocatienaam",
+      "DEVICE_ID": "Toestel ID",
+      "TIMESTAMP": "Tijdstempel",
+      "VALUE": "Waarde",
+      "MATERIAL_NAME": "Materiaal naam",
+      "THRESHOLD_MIN": "Grenswaarde Minimum",
+      "THRESHOLD_MAX": "Grenswaarde Maximum"
+    }
+  },
+  "ASSET_MODAL": {
+    "DETAIL": "Details",
+    "PLACEHOLDERS": {
+      "NAME": "Naam"
+    }
+  },
+  "SUPPORT": {
+    "TITLE": "Ondersteuning",
+    "PLACEHOLDERS": {
+      "EMAIL": "Uw e-mail",
+      "MESSAGE": "Uw bericht",
+      "NAME": "Uw naam"
+    },
+    "INFO": {
+      "MORE_INFO": "Voor meer informatie , contacteer ons op ",
+      "KIND_OF_SUPPORT": "Welke ondersteuning bieden we?",
+      "TECHINCAL_PROBLEMS": "Technische problemen?",
+      "RELOCATION": "Verplaatsing van dataloggers of object",
+      "HARDWARE": "Vragen over de hardware",
+      "SOFTWARE": "Vragen over data of software",
+      "PREVENTIVE_CONSERVATION": "Vragen over de preventieve bewarings vraagstukken.",
+      "FORGOT_PASSWORD": "Wachtwoord vergeten",
+      "CHANGE_PASSWORD": "Wachtwoord veranderen",
+      "HAPPY_TO_ASSIST": "Wij helpen u graag verder",
+      "FORGOT_PASSWORD_TEXT": "Als u uw Smart Monitoring ID-wachtwoord bent vergeten, kunt u het opnieuw instellen en weer toegang krijgen tot uw account"
+    },
+    "ERRORS": {
+      "EMAIL_REQUIRED": "E-mail is verplicht.",
+      "EMAIL_FORMAT": "Ongeldig e-mail formaat.",
+      "NAME_REQUIRED": "Naam is verplicht.",
+      "MESSAGE_REQUIRED": "Bericht is verplicht.",
+      "MESSAGE_MIN_CHAR": "Minimum 50 tekens.",
+      "MESSAGE_MAX_CHAR": "Max 2048 tekens."
+    }
+  },
+  "MANAGE_THINGS": {
+    "TITLE": "Beheer objecten",
+    "DETAILS_TEXT": "SELECTEER EEN OBJECT OM DETAILS TE ZIEN",
+    "PLACEHOLDERS": {
+      "SELECT_THING": "Selecteer object",
+      "THING_NAME": "Object naam"
+    }
+  },
+  "MANAGE_ASSETS": {
+    "TITLE": "Assets beheren",
+    "NEW": "Nieuwe asset",
+    "TABLE_HEADERS": {
+      "NAME": "Naam",
+      "ACTIONS": "Acties",
+      "LOCATION_TYPE": "Locatie type",
+      "LOCATION": "Locatie",
+      "SUBLOCATION": "Sublocatie",
+      "THRESHOLD_TEMPLATE": "Grenswaarde template"
+    }
+  },
+  "SENSOR_BOTTOMSHEET": {
+    "TEMPERATURE": "Hoge temperaturen kunnen chemische schade veroorzaken en de afbraaksnelheid van kunst verhogen, en zijn goede omstandigheden voor insecten en schimmelgroei. Lage temperaturen kunnen condensatie van vocht veroorzaken. Temperatuurschommelingen kunnen de luchtvochtigheid beïnvloeden.",
+    "HUMIDITY": "Hoge luchtvochtigheid kan schimmelvorming of corrosie veroorzaken en zorgt voor goede omstandigheden voor insecten. Lage luchtvochtigheid veroorzaakt het risico van mechanische vervorming en broosheid van hygroscopische materialen. Fluctuaties van vochtigheid verhogen het risico van mechanische schade.",
+    "MOTION": "Trillingen en schokken kunnen mechanische schade veroorzaken.",
+    "LUMINOSITY": "Hoge lichtwaarden kunnen verkleuring veroorzaken en het risico van chemische schade aan verflagen en vernissen vergroten."
+  },
+  "CONTACT": {
+    "TECHNICAL_SUPPORT": {
+      "TITLE": "Technische support:",
+      "MAILTO": "mailto:ict-servicedesk@proximus.com",
+      "EMAIL": "ict-servicedesk@proximus.com",
+      "TELTO": "tel:080022200",
+      "TEL": "0800 22 200"
+    },
+    "SALES": {
+      "TITLE": "Marketing en sales:",
+      "MAILTO": "mailto:iot@proximus.com",
+      "EMAIL": "iot@proximus.com",
+      "TELTO": "tel:080022200",
+      "TEL": "0800 222 00"
+    },
+    "SUPPORT_DETAILS": ""
+  },
+  "LOGIN_ERROR":{
+    "single_logout" : "Je bent succesvol uitgelogd.",
+    "token_refresh_failed" : "Uw sessie is verlopen, log opnieuw in.",
+    "no_session": "Uw sessie is verlopen, log opnieuw in.",
+    "grant_application_access" : "U hebt geen toegang tot deze applicatie. Neem contact op met de support.",
+    "internal_server_error" : "Er is iets fout gegaan, probeer nog eens.",
+    "other" : "Toegang geweigerd. Vaak wordt het probleem opgelost door de cache van uw browser te wissen en uw browser opnieuw te starten. Probeer opnieuw in te loggen. Neem contact op met de support als het probleem aanhoudt.",
+    "403" : "U bent succesvol ingelogd, maar onze gegevens laten zien dat u geen toegang heeft tot deze applicatie. Klik op de onderstaande knop om uit te loggen. Als u toegang tot deze toepassing wilt aanvragen, neemt u contact met ons op via het",
+    "CONTACT" : "contact formulier",
+    "access_denied": "Toegang is geweigerd."
+  },
+  "LOGOUT_SUCCESS" : {
+    "logout_ok" : "Je bent succesvol uitgelogd."
+  },
+  "PDF": {
+    "ASSET_NAME": "Asset naam",
+    "ClIENT_NAME" : "Client naam",
+    "LOCATION_NAME" : "Locatie naam",
+    "SUBLOCATION_NAME" : "Sublocatie naam",
+    "CHART" : "GRAFIEK",
+    "MEASURE_PERIOD" : "Meet periode vanaf",
+    "TO" : "tot",
+    "AGGREGATED_VALUES" : "GEAGGREGATEERDE WAARDEN"
+  },
+  "temperature": "Temperatuur",
+  "humidity": "Humiditeit",
+  "motion": "Beweging",
+  "luminosity": "Luminositeit",
+  "battery": "Batterij"
 }

@@ -8,6 +8,7 @@
         [ngClass]="{'selected': selectedLocation === location}"
       >
         {{location.name}}
+        <span (click)="goToSublocation(location)"><pxs-icon icon="chevron-right"></pxs-icon></span>
     </mat-list-item>
   </mat-list>
 </mat-tab>

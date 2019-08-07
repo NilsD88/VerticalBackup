@@ -16,14 +16,8 @@ export class FilterService {
   public getSensorTypes(all?: boolean): Promise<SensorType[]> {
     return new Promise(async (resolve, reject) => {
       this.http.get(`${environment.baseUrl}sensortypes/`)
-        .subscribe((response: any) => {
-          resolve(SensorType.createArray(response.content.filter((type) => {
-            if (all) {
-              return true;
-            } else {
-              return type.name !== 'battery';
-            }
-          })));
+        .subscribe((response: SensorType[]) => {
+          resolve(response);
         }, (err: HttpErrorResponse) => {
           this.sharedService.rejectPromise('Error! Failed to fetch sensortype data. Please reload.', reject);
         });

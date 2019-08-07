@@ -17,10 +17,12 @@ import {
   MatIconModule, MatInputModule,
   MatMenuModule,
   MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatButtonModule
 } from '@angular/material';
 import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
+import { IconModule } from 'projects/ngx-proximus/src/public-api';
+import { LocationExplorerOldModule } from 'projects/ngx-proximus/src/lib/location-explorer-old/location-explorer-old.module';
 
 
 @NgModule({
@@ -39,8 +41,10 @@ import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/
     MatIconModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    MatInputModule
-
+    MatInputModule,
+    MatButtonModule,
+    IconModule,
+    LocationExplorerOldModule,
   ],
   declarations: [InventoryComponent],
   providers: [AssetService, FilterService, LocationsService, SharedService]

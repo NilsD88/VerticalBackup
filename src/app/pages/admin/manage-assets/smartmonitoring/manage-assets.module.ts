@@ -10,7 +10,7 @@ import {
   MatCheckboxModule, MatChipsModule, MatIconModule,
   MatInputModule,
   MatPaginatorModule,
-  MatSelectModule, MatTooltipModule
+  MatSelectModule, MatTooltipModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatCardModule
 } from '@angular/material';
 import {LoaderModule} from '../../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -20,6 +20,7 @@ import {ManageAssetsListComponent} from './manage-assets-list.component';
 import {IconModule} from '../../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import {BadgeModule} from '../../../../../../projects/ngx-proximus/src/lib/badge/badge.module';
 import {ThingsListModule} from '../../../../../../projects/ngx-proximus/src/lib/things-list/things-list.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [ManageAssetsComponent, ManageAssetsListComponent],
@@ -31,6 +32,10 @@ import {ThingsListModule} from '../../../../../../projects/ngx-proximus/src/lib/
     MatSelectModule,
     MatCheckboxModule,
     MatAutocompleteModule,
+    MatSortModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
     LoaderModule,
     FlexLayoutModule,
     ImageEditorModule,
@@ -42,8 +47,9 @@ import {ThingsListModule} from '../../../../../../projects/ngx-proximus/src/lib/
     MatTooltipModule,
     BadgeModule,
     ThingsListModule,
-    IconModule
-  ]
+    IconModule,
+    TranslateModule
+  ],
 })
 export class ManageAssetsModule {
 }

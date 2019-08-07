@@ -1,16 +1,8 @@
-{
-  "GENERAL": {
-    "APP_NAME": "Smart Monitoring",
-    "APP_SUBTITLE": "Surroundings measurements",
-    "SELECT_ALL": "Select all",
-    "NO_RESULTS_FOUND_FILTER": "No results found for selected filter",
-    "LOADING": "Loading..."
-  },
-  "TOP_MENU": {
-    "CONTACT": "Contact",
-    "ADMIN": "Admin",
-    "ACCOUNT": "Account",
-    "SEARCH_PLACEHOLDER": "Search"
+﻿{
+  "COOKIE": {
+    "MESSAGE": "This website uses only cookies that are necessary for its functionality.",
+    "DISMISS": "Accept!",
+    "LINK": "Learn more"
   },
   "DISCLAIMER": {
     "ALL_RIGHTS_RESERVED": "All rights reserved.",
@@ -26,6 +18,28 @@
       "ITEM3": "Clear view. The online dashboard gives a real-time view of your assets and a complete history. ",
       "ITEM4": "Versatile. The supplied APIs inject the Smart Monitoring data into your systems. That way, you can optimize all your processes from A to Z. ",
       "ITEM5": "Assistance with placement and installation."
+    },
+    "INTRO": {
+      "TITLE": "Smart Monitoring",
+      "SUBTITLE": "Surroundings measurements",
+
+      "P1": "Do you have a complete view of your assets? Are quality controls of high importance to you? Or do you need to meet specific certifications?",
+      "P2": "Smart Monitoring offers a unique view of your assets in order to manage them efficiently. It provides the relevant information to make calculated decisions. Want more information about specific assets? We will identify the sensor for you to generate the right insights.",
+      "P3": "We offer a small discrete datalogger that does not require a sim card or registration. This logger measures temperature, relative humidity and light values. It uses the LoRaWAN® network of Proximus, which allows a long battery lifetime and avoids the need for additional cables.",
+      "P4": "Do you spend a lot of time planning and calculating how much fuel you need to deliver at a certain place and time? Smart Tank makes life easier: this solution measures the level of each tank daily. And notifies you or your customer when it’s time to tank up. Unexpected deliveries? They won’t disrupt your planning anymore.",
+      "BUTTON": {
+        "LABEL": "Try now"
+      }
+    },
+    "HOVER": {
+      "MORE_INFO" : "Click here for more info"
+    },
+    "LIST": {
+      "L1": "Effortless. link any sensor to your account and gather specific data about your assets.",
+      "L2": "Automatic. All the data from the sensor is automatically sent to your server– the data is secure and only accessible to you. Or predefined profiles.",
+      "L3": "Clear view. The online dashboard gives a real-time view of your assets and a complete history.",
+      "L4": "Versatile. The supplied APIs inject the Smart Monitoring data into your systems. That way, you can optimize all your processes from A to Z.",
+      "L5": "Assistance with placement and installation"
     },
     "SENSORS": {
       "TITLE": "Monitor your environment",
@@ -62,40 +76,198 @@
       }
     }
   },
+  "MENU-ITEMS": {
+    "About": "About",
+    "Alerts": "Alerts",
+    "Inventory": "Inventory",
+    "Locations": "Locations"
+  },
+  "GENERAL": {
+    "APP_NAME": "Smart Monitoring",
+    "APP_SUBTITLE": "Surroundings measurements",
+    "SELECT_ALL": "Select all",
+    "NO_RESULTS_FOUND_FILTER": "No results found for selected filter",
+    "LOADING": "Loading...",
+    "MORE": "More",
+    "BACK": "Back",
+    "EXPORT_PDF": "Export to PDF",
+    "EXPORT_EXCEL": "Export to Excel",
+    "EXPORT_CSV": "Export to CSV",
+    "SUBMIT": "Submit",
+    "CANCEL": "Cancel",
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "SHOW": "Show"
+  },
+  "LAYOUT": {
+    "SEARCH": "Search assets",
+    "FULL_SCREEN": "Full screen",
+    "EXIT_FULL_SCREEN": "Exit full screen",
+    "ADMINISTRATION": "Administration",
+    "MANAGE_ASSETS": "Manage assets",
+    "MANAGE_LOCATIONS": "Manage locations",
+    "MANAGE_THINGS": "Manage things",
+    "MANAGE_THRESHOLD_TEMPLATES": "Manage threshold templates",
+    "ALERT_DEFINITIONS": "Alert definitions",
+    "ALERTS": "Alerts",
+    "LANGUAGE": "Language",
+    "ACCOUNT": "Account",
+    "CONTACT": "Contact",
+    "SIGN_OUT": "Logout",
+    "SIGN_IN": "Login",
+    "SIGN_IN_ENCO": "EnCo",
+    "SIGN_IN_MYPROXIMUS": "MyProximus",
+    "PRIVACY_POLICY": "Privacy policy",
+    "TODAY": "Today",
+    "NO_ALERTS_TODAY": "No alerts today",
+    "UNREAD_ALERTS": "Unread alerts",
+    "NO_UNREAD_ALERTS": "No unread alerts",
+    "ADMIN": "Admin"
+  },
+  "FILTER": {
+    "TITLE": "Filter",
+    "TOGGLE": "Toggle filter",
+    "SAVE_AS_DEFAULT": "Save as default filter",
+    "REVERT_DEFAULT": "Revert to default filter",
+    "PLACEHOLDER_SENSORTYPE": "Select sensor type",
+    "PLACEHOLDER_THRESHOLD_TEMPLATE": "Select threshold template",
+    "THRESHOLD_TEMPLATES": {
+      "NOT_FOUND": "No threshold templates found",
+      "PLACEHOLDER": "Select threshold template",
+      "LOADING_TEXT": "Threshold templates loading"
+    },
+    "LOCATION": "Location",
+    "LOCATION_TYPE": {
+      "NOT_FOUND": "No location types found",
+      "PLACEHOLDER": "Select location type",
+      "LOADING_TEXT": "Location types loading"
+    },
+    "STATUS": {
+      "NOT_FOUND": "No statuses found",
+      "PLACEHOLDER": "Select status",
+      "LOADING_TEXT": "Statuses loading"
+    },
+    "NAME": {
+      "PLACEHOLDER": "Name"
+    },
+    "SUBMIT": "Submit"
+  },
+  "ALERTS": {
+    "MARK_AS_READ": "Mark as read",
+    "MARK_AS_UNREAD": "Mark as unread",
+    "TITLE": "Alerts",
+    "ASSET": "Asset",
+    "LOCATION_TYPE": "Location type",
+    "DATE": "Date",
+    "MESSAGE": "Message",
+    "THRESHOLD_TEMPLATE": "Threshold template",
+    "MARK_SELECTED_READ": "Mark selected as read",
+    "MARK_SELECTED_UNREAD": "Mark selected as unread"
+  },
   "SENSORTYPES": {
+    "range": "range",
     "temperature": "Temperature",
     "humidity": "Humidity",
     "motion": "Motion",
     "luminosity": "Luminosity",
     "battery": "Battery",
     "pulse": "Pulse",
-    "counter": "counter",
-    "range": "range"
+    "counter": "Counter"
   },
   "ALERT_TYPE": {
     "high": "high",
     "low": "low"
   },
+  "LOCATIONTYPE_SELECT": {
+    "NOT_FOUND_TEXT": "No location types found",
+    "LOADING_TEXT": "Loading location types",
+    "PLACEHOLDER": "Select location type"
+  },
+  "THRESHOLD_TEMPLATE_INPUT": {
+    "CUSTOM": "Custom",
+    "ENABLED": "Enabled",
+    "DISABLED": "Disabled"
+  },
   "INVENTORY": {
     "TITLE": "Inventory",
-    "NONE_FOUND": "No assets to be displayed",
+    "NONE_FOUND": "No assets found.",
     "FILTER": {
       "PLACEHOLDERS": {
         "NAME": "Asset name"
       }
     }
   },
-  "THRESHOLD_TEMPLATES": {
-    "CUSTOM": "Custom"
-  },
-  "FILTER": {
-    "THRESHOLD_TEMPLATES": {
-      "NOT_FOUND": "Not found",
-      "LOADING_TEXT": "Loading text",
-      "PLACEHOLDER": "Threshold templates"
+  "LOCATIONS": {
+    "TITLE": "assets by location",
+    "TOGGLE_MAP": "Toggle map view",
+    "NAME": {
+      "PLACEHOLDER": "Search on asset name for the selected location"
     }
   },
+  "PRIVACY_POLICY": {
+    "TITLE": "Privacy Policy",
+    "P1": "Proximus operates a public Internet-of-Things network with which devices and sensors can send data to the MyThings platform of Proximus. For reasons of privacy, this service is not suitable for locating people.",
+    "P2": "When you log into Smartcare, the following information is collected to identify and authenticate you:",
+    "P3": "All your actions on Smartcare are tracked for security purposes for 1 month.",
+    "P4": "Your e-mail address is used to keep you informed of novelties and updates of the service, unless you unsubscribe via your user settings.",
+    "P5": "Your account information will be kept as long as your account is active. Once your account has been inactive for 2 years, it will be removed.",
+    "P6": "For the exercise of your privacy rights you can send an e-mail to",
+    "UL": {
+      "LI1": "your login details",
+      "LI2": "your email address",
+      "LI3": "your name and first name",
+      "LI4": "name of the company you are logging in for"
+    }
+  },
+  "BROWSER_NOT_SUPPORTED_MODAL": {
+    "TITLE": "Browser not supported",
+    "P1": "Oh snap! We don't support this version of your browser, and neither should you!",
+    "P2": "This message is shown because you are using an unsupported browser or an outdated version of your browser, check the list of supported browsers for this functionality below. If your browser is in the list, make sure you have updated it to the latest version.",
+    "P3": "If your browser is in the list of supported browsers and updated to the latest version, please contact our support service.",
+    "SUPPORTED_BROWSERS": "Supported browsers",
+    "SUPPORTED": "Supported",
+    "NOT_SUPPORTED": "Not supported",
+    "LATEST_RELEASE": "Latest release",
+    "GET_LATEST": "Get latest",
+    "CONTINUE": "Continue"
+  },
   "DETAIL": {
+    "LOADING_UNREAD_ALERTS": "Loading unread alerts",
+    "NO_CHART_DATA": "No data available for selected filter",
+    "PLACEHOLDER_CHARTTYPE": "Chart type",
+    "THRESHOLD_TEMPLATE": "Threshold template",
+    "DESCRIPTION": "Description",
+    "NO_DESCRIPTION": "No description for this asset",
+    "LAST_MEASUREMENT": "Last measurement",
+    "LAST_MEASUREMENTS": "Last measurements",
+    "NO_LAST_MEASURE": "No last measurements available yet.",
+    "DATA_CHART": "Data chart",
+    "NO_ASSET_ALERTS": "No alerts",
+    "PLACEHOLDER_SENSORTYPE": "Select chart sensors",
+    "CHART_CONFIGURATION": "Chart configuration",
+    "THRESHOLDS": "Thresholds",
+    "ALERTS": "Alerts",
+    "RECEIVED_VALUE": "Received value",
+    "THRESHOLD_LOW": "Threshold low",
+    "THRESHOLD_HIGH": "Threshold high",
+    "LINKED_THINGS": "Linked things",
+    "CHART": "Chart",
+    "CONFIGURATIONS": "Configurations",
+    "CHARTTYPES": {
+      "24HOURS" : "All data of last 24 hours",
+      "HOURLY": "Hourly",
+      "DAILY": "Daily",
+      "WEEKLY": "Weekly",
+      "MONTHLY": "Monthly",
+      "YEARLY": "Yearly"
+    },
+    "AGGREGATED": {
+      "MEASUREMENT" : "Measurement",
+      "MAX" : "Max",
+      "MIN" : "Min",
+      "AVERAGE" : "Avg",
+      "STANDARDDEVIATION" : "StD"
+    },
     "LAST_ALERT": {
       "TITLE": "Last Alert",
       "VALUE": "Value",
@@ -103,15 +275,15 @@
       "HIGH": "High"
     }
   },
-  "ALERTS": {
-    "TITLE": "Alerts",
-    "UNREAD_ALERTS": "Unread alerts",
-    "READ_ALERTS": "Read alerts",
-    "FILTER": {
-      "NAME": "Asset name",
-      "SENSORS": "Sensors",
-      "THRESHOLD_TEMPLATES": "Threshold templates"
-    }
+  "DELETE_CONFIRM": {
+    "TITLE": "Confirm",
+    "CONFIRM": "Confirm",
+    "CANCEL": "Cancel"
+  },
+  "IMAGE_INPUT": {
+    "SELECT_IMAGE": "Select image",
+    "CHANGE": "Change",
+    "REMOVE": "Remove"
   },
   "ALERT_DEF": {
     "TITLE": "Alert definitions",
@@ -142,14 +314,111 @@
       "THRESHOLD_MAX": "Threshold Max"
     }
   },
-  "DASHBOARD": {
-    "SMART_TANK": {
-      "STATUS": {
-        "OK": "No problems",
-        "LOW": "No data recently",
-        "HIGH": "Low fuel",
-        "CRITICAL": "Empty fuel"
-      }
+  "ASSET_MODAL": {
+    "DETAIL": "Detail",
+    "PLACEHOLDERS": {
+      "NAME": "Name"
     }
-  }
+  },
+  "SUPPORT": {
+    "TITLE": "Support",
+    "PLACEHOLDERS": {
+      "EMAIL": "Your email",
+      "MESSAGE": "Your message",
+      "NAME": "Your name"
+    },
+    "INFO": {
+      "MORE_INFO": "For more information and support please contact us at",
+      "KIND_OF_SUPPORT": "What kind of support do we offer?",
+      "TECHINCAL_PROBLEMS": "Assistance in case of technical issues",
+      "RELOCATION": "Relocation of dataloggers or object",
+      "HARDWARE": "Questions about the hardware",
+      "SOFTWARE": "Questions about data or software",
+      "PREVENTIVE_CONSERVATION": "Questions about preventive conservation issues",
+      "FORGOT_PASSWORD": "Forgot password",
+      "CHANGE_PASSWORD": "change password",
+      "HAPPY_TO_ASSIST": "We would be happy to assist you",
+      "FORGOT_PASSWORD_TEXT": "If you can’t remember your Smart Monitoring ID password, you can reset it and regain access to your account"
+    },
+    "ERRORS": {
+      "EMAIL_REQUIRED": "Email is required.",
+      "EMAIL_FORMAT": "Invalid email format.",
+      "NAME_REQUIRED": "Name is required.",
+      "MESSAGE_REQUIRED": "Message is required.",
+      "MESSAGE_MIN_CHAR": "Minimum 50 characters.",
+      "MESSAGE_MAX_CHAR": "Max 2048 characters."
+    }
+  },
+  "MANAGE_THINGS": {
+    "TITLE": "Manage Things",
+    "DETAILS_TEXT": "SELECT THING TO SEE DETAILS",
+    "PLACEHOLDERS": {
+      "SELECT_THING": "Select Thing",
+      "THING_NAME": "Thing name"
+    }
+  },
+  "MANAGE_ASSETS": {
+    "TITLE": "Manage assets",
+    "NEW": "New asset",
+    "TABLE_HEADERS": {
+      "NAME": "Name",
+      "ACTIONS": "Actions",
+      "LOCATION_TYPE": "Location type",
+      "LOCATION": "Location",
+      "SUBLOCATION": "Sublocation",
+      "THRESHOLD_TEMPLATE": "Threshold template"
+    }
+  },
+  "SENSOR_BOTTOMSHEET": {
+    "TEMPERATURE": "High temperatures can cause chemical damages and increase degradation rate of art, and are good conditions for insects and moldgrowth. Low temperatures can cause condensation of moisture. Temperature fluctuations can effect humidity levels",
+    "HUMIDITY": "High humidity can cause moldgrowth or corrosion, and creates good conditions for insects. Low humidity causes risk of mechanical deformation and brittleness of hygroscopic materials. Fluctuations of humidity increase risk of mechanical damage.",
+    "MOTION": "Vibration and shocks create a risk of mechanical damage.",
+    "LUMINOSITY": "High light values can cause discolouration and increase risk of chemical damage of paint layers and varnishes."
+  },
+  "CONTACT": {
+    "TECHNICAL_SUPPORT": {
+      "TITLE": "Technical support:",
+      "MAILTO": "mailto:ict-servicedesk@proximus.com",
+      "EMAIL": "ict-servicedesk@proximus.com",
+      "TELTO": "tel:080055200",
+      "TEL": "0800 55 200"
+    },
+    "SALES": {
+      "TITLE": "Marketing and sales:",
+      "MAILTO": "mailto:iot@proximus.com",
+      "EMAIL": "iotk@proximus.com",
+      "TELTO": "tel:080022200",
+      "TEL": "0800 222 00"
+    },
+    "SUPPORT_DETAILS": ""
+  },
+  "LOGIN_ERROR":{
+    "single_logout" : "You've been successfully logged out.",
+    "token_refresh_failed" : "Your session has expired, please login again.",
+    "no_session": "Your session has expired, please login again",
+    "grant_application_access" : "You do not have access to this application. Please contact support.",
+    "internal_server_error" : "Something went wrong, please try again.",
+    "other" : "Access denied. Often clearing your browser's cache and restarting your browser will solve the problem. Please try logging in again. If the issue persists, please contact support.",
+    "403" : "You have successfully logged in, but our records show that you do not have access to this application.  Click the button below to logout. To request access to this application, please contact us using the",
+    "CONTACT" : "contact form",
+    "access_denied" : "Access has been denied."
+  },
+  "LOGOUT_SUCCESS" : {
+    "logout_ok" : "You've been successfully logged out."
+  },
+  "PDF": {
+    "ASSET_NAME": "Asset name",
+    "CLIENT_NAME" : "Client name",
+    "LOCATION_NAME" : "Location name",
+    "SUBLOCATION_NAME" : "Sublocation name",
+    "CHART" : "CHART",
+    "MEASURE_PERIOD" : "Measure period from",
+    "TO" : "to",
+    "AGGREGATED_VALUES" : "AGGREGATED VALUES"
+  },
+  "temperature": "Temperature",
+  "humidity": "Humidity",
+  "motion": "Motion",
+  "luminosity": "Luminosity",
+  "battery": "Battery"
 }

@@ -5,7 +5,7 @@ export type IPxsColors = 'primary' | 'inactive' | 'accent' | 'link' | 'promo' | 
 @Component({
   selector: 'pxs-button',
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css']
+  styleUrls: ['./button.component.scss']
 })
 export class ButtonComponent implements OnInit {
   static codeExample = `<pxs-button color="primary" size="small">

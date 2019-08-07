@@ -43,7 +43,7 @@ export class SharedAlertsService {
   }
 
   public getPagedAlerts(filter: any, pageIndex: number, pageSize: number): Promise<IPagedAlerts> {
-    const dateRangeQuery = `sensorReading.timestamp>=${moment(filter.dateRange.fromDate).startOf('day')};sensorReading.timestamp<=${moment(filter.dateRange.toDate).endOf('day')}`;
+    const dateRangeQuery = `sensorReading.timestamp>=${moment(filter.dateRange.fromDate).startOf('day').valueOf()};sensorReading.timestamp<=${moment(filter.dateRange.toDate).endOf('day').valueOf()}`;
     const thresholdTemplateQuery =
       filter.thresholdTemplates.length ?
         `asset.thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})` :

@@ -1,12 +1,15 @@
-<pxs-top-menu *ngIf="topMenuConfig" (languageChange)="sharedLayoutService.changeLanguage($event)"
-              [config]="topMenuConfig">
+<pxs-top-menu
+  *ngIf="topMenuConfig"
+  (languageChange)="sharedLayoutService.changeLanguage($event)"
+  (contactClick)="navigateTo('contact')"
+  [config]="topMenuConfig"
+>
   <pxs-menu-item label="Proximus" (action)="navigateTo('destination')"></pxs-menu-item>
   <pxs-menu-item label="MyThings" (action)="navigateTo('destination')"></pxs-menu-item>
   <pxs-top-menu-actions>
     <pxs-menu-item [mat-menu-trigger-for]="user">
       <pxs-icon icon="user"></pxs-icon>
-      <span class="visible-md-inline visible-lg-inline" [translate]="'TOP_MENU.ACCOUNT'"></span>
-
+      <span class="visible-md-inline visible-lg-inline" [translate]="'LAYOUT.ACCOUNT'"></span>
       <mat-menu #user="matMenu">
         <div mat-menu-item>
           Account
@@ -17,7 +20,6 @@
           </button>
         </div>
       </mat-menu>
-
     </pxs-menu-item>
   </pxs-top-menu-actions>
 </pxs-top-menu>

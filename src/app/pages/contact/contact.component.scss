@@ -1,0 +1,16 @@
+#contact-image {
+    flex: 1;
+    background-image: url("/assets/images/coffee-contact-email.jpg");
+    background-size: cover;
+    background-position: center;
+  }
+
+  
+:host {
+    >.row {
+        background: #FAFAFA;
+        mat-card {
+           margin: 50px 0;
+        }
+    }
+}

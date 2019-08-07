@@ -2,6 +2,14 @@ import {IOrganization, Organization} from './organization.model';
 import {IThing, Thing} from './thing.model';
 import {isNullOrUndefined} from 'util';
 
+export interface ISensorReadingFilter {
+  deveui: string;
+  sensortypeid: number | string;
+  from: number;
+  to: number;
+  interval: string; //'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+}
+
 export interface ISensorReading {
   devEui: string;
   timestamp: number;

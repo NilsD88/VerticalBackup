@@ -1,10 +1,11 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {isNullOrUndefined} from 'util';
+
 
 @Component({
   selector: 'pxs-aggregated-values',
   templateUrl: './aggregated-values.component.html',
-  styleUrls: ['./aggregated-values.component.css']
+  styleUrls: ['./aggregated-values.component.scss']
 })
 export class AggregatedValuesComponent implements OnInit, OnChanges {
 
@@ -28,15 +29,15 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges() {
-    if (this.aggregatedValues.length && this.chartData.length) {
+  ngOnChanges(changes:SimpleChanges) {
+    if (this.chartData.length) {
       this.chartData.forEach((item) => {
+        console.log(item);
         const aggregatedValue = this.createAggregatedValues(item, `${item.label} ${item.devEui}`);
         this.aggregatedValues.push(aggregatedValue);
       });
     }
   }
-
 
   public createAggregatedValues(data, labelTranslation: string) {
     const aggregatedValue: {
@@ -56,6 +57,7 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
     const avg = [];
     const max = [];
     const min = [];
+
     if (!isNullOrUndefined(data.series)) {
       data.series.forEach((item) => {
         avg.push(item.avg);
@@ -69,9 +71,10 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
       });
 
       aggregatedValue.label = labelTranslation;
-      aggregatedValue.max = Math.max(...max).toFixed(2);
-      aggregatedValue.min = Math.min(...min).toFixed(2);
-      aggregatedValue.average = (sum / avg.length).toFixed(2);
+      aggregatedValue.max = (max.length > 0) ? Math.max(...max).toFixed(2) : null;
+      aggregatedValue.min = (min.length > 0) ? Math.min(...min).toFixed(2) : null;
+      aggregatedValue.average = (data.series.length > 0) ? (sum / data.series.length).toFixed(2) : null;
+
       const retrievedStandardDeviation = this.standardDeviations.find(standardDeviation => {
         return standardDeviation.sensorType === data.label;
       });
