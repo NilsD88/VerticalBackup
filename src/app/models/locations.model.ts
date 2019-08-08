@@ -18,8 +18,8 @@ export class Sublocation implements ISublocation {
   name: string;
   pictureBase64: string;
 
-  assets: Asset[];
-  location: Location;
+  assets: IAsset[];
+  location: ILocation;
   things: Thing[];
 
   constructor(private _sublocation: ISublocation) {

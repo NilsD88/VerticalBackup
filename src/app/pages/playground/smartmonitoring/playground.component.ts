@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
-import { IGeolocation } from 'src/app/models/asset.model';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Asset, IGeolocation } from 'src/app/models/asset.model';
+import { INewLocation, NewLocation } from 'src/app/models/new-location';
 
 
 @Component({
@@ -10,34 +10,70 @@ import { IGeolocation } from 'src/app/models/asset.model';
 })
 export class PlaygroundComponent implements OnInit {
 
-  @ViewChild('inputLat') inputLat: ElementRef;
-  @ViewChild('inputLng') inputLng: ElementRef;
+  assets = [];
+  locations = MOCK_LOCATIONS;
+  parentLocation:INewLocation;
   
-  parentFormGroup: FormGroup;
-  descriptionFormGroup: FormGroup;
-  geolocationFormGroup: FormGroup;
-  floorPlan: String;
-
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.parentFormGroup = this._formBuilder.group({
-    });
-    this.descriptionFormGroup = this._formBuilder.group({
-      NameCtrl: ['', Validators.required],
-      DescriptionCtrl: ['', Validators.required],
-      TypeCtrl: ['', Validators.required],
-    });
-    this.geolocationFormGroup = this._formBuilder.group({
-      longitudeCtrl: ['', Validators.required],
-      latitudeCtrl: ['', Validators.required],
-    });
   }
-  
 
-  submit() {
-    console.log(this.descriptionFormGroup);
-    console.log(this.geolocationFormGroup);
-    console.log(this.floorPlan);
+  updateAssetsAndLocations(location:INewLocation) {
+    if(location){
+      console.log("there is a location");
+      this.assets = [];
+      this.locations = [];
+      this.changeDetectorRef.detectChanges();
+      this.assets = MOCK_ASSETS;
+      this.parentLocation = location;
+      this.changeDetectorRef.detectChanges();
+    }else {
+      this.assets = [];
+      this.locations = [];
+      this.changeDetectorRef.detectChanges();
+      this.locations = MOCK_LOCATIONS;
+      this.parentLocation = null;
+      this.changeDetectorRef.detectChanges();
+    }
+    
   }
 }
+
+const MOCK_ASSETS:Asset[] = [];
+const MOCK_LOCATIONS:INewLocation[] = [];
+
+const ASSETS_GEOLOCATION:IGeolocation[] = [
+  {
+    lng: 4.300289154052734,
+    lat: 50.87292803971143
+  },
+  {
+    lng: 4.387836456298828,
+    lat: 50.87065314638895
+  },
+  {
+    lng: 4.327583312988281,
+    lat: 50.83315558401709
+  }
+];
+
+const LOCATIONS_GEOLOCATION:IGeolocation[] = [
+  {
+    lng: 4.357602596282959,
+    lat: 50.85181330562521
+  }
+];
+
+ASSETS_GEOLOCATION.forEach(element => {
+  const asset = new Asset(null);
+  asset.geolocation = element;
+  MOCK_ASSETS.push(asset);
+});
+
+LOCATIONS_GEOLOCATION.forEach(element => {
+  const location = new NewLocation(null);
+  location.geolocation = element;
+  location.name = "Location 1";
+  MOCK_LOCATIONS.push(location);
+});

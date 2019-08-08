@@ -1,0 +1,21 @@
+@import "~/../src/variables.scss";
+
+#chart-container {
+    width: 100%;
+}
+
+:host{
+    display: flex;
+    flex-direction: column;
+    .chart-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .mat-button-toggle-checked {
+        background: $primary;
+        color: white !important;
+    } 
+}

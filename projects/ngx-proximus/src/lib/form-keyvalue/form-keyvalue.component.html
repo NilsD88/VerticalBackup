@@ -27,8 +27,8 @@
           </mat-form-field>
         </div>
         <div>
-          <button mat-mini-fab color="warn" (click)="removeKeyValue(i)">
-            <pxs-icon icon="remove-o"></pxs-icon>
+          <button mat-icon-button color="warn" (click)="removeKeyValue(i)">
+            <pxs-icon icon="trash"></pxs-icon>
           </button>
         </div>
       </div>
@@ -36,8 +36,9 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-md-6 mx-auto">
-      <button mat-fab color="primary" (click)="addKeyValue()">
+      <button mat-raised-button (click)="addKeyValue()">
         <pxs-icon icon="plus-o"></pxs-icon>
+        Add Key/Value
       </button>
     </div>
   </div>

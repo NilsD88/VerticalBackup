@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TopMenuComponent } from './top-menu.component';
 import {IconModule} from '../icon/icon.module';
-import {MatMenuModule} from '@angular/material';
-import {FormsModule} from '@angular/forms';
+import {MatMenuModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule} from '@angular/material';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [TopMenuComponent],
@@ -12,6 +12,10 @@ import {FormsModule} from '@angular/forms';
     IconModule,
     MatMenuModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
   ],
   exports: [
     TopMenuComponent

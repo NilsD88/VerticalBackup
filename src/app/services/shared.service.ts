@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {isNullOrUndefined} from 'util';
-import {HttpHeaders} from '@angular/common/http';
 import {User} from '../models/user.model';
 import {promise} from 'selenium-webdriver';
 import IRejectedCallback = promise.IRejectedCallback;
 import {MatSnackBar, MatSnackBarRef} from '@angular/material';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,8 @@ export class SharedService {
   public user: User;
 
   constructor(
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    public translate: TranslateService,
   ) {
     this.user = JSON.parse(window.localStorage.getItem('user'));
   }

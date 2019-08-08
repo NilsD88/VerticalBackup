@@ -1,0 +1,156 @@
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h2 [translate]="'SUPPORT.TITLE'"></h2></mat-card-title>
+      </mat-card-header>
+      <form [formGroup]="contactFG" (ngSubmit)="submit()">
+        <mat-card-content>
+          <h5>{{'SUPPORT.INFO.MORE_INFO' |translate}}:</h5>
+          <div class="row pb-2">
+            <div class="col-md-6">
+              <p>
+                <b>{{'CONTACT.TECHNICAL_SUPPORT.TITLE' | translate}}</b>
+                <span *ngIf="assetPrefix === 'smart-care'">Lucy ‘t Hart,</span>
+              </p>
+              <p>
+                <a href="{{'CONTACT.TECHNICAL_SUPPORT.MAILTO' | translate}}">
+                  {{'CONTACT.TECHNICAL_SUPPORT.EMAIL' | translate}}
+                </a>
+              </p>
+              <p>
+                <a href="{{'CONTACT.TECHNICAL_SUPPORT.TELTO' | translate}}">
+                  {{'CONTACT.TECHNICAL_SUPPORT.TEL' | translate}}
+                </a>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p>
+                <b>{{'CONTACT.SALES.TITLE' | translate}}</b>
+              </p>
+              <p>
+                <a href="{{'CONTACT.SALES.MAILTO' | translate}}">
+                  {{'CONTACT.SALES.EMAIL' | translate}}
+                </a>
+              </p>
+              <p>
+                <a href="{{'CONTACT.SALES.TELTO' | translate}}" *ngIf="assetPrefix === 'smart-care'">
+                  {{'CONTACT.SALES.TEL' | translate}}
+                </a>
+              </p>
+            </div>
+          </div>
+          <div class="row pb-2" *ngIf="assetPrefix === 'smart-care'">
+            <div class="col-12" >
+              <h5>{{'SUPPORT.INFO.KIND_OF_SUPPORT' |translate}}</h5>
+              <ul>
+                <li>{{'SUPPORT.INFO.TECHINCAL_PROBLEMS' | translate}}</li>
+                <li>{{'SUPPORT.INFO.RELOCATION' | translate}}</li>
+                <li>{{'SUPPORT.INFO.HARDWARE' | translate}}</li>
+                <li>{{'SUPPORT.INFO.SOFTWARE' | translate}}</li>
+                <li>{{'SUPPORT.INFO.PREVENTIVE_CONSERVATION' | translate}}</li>
+              </ul>
+
+              <h5>{{'SUPPORT.INFO.FORGOT_PASSWORD' |translate}}?</h5>
+              <p>
+                {{'SUPPORT.INFO.FORGOT_PASSWORD_TEXT' |translate}}
+                (<a href="https://www.proximus.be/login/en/forgotPassword"
+                    target="_blank"> {{'SUPPORT.INFO.CHANGE_PASSWORD' |translate}}</a>)
+              </p>
+              <p>{{'SUPPORT.INFO.HAPPY_TO_ASSIST' |translate}}.</p>
+            </div>
+          </div>
+          <div class="row pb-2">
+            <div class="col-md-6">
+              <mat-form-field class="w-100">
+                <input matInput name="email" formControlName="email"
+                       placeholder="{{'SUPPORT.PLACEHOLDERS.EMAIL' | translate}}" type="email">
+                <div
+                  *ngIf="contactFG.controls.email.invalid && (contactFG.controls.email.dirty || contactFG.controls.email.touched)"
+                  class="alert alert-danger">
+
+                  <div *ngIf="contactFG.controls.email.errors.required">
+                    <span [translate]="'SUPPORT.ERRORS.EMAIL_REQUIRED'"></span>
+                  </div>
+                  <div *ngIf="contactFG.controls.email.errors.email">
+                    <span [translate]="'SUPPORT.ERRORS.EMAIL_FORMAT'"></span>
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="w-100">
+                <input matInput placeholder="{{'SUPPORT.PLACEHOLDERS.NAME' | translate}}" formControlName="name"
+                       type="text">
+                <div
+                  *ngIf="contactFG.controls.name.invalid && (contactFG.controls.name.dirty || contactFG.controls.name.touched)"
+                  class="alert alert-danger">
+
+                  <div *ngIf="contactFG.controls.name.errors.required">
+                    <span [translate]="'SUPPORT.ERRORS.NAME_REQUIRED'"></span>
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <small style="float: right;">{{contactFG.controls.message.value?.length}}/2048</small>
+                <textarea matInput placeholder="{{'SUPPORT.PLACEHOLDERS.MESSAGE' | translate}}"
+                          formControlName="message" rows="15"
+                          [maxlength]="2048" [minlength]="50"></textarea>
+                <div
+                  *ngIf="contactFG.controls.message.invalid && (contactFG.controls.message.dirty || contactFG.controls.message.touched)"
+                  class="alert alert-danger">
+                  <div>
+                  </div>
+                  <div *ngIf="contactFG.controls.message.errors.required">
+                    <span [translate]="'SUPPORT.ERRORS.MESSAGE_REQUIRED'"></span>
+                  </div>
+                  <div *ngIf="contactFG.controls.message.errors.minlength">
+                    <span [translate]="'SUPPORT.ERRORS.MESSAGE_MIN_CHAR'"></span>
+                  </div>
+                  <div *ngIf="contactFG.controls.message.errors.maxlength">
+                    <span [translate]="'SUPPORT.ERRORS.MESSAGE_MAX_CHAR'"></span>
+                  </div>
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+           <!-- <div class="col-12">
+              <ngx-recaptcha2 #captchaElem
+                              siteKey="6LflC5MUAAAAAH3eg8lVcIDsxY-mR3cAPOejCi_m"
+                              (load)="handleLoad($event)"
+                              (success)="handleSuccess($event)"
+                              [size]="recaptcha.size"
+                              [hl]="recaptcha.lang"
+                              [theme]="recaptcha.theme"
+                              [type]="recaptcha.type"
+                              formControlName="recaptcha">
+              </ngx-recaptcha2>
+            </div>-->
+            <div class="col-md-6 offset-md-6 mt-1">
+              <button mat-raised-button
+                      type="submit"
+                      class="w-50"
+                      [color]="'primary'"
+                      [disabled]="!contactFG.valid">
+                <span [translate]="'GENERAL.SUBMIT'"></span>
+              </button>
+              <button mat-raised-button
+                      type="button"
+                      class="w-50"
+                      [color]="'warn'"
+                      (click)="resetForm()"
+                      [disabled]="contactFG.pristine">
+                <span [translate]="'GENERAL.CANCEL'"></span>
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </form>
+    </mat-card>
+  </div>
+</div>

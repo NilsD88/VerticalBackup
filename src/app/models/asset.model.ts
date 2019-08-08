@@ -30,7 +30,7 @@ export interface IAsset {
   lastMeasurements?: any[]; // TODO: lastMeasurements
   timeLastMeasurementReceived?: Date;
   geolocation: IGeolocation;
-  status: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
+  status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
 }
 
 export interface IGeolocation {
@@ -39,7 +39,7 @@ export interface IGeolocation {
 }
 
 export interface IPagedAssets {
-  assets: Asset[];
+  data: Asset[];
   pageNumber: number;
   totalElements: number;
 }
@@ -165,16 +165,16 @@ export class Asset implements IAsset {
 
   public static createPagedArray(response: any): IPagedAssets {
     if (!isNullOrUndefined(response.content)) {
-      const assets = response.content.map((value) => {
+      const data = response.content.map((value) => {
         return new Asset(value);
       });
 
       const pageNumber = response.number ? response.number : 0;
       const totalElements = response.totalElements ? response.totalElements : 0;
 
-      return {assets, pageNumber, totalElements};
+      return {data, pageNumber, totalElements};
     } else {
-      return {assets: [], pageNumber: 0, totalElements: 0};
+      return {data: [], pageNumber: 0, totalElements: 0};
     }
   }
 

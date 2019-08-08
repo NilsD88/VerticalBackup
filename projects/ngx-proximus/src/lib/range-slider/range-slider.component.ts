@@ -8,11 +8,14 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class RangeSliderComponent implements OnInit {
   @Input() disabled = false;
   @Input() postfix = '';
-  @Input() from = 0;
-  @Input() to = 100;
+  @Input() startFrom = 0;
+  @Input() startTo = 100;
   @Input() min = 0;
   @Input() max = 100;
   @Input() step = 1;
+
+  from:number;
+  to:number;
 
   @Output() change: EventEmitter<{ from: number, to: number }> = new EventEmitter();
 
@@ -20,13 +23,19 @@ export class RangeSliderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.from = this.startFrom;
+    this.to = this.startTo;
   }
 
   sliderChange(evt: number[]) {
-    this.change.emit({
-      from: evt[0],
-      to: evt[1]
-    });
+    if(evt.length === 2){
+      this.from = evt[0];
+      this.to = evt[1];
+      this.change.emit({
+        from: this.from,
+        to: this.to
+      });
+    }
   }
 
 }

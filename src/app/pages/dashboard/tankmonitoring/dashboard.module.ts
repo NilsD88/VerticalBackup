@@ -6,6 +6,7 @@ import {DashboardRoutes} from './dashboard.routing';
 import {TranslateModule} from '@ngx-translate/core';
 import {PieChartModule} from '../../../../../projects/ngx-proximus/src/lib/pie-chart/pie-chart.module';
 import {MapAssetModule} from '../../../../../projects/ngx-proximus/src/lib/map-asset/map-asset.module';
+import { MatTableModule, MatSortModule } from '@angular/material';
 
 @NgModule({
   declarations: [DashboardComponent],
@@ -14,7 +15,9 @@ import {MapAssetModule} from '../../../../../projects/ngx-proximus/src/lib/map-a
     RouterModule.forChild(DashboardRoutes),
     TranslateModule,
     PieChartModule,
-    MapAssetModule
+    MapAssetModule,
+    MatTableModule,
+    MatSortModule,
   ]
 })
 export class DashboardModule { }

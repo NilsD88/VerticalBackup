@@ -35,7 +35,7 @@ export class AlertsService {
   }
 
   public getAlerts(filter: any): Promise<Alert[]> {
-    const dateRangeQuery = `sensorReading.timestamp>=${moment(filter.dateRange.fromDate).startOf('day')};sensorReading.timestamp<=${moment(filter.dateRange.toDate).endOf('day')}`;
+    const dateRangeQuery = `sensorReading.timestamp>=${moment(filter.dateRange.fromDate).startOf('day').valueOf()};sensorReading.timestamp<=${moment(filter.dateRange.toDate).endOf('day').valueOf()}`;
     const thresholdTemplateQuery = filter.thresholdTemplates.length ? `asset.thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})` : undefined;
     const locationTypeQuery = filter.locationTypes.length ? `asset.sublocation.location.locationType.id=in=(${filter.locationTypes.toString()})` : undefined;
     const sensorTypesQuery = filter.sensorTypes.length ? `thresholdAlert.sensorType.id=in=(${filter.sensorTypes.toString()})` : undefined;

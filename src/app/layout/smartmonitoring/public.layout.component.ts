@@ -28,12 +28,12 @@ export class PublicLayoutComponent implements OnInit, OnDestroy {
       activeLanguage: this.sharedLayoutService.currentLang,
       languageVisible: true,
       contact: {
-        label: await this.translateService.get('TOP_MENU.CONTACT').toPromise(),
+        label: await this.translateService.get('LAYOUT.CONTACT').toPromise(),
         visible: true
       },
       search: {
-        placeholder: await this.translateService.get('TOP_MENU.SEARCH_PLACEHOLDER').toPromise(),
-        visible: true
+        placeholder: await this.translateService.get('LAYOUT.SEARCH').toPromise(),
+        visible: false
       }
     };
     this.footerConfig = await this.sharedLayoutService.getFooterTranslations();

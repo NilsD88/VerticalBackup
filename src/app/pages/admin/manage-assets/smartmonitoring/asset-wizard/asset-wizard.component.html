@@ -1,0 +1,75 @@
+<mat-horizontal-stepper #stepper [linear]="true">
+    <mat-step [stepControl]="descriptionFormGroup">
+      <form [formGroup]="descriptionFormGroup">
+        <ng-template matStepLabel>Description</ng-template>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 mx-auto">
+            <div class="asset-image">
+              <pxs-editable-image (change)="assetImage=$event" [dialogTitle]="'Upload an image'" [ratio]="1"></pxs-editable-image>
+            </div>
+            <mat-form-field>
+              <input matInput placeholder="Name" formControlName="NameCtrl" required>
+            </mat-form-field>
+            <mat-form-field>
+              <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" required></textarea>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-select placeholder="Type" matInput formControlName="TypeCtrl">
+                <mat-option value="type1">Type 1</mat-option>
+                <mat-option value="type2">Type 2</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>        
+        <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
+        <p>Form value: {{ descriptionFormGroup.value | json }}</p>
+        <p>Form status: {{ descriptionFormGroup.status | json }}</p>
+        
+        <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+        
+      </form>
+    </mat-step>
+    <mat-step [completed]="selectedLocation">
+      <form>
+        <ng-template matStepLabel>Location</ng-template>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 mx-auto">
+            <pxs-location-explorer 
+              [locations]="locationTree"
+              (notify)="updateLocation($event)"
+            ></pxs-location-explorer>
+          </div>
+        </div>
+        <pxs-stepper-next [completed]="selectedLocation" (next)="stepper.next()"></pxs-stepper-next>
+      </form>
+    </mat-step>
+    <mat-step [completed]="geolocation">
+      <form>
+        <ng-template matStepLabel>Geolocation</ng-template>
+        <pxs-form-geolocation 
+        *ngIf="selectedLocation"
+        [location]="selectedLocation"
+        (notify)="geolocation=$event"
+        ></pxs-form-geolocation>
+        <pxs-stepper-next [completed]="geolocation" (next)="stepper.next()"></pxs-stepper-next>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="thingsFormGroup">       
+      <form [formGroup]="thingsFormGroup">
+        <ng-template matStepLabel>Things</ng-template>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 mx-auto">
+            <mat-selection-list formControlName="thingsCtrl">
+              <mat-list-option 
+                *ngFor="let thing of things"
+                [value]="thing.devEui"
+              >
+                {{thing.devEui}} - {{thing.name}}
+              </mat-list-option>
+            </mat-selection-list>
+          </div>
+        </div>
+        <pxs-stepper-next [formGroup]="thingsFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>

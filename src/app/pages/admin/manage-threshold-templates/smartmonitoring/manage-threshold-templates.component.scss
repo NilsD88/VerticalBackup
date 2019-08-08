@@ -1,0 +1,50 @@
+::ng-deep .mat-card-header-text  {
+    margin: 0px !important;
+}
+
+::ng-deep .mat-card-header {
+    .title {
+        display: flex;
+        align-items: center;
+        img {
+            max-height: 1.3em;
+            margin-right: 0.6em;
+        }
+    }
+}
+
+::ng-deep .alerts {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+}
+
+::ng-deep .threshold-row {
+    background: #F5F5F5;
+    margin: 5px 0 !important;
+    border-radius: 4px;
+    padding: 10px 0;
+    .range-slider-values {
+        margin-top: 0;
+    }
+
+    > div[class^="col"] {
+        display: flex;
+        align-items: center;
+        > div {
+            flex: 1;
+            width: 100%;
+        }
+        pxs-range-slider{
+            width: 100%;
+        }
+        &:last-of-type {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.sensor-card {
+    margin: 5px 0;
+}
+

@@ -7,10 +7,11 @@ import {isNullOrUndefined} from 'util';
 import {environment} from '../../environments/environment';
 
 export interface IAssetFilter {
-  name: string;
-  thresholdTemplates: string[];
-  locationType: string;
-  locations: string[];
+  name?: string;
+  thresholdTemplates?: string[];
+  locationType?: string;
+  locations?: string[];
+  sublocations?: string[];
   status?: string;
 }
 
@@ -41,35 +42,61 @@ export class AssetService {
   }
 
   public getAssets(filter?: IAssetFilter): Promise<Asset[]> {
-    const query = '';
-    /*if (!isNullOrUndefined(filter)) {
-      const nameQuery = filter.name.length ? `name=="*${filter.name.toLowerCase()}*"` : undefined;
-      const statusQuery = filter.status.length ? `status=="${filter.status}"` : undefined;
-      const thresholdTemplateQuery = filter.thresholdTemplates.length ?
-        `thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})`
-        : undefined;
+    let query = '';
+    if (!isNullOrUndefined(filter)) {
+      let nameQuery = null;
+      let statusQuery = null;
+      let thresholdTemplateQuery = null;
+      let locationTypeQuery = null;
+      let locationsQuery = null;
+      let sublocationsQuery = null;
 
-      const locationTypeQuery = !isNullOrUndefined(filter.locationType) ?
-        `sublocation.location.locationType.id==${filter.locationType}`
-        : undefined;
-
-      const locationsQuery = filter.locations.length ?
-        `sublocation.location.id=in=(${filter.locations.toString()})` :
-        undefined;
-
-      let statusQuery;
-      if (filter.statuses.length) {
-        if (filter.statuses.length === 1) {
-          statusQuery = `alerts=statusOk=${filter.statuses[0].toLowerCase() === 'ok'}`;
+      if(filter.name) {
+        nameQuery = filter.name.length ? `name=="*${filter.name.toLowerCase()}*"` : null;
+      }
+     
+      if(filter.status) {
+        statusQuery = filter.status.length ? `status=="${filter.status}"` : null;
+        if (filter.status.length === 1) {
+          statusQuery = `alerts=statusOk=${filter.status[0].toLowerCase() === 'ok'}`;
         }
       }
+
+      if(filter.thresholdTemplates) {
+        thresholdTemplateQuery = filter.thresholdTemplates.length ?
+        `thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})`
+        : null;
+      }
+
+      if(filter.locationType) {
+        locationTypeQuery = !isNullOrUndefined(filter.locationType) ?
+        `sublocation.location.locationType.id==${filter.locationType}`
+        : null;
+      }
+
+    
+      if(filter.locations) {
+        locationsQuery = filter.locations.length ?
+        `sublocation.location.id=in=(${filter.locations.toString()})` :
+        null;
+      }
+
+      if(filter.sublocations) {
+        locationsQuery = null;
+        sublocationsQuery = filter.locations.length ?
+        `sublocation.id=in=(${filter.locations.toString()})` :
+        null;
+      }
+      
+
       query = this.sharedService.buildFilterQuery([
       nameQuery,statusQuery,
       thresholdTemplateQuery,
       locationTypeQuery,
       locationsQuery,
+      sublocationsQuery,
       statusQuery]);
-    }*/
+    }
 
     const url = `${environment.baseUrl}assets/${query ? query : ''}`;
 
@@ -90,9 +117,10 @@ export class AssetService {
     });
   }
 
-  public getPagedAssets(filter: IAssetFilter, pageIndex: number, pageSize: number): Promise<IPagedAssets> {
+  public getPagedAssets(filter: IAssetFilter, pageIndex: number, pageSize: number, sort: string = null, order:string = "asc"): Promise<IPagedAssets> {
     let query;
     if (!isNullOrUndefined(filter)) {
+      console.log("Filter not null");
       const nameQuery = filter.name.length ? `name=="*${filter.name.toLowerCase()}*"` : undefined;
       const thresholdTemplateQuery = filter.thresholdTemplates.length ?
         `thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})`
@@ -102,15 +130,33 @@ export class AssetService {
         `sublocation.location.locationType.id==${filter.locationType}`
         : undefined;
 
-      const locationsQuery = filter.locations.length ?
+      let locationsQuery;
+      if(filter.locations && filter.locations.length > 0) {
+        locationsQuery = filter.locations.length ?
         `sublocation.location.id=in=(${filter.locations.toString()})` :
-        undefined;
+        null;
+      }
 
+      let sublocationsQuery;
+      if(filter.sublocations && filter.sublocations.length > 0) {
+        locationsQuery = null;
+        sublocationsQuery = filter.sublocations.length ?
+        `sublocation.id=in=(${filter.sublocations.toString()})` :
+        null;
+      }
 
-      query = this.sharedService.buildFilterQuery([nameQuery, thresholdTemplateQuery, locationTypeQuery, locationsQuery]);
+     
+
+      query = this.sharedService.buildFilterQuery([nameQuery, thresholdTemplateQuery, locationTypeQuery, locationsQuery, sublocationsQuery]);
+      console.log("query", query);
     }
 
-    const url = `${environment.baseUrl}assets/${query ? query : ''}${query ? '&' : '?'}page=${pageIndex}&size=${pageSize}`;
+    let sortQuery = '';
+    if(!isNullOrUndefined(sort)) {
+      sortQuery = `&${sort},${order}`;
+    }
+
+    const url = `${environment.baseUrl}assets/${query ? query : ''}${query ? '&' : '?'}page=${pageIndex}&size=${pageSize}${sortQuery}`;
 
     return new Promise(async (resolve, reject) => {
       this.http.get(url)

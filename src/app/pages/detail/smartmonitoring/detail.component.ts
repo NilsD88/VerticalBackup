@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Asset} from '../../../models/asset.model';
 import {AssetService} from '../../../services/asset.service';
@@ -6,15 +6,14 @@ import {isNullOrUndefined} from 'util';
 import {SharedAlertsService} from '../../alerts/shared-alerts.service';
 import {Alert} from '../../../models/alert.model';
 import {TranslateService} from '@ngx-translate/core';
-import {LogsService} from '../../../services/logs.service';
 import * as moment from 'moment';
+import { ISensorReadingFilter } from 'src/app/models/sensor.model';
+import { LogsService } from 'src/app/services/logs.service';
 
-export interface SensorReadingFilter {
-  deveui: string;
-  sensortypeid: number | string;
-  from: number;
-  to: number;
-  interval: 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+interface IFilterChartData {
+  interval?: string;
+  from?: number;
+  to?: number;
 }
 
 @Component({
@@ -30,6 +29,12 @@ export class DetailComponent implements OnInit {
   public chartData = [];
   public chartDateRange = {fromDate: moment(new Date()).startOf('d').toDate(), toDate: moment(new Date()).endOf('d').toDate()};
   public standardDeviations = [];
+  
+  public currentFilter: IFilterChartData = {
+    interval: "HOURLY",
+    from: this.chartDateRange.fromDate.getTime(),
+    to: this.chartDateRange.toDate.getTime(),
+  }
 
   public mapLayers = [];
 
@@ -41,9 +46,16 @@ export class DetailComponent implements OnInit {
               private translateService: TranslateService,
               private logsService: LogsService,
               public sharedAlertsService: SharedAlertsService) {
+                activeRoute.params.subscribe(val => {
+                  this.init();
+                });
   }
 
+
   async ngOnInit() {
+  }
+
+  async init() {
     try {
       const id = await this.getRouteId();
       const assetPromise = this.assetService.getAssetById(id);
@@ -56,7 +68,7 @@ export class DetailComponent implements OnInit {
           sensorTypeId: val.sensorType.id
         };
       }) : [];
-      this.getChartData();
+      this.getChartData(null);
       this.createMarkerOnMap();
 
     } catch (err) {
@@ -76,18 +88,50 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  public async getChartData() {
+
+  public async getChartData(options:{interval?:string; from?:number; to?:number;}) {
+
+    let shouldUpdate = false;
+    
+    if(!options) {
+      shouldUpdate = true;
+      options = this.currentFilter;
+    }
+
+    const interval = options.interval ?  options.interval : this.currentFilter.interval;
+    const from = options.from ?  options.from : this.currentFilter.from;
+    const to = options.to ?  options.to : this.currentFilter.to;
+
+    if(interval !== this.currentFilter.interval) {
+      shouldUpdate = true;
+    } else if(from < this.currentFilter.from || to > this.currentFilter.to) {
+      shouldUpdate = true;
+    }
+
+    if(!shouldUpdate) {
+      console.log("not update");
+      return false;
+    }
+
+    console.log("have to update");
+
+    this.currentFilter = {
+      interval,
+      from,
+      to
+    }
+    
     this.chartLoading = true;
     const logsPromises = [];
     const standardDeviationPromises = [];
 
     for (const sensorType of this.chartSensorOptions) {
-      const filter: SensorReadingFilter = {
+      const filter:ISensorReadingFilter = {
         deveui: sensorType.deveui,
         sensortypeid: sensorType.sensorTypeId,
-        from: this.chartDateRange.fromDate.getTime(),
-        to: this.chartDateRange.toDate.getTime(),
-        interval: 'HOURLY'
+        from,
+        to,
+        interval,
       };
       logsPromises.push(this.logsService.getSensorReadings(filter));
       standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
@@ -97,6 +141,8 @@ export class DetailComponent implements OnInit {
     this.chartData = await Promise.all(logsPromises);
     this.chartLoading = false;
   }
+
+
 
   public createMarkerOnMap() {
     /*const m = marker(, {

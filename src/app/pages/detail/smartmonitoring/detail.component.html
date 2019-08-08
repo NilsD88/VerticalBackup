@@ -5,20 +5,21 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <div *ngIf="!chartData?.length" style="display: flex; /*height: 100%;*/">
-            <h4 *ngIf="!chartLoading"
-                style="text-align: center; margin-top: auto;margin-bottom: auto; width: 100%"
-                [translate]="'DETAIL.NO_CHART_DATA'"></h4>
-            <pxs-loader></pxs-loader>
-          </div>
-          <pxs-chart style="padding: 2rem; padding-bottom: 0; display: flex; height: 100%;"
-                     *ngIf="chartData?.length"
+          <pxs-chart style="display: flex; height: 100%;"
+                     [loading]="chartLoading"
                      [height]="400"
                      [title]="'Data'"
-                     [chartData]="chartData">
+                     [chartData]="chartData"
+                     (updateChartData)="getChartData($event)"
+                     [filter]="currentFilter"
+                     >
           </pxs-chart>
-          <pxs-aggregated-values *ngIf="chartData" [chartData]="chartData"></pxs-aggregated-values>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <pxs-aggregated-values *ngIf="chartData" [chartData]="chartData"></pxs-aggregated-values>
+        </div> 
       </div>
       <div class="row">
         <div class="col-lg-8 col-md-7">
@@ -70,8 +71,8 @@
               <pxs-range-slider
                 [min]="item.sensorType?.min"
                 [max]="item.sensorType?.max"
-                [from]="item.low"
-                [to]="item.high"
+                [startFrom]="item.low"
+                [startTo]="item.high"
                 [postfix]="item.sensorType?.postfix"
                 [disabled]="true">
               </pxs-range-slider>

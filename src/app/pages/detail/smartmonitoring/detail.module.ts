@@ -8,7 +8,6 @@ import {MatDividerModule, MatExpansionModule, MatTooltipModule} from '@angular/m
 import {SharedAlertsService} from '../../alerts/shared-alerts.service';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {LogsService} from '../../../services/logs.service';
-import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
 import {ChartModule} from '../../../../../projects/ngx-proximus/src/lib/chart/chart.module';
 import {RangeSliderModule} from '../../../../../projects/ngx-proximus/src/lib/range-slider/range-slider.module';
 import {AggregatedValuesModule} from '../../../../../projects/ngx-proximus/src/lib/aggregated-values/aggregated-values.module';
@@ -17,6 +16,7 @@ import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ImgFallbackModule} from 'ngx-img-fallback';
 import {DetailHeaderModule} from '../../../../../projects/ngx-proximus/src/lib/detail-header/detail-header.module';
+
 
 @NgModule({
   declarations: [DetailComponent],
@@ -27,7 +27,6 @@ import {DetailHeaderModule} from '../../../../../projects/ngx-proximus/src/lib/d
     MatDividerModule,
     MatExpansionModule,
     HighchartsChartModule,
-    LoaderModule,
     ChartModule,
     AggregatedValuesModule,
     MapAssetModule,

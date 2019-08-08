@@ -21,6 +21,7 @@ import {FormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {AddSensorComponent} from './add-sensor/add-sensor.component';
 import {FilterService} from '../../../../services/filter.service';
+import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module';
 
 @NgModule({
   declarations: [ManageThresholdTemplatesComponent, ManageThresholdTemplatesListComponent, AddSensorComponent],
@@ -41,7 +42,8 @@ import {FilterService} from '../../../../services/filter.service';
     MatCheckboxModule,
     MatDialogModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    ButtonModule,
   ],
   entryComponents: [AddSensorComponent],
   providers: [FilterService]

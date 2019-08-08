@@ -11,8 +11,19 @@
       <span class="top-menu-search" *ngIf="config.search.visible">
       <pxs-icon class="top-menu-clear-search" icon="close" *ngIf="searchbarVisible"
                 (click)="searchModel = ''; searchbarVisible = false;"></pxs-icon>
-      <input [placeholder]="config.search.placeholder" (keyup)="checkEnter($event)"  class="top-menu-search-input" type="text" *ngIf="searchbarVisible" [(ngModel)]="searchModel"
-             (focusout)="searchFocusOut()">
+      
+      <span *ngIf="searchbarVisible">
+        <input
+          #inputSearch
+          [placeholder]="config.search.placeholder"  
+          class="top-menu-search-input" 
+          type="text"
+          [(ngModel)]="searchText"
+          [matAutocomplete]="auto"
+          [formControl]="myControl"
+          (ngModelChange)="searchChanged($event)"
+        >
+      </span>
       <span (click)="toggleSearchBar()">
         <pxs-icon icon="search"></pxs-icon>
       </span>
@@ -29,3 +40,9 @@
     </div>
   </div>
 </div>
+
+<mat-autocomplete  #auto="matAutocomplete">
+    <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAnAutocompletedOption(option)">
+      {{ option.name }}
+    </mat-option>
+</mat-autocomplete>
