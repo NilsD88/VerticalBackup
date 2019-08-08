@@ -1,0 +1,16 @@
+<div class="container">
+  <div class="title">
+    <a routerLink="/private/detail/{{asset.id}}"><h6>{{asset.name}}</h6></a>
+  </div>
+  <div class="subtitle">
+    <b>{{asset.sublocation.location.name}}</b>, {{asset.sublocation.name}}
+  </div>
+  <div class="row">
+    <div class="col">
+      <img [src]="asset.pictureBase64" alt="">
+    </div>
+    <div class="col">
+      {{asset.description}}
+    </div>
+  </div>
+</div>

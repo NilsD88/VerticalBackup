@@ -1,0 +1,3 @@
+<div>
+  <pxs-map-asset *ngIf="assets.length>0 || locations.length>0" [parentLocation]="parentLocation" [assets]="assets" [locations]="locations" (change)="updateAssetsAndLocations($event)"></pxs-map-asset>
+</div>

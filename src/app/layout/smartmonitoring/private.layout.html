@@ -1,0 +1,144 @@
+<pxs-top-menu
+  *ngIf="topMenuConfig"
+  (languageChange)="sharedLayoutService.changeLanguage($event)"
+  (contactClick)="navigateTo('contact')"
+  (autocompleteClick)="autocompleteClick($event)"
+  [searchResults]="searchResults"
+  (search)="search($event)"
+  [config]="topMenuConfig"
+>
+  <pxs-menu-item label="Proximus" (action)="pxsClicked()"></pxs-menu-item>
+  <pxs-menu-item label="MyThings" (action)="mtClicked()"></pxs-menu-item>
+  <pxs-top-menu-actions>
+    <pxs-menu-item [mat-menu-trigger-for]="user">
+      <pxs-icon icon="user"></pxs-icon>
+      <span class="visible-md-inline visible-lg-inline" [translate]="'LAYOUT.ACCOUNT'"></span>
+      <mat-menu #user="matMenu">
+        <div mat-menu-item class="mat-menu-header">
+          Account
+        </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="sharedLayoutService.logout()">
+            Logout
+          </button>
+        </div>
+      </mat-menu>
+    </pxs-menu-item>
+    <pxs-menu-item [mat-menu-trigger-for]="admin">
+      <pxs-icon icon="cog"></pxs-icon>
+      <span class="visible-md-inline visible-lg-inline" [translate]="'LAYOUT.ADMIN'"></span>
+
+      <mat-menu #admin="matMenu">
+        <div mat-menu-item class="mat-menu-header">
+          {{ 'LAYOUT.ADMIN' | translate }}
+        </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-alert-definition'])">
+            {{ 'LAYOUT.ALERT_DEFINITIONS' | translate }}
+          </button>
+        </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-locations'])">
+            {{ 'LAYOUT.MANAGE_LOCATIONS' | translate }}
+          </button>
+        </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-assets'])">
+            {{ 'LAYOUT.MANAGE_ASSETS' | translate }}
+          </button>
+        </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-things'])">
+            {{ 'LAYOUT.MANAGE_THINGS' | translate }}
+          </button>
+        </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-threshold-templates'])">
+            {{ 'LAYOUT.MANAGE_THRESHOLD_TEMPLATES' | translate }}
+          </button>
+        </div>
+      </mat-menu>
+    </pxs-menu-item>
+  </pxs-top-menu-actions>
+</pxs-top-menu>
+
+<pxs-main-menu>
+  <pxs-menu-item [label]="'Monitoring'" [url]="'/private/home'"></pxs-menu-item>
+  <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'"></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Tank monitoring'" 
+    [url]="'/private/tankmonitoring'"
+    *ngIf="sharedLayoutService.user.hasFeature('fill')" 
+    [mat-menu-trigger-for]="tankMonitoring"
+  ></pxs-menu-item>
+  <pxs-menu-item 
+    [label]="'Visitor counting'"
+    *ngIf="sharedLayoutService.user.hasFeature('counting')"
+    [mat-menu-trigger-for]="visitorCounting"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Asset tracking'"
+    *ngIf="sharedLayoutService.user.hasFeature('tracking')"
+    [mat-menu-trigger-for]="assetTracking"
+  ></pxs-menu-item>
+</pxs-main-menu>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+<mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','tankmonitoring', 'dashboard'])">
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Consumptions
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New Tank</span>
+    </button>
+  </div>
+</mat-menu>
+<mat-menu #visitorCounting="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Visitor counts
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New location</span>
+    </button>
+  </div>
+</mat-menu>
+<mat-menu #assetTracking="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      Locations
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New Asset</span>
+    </button>
+  </div>
+</mat-menu>
+
+<pxs-footer [config]="footerConfig"></pxs-footer>

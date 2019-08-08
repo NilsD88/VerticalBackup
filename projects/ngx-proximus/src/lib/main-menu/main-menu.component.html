@@ -1,0 +1,10 @@
+<div class="main-menu">
+  <div class="container">
+    <pxs-logo size="small" (click)="logoClicked()"></pxs-logo>
+    <input class="menu-btn" type="checkbox" id="menu-btn"/>
+    <div class="menu">
+      <ng-content></ng-content>
+    </div>
+    <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+  </div>
+</div>

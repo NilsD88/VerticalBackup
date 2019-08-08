@@ -1,0 +1,1461 @@
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "icons";
+@import "breakpoints";
+@import "visibility";
+@import "grid";
+@import "~nouislider/distribute/nouislider.min.css";
+
+@font-face {
+  font-family : ProximusLight;
+  src         : url('fonts/proximus-light.eot');
+  src         : url('fonts/proximus-light.eot?#iefix') format('embedded-opentype'), url('fonts/proximus-light.woff') format('woff'), url('fonts/proximus-light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family : ProximusRegular;
+  src         : url('./fonts/proximus-regular.eot');
+  src         : url('./fonts/proximus-regular.eot?#iefix') format('embedded-opentype'), url('./fonts/proximus-regular.woff') format('woff'), url('./fonts/Proximus-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family : ProximusBold;
+  src         : url('./fonts/proximus-bold.eot');
+  src         : url('./fonts/proximus-bold.eot?#iefix') format('embedded-opentype'), url('./fonts/proximus-bold.woff') format('woff'), url('./fonts/Proximus-Bold.ttf') format('truetype');
+}
+
+div {
+  box-sizing : border-box;
+}
+
+@import "../variables.scss";
+
+body {
+  font-family : ProximusRegular, sans-serif;
+  font-size   : 14px;
+  line-height : 18px;
+  color       : $default;
+}
+
+// TYPOGRAPHY
+h1, h4 {
+  font-family : ProximusRegular, sans-serif;
+  color       : $primary;
+
+  &.dark {
+    color : $default;
+  }
+
+  &.light {
+    color : $white;
+  }
+}
+
+h2, h3, h5, h6 {
+  font-family : ProximusBold, sans-serif;
+  color       : $primary;
+
+  &.dark {
+    color : $default;
+  }
+
+  &.light {
+    color : $white;
+  }
+}
+
+h1 {
+  font-size     : 34px;
+  line-height   : 38px;
+  margin-bottom : 20px;
+}
+
+h2 {
+  font-size     : 28px;
+  line-height   : 32px;
+  margin-bottom : 20px;
+}
+
+h3 {
+  font-size     : 26px;
+  line-height   : 30px;
+  margin-bottom : 20px;
+}
+
+h4 {
+  font-size     : 24px;
+  line-height   : 28px;
+  margin-bottom : 10px;
+}
+
+h5 {
+  font-size     : 20px;
+  line-height   : 24px;
+  margin-bottom : 10px;
+}
+
+h6 {
+  font-size     : 18px;
+  line-height   : 22px;
+  margin-bottom : 10px;
+}
+
+strong {
+  font-family : ProximusBold, sans-serif;
+}
+
+.pxs-title {
+  display : inline-block;
+
+  &:after {
+    content       : '';
+    margin-top    : 1em;
+    display       : block;
+    width         : 50%;
+    height        : .1em;
+    border-radius : 10px;
+  }
+
+  &:after {background-color : $primary;}
+
+  &.text-primary:after {background-color : $primary;}
+
+  &.text-inactive:after {background-color : $inactive;}
+
+  &.text-accent:after {background-color : $accent;}
+
+  &.text-link:after {background-color : $link;}
+
+  &.text-promo:after {background-color : $promo;}
+
+  &.text-error:after {background-color : $error;}
+
+  &.text-success:after {background-color : $success;}
+
+  &.text-warn:after {background-color : $warn;}
+
+  &.text-default:after {background-color : $default;}
+
+  &.text-white:after {background-color : $white;}
+
+  &.text-sub:after {background-color : $sub;}
+}
+
+p {
+  margin-bottom : 20px;
+}
+
+.intro {
+  font-family   : ProximusRegular, sans-serif;
+  line-height   : 22px;
+  font-size     : 18px;
+  color         : $default;
+  margin-bottom : 20px;
+}
+
+.footnote, .validity-date {
+  font-size : 12px;
+  color     : #636363;
+}
+
+a {
+  color       : $link;
+  font-family : ProximusRegular, sans-serif;
+  cursor      : pointer;
+
+  &:hover {
+    color           : $link;
+    text-decoration : underline;
+  }
+}
+
+small {
+  color : $sub;
+}
+
+
+// COLOR HELPERS
+
+.text-primary {
+  color : $primary;
+}
+
+.bg-primary {
+  background-color : $primary;
+}
+
+.text-inactive {
+  color : $inactive;
+}
+
+.bg-inactive {
+  background-color : $inactive;
+}
+
+.text-accent {
+  color : $accent;
+}
+
+.bg-accent {
+  background-color : $accent;
+}
+
+.text-link {
+  color : $link;
+}
+
+.bg-link {
+  background-color : $link;
+}
+
+.text-promo {
+  color : $promo;
+}
+
+.bg-promo {
+  background-color : $promo;
+}
+
+.text-error {
+  color : $error;
+}
+
+.bg-error {
+  background-color : $error;
+}
+
+.text-success {
+  color : $success;
+}
+
+.bg-success {
+  background-color : $success;
+}
+
+.text-warn {
+  color : $warn;
+}
+
+.bg-warn {
+  background-color : $warn;
+}
+
+.text-default {
+  color : $default;
+}
+
+.bg-default {
+  background-color : $default;
+}
+
+.text-white {
+  color : $white;
+}
+
+.bg-white {
+  background-color : $white;
+}
+
+.text-sub {
+  color : $sub;
+}
+
+.bg-sub {
+  background-color : $sub;
+}
+
+hr {
+  margin           : 20px 0;
+  background-color : $inactive;
+  height           : 1px;
+  border           : none;
+}
+
+
+.pxs-product-link {
+  font-family     : ProximusRegular, sans-serif;
+  font-size       : 14px;
+  color           : $default;
+  text-decoration : none;
+
+  &:hover, &:focus {
+    color           : $default;
+    text-decoration : underline;
+
+    &:before {
+      text-decoration : none;
+    }
+  }
+
+  &:before {
+    font-family     : 'pxicon', sans-serif;
+    color           : $primary;
+    padding-right   : 10px;
+    font-size       : 18px;
+    vertical-align  : -13%;
+    text-decoration : none;
+  }
+
+  &.large {
+    font-size : 20px;
+    color     : #0073CF;
+
+    &:hover, &:focus {
+      color : #0073CF;
+
+      &:before {
+        text-decoration : none;
+      }
+    }
+
+    &:before {
+      color : #0073CF;
+
+      &:hover, &:focus {
+        text-decoration : none;
+      }
+    }
+  }
+
+}
+
+.pr-1 {
+  padding-right : 1rem;
+}
+
+.p-1 {
+  padding : 1rem;
+}
+
+
+.pxs-expansion-panel-header-icon {
+  color : $primary;
+}
+
+.pxs-expansion-panel-header-title {
+  color : $primary;
+}
+
+[data-tooltip] {
+  position : relative;
+  z-index  : 2;
+  cursor   : pointer;
+}
+
+[data-tooltip]:before,
+[data-tooltip]:after {
+  visibility     : hidden;
+  -ms-filter     : "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  /*
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+  */
+  opacity        : 0;
+  pointer-events : none;
+}
+
+/* Position tooltip above the element */
+[data-tooltip]:before {
+  position              : absolute;
+  bottom                : 150%;
+  left                  : 50%;
+  margin-bottom         : 5px;
+  margin-left           : -80px;
+  padding               : 7px;
+  width                 : 160px;
+  -webkit-border-radius : 3px;
+  -moz-border-radius    : 3px;
+  border-radius         : 3px;
+  background-color      : rgba($primary, .9);
+  color                 : #FFF;
+  content               : attr(data-tooltip);
+  text-align            : center;
+  font-size             : 12px;
+  line-height           : 1.2;
+}
+
+/* Triangle hack to make tooltip look like a speech bubble */
+[data-tooltip]:after {
+  position     : absolute;
+  bottom       : 150%;
+  left         : 50%;
+  margin-left  : -5px;
+  width        : 0;
+  border-top   : 5px solid $primary;
+  border-top   : 5px solid rgba($primary, 0.9);
+  border-right : 5px solid transparent;
+  border-left  : 5px solid transparent;
+  content      : " ";
+  font-size    : 0;
+  line-height  : 0;
+}
+
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+  visibility : visible;
+  -ms-filter : "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+  /*
+  filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+  */
+  opacity    : 1;
+}
+
+.pxs-expansion-panel-hidden-header .pxs-expansion-panel-header .pxi-chevron-down:before {
+  content : "\e07a" !important;
+}
+
+
+.pxs-button-primary {
+  background-color : $primary;
+  border-color     : $primary;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($primary, 10%);
+  }
+}
+
+.pxs-button-inactive {
+  background-color : $inactive;
+  border-color     : $inactive;
+  color            : $primary;
+
+  &:hover {
+    background-color : lighten($inactive, 10%);
+  }
+}
+
+.pxs-button-accent {
+  background-color : $accent;
+  border-color     : $accent;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($accent, 10%);
+  }
+}
+
+.pxs-button-link {
+  background-color : $link;
+  border-color     : $link;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($link, 10%);
+  }
+}
+
+.pxs-button-promo {
+  background-color : $promo;
+  border-color     : $promo;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($promo, 10%);
+  }
+}
+
+.pxs-button-error {
+  background-color : $error;
+  border-color     : $error;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($error, 10%);
+  }
+}
+
+.pxs-button-success {
+  background-color : $success;
+  border-color     : $success;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($success, 10%);
+  }
+}
+
+.pxs-button-warn {
+  background-color : $warn;
+  border-color     : $warn;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($warn, 10%);
+  }
+}
+
+.pxs-button-default {
+  background-color : $default;
+  border-color     : $default;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($default, 10%);
+  }
+}
+
+.pxs-button-white {
+  background-color : $white;
+  border-color     : $white;
+  color            : $default;
+
+  &:hover {
+    color : $primary;
+  }
+}
+
+.pxs-button-sub {
+  background-color : $sub;
+  border-color     : $sub;
+  color            : $white;
+
+  &:hover {
+    background-color : lighten($sub, 10%);
+  }
+}
+
+button[disabled], button:disabled {
+  background-color : #E5E5E5 !important;
+  color            : rgb(171, 171, 171);
+  cursor           : not-allowed !important;
+}
+
+.top-menu {
+  padding-top : 1rem;
+  color       : $primary;
+
+  .container {
+    border-bottom       : 1px solid;
+    border-bottom-color : rgba($primary, .3) !important;
+  }
+
+  pxs-menu-item {
+    margin : 0 .3rem;
+  }
+}
+
+.mat-menu-item-highlighted:not([disabled]),
+.mat-menu-item.cdk-keyboard-focused:not([disabled]),
+.mat-menu-item.cdk-program-focused:not([disabled]),
+.mat-menu-item:hover:not([disabled]) {
+  background : $inactive;
+}
+
+.mat-menu-content:not(:empty) {
+  padding-top    : 0 !important;
+  padding-bottom : 0 !important;
+}
+
+.mat-menu-item {
+  font-family : ProximusBold, sans-serif;
+  color       : $primary;
+}
+
+.top-menu-contact::after, .top-menu-search::after, .top-menu-language::after, .pxs-menu-item::after {
+  background-color : $primary !important;
+}
+
+.main-menu {
+  display       : flex;
+  color         : $primary;
+  font-family   : ProximusRegular, sans-serif;
+  font-size     : 1.3rem;
+  border-bottom : .05em solid $primary;
+  max-width     : 100%;
+
+  .container {
+    display : flex;
+  }
+
+  .pxs-small-logo {
+    height       : 3.25em;
+    padding      : .5em;
+    cursor       : pointer;
+    margin-right : .6em;
+  }
+
+  pxs-menu-item {
+    .pxs-menu-item::after {
+      margin-top : 1em;
+    }
+
+    display       : inline-flex;
+    padding-top   : 1.2em;
+    margin        : 0 .7em;
+    margin-bottom : -.2em
+  }
+
+  @media only screen and (max-width : 992px) {
+    font-size : 1.0rem;
+  }
+  @media only screen and (max-width : 770px) {
+    font-size : .8rem;
+  }
+
+
+  .menu {
+    clear      : both;
+    max-height : 0;
+    transition : max-height .2s ease-out;
+  }
+
+  /* menu icon */
+
+  .menu-icon {
+    cursor       : pointer;
+    display      : flex;
+    margin-right : 1em;
+    margin-top   : 1.5em;
+    margin-left  : auto;
+    position     : relative;
+    user-select  : none;
+    @media (min-width : 768px) {
+      display : none;
+    }
+  }
+
+  .menu-icon .navicon {
+    background : $primary;
+    display    : block;
+    height     : 2px;
+    position   : relative;
+    transition : background .2s ease-out;
+    width      : 18px;
+  }
+
+  .menu-icon .navicon:before,
+  .menu-icon .navicon:after {
+    background : $primary;
+    content    : '';
+    display    : block;
+    height     : 100%;
+    position   : absolute;
+    transition : all .2s ease-out;
+    width      : 100%;
+  }
+
+  .menu-icon .navicon:before {
+    top : 5px;
+  }
+
+  .menu-icon .navicon:after {
+    top : -5px;
+  }
+
+  /* menu btn */
+
+  .menu-btn {
+    display : none;
+  }
+
+  .menu {
+    width            : 100%;
+    background-color : #FFF;
+    display          : none;
+  }
+
+  .menu-btn:checked ~ .menu {
+    max-height : 240px;
+    display    : flex;
+  }
+
+  .menu-btn:checked ~ .menu-icon .navicon {
+    background : transparent;
+  }
+
+  .menu-btn:checked ~ .menu-icon .navicon:before {
+    transform : rotate(-45deg);
+  }
+
+  .menu-btn:checked ~ .menu-icon .navicon:after {
+    transform : rotate(45deg);
+  }
+
+  .menu {
+    flex-direction : column;
+    @media (min-width : 768px) {
+      flex-direction : initial;
+      display        : flex;
+    }
+  }
+
+  .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:before,
+  .menu-btn:checked ~ .menu-icon:not(.steps) .navicon:after {
+    top : 0;
+  }
+}
+
+.top-menu {
+  width           : 100%;
+  display         : flex;
+  justify-content : space-between;
+  font-size       : 1rem;
+  font-family     : ProximusRegular, sans-serif;
+  border-bottom   : 1px solid white;
+
+  @media only screen and (max-width : $screen-md) {
+    font-size : .8em;
+  }
+  @media only screen and (max-width : $screen-sm) {
+    font-size : .7em;
+  }
+}
+
+pxs-menu-item {
+  pxs-icon {
+    margin-right : 10px;
+    @media only screen and (max-width : $screen-md) {
+      margin-right : 0;
+    }
+  }
+}
+
+
+// HOME PAGE
+
+.home .main-image {
+  .main-image-overlay {
+    .app-title {
+      color         : $white;
+      background    : $primary;
+      border-radius : 0 0 20px 0;
+
+      small {
+        color       : rgba($white, .8);
+        font-family : ProximusLight, sans-serif !important;
+        @media (max-width : $screen-xs-max) {
+          font-size : 1rem;
+        }
+      }
+    }
+
+    .home-checklist {
+      background-color : $white;
+
+      .home-checklist-item {
+        pxs-icon {
+          color : $primary;
+        }
+      }
+    }
+  }
+}
+
+.pxs-slideshow {
+  background-color : $primary
+}
+
+.home-sensor-slides {
+  background : linear-gradient(140deg, $primary, $accent);
+}
+
+.slideshow-container {
+  .prev, .next {
+    color : $white;
+  }
+
+  .prev:hover, .next:hover {
+    background-color : rgba($white, .4);
+  }
+}
+
+
+.disclaimer-footer {
+  background : $primary;
+
+  a {
+    color : $accent;
+
+    &:hover {
+      color : $accent;
+    }
+  }
+}
+
+.alerts-table-asset-name {
+  color : $primary;
+}
+
+.alerts-table-date {
+  color : $accent;
+}
+
+.table {
+  .table-row {
+    border : 1px solid $table-border;
+
+    &:hover {
+      background : $table-hover;
+    }
+
+    &:nth-of-type(odd) {
+      background : $row-bg;
+
+      &:hover {
+        background : $table-hover;
+      }
+    }
+  }
+}
+
+.alert-threshold-template {
+  background  : $primary;
+  color       : $white;
+  font-family : ProximusBold, sans-serif;
+}
+
+.alert-location-wrapper {
+  display       : flex;
+  height        : 100%;
+  align-items   : center;
+  justify-items : center;
+
+  .alert-sublocation {
+    color       : $primary;
+    font-size   : .8em;
+    line-height : 1.2em;
+    font-family : ProximusBold, sans-serif;
+  }
+
+  .alert-locations {
+    font-size   : .7em;
+    line-height : .7em;
+    color       : $accent;
+
+    .alert-location {}
+
+    .alert-location-type {}
+  }
+}
+
+.alerts-read-wrapper {
+  display       : flex;
+  height        : 100%;
+  align-items   : center;
+  justify-items : center;
+
+  .pxs-icon {
+    font-size : 4em;
+    color     : $primary;
+  }
+}
+
+
+.mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color : $primary;
+  border-color     : $primary;
+}
+
+input.mat-input-element {
+  line-height : 1.85rem;
+  color       : $primary;
+}
+
+.alerts-section {
+  margin-top    : -30px;
+  margin-bottom : 70px;
+
+  .alerts-section-header {
+    .unread-alerts-badge {
+      background-color : $error;
+      color            : $white;
+      border-radius    : 10px;
+      padding          : 2px 10px;
+    }
+  }
+}
+
+.mat-icon.mat-primary {
+  color : $primary;
+}
+
+.mat-icon.mat-accent {
+  color : $accent;
+}
+
+.alerts-read-wrapper {
+  flex-direction : column;
+
+  .alert-read-status {
+    font-size   : .7rem;
+    color       : $accent;
+    white-space : nowrap;
+  }
+
+  .alert-unread-status {
+    font-size   : .7rem;
+    color       : $primary;
+    white-space : nowrap;
+  }
+}
+
+.alerts-section-content {
+  .table {
+    max-width : 100%;
+    overflow  : hidden;
+
+    mat-checkbox {
+      margin-left : 1rem;
+    }
+  }
+}
+
+.mat-form-field-label-wrapper {
+  font-family : ProximusLight, sans-serif;
+}
+
+.alerts-select-all {
+  display       : inline-block;
+
+  mat-checkbox {
+    margin-left : 1.3rem;
+  }
+
+  margin-bottom : 1rem;
+}
+
+.ngx-mat-drp-date-display {
+  /*
+  margin-top : -.6rem;
+  */
+  width     : 100%;
+  max-width : 100%;
+
+  .mat-form-field-label-wrapper {
+    top         : -.25em;
+    font-family : ProximusLight, sans-serif;
+  }
+
+  .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom : 0;
+  }
+
+  input.mat-input-element {
+    margin-top  : 0;
+    padding-top : .1875em;
+    line-height : 1.759;
+  }
+}
+
+.ngx-mat-drp-overlay {
+  background-color : $primary !important;
+  color            : $white !important;
+
+  .ngx-mat-drp-date-label {
+    background-color : $primary !important;
+
+    .ngx-mat-drp-selected-date-label {
+      color : $accent;
+    }
+  }
+
+  .mat-calendar-body-selected {
+    background-color : $accent;
+  }
+
+  .mat-calendar-body-cell-content {
+    color       : $white;
+    font-weight : bold;
+  }
+
+  .mat-calendar-body-label {
+    color : $accent;
+  }
+
+  .mat-calendar-table-header {
+    color : $white;
+  }
+
+  .ngx-mat-drp-presets-list > .ng-star-inserted {
+    color            : $white !important;
+    font-weight      : bold;
+    background-color : darken($primary, 5%) !important;
+  }
+
+  .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+    color : $white !important;
+
+    &:hover {
+      background-color : darken($primary, 5%);
+    }
+  }
+}
+
+@media screen and (max-width : 650px) {
+  ngx-mat-drp-picker-overlay {
+    .ngx-mat-drp-calendar-container {
+      max-width       : 80vw !important;
+      min-width       : 80vw !important;
+      max-height      : 50vh !important;
+      min-height      : 50vh !important;
+      overflow-y      : scroll;
+      overflow-x      : hidden;
+      display         : flex;
+      flex-direction  : column;
+      align-items     : start;
+      justify-content : normal;
+
+      .ngx-mat-drp-calendar-item {
+        max-width : 80vw !important;
+        min-width : 80vw !important;
+      }
+    }
+  }
+}
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option,
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-label,
+.ng-placeholder {
+  font-family : ProximusLight, sans-serif;
+}
+
+
+pxs-loader {
+  .loading-text {
+    text-align  : center;
+    color       : $primary;
+    font-family : ProximusLight, sans-serif;
+  }
+}
+
+.no-data-image {
+  display        : flex;
+  margin-left    : auto;
+  margin-right   : auto;
+  max-height     : 20vh;
+  padding        : 2rem;
+  padding-bottom : 1rem;
+}
+
+.no-data-text {
+  color       : $primary;
+  text-align  : center;
+  font-family : ProximusLight, sans-serif;
+}
+
+
+.ng-select {
+  /*  border        : 0;
+	min-height    : 0;
+	border-radius : 0;*/
+  width : 100%;
+}
+
+.ng-select .ng-select-container {
+  /*  min-height    : 0;
+	border-radius : 0;*/
+  width : 100%;
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  background-color : $primary;
+  border-radius    : 0 0 8px 0;
+}
+
+.mat-calendar-next-button[disabled] {
+  background-color : darken($primary, 5%) !important;
+}
+
+.success-snackbar {
+  background-color : $success !important;
+}
+
+.error-snackbar {
+  background-color : $error !important;
+}
+
+.info-snackbar {
+  background-color : $accent !important;
+}
+
+.primary-snackbar {
+  background-color : $primary !important;
+}
+
+.warning-snackbar {
+  background-color : $warn !important;
+}
+
+
+.detail-header {
+  background-image    : url("smartmonitoring/images/detail/header-background.png");
+  background-position : center center;
+  background-repeat   : no-repeat;
+  background-size     : cover;
+
+  h1 {
+    line-height : 0;
+
+    sup {
+      background-color : $promo;
+      margin-left      : .5rem;
+      font-size        : .5em;
+      padding          : .2em .5em;
+      border-radius    : 0 0 10px 0;
+    }
+  }
+
+  h4 {
+    font-family : ProximusLight, sans-serif;
+  }
+
+  .detail-header-wrapper {
+    padding       : 2rem;
+    display       : flex;
+    align-content : space-between;
+  }
+
+}
+
+.last-measurements-wrapper {
+  margin-left    : auto;
+  display        : flex;
+  flex-direction : row;
+
+  .last-measurement {
+    img {
+      height  : 3rem;
+      padding : .5rem;
+    }
+
+    margin         : .5rem;
+    text-align     : center;
+    display        : flex;
+    flex-direction : column;
+    color          : $white;
+
+    .last-measurement-date {
+      color : $accent;
+    }
+
+    .last-measurement-time {
+      color : $accent;
+    }
+  }
+}
+
+.detail-main-content {
+  background-color : $page-background;
+
+  #asset-image {
+    width               : 100%;
+    background-repeat   : no-repeat;
+    background-size     : cover;
+    background-position : center;
+    height              : 14rem;
+  }
+
+}
+
+.last-alert-container {
+  width            : 100%;
+  background-color : $dark-primary;
+  padding          : 1rem;
+
+  .last-alert-title {
+    color       : $white;
+    font-size   : 1.6rem;
+    line-height : 1.6rem;
+    font-family : ProximusRegular, sans-serif;
+  }
+
+  .last-alert-wrapper {
+    display : flex;
+
+    img {
+      height     : 5rem;
+      align-self : center;
+      padding    : 1rem;
+    }
+
+    .last-alert-content {
+      flex    : 1;
+      padding : 1rem;
+    }
+
+    .last-alert-description {
+      color       : $white;
+      font-size   : 1.1rem;
+      font-family : ProximusBold, sans-serif;
+
+      .last-alert-date {
+        display       : inline-block;
+        font-family   : ProximusLight, sans-serif;
+        font-size     : .7rem;
+        padding       : .2em .8em;
+        border-radius : 0 0 10px 0;
+        margin-top    : .4rem;
+        color         : $white;
+        background    : $promo;
+      }
+    }
+  }
+
+  .last-alert-values {
+    display     : flex;
+    width       : 100%;
+    padding     : 1rem;
+    padding-top : .6rem;
+    overflow-x: scroll;
+
+    .last-alert-value {
+      background-color : $accent;
+      color            : $white;
+      margin-right     : 1rem;
+      padding          : .4rem;
+      border-radius    : 0 0 10px 0;
+      flex             : 1;
+      display          : inline-flex;
+      flex-direction   : column;
+    }
+
+  }
+
+
+}
+
+.noUi-horizontal {
+  height : 10px;
+}
+
+.noUi-connect {
+  background : $primary;
+}
+
+[disabled] .noUi-connect {
+  background : $dark-primary;
+}
+
+.noUi-horizontal .noUi-handle {
+  height        : 20px;
+  width         : 20px;
+  top           : -5px;
+  border-radius : 50%;
+}
+
+.noUi-handle::after, .noUi-handle::before {
+  height : 10px;
+  width  : 1px;
+  left   : 10px;
+  top    : 5px;
+}
+
+.highcharts-root {
+  font-family : ProximusRegular, sans-serif !important;
+}
+
+
+.detail-thresholds {
+  background    : $white;
+  padding-left  : 2rem;
+  padding-right : 2rem;
+  padding-top   : 1px;
+}
+
+.range-slider-values {
+  margin-top  : -1rem;
+  margin-left : auto;
+  font-size   : .8rem;
+}
+
+.range-slider-wrapper {
+  display        : flex;
+  flex-direction : column;
+}
+
+.range-slider-slider {
+  display : block;
+  width   : 100%;
+}
+
+.aggregated-values {
+  .aggregated-value-card {
+
+    background    : $promo;
+    color         : $white;
+    padding       : 1rem;
+    align-content : center;
+
+    img {
+      padding      : 5px;
+      display      : flex;
+      justify-self : center;
+      align-self   : center;
+
+    }
+  }
+
+  padding : 1rem 0;
+
+}
+
+.aggregated-value {
+  font-family : ProximusLight, sans-serif;
+}
+
+mat-form-field {
+  width : 100%;
+}
+
+.image-button-container {
+  display : flex;
+
+  button {
+    flex : 1;
+  }
+}
+
+.mat-icon-button.mat-accent {
+  color : $accent;
+}
+
+.mat-icon-button.mat-primary {
+  color : $primary;
+}
+
+.mat-fab.mat-accent, .mat-flat-button.mat-accent, .mat-mini-fab.mat-accent, .mat-raised-button.mat-accent {
+  background-color : $accent;
+  color            : $white;
+}
+
+.mat-fab.mat-primary, .mat-flat-button.mat-primary, .mat-mini-fab.mat-primary, .mat-raised-button.mat-primary {
+  background-color : $primary;
+  color            : $white;
+}
+
+.mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label, .mat-accent .mat-slider-track-fill {
+  background-color : $accent;
+  color            : $white;
+}
+
+.mat-primary .mat-slider-thumb, .mat-primary .mat-slider-thumb-label, .mat-primary .mat-slider-track-fill {
+  background-color : $primary;
+  color            : $white;
+}
+
+.badge {
+  background-color : $primary;
+  color            : $white;
+}
+
+
+.thing-list-item {
+  background-color : $promo;
+
+  .mat-checkbox-frame {
+    border-color : $white;
+  }
+
+  .thing-list-item-devEui {
+    color       : $white;
+    font-size   : .8rem;
+    font-family : ProximusBold, sans-serif;
+  }
+
+  .thing-list-item-name {
+    color       : $white;
+    font-size   : .8rem;
+    font-family : ProximusLight, sans-serif;
+
+  }
+}
+
+
+.card {
+  color : $white;
+
+  .title {
+    color : $white;
+
+    a {
+      color : $white;
+    }
+  }
+
+  .wrapper {
+    .header {
+      .locations {
+        background-color : $accent;
+        color            : $white;
+
+        .location {}
+
+        .sublocation {}
+
+        .locationType {
+          color       : $white;
+          font-family : ProximusLight, sans-serif;
+        }
+      }
+    }
+  }
+
+  .menu-content {
+    a {
+      color : $white;
+    }
+
+    span {
+      font-family : ProximusRegular, sans-serif;
+    }
+  }
+
+  .wrapper {
+    background-color : $white;
+  }
+
+  .author {
+    background-color : $primary;
+    color            : $white;
+    border-radius    : 0 0 10px 0;
+  }
+}
+
+.thing-card {
+  background-color : $primary;
+  color            : $white;
+
+  .thing-card-name {
+    font-family : ProximusLight, sans-serif;
+
+    mat-icon {
+      color : $white;
+    }
+  }
+
+  .thing-card-deveui {
+    font-family : ProximusBold, sans-serif;
+  }
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius : 4px !important;
+}
+
+.ck-editor__editable_inline {
+  min-height : 300px;
+}
+
+
+.mat-menu-header {
+  background-color : $primary;
+  color            : $white;
+  cursor           : default !important;
+
+  &:hover {
+    background-color : $primary !important;
+  }
+}
+
+.main-menu-dropdown {
+  margin-top : 47px;
+}
+
+
+// ADMIN : Manage pages
+
+.manage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

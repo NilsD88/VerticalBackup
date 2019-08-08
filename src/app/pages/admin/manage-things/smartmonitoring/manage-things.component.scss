@@ -1,0 +1,76 @@
+.manage-things-filter-container {
+  margin-top    : 10px;
+  display       : flex;
+  align-self    : end;
+  align-content : center;
+  height        : 100%;
+
+  .row {
+    flex : 1;
+  }
+
+  .name-filter-input {
+    display : flex;
+    width   : 100%;
+  }
+}
+
+.thing-card {
+  padding : 20px 10px;
+
+  .thing-card-name {
+    display : flex;
+    width   : 100%;
+    padding : 10px 0;
+  }
+
+  .thing-card-deveui {
+
+  }
+
+  .thing-card-edit-button {
+    position : absolute;
+    right    : 30px;
+    top      : 15px;
+  }
+
+  .thing-name-input {
+    padding : 10px 0;
+    display : flex;
+
+    input {
+      flex          : 1;
+      margin-right  : 10px;
+      color         : #FFF;
+      border-bottom : 1px solid #FFF;
+    }
+
+    mat-icon {
+      cursor : pointer;
+    }
+  }
+
+  margin  : 10px;
+
+  .thing-icon-container {
+    display        : flex;
+    flex-direction : row;
+    align-content  : center;
+    width          : 100%;
+    padding        : 10px;
+    height         : 30px;
+
+    .thing-icon {
+      width        : 20px;
+      height       : 20px;
+      margin-right : 10px;
+
+      img {
+        display : flex;
+        width   : 100%;
+        height  : 100%;
+      }
+    }
+
+  }
+}

@@ -1,0 +1,374 @@
+﻿{
+  "COOKIE": {
+    "MESSAGE": "Ce site utilise uniquement des cookies qui sont utiles à son bon fonctionnement.",
+    "DISMISS": "Accepter!",
+    "LINK": "En savoir plus"
+  },
+  "DISCLAIMER": {
+    "ALL_RIGHTS_RESERVED": "Tous droits réservés.",
+    "TERMS_AND_CONDITIONS": "Conditions générales, information utilisateur et politique de confidentialité",
+    "COOKIE_POLICY": "Politique de cookies",
+    "BELGIAN_LAW": "Ce site a été créé et est géré selon la loi Belge.",
+    "ADDRESS": "Boulevard roi Albert II, 27 - B-1030 Bruxelles"
+  },
+  "HOME": {
+    "INTRO": {
+      "TITLE": "Smart monitoring",
+      "SUBTITLE": "Mesures climatiques",
+      "P1": "Avez-vous une vue complète de vos actifs? Les contrôles de qualité sont-ils d'une grande importance pour vous? Ou avez-vous besoin de répondre à des certifications spécifiques?",
+      "P2": "Smart Monitoring offre une vue unique de vos actifs afin de les gérer efficacement. Il fournit les informations pertinentes pour prendre des décisions calculées. Vous voulez plus d'informations sur des actifs spécifiques? Nous identifierons les éléments pour que vous puissiez générer les informations appropriées.",
+      "P3": "Nous offrons un petit enregistreur de données discret ne nécessitant ni carte SIM ni inscription. Cet enregistreur de données mesure les valeurs de température, d'humidité relative et de luminosité. Il utilise le réseau LoRaWAN® de Proximus, ce qui permet une longue durée de vie de la batterie et évite le recours à des câbles supplémentaires.",
+      "P4": "Passez-vous beaucoup de temps à planifier et à calculer la quantité de carburant dont vous avez besoin pour livrer à un moment et à un endroit donnés? Smart Tank vous simplifie la vie: cette solution mesure quotidiennement le niveau de chaque réservoir. Et vous avertit, vous ou votre client, quand il est temps de faire le plein. Des livraisons inattendues? Ils ne perturberont plus votre planification.",
+      "BUTTON": {
+        "LABEL": "Essayez maintenant"
+      }
+    },
+    "HOVER": {
+      "MORE_INFO" : "Appuyez ici pour plus d'info"
+    },
+    "LIST": {
+      "L1": "Sans effort. Associez n'importe quoi à votre compte et collectez des données spécifiques sur vos actifs.",
+      "L2": "Automatique. Toutes les données d'un objet sont automatiquement envoyées à votre serveur - les données sont sécurisées et uniquement accessibles. Ou par profils prédéfinis.",
+      "L3": "Vue claire. Le tableau de bord en ligne donne une vue en temps réel sur vos actifs et un historique complet.",
+      "L4": "Polyvalent. Les API fournies injectent les données Smart Monitoring dans vos systèmes. De cette façon, vous pouvez optimiser tous vos processus de A à Z.",
+      "L5": "Assistance pour le placement et l'installation"
+    },
+    "SENSORS": {
+      "TITLE": {
+        "ONESENSOR": "Un capteur",
+        "OPPORTUNITY": "Beaucoup d'opportunités"
+      },
+      "TYPES": {
+        "TEMPERATURE": "Température",
+        "HUMIDITY": "Humidité",
+        "LUMINOSITY": "Luminosité",
+        "MOTION": "Mouvement",
+        "BATTERY" : "Batterie"
+      }
+    }
+  },
+  "MENU-ITEMS": {
+    "About": "A propos",
+    "Alerts": "Alertes",
+    "Inventory": "Inventaire",
+    "Locations": "Localisations"
+  },
+  "GENERAL": {
+    "MORE": "Plus",
+    "BACK": "Retour",
+    "EXPORT_PDF": "Exporter en PDF",
+    "EXPORT_CSV": "Exporter en CSV",
+    "SUBMIT": "Envoyer",
+    "CANCEL": "Annuler",
+    "EDIT": "Modifier",
+    "DELETE": "Effacer",
+    "SHOW":  "Montrer"
+  },
+  "LAYOUT": {
+    "SEARCH": "Rechercher",
+    "FULL_SCREEN": "Plein écran",
+    "EXIT_FULL_SCREEN": "Quitter le plein écran",
+    "ADMINISTRATION": "Administration",
+    "MANAGE_ASSETS": "Gérer les actifs",
+    "MANAGE_LOCATIONS": "Gérer les localisations",
+    "MANAGE_THINGS": "Gérer vos objets",
+    "MANAGE_THRESHOLD_TEMPLATES": "Gérer vos modèles de seuils",
+    "ALERT_DEFINITIONS": "Définitions d'alerte",
+    "ALERTS": "Alertes",
+    "LANGUAGE": "Langue",
+    "ACCOUNT": "Compte",
+    "CONTACT": "Contact",
+    "SIGN_OUT": "Se déconnecter",
+    "SIGN_IN": "Se connecter",
+    "SIGN_IN_ENCO": "EnCo",
+    "SIGN_IN_MYPROXIMUS": "MyProximus",
+    "PRIVACY_POLICY": "Politique de confidentialité",
+    "TODAY": "Aujourd'hui",
+    "NO_ALERTS_TODAY": "Pas d'alerte aujourd'hui",
+    "UNREAD_ALERTS": "Alerte non-lue",
+    "NO_UNREAD_ALERTS": "Pas d'alerte non-lue",
+    "ADMIN": "Admin"
+  },
+  "FILTER": {
+    "TITLE": "Filtre",
+    "TOGGLE": "Basculer le filtre",
+    "SAVE_AS_DEFAULT": "Enregistrer comme filtre par défaut",
+    "REVERT_DEFAULT": "Revenir au filtre par défaut",
+    "PLACEHOLDER_SENSORTYPE": "Choisir un type de capteur",
+    "PLACEHOLDER_THRESHOLD_TEMPLATE": "Choisir un modèle de seuil",
+    "THRESHOLD_TEMPLATES": {
+      "NOT_FOUND": "Pas de modèle de seuil trouvé",
+      "PLACEHOLDER": "Choisir un modèle de seuil",
+      "LOADING_TEXT": "Chargement des modèles de seuils"
+    },
+    "LOCATION": "Location",
+    "LOCATION_TYPE": {
+      "NOT_FOUND": "Pas de type de localisation trouvé",
+      "PLACEHOLDER": "Choisir un type de localisation",
+      "LOADING_TEXT": "Chargement des types de localisation"
+    },
+    "STATUS": {
+      "NOT_FOUND": "Pas de statut trouvé",
+      "PLACEHOLDER": "Choisir un statut",
+      "LOADING_TEXT": "Chargement des statuts"
+    },
+    "NAME": {
+      "PLACEHOLDER": "Nom"
+    },
+    "SUBMIT": "Envoyer"
+  },
+  "ALERTS": {
+    "MARK_AS_READ": "Marquer comme lu",
+    "MARK_AS_UNREAD": "Marquer comme non-lu",
+    "TITLE": "Alertes",
+    "ASSET": "Actif",
+    "LOCATION_TYPE": "Type de localisation",
+    "DATE": "Date",
+    "MESSAGE": "Message",
+    "THRESHOLD_TEMPLATE": "Modèle de seuils",
+    "MARK_SELECTED_READ": "Marquer la sélection comme lu",
+    "MARK_SELECTED_UNREAD": "Marquer la sélection comme non-lu"
+  },
+  "SENSORTYPES": {
+    "range": "min/max"
+  },
+  "ALERT_TYPE": {
+    "high": "Haut",
+    "low": "Bas"
+  },
+  "LOCATIONTYPE_SELECT": {
+    "NOT_FOUND_TEXT": "Pas de type de localisation trouvé",
+    "LOADING_TEXT": "Chargement des types de localisation",
+    "PLACEHOLDER": "Choisir le type de localisation"
+  },
+  "THRESHOLD_TEMPLATE_INPUT": {
+    "CUSTOM": "Spécialisé",
+    "ENABLED": "Activité",
+    "DISABLED": "Désactivé"
+  },
+  "INVENTORY": {
+    "TITLE": "Inventaire",
+    "NONE_FOUND": "Pas d'actif trouvé.",
+    "FILTER": {
+      "PLACEHOLDERS": {
+        "NAME": "Nom de l'actif"
+      }
+    }
+  },
+  "LOCATIONS": {
+    "TITLE": "Actifs par localisation",
+    "TOGGLE_MAP": "Basculer en vue carte",
+    "NAME": {
+      "PLACEHOLDER": "Rechercher le nom de l'actif pour l'emplacement sélectionné"
+    }
+  },
+  "PRIVACY_POLICY": {
+    "TITLE": "Politique de confidentialité",
+    "P1": "Proximus dispose d'un réseau public Internet-of-Things pour lequel chaque capteur et appareil peuvent envoyer des données vèrs la plateforme MyThings de Proximus. Pour des raisons de confidentialité, ce service n'est pas adapté pour la localisation de personne.",
+    "P2": "Quand vous vous connectez à Smart monitoring, les informations suivantes sont enregistrées pour vous identifier et vous authentifier:",
+    "P3": "Toutes vos actions dans Smart monitoring sont enregistrées pour des raisons de sécurité pendant 1 mois.",
+    "P4": "Votre adresse e-mail est utilisé pour vous informé des nouveautés et mise à jour du service, à moins que vous vous désinscriviez via vos paramètres utilisateur.",
+    "P5": "Les informations de votre compte seront gardé tant que votre compte sera actif. Si votre compte est inactif plus de deux ans, il sera supprimé.",
+    "P6": "Pour exercer vos droits à la vie privée, vous pouvez envoyer un courrier électronique à",
+    "UL": {
+      "LI1": "Vos données de connexion",
+      "LI2": "Votre adresse email",
+      "LI3": "Votre nom et prénom",
+      "LI4": "Nom de l'entreprise pour laquelle vous vous connectez"
+    }
+  },
+  "BROWSER_NOT_SUPPORTED_MODAL": {
+    "TITLE": "Navigateurs web non supporté",
+    "P1": "Oh dommage! Nous ne supportons pas cette version de votre navigateur, vous ne devriez pas non plus!",
+    "P2": "Vous voyez ce message car vous utilisez un navigateur non supporté ou disposant d'une version non mise à jour, vérifiez la liste des navigateurs supportés pour cette fonctionalité ci-dessous. Si votre navigateur fait parti de la liste, assurez-vous de l'avoir mis à jour à sa dernière version.",
+    "P3": "Si votre navigateur se trouve dans la liste des navigateurs supportés et mis à jour à la dernière version, merci de contacter notre support.",
+    "SUPPORTED_BROWSERS": "Navigateurs web supportés",
+    "SUPPORTED": "Supporté",
+    "NOT_SUPPORTED": "Pas supporté",
+    "LATEST_RELEASE": "Dernière version",
+    "GET_LATEST": "Récupérer la dernière",
+    "CONTINUE": "Continuer"
+  },
+  "DETAIL": {
+    "LOADING_UNREAD_ALERTS": "Chargement des alertes non lues",
+    "NO_CHART_DATA":"Pas de données disponible pour  le filtre sélectionné",
+    "PLACEHOLDER_CHARTTYPE": "Type de graphique",
+    "THRESHOLD_TEMPLATE": "Modèle de seuils",
+    "DESCRIPTION": "Description",
+    "NO_DESCRIPTION": "Pas de description pour cet actif",
+    "LAST_MEASUREMENTS": "Dernières mesures",
+    "NO_LAST_MEASURE": "Pas encore de mesure disponible.",
+    "DATA_CHART": "Donnée graphique",
+    "NO_ASSET_ALERTS": "Aucune alertes",
+    "PLACEHOLDER_SENSORTYPE": "Choisir les capteurs du graphique",
+    "THRESHOLDS": "Seuils",
+    "ALERTS": "Alertes",
+    "CHART_CONFIGURATION": "Graphique",
+    "RECEIVED_VALUE": "Valeur reçue",
+    "THRESHOLD_LOW": "Seuil bas",
+    "THRESHOLD_HIGH": "Seuil haut",
+    "LINKED_THINGS": "Objets liés",
+    "CHART": "Graphique",
+    "CONFIGURATIONS": "Paramètres",
+    "RECIPIENT": "Destinataire",
+    "CHARTTYPES": {
+      "24HOURS": "Toutes les données des dernières 24 heures",
+      "MONTHLY" : "Par mois",
+      "HOURLY": "Par heure",
+      "DAILY": "Par jour",
+      "WEEKLY": "Par semaine",
+      "YEARLY": "Par an"
+    },
+    "AGGREGATED": {
+      "MEASUREMENT" : "Mesure",
+      "MAX" : "Max",
+      "MIN" : "Min",
+      "AVERAGE" : "Moyenne",
+      "STANDARDDEVIATION" : "StD"
+    }
+  },
+  "DELETE_CONFIRM": {
+    "TITLE": "Confirmer",
+    "CONFIRM": "Confirmer",
+    "CANCEL": "Annuler"
+  },
+  "IMAGE_INPUT": {
+    "SELECT_IMAGE": "Choisir une image",
+    "CHANGE": "Changer",
+    "REMOVE": "Enlever"
+  },
+  "ALERT_DEF": {
+    "TITLE": "Définition d'alerte",
+    "EMAIL_SETTINGS": "Paramètres email",
+    "ENABLED": "Activé",
+    "DELETE_RECIPIENT": "Enlever un destinataire",
+    "ADD_RECIPIENT": "Ajouter un destinataire",
+    "SUBJECT": "Sujet",
+    "BODY": "Corps",
+    "PLACEHOLDERS": "Espaces réservés",
+    "ASSET": "Actif",
+    "LOG": "Journal",
+    "THRESHOLD_TEMPLATE": "Modèle de seuil",
+    "CATEGORY": "Catégorie",
+    "SAVE_EMAIL": "Enregistrer les paramètres Email",
+    "SMS_SETTINGS": "Paramètres SMS",
+    "SAVE_SMS": "Enregistrer les paramètres SMS",
+    "BUTTON_LABELS" : {
+      "ASSET_NAME" : "Nom de l'actif",
+      "LOCATION_NAME" : "Nom de la localisation",
+      "SUBLOCATION_NAME" : "nom de sous-localisation",
+      "DEVICE_ID" : "Référence du capteur",
+      "TIMESTAMP" : "Horodatage",
+      "VALUE" : "Valeur",
+      "MATERIAL_NAME" : "Nom du modèle",
+      "THRESHOLD_MIN" : "Seuil minimum",
+      "THRESHOLD_MAX" : "Seuil maximum"
+    }
+  },
+  "ASSET_MODAL": {
+    "DETAIL": "Détails",
+    "PLACEHOLDERS": {
+      "NAME": "Nom"
+    }
+  },
+  "SUPPORT": {
+    "TITLE": "Support",
+    "PLACEHOLDERS": {
+      "EMAIL": "Votre email",
+      "MESSAGE": "Votre message",
+      "NAME": "Votre nom"
+    },
+    "INFO": {
+     "MORE_INFO": "Pour plus d'information et de support, merci de nous contacter à ",
+      "KIND_OF_SUPPORT": "Quel support offrons-nous?",
+      "TECHINCAL_PROBLEMS": "Problème technique",
+      "RELOCATION": "Déplacement d'un capteur ou d'un actif",
+      "HARDWARE": "Questions à propos du matériel",
+      "SOFTWARE": "Questions à propos des données ou de l'application",
+      "PREVENTIVE_CONSERVATION": "Questions à propos de problème de transfert de données",
+      "FORGOT_PASSWORD": "Mot de passe oublié",
+      "CHANGE_PASSWORD": "Changement de mot de passe",
+      "HAPPY_TO_ASSIST": "Nous serons ravi de vous assister",
+      "FORGOT_PASSWORD_TEXT": "Si vous ne vous souvenez pas de votre mot de passe Smart monitoring ID, vous pouvez le rénitialiser et le récupérer l'accès à votre compte"
+    },
+    "ERRORS": {
+      "EMAIL_REQUIRED": "Email est obligatoire.",
+      "EMAIL_FORMAT": "format invalide d'email.",
+      "NAME_REQUIRED": "Nom est obligatoire.",
+      "MESSAGE_REQUIRED": "Message est obligatoire.",
+      "MESSAGE_MIN_CHAR": "Minimum 50 caractères.",
+      "MESSAGE_MAX_CHAR": "Max 2048 caractères."
+    }
+  },
+  "MANAGE_THINGS": {
+    "TITLE": "Gérer vos objets",
+    "DETAILS_TEXT": "CHOISISSEZ POUR VOIR LES DÉTAILS",
+    "PLACEHOLDERS": {
+      "SELECT_THING": "Choisir un objet",
+      "THING_NAME": "Nom d'objet"
+    }
+  },
+  "MANAGE_ASSETS": {
+    "TITLE": "Gérer les actifs",
+    "NEW": "Nouvel actif",
+    "TABLE_HEADERS": {
+      "NAME": "Nom",
+      "ACTIONS": "Actions",
+      "LOCATION_TYPE":  "Type de lieu",
+      "LOCATION": "Emplacement",
+      "SUBLOCATION":  "Sous-location",
+      "THRESHOLD_TEMPLATE": "Modèle de seuil"
+    }
+  },
+  "SENSOR_BOTTOMSHEET": {
+    "TEMPERATURE": "Niveau de remplissage. Mesurer le niveau de tout type de conteneur.",
+    "HUMIDITY": "Comptage de personnes. Mesurez le nombre de visiteurs dans vos bâtiments, parcours..",
+    "MOTION": "Environnement. Obtenez une surveillance constante de votre environnement.",
+    "LUMINOSITY": "Autres paramètres. Surveillez le type d'objet que vous souhaitez en temps réel."
+  },
+  "CONTACT": {
+    "TECHNICAL_SUPPORT": {
+      "TITLE": "Support technique:",
+      "MAILTO": "mailto:ict-servicedesk@proximus.com",
+      "EMAIL": "ict-servicedesk@proximus.com",
+      "TELTO": "tel:080033200",
+      "TEL": "0800 33 200"
+    },
+    "SALES": {
+      "TITLE": "Marketing et ventes:",
+      "MAILTO": "mailto:iot@proximus.com",
+      "EMAIL": "iot@proximus.com",
+      "TELTO": "tel:080022200",
+      "TEL": "0800 222 00"
+    },
+    "SUPPORT_DETAILS": ""
+  },
+  "LOGIN_ERROR":{
+    "single_logout" : "Vous avez été déconnecté avec succès.",
+    "token_refresh_failed" : "Votre session a expiré, veuillez vous reconnecter.",
+    "no_session": "Votre session a expiré, veuillez vous reconnecter.",
+    "grant_application_access" : "Vous n'avez pas accès à cette application. S'il vous plaît contacter le support.",
+    "other" : "Accès refusé. Souvent, vider le cache de votre navigateur et le redémarrer permettra de résoudre le problème. S'il vous plaît essayez de vous connecter à nouveau. Si le problème persiste, veuillez contacter le support.",
+    "403" : "Vous vous êtes connecté avec succès, mais nos enregistrements montrent que vous n'avez pas accès à cette application. Cliquez sur le bouton ci-dessous pour vous déconnecter. Pour demander l'accès à cette application, s'il vous plaît contactez-nous en utilisant le",
+    "CONTACT" : "formulaire de contact",
+    "access_denied": "L'accès a été refusé."
+  },
+  "LOGOUT_SUCCESS" : {
+    "logout_ok" : "Vous avez été déconnecté avec succès."
+  },
+  "PDF": {
+    "ASSET_NAME": "Nom d'actif",
+    "ClIENT_NAME" : "Nom de client",
+    "LOCATION_NAME" : "Nom de localisation",
+    "SUBLOCATION_NAME" : "Nom de sous-localisation",
+    "CHART" : "GRAPHIQUE",
+    "MEASURE_PERIOD" : "Période de mesure de",
+    "TO" : "à",
+    "AGGREGATED_VALUES" : "VALEURS AGRÉGÉES"
+  },
+  "temperature": "Température",
+  "humidity": "Humidité",
+  "motion": "Mouvement",
+  "battery": "Batterie",
+  "luminosity": "Luminosité"
+}

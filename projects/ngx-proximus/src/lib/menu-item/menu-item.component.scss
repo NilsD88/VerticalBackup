@@ -1,0 +1,32 @@
+.pxs-menu-item {
+  cursor  : pointer;
+  display : inline-block;
+  margin  : 0 5px;
+  outline: none;
+}
+
+.pxs-menu-item::after {
+  display     : block;
+  margin-top  : 10px;
+  content     : '';
+  width       : 0;
+  margin-left : 50%;
+  height      : 3px;
+  background  : white;
+  transition  : width .4s, margin-left .4s;
+}
+
+.pxs-menu-item:hover, .pxs-menu-item.active {
+  &::after {
+    width       : 100%;
+    margin-left : 0;
+    transition  : width .4s, margin-left .4s;
+  }
+}
+
+.pxs-menu-item-badge {
+  font-size     : .5em;
+  padding       : .2em .5em;
+  border-radius : 1rem;
+  line-height: 1em;
+}

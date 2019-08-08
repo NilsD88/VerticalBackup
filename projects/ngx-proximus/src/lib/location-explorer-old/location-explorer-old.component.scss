@@ -1,0 +1,35 @@
+@import "~/../src/variables.scss";
+
+::ng-deep .mat-tab-label {
+    &:nth-of-type(n+2) {
+        ::before{
+            content:"/\00a0"
+        }
+    }
+}
+
+::ng-deep .mat-list {
+    padding: 10px !important;
+    .mat-list-item {
+        .mat-list-item-content {
+            justify-content: space-between;
+            & > span {
+                color: $sub;
+            }
+        }
+        &.selected {
+            background-color: rgba($primary, .1);
+            border-color: $primary;
+            color: $primary;
+        }
+        cursor: pointer;
+        border: 1px solid #F5F5F5;
+        border-radius: 4px;
+        margin: 0 0 5px;
+        user-select: none;
+        background: white;
+        &:hover {
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+}

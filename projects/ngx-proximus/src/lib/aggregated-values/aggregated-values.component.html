@@ -1,0 +1,75 @@
+<!--
+<div class="aggregated-values">
+  <div class="row">
+    <div class="col-md-2 aggregated-value-card" *ngFor="let item of chartData">
+      <div class="row">
+        <div class="col-4" style="align-self: center;">
+          <img [src]="'assets/smartmonitoring/images/icons/icon-' + item.label + '-white.svg'" [alt]="item.label">
+        </div>
+        <div class="col-8">
+          <div class="aggregated-value"><strong><pxs-icon icon="up-speed"></pxs-icon></strong> {{item.max}}</div>
+          <div class="aggregated-value"><strong><pxs-icon icon="down-speed"></pxs-icon></strong> {{item.min}}</div>
+          <div class="aggregated-value"><strong>Avg:</strong> {{item.average}}</div>
+          <div class="aggregated-value"><strong>StD:</strong> {{item.standardDeviation}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+<div class="aggregated-values">
+  <div class="row">
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <div class="aggregated-value-card">
+        <h5 class="text-white">
+          <pxs-icon icon="gauge"></pxs-icon>
+          Average
+        </h5>
+        <div *ngFor="let item of aggregatedValues" style="display: flex; justify-content: space-between;">
+          <div> {{item.label}}</div>
+          <div> {{item.average ? item.average : '-'}}{{item.postfix}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <div class="aggregated-value-card">
+        <h5 class="text-white">
+          <pxs-icon icon="down-speed"></pxs-icon>
+          Min
+        </h5>
+        <div *ngFor="let item of aggregatedValues" style="display: flex; justify-content: space-between;">
+          <div> {{item.label}}</div>
+          <div> {{item.min ? item.min : '-'}}{{item.postfix}}</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <div class="aggregated-value-card">
+        <h5 class="text-white">
+          <pxs-icon icon="up-speed"></pxs-icon>
+          Max
+        </h5>
+        <div *ngFor="let item of aggregatedValues" style="display: flex; justify-content: space-between;">
+          <div> {{item.label}}</div>
+          <div> {{item.max ? item.max : '-'}}{{item.postfix}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-xs-12">
+      <div class="aggregated-value-card">
+        <h5 class="text-white">
+          <span style="font-size: 1.2em; font-weight: 100;">&sigma;</span>
+          StdDev
+        </h5>
+        <div *ngFor="let item of aggregatedValues" style="display: flex; justify-content: space-between;">
+          <div> {{item.label}}</div>
+          <div> {{item.standardDeviation ? item.standardDeviation : '-'}}{{item.postfix}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

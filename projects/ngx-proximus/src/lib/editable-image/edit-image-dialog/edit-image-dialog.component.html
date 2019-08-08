@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-12">
+      <h2>{{data.title}}</h2>
+    </div>
+
+    <div class="col-12">
+      <ngx-img (onSelect)="onImageEditorSelect($event)" (onReset)="onImageEditorReset()"
+               [config]="imageEditorConfig"></ngx-img>
+    </div>
+
+    <div class="col-12">
+      <div style="display: flex; justify-content: center; padding: 1rem;">
+        <button mat-button color="warn" (click)="close()">Cancel</button>
+        <button mat-button color="primary" (click)="save()">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="map-asset-container" [style.height.px]="height" *ngIf="(locations && locations.length > 0) || (assets && assets.length > 0)">
+    <div [ngStyle]="{'height.px': height}" *ngIf="options"
+      leaflet 
+      [leafletOptions]="options"
+      [leafletLayers]="locationsLayer"
+      [leafletMarkerCluster]="markers"
+      [leafletMarkerClusterOptions]="markerClusterOptions"
+      (leafletMapReady)="onMapReady($event)"
+    >
+    </div>
+    <div *ngIf="parentLocation" class="parent-location-container">
+      <a (click)="change.emit()">
+        <pxs-icon icon="chevron-left"></pxs-icon>
+      </a>
+      {{parentLocation.name}}
+    </div>
+</div>

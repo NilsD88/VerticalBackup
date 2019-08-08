@@ -1,0 +1,31 @@
+.thing-list {
+  display        : flex;
+  flex-direction : column;
+  margin         : 10px 0;
+}
+
+.thing-list-item {
+  margin-top     : 10px;
+  padding        : 10px;
+  display        : flex;
+  flex-direction : row;
+}
+
+.thing-list-item-content {
+  margin-left    : 10px;
+  display        : flex;
+  flex-direction : column;
+}
+
+.thing-list-sensors {
+  display        : flex;
+  flex-direction : row;
+  flex-wrap      : wrap;
+}
+
+.thing-list-sensors > img {
+  display : flex;
+  height  : 20px;
+  margin  : 5px;
+
+}

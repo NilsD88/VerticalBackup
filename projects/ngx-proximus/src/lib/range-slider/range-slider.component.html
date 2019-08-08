@@ -1,0 +1,19 @@
+<div class="range-slider-wrapper">
+  <div class="range-slider-values">
+    {{(from) + ' ' + postfix}}
+    -
+    {{(to) + ' ' + postfix}}
+  </div>
+  <div class="range-slider-slider">
+    <nouislider 
+      [disabled]="disabled" 
+      [connect]="true"
+      [config]="{start: [startFrom, startTo]}"
+      [min]="min"
+      [max]="max"
+      [step]="step"
+      (update)="sliderChange($event)"
+      >
+    </nouislider>
+  </div>
+</div>

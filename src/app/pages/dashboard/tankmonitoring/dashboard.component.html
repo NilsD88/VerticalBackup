@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-9">
+      <pxs-map-asset *ngIf="items.length" [assets]="items"></pxs-map-asset>
+    </div>
+    <div class="col-md-3">
+        <pxs-pie-chart [series]="chartData" (filter)="pieClicked($event)"></pxs-pie-chart>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" style="width: 100%;">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let element">{{'DASHBOARD.SMART_TANK.STATUS.' + element.status | translate}} </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+</div>

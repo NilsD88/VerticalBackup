@@ -1,71 +1,46 @@
-####Corporate gitignore file managed by hotline.developmenttools, please do not Modify this file without consulting Our team!. 
+# See http://help.github.com/ignore-files/ for more about ignoring files.
 
-######################
-# Eclipse
-######################
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
-.recommenders
+# compiled output
+/dist
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
 
-# Eclipse Core
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events.json
+speed-measure-plugin.json
+
+# IDEs and editors
+/.idea
 .project
-# External tool builders
-.externalToolBuilders/
-# Locally stored "Eclipse launch configurations"
-*.launch
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
-# CDT-specific (C/C++ Development Tooling)
-.cproject
-# JDT-specific (Eclipse Java Development Tools)
 .classpath
-# Java annotation processor (APT)
-.factorypath
-# PDT-specific (PHP Development Tools)
-.buildpath
-# sbteclipse plugin
-target/
-# Tern plugin
-.tern-project
-# TeXlipse plugin
-.texlipse
-# STS (Spring Tool Suite)
-.springBeans
-# Code Recommenders
-.recommenders/
-######################
-# Java
-######################
-*.class
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
 
-# Package Files #
-*.jar
-*.war
-*.ear
-# Executable Files #
-*.exe
-*.msi
-# Node Js Modules dependency
-node_modules/
-# Movie and Music files
-*.mvi
-*.mp3
-*.wmv
-# zip, tar files
-*.zip
-*.tar
-*.7z
-mvnw
-mvnw.cmd
-*.pdf
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db

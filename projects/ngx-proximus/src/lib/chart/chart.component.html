@@ -1,0 +1,11 @@
+<div class="chart-controls">
+    <mat-button-toggle-group (change)="intervalChanged($event)" [value]="filter.interval">
+        <mat-button-toggle *ngFor="let interval of intervals" [value]="interval">
+           {{interval}}
+        </mat-button-toggle>
+    </mat-button-toggle-group>
+    <pxs-date-range-selection (dateChange)="dateRangeChanged($event)"></pxs-date-range-selection>
+</div>
+
+<div [hidden]="loading || !chartData.length" id="chart-container"></div>
+<pxs-loader *ngIf="loading || !chartData.length"></pxs-loader>

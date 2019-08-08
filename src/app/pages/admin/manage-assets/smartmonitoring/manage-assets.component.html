@@ -1,0 +1,27 @@
+<pxs-loader *ngIf="!asset"></pxs-loader>
+<div class="container-fluid" *ngIf="asset">
+  <div class="row">
+    <div class="col-12">
+      <h2>Asset details</h2>
+    </div>
+    <div class="col-md-3">
+      <pxs-editable-image [(image)]="asset.pictureBase64"></pxs-editable-image>
+    </div>
+    <div class="col-md-9">
+      <mat-form-field>
+        <input type="text" matInput [(ngModel)]="asset.name" placeholder="Asset name">
+      </mat-form-field>
+      <mat-form-field>
+        <textarea type="text" matInput [(ngModel)]="asset.description" rows="13"
+                  placeholder="Asset description"></textarea>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <pxs-things-list [(things)]="asset.things"
+                       [(list)]="thingsList"
+                       [editable]="true"
+                       (change)="thingsListChanged($event)">
+      </pxs-things-list>
+    </div>
+  </div>
+</div>
