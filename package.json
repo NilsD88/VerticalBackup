@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "DEBUG=express:* node ./server.js",
-    "prebuild": "npm i -g @angular/cli@7.3.9",
+    "prebuild": "npm i -g @angular/cli",
+    "build": "ng build",
     "postinstall": "node builder",
     "test": "ng test",
     "lint": "ng lint",
