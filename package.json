@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port=5050 --aot",
-    "build": "ng build",
+    "start": "DEBUG=express:* node ./server.js",
+    "prebuild": "npm i -g @angular/cli@7.3.9",
+    "postinstall": "node builder",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
