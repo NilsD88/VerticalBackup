@@ -12,10 +12,16 @@
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
+        div.right {
+            display: flex;
+            button {
+                margin-left: 10px;
+            }
+        }
     }
 
     .mat-button-toggle-checked {
         background: $primary;
         color: white !important;
-    } 
+    }
 }

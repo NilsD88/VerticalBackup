@@ -1,13 +1,8 @@
-import {Component, Input, OnChanges, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {ISensorReadingFilter} from '../../../../../src/app/models/sensor.model';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { formatDate } from '@angular/common';
-
-
-require('highcharts/modules/exporting');
-var Highcharts = require('highcharts/highstock');
+import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 
 
 declare global {
@@ -24,6 +19,8 @@ const noData = require('highcharts/modules/no-data-to-display');
 const More = require('highcharts/highcharts-more');
 const exporting = require('highcharts/modules/exporting');
 const exportData = require('highcharts/modules/export-data');
+const Highcharts = require('highcharts/highstock');
+const randomColor = require('randomcolor');
 
 Boost(Highcharts);
 noData(Highcharts);
@@ -37,6 +34,14 @@ interface IFilterChartData {
   interval?: string;
   from?: number;
   to?: number;
+  durationInHours?: number;
+}
+
+
+enum ESensorColors {
+  TEMPERATURE = 'orange',
+  HUMIDITY = 'blue',
+  BATTERY = 'monochrome'
 }
 
 
@@ -48,12 +53,11 @@ interface IFilterChartData {
 export class ChartComponent implements OnInit, OnChanges {
   @Input() chartData: {
     label: string;
-    series: { label: string, avg: number, min: number, max: number }[]
+    series: { label: string, avg?: number, min?: number, max?: number, value?: number }[];
   }[];
-
-
-  @Input() filter:IFilterChartData;
-  @Input() loading:boolean;
+  @Input() drpOptions: NgxDrpOptions;
+  @Input() filter: IFilterChartData;
+  @Input() loading: boolean;
   @Input() height = 700;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
@@ -66,13 +70,16 @@ export class ChartComponent implements OnInit, OnChanges {
     '#9BDE7E', '#7FA06F'
   ];
 
-  
   @Output() updateChartData = new EventEmitter<IFilterChartData>();
+  @Output() download = new EventEmitter();
 
+  @ViewChild('dataRangeSelection') dataRangeSelection;
 
   public intervals: string[] = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
   public options: any;
   public chart: any;
+  public range: {fromDate: number; toDate: number};
+  public Highcharts = Highcharts;
 
   constructor(public translateService: TranslateService) {
   }
@@ -83,7 +90,7 @@ export class ChartComponent implements OnInit, OnChanges {
   public async ngOnChanges() {
     this.options = {
       navigator: {
-        enabled: true      
+        enabled: true
       },
       time: {
         timezone: 'Europe/Brussels'
@@ -109,6 +116,8 @@ export class ChartComponent implements OnInit, OnChanges {
         crosshairs: true,
         shared: true
       },
+      yAxis: [],
+      /*
       yAxis: [{ // Temperature yAxis
         opposite: false,
         showEmpty: false,
@@ -142,8 +151,22 @@ export class ChartComponent implements OnInit, OnChanges {
         softMin: 0,
         softMax: 1000
       }],
+      */
       xAxis: {
         type: 'datetime'
+      },
+      plotOptions: {
+        spline: {
+            marker: {
+                enabled: false
+            }
+        },
+        series: {
+          showInNavigator: true,
+          marker: {
+            enabled: false
+          }
+        }
       },
       legend: {},
       series: []
@@ -156,6 +179,7 @@ export class ChartComponent implements OnInit, OnChanges {
       });
     });
 
+
     this.chartData.forEach(async (item) => {
       chartDataPromises.push(new Promise(async (resolveChartDataPromise) => {
         const labelTranslation = await new Promise((resolve) => {
@@ -164,39 +188,86 @@ export class ChartComponent implements OnInit, OnChanges {
           });
         });
 
-        this.options.series.push({
-          name: labelTranslation,
-          yAxis: this.getYAxisByLabel(item.label),
-          zIndex: 1,
-          data: item.series.map((serie) => {
-            let label = this.filterInt(serie.label);
-            if (isNaN(label)) {
-              console.warn('Unable to perse timestamp for chart, using default value of 0');
-              label = 0;
+        const axisOpposite = this.options.yAxis.length % 2 > 0;
+        let shouldAddYAxis = false;
+
+        if (item.series.length > 0) {
+          shouldAddYAxis = true;
+          if (this.options.yAxis.length > 0) {
+            shouldAddYAxis = !this.options.yAxis.some((e) => {
+              return e.title.text === labelTranslation;
+            });
+          }
+        }
+
+        if (shouldAddYAxis) {
+          this.options.yAxis.push({
+            opposite: axisOpposite,
+            showEmpty: false,
+            title: {
+              text: labelTranslation
             }
-            return [label, parseFloat(serie.avg.toFixed(2))];
-          })
-        });
-        this.options.series.push({
-          name: labelTranslation + ' ' + rangeTranslation,
-          type: 'arearange',
-          yAxis: this.getYAxisByLabel(item.label),
-          lineWidth: 0,
-          linkedTo: ':previous',
-          fillOpacity: 0.3,
-          zIndex: 0,
-          marker: {
-            enabled: false
-          },
-          data: item.series.map((serie) => {
-            let label = this.filterInt(serie.label);
-            if (isNaN(label)) {
-              console.warn('Unable to perse timestamp for chart, using default value of 0');
-              label = 0;
-            }
-            return [label, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-          })
-        });
+          });
+        }
+
+        const color = randomColor({ hue: ESensorColors[String(labelTranslation).toUpperCase()] });
+
+        if (this.filter.durationInHours > 24) {
+
+          this.options.series.push({
+            name: labelTranslation,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'spline',
+            data: item.series.map((serie) => {
+              let label = this.filterInt(serie.label);
+              if (isNaN(label)) {
+                console.warn('Unable to perse timestamp for chart, using default value of 0');
+                label = 0;
+              }
+              return [label, parseFloat(serie.avg.toFixed(2))];
+            })
+          });
+
+          this.options.series.push({
+            name: labelTranslation + ' ' + rangeTranslation,
+            color,
+            type: 'arearange',
+            yAxis: this.getYAxisByLabel(item.label),
+            lineWidth: 0,
+            linkedTo: ':previous',
+            fillOpacity: 0.3,
+            zIndex: 0,
+            marker: {
+              enabled: false
+            },
+            data: item.series.map((serie) => {
+              let label = this.filterInt(serie.label);
+              if (isNaN(label)) {
+                console.warn('Unable to perse timestamp for chart, using default value of 0');
+                label = 0;
+              }
+              return [label, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+            })
+          });
+        } else {
+          this.options.series.push({
+            name: labelTranslation,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'spline',
+            data: item.series.map((serie) => {
+              let label = this.filterInt(serie.label);
+              if (isNaN(label)) {
+                console.warn('Unable to perse timestamp for chart, using default value of 0');
+                label = 0;
+              }
+              return [label, parseFloat(serie.value.toFixed(2))];
+            })
+          });
+        }
 
         resolveChartDataPromise();
       }));
@@ -205,8 +276,6 @@ export class ChartComponent implements OnInit, OnChanges {
     await Promise.all(chartDataPromises);
 
     this.chart = Highcharts.chart('chart-container', this.options);
-  
-
   }
 
   public filterInt(value: string) {
@@ -216,33 +285,29 @@ export class ChartComponent implements OnInit, OnChanges {
     return NaN;
   }
 
-  getYAxisByLabel(label: string) {
-    switch (label) {
-      case 'temperature':
-        return 0;
-      case 'humidity':
-        return 1;
-      case 'luminosity':
-        return 2;
-      case 'motion':
-        return 3;
+  getYAxisByLabel(label) {
+    let result;
+    for ( let i = 0; i < this.options.yAxis.length; i++) {
+      if ( this.options.yAxis[i].title.text.toUpperCase() === label.toUpperCase()) {
+        result = i;
+      }
     }
+    return result;
   }
 
-  
   public intervalChanged(event) {
     this.updateChartData.emit({
       interval: event.value
     });
   }
 
-  public dateRangeChanged(range: {fromDate:Date; toDate:Date;}) {
+  public dateRangeChanged(range: { fromDate: Date; toDate: Date; }) {
     const {fromDate, toDate} = range;
+    console.log(fromDate);
     this.updateChartData.emit({
       from: fromDate.getTime(),
       to: toDate.getTime(),
     });
   }
-
 
 }

@@ -146,8 +146,9 @@ export const AppRoutes: Routes = [
     canActivate: [PublicAuthGuard],
     children: [{
       path: '',
-      //loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
-      loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
+      loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
+      //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
+      //loadChildren: './pages/playground/threshold/threshold.module#ThresholdModule'
     }]
   },
   {

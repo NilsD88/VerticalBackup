@@ -1,5 +1,7 @@
-import {Component, OnInit, OnChanges, SimpleChanges} from '@angular/core';
+import { SharedService } from 'src/app/services/shared.service';
+import {Component, OnInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {formatDate} from '@angular/common';
 import {Asset} from '../../../models/asset.model';
 import {AssetService} from '../../../services/asset.service';
 import {isNullOrUndefined} from 'util';
@@ -9,11 +11,17 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ISensorReadingFilter } from 'src/app/models/sensor.model';
 import { LogsService } from 'src/app/services/logs.service';
+import jspdf from 'jspdf';
+
+declare var require: any;
+
+const canvg = require('canvg');
 
 interface IFilterChartData {
-  interval?: string;
-  from?: number;
-  to?: number;
+  interval: string;
+  from: number;
+  to: number;
+  durationInHours?: number;
 }
 
 @Component({
@@ -22,37 +30,85 @@ interface IFilterChartData {
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit {
+
+  @ViewChild('myChart') myChart;
+  @ViewChild('myAggregatedValues') myAggregatedValues;
+
   public asset: Asset;
   public lastAlert: Alert;
   public chartSensorOptions = [];
   public chartLoading = false;
   public chartData = [];
-  public chartDateRange = {fromDate: moment(new Date()).startOf('d').toDate(), toDate: moment(new Date()).endOf('d').toDate()};
   public standardDeviations = [];
-  
+  public isDownloading = false;
   public currentFilter: IFilterChartData = {
-    interval: "HOURLY",
-    from: this.chartDateRange.fromDate.getTime(),
-    to: this.chartDateRange.toDate.getTime(),
-  }
-
+    interval: 'HOURLY',
+    from: moment().subtract(1, 'day').toDate().getTime(),
+    to: moment().toDate().getTime(),
+  };
   public mapLayers = [];
-
   public mapConfig;
 
-  constructor(public activeRoute: ActivatedRoute,
-              private assetService: AssetService,
-              private router: Router,
-              private translateService: TranslateService,
-              private logsService: LogsService,
-              public sharedAlertsService: SharedAlertsService) {
-                activeRoute.params.subscribe(val => {
-                  this.init();
-                });
+  public drpPresets: any[];
+  public drpOptions: any;
+
+  constructor(
+    public activeRoute: ActivatedRoute,
+    private assetService: AssetService,
+    private router: Router,
+    private translateService: TranslateService,
+    private logsService: LogsService,
+    private sharedService: SharedService,
+    public sharedAlertsService: SharedAlertsService) {
+      activeRoute.params.subscribe(val => {
+        this.init();
+      });
   }
 
 
   async ngOnInit() {
+    this.initDateFilterOptions();
+  }
+
+  setupPresets() {
+    const backDate = (numOfDays) => {
+      const tday = new Date();
+      return new Date(tday.setDate(tday.getDate() - numOfDays));
+    };
+
+    const today = new Date();
+    const yesterday = backDate(1);
+    const minus7 = backDate(7);
+    const minus30 = backDate(30);
+
+    this.drpPresets = [
+      {presetLabel: 'Last 24 hours', range: {fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()}},
+      {presetLabel: 'Last 7 Days', range: {fromDate: minus7, toDate: today}},
+      {presetLabel: 'Last 30 Days', range: {fromDate: minus30, toDate: today}}
+    ];
+  }
+
+  public initDateFilterOptions() {
+    const today = new Date();
+    // const fromMin = new Date(today.getFullYear(), today.getMonth() - 2, 1);
+    const fromMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const toMin = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+    const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    this.setupPresets();
+    this.drpOptions = this.drpOptions || {
+      presets: this.drpPresets,
+      format: 'mediumDate',
+      range: {fromDate: new Date(this.currentFilter.from) , toDate: new Date(this.currentFilter.to)},
+      applyLabel: 'Submit',
+      calendarOverlayConfig: {
+        shouldCloseOnBackdropClick: true
+      },
+      cancelLabel: 'Cancel',
+      excludeWeekends: false,
+      fromMinMax: {fromDate: null, toDate: fromMax},
+      toMinMax: {fromDate: null, toDate: toMax}
+    };
   }
 
   async init() {
@@ -69,7 +125,6 @@ export class DetailComponent implements OnInit {
         };
       }) : [];
       this.getChartData(null);
-      this.createMarkerOnMap();
 
     } catch (err) {
       this.router.navigate(['/error/404']);
@@ -89,52 +144,53 @@ export class DetailComponent implements OnInit {
   }
 
 
-  public async getChartData(options:{interval?:string; from?:number; to?:number;}) {
+  public async getChartData(options: { interval?: string; from?: number; to?: number; }) {
 
-    let shouldUpdate = false;
-    
-    if(!options) {
-      shouldUpdate = true;
+    if (!options) {
       options = this.currentFilter;
     }
 
     const interval = options.interval ?  options.interval : this.currentFilter.interval;
     const from = options.from ?  options.from : this.currentFilter.from;
     const to = options.to ?  options.to : this.currentFilter.to;
-
-    if(interval !== this.currentFilter.interval) {
-      shouldUpdate = true;
-    } else if(from < this.currentFilter.from || to > this.currentFilter.to) {
-      shouldUpdate = true;
-    }
-
-    if(!shouldUpdate) {
-      console.log("not update");
-      return false;
-    }
-
-    console.log("have to update");
+    const duration = moment.duration(moment(to).diff(from));
+    const durationInHours =  +duration.asHours().toFixed(0);
 
     this.currentFilter = {
       interval,
       from,
-      to
-    }
-    
+      to,
+      durationInHours
+    };
+
+
     this.chartLoading = true;
     const logsPromises = [];
     const standardDeviationPromises = [];
 
-    for (const sensorType of this.chartSensorOptions) {
-      const filter:ISensorReadingFilter = {
-        deveui: sensorType.deveui,
-        sensortypeid: sensorType.sensorTypeId,
-        from,
-        to,
-        interval,
-      };
-      logsPromises.push(this.logsService.getSensorReadings(filter));
-      standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
+    if (durationInHours <= 24) {
+      for (const sensorType of this.chartSensorOptions) {
+        const filter: ISensorReadingFilter = {
+          deveui: sensorType.deveui,
+          sensortypeid: sensorType.sensorTypeId,
+          from,
+          to,
+          interval,
+        };
+        logsPromises.push(this.logsService.getSensorReadingsV2(filter));
+      }
+    } else {
+      for (const sensorType of this.chartSensorOptions) {
+        const filter: ISensorReadingFilter = {
+          deveui: sensorType.deveui,
+          sensortypeid: sensorType.sensorTypeId,
+          from,
+          to,
+          interval,
+        };
+        logsPromises.push(this.logsService.getSensorReadings(filter));
+        standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
+      }
     }
 
     this.standardDeviations = await Promise.all(standardDeviationPromises);
@@ -143,19 +199,110 @@ export class DetailComponent implements OnInit {
   }
 
 
+  public async download() {
 
-  public createMarkerOnMap() {
-    /*const m = marker(, {
-      icon: icon({
-        iconSize: [25, 41],
-        iconAnchor: [13, 41],
-        iconUrl: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE4LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMzY1IDU2MCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMzY1IDU2MCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+CjxnPgoJPHBhdGggZmlsbD0iIzAwQUVFRiIgZD0iTTE4Mi45LDU1MS43YzAsMC4xLDAuMiwwLjMsMC4yLDAuM1MzNTguMywyODMsMzU4LjMsMTk0LjZjMC0xMzAuMS04OC44LTE4Ni43LTE3NS40LTE4Ni45ICAgQzk2LjMsNy45LDcuNSw2NC41LDcuNSwxOTQuNmMwLDg4LjQsMTc1LjMsMzU3LjQsMTc1LjMsMzU3LjRTMTgyLjksNTUxLjcsMTgyLjksNTUxLjd6IE0xMjIuMiwxODcuMmMwLTMzLjYsMjcuMi02MC44LDYwLjgtNjAuOCAgIGMzMy42LDAsNjAuOCwyNy4yLDYwLjgsNjAuOFMyMTYuNSwyNDgsMTgyLjksMjQ4QzE0OS40LDI0OCwxMjIuMiwyMjAuOCwxMjIuMiwxODcuMnoiLz4KPC9nPgo8L3N2Zz4='
-      }).bindPopup(
-        `
-        <h6>${this.asset.name}</h6>
-        `
-      )
-    });*/
+    const pdf = new jspdf('p', 'mm', 'a4', 1); // A4 size page of PDF (210 x 297)
+    pdf.setFontSize(10);
+
+    function setStyle(styleName) {
+      switch (styleName) {
+        case 'title':
+          pdf.setFontStyle('bold');
+          pdf.setTextColor(92, 45, 145);
+          break;
+        default:
+          pdf.setFontStyle('normal');
+          pdf.setTextColor(0, 0, 0);
+          break;
+      }
+    }
+
+    pdf.addImage(this.asset.pictureBase64, 'JPEG', 10 , 10, 30, 30);
+    const assetNameTranslation: string = await this.getTranslation('PDF.ASSET_NAME');
+    pdf.text(assetNameTranslation + ' : ' + this.asset.name, 45, 15);
+    const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
+    pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 45, 20);
+
+    const options = this.myChart.options;
+    const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
+    const sublocationNameTranslation: string = await this.getTranslation('PDF.SUBLOCATION_NAME');
+    pdf.text(locationNameTranslation + ' : ' + this.asset.sublocation.location.name + '\n'
+      + sublocationNameTranslation + ' : ' + this.asset.sublocation.name, 45, 30);
+
+    if ( options.series.length > 0) {
+      setStyle('title');
+      const chartTitle = await this.getTranslation('PDF.CHART');
+      pdf.text(chartTitle, 10, 50);
+
+      setStyle(null);
+      const measurePeriodTranslation = await this.getTranslation('PDF.MEASURE_PERIOD');
+      const toTranslation = await this.getTranslation('PDF.TO');
+
+      const dateRange = this.myChart.range || this.drpOptions.range;
+      const timePeriod: string = measurePeriodTranslation + ' ' + formatDate(dateRange.fromDate, 'dd/MM/yyyy HH:mm', 'en-US')
+        + ' ' + toTranslation + ' ' + formatDate(dateRange.toDate, 'dd/MM/yyyy HH:mm', 'en-US');
+      pdf.text(timePeriod, 10, 55);
+
+      if (this.currentFilter.durationInHours > 24) {
+        const marginTop = 175;
+        setStyle('title');
+        const aggregatedTitle = await this.getTranslation('PDF.AGGREGATED_VALUES');
+        pdf.text(aggregatedTitle, 10, marginTop - 15);
+
+        // Header of table
+        setStyle(null);
+        const measurement = await this.getTranslation('DETAIL.AGGREGATED.MEASUREMENT');
+        pdf.text(measurement, 10, marginTop - 10);
+        const max = await this.getTranslation('DETAIL.AGGREGATED.MAX');
+        pdf.text(max, 70, marginTop - 10);
+        const min = await this.getTranslation('DETAIL.AGGREGATED.MIN');
+        pdf.text(min, 105, marginTop - 10);
+        const average = await this.getTranslation('DETAIL.AGGREGATED.AVERAGE');
+        pdf.text(average, 140, marginTop - 10);
+        const standardDeviation = await this.getTranslation('DETAIL.AGGREGATED.STANDARDDEVIATION');
+        pdf.text(standardDeviation, 175, marginTop - 10);
+
+        const aggregatedValues = this.myAggregatedValues.aggregatedValues;
+        pdf.setTextColor(120, 120, 120);
+        for ( let i = 0; i < aggregatedValues.length; i++) {
+          const aggregatedValue = aggregatedValues[i];
+          pdf.text((aggregatedValue.label) ? aggregatedValue.label.trunc(30) : '-', 10, marginTop + ( i * 10 ));
+          pdf.text(aggregatedValue.max || '-', 70, marginTop + ( i * 10 ));
+          pdf.text(aggregatedValue.min || '-', 105, marginTop + ( i * 10 ));
+          pdf.text(aggregatedValue.average || '-', 140, marginTop + ( i * 10 ));
+          pdf.text(aggregatedValue.standardDeviation || '-', 175, marginTop + ( i * 10));
+          pdf.line(10, marginTop + (i * 10) + 5, 200, marginTop + (i * 10) + 5);
+        }
+      }
+
+      let chart;
+      for (const CHART of this.myChart.Highcharts.charts) {
+        if ( typeof CHART !== 'undefined') {
+          chart = CHART;
+        }
+      }
+
+      const svgString = chart.getSVG({chart: {
+        width: 1400,
+        height: 600,
+      }});
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 1400;
+      canvas.height = 600;
+
+      canvg(canvas, svgString);
+
+      const canvasB64 = canvas.toDataURL();
+      pdf.addImage(canvasB64, 'PNG', 5 , 60, (1400 / 7), (600 / 7));
+    }
+
+    pdf.save(this.asset.name + '.pdf');
+    this.isDownloading = false;
+  }
+
+  private async getTranslation(label: string) {
+    return await (this.translateService.get(label).toPromise());
   }
 
 }

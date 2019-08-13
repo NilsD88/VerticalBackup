@@ -29,10 +29,9 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
   ngOnInit() {
   }
 
-  ngOnChanges(changes:SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.chartData.length) {
       this.chartData.forEach((item) => {
-        console.log(item);
         const aggregatedValue = this.createAggregatedValues(item, `${item.label} ${item.devEui}`);
         this.aggregatedValues.push(aggregatedValue);
       });
@@ -81,11 +80,9 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
       if (retrievedStandardDeviation) {
         aggregatedValue.standardDeviation = retrievedStandardDeviation.value.toFixed(2);
       }
-
     }
 
     return aggregatedValue;
-
   }
 
 }

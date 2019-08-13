@@ -1,0 +1,23 @@
+<h1>Threshold test</h1>
+
+<div class="threshold-container" *ngFor="let sensor of thresholdTemplate.sensors"  style="width: 300px;">
+  <div class="title">
+      <h6>
+        <img [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name.toLowerCase() + '.svg'">
+        {{sensor.sensorType.name}}
+      </h6>
+      <div>
+        <span>{{sensor.sensorType.min}} {{sensor.sensorType.postfix}}</span> - <span>{{sensor.sensorType.max}} {{sensor.sensorType.postfix}}</span> 
+      </div>
+  </div>
+  
+  <div class="threshold-bar-container">
+    <div 
+      class="threshold-bar"
+      matTooltip="{{threshold.severity}}, from {{threshold.range.from}} to {{threshold.range.to}}"
+      *ngFor="let threshold of sensor.thresholds"
+      [ngClass]="{'low': threshold.severity=='LOW', 'high': threshold.severity=='HIGH', 'critical': threshold.severity=='CRITICAL'}"
+      [ngStyle]="{'left.%': threshold.range.fromPercent, 'width.%': threshold.range.widthPercent}"
+    ></div>
+  </div>
+</div>

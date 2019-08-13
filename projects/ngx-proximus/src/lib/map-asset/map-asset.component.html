@@ -9,7 +9,7 @@
     >
     </div>
     <div *ngIf="parentLocation" class="parent-location-container">
-      <a (click)="change.emit()">
+      <a (click)="change.emit(parentLocation.parentLocation)">
         <pxs-icon icon="chevron-left"></pxs-icon>
       </a>
       {{parentLocation.name}}
