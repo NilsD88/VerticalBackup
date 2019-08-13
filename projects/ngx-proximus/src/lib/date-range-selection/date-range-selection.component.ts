@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
 import * as moment from 'moment';
 import {NgxDrpOptions, PresetItem} from 'ngx-mat-daterange-picker';
 
@@ -8,7 +8,7 @@ import {NgxDrpOptions, PresetItem} from 'ngx-mat-daterange-picker';
   styleUrls: ['./date-range-selection.component.css']
 })
 export class DateRangeSelectionComponent implements OnInit {
-  public drpOptions: NgxDrpOptions;
+  @Input() drpOptions: NgxDrpOptions;
   public drpPresets: Array<PresetItem> = [];
   @Output() dateChange: EventEmitter<{fromDate: Date, toDate: Date}> = new EventEmitter();
 
@@ -33,7 +33,7 @@ export class DateRangeSelectionComponent implements OnInit {
     const minus30 = backDate(30);
 
     this.drpPresets = [
-      {presetLabel: 'Yesterday', range: {fromDate: yesterday, toDate: today}},
+      {presetLabel: 'Last 24 hours', range: {fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()}},
       {presetLabel: 'Last 7 Days', range: {fromDate: minus7, toDate: today}},
       {presetLabel: 'Last 30 Days', range: {fromDate: minus30, toDate: today}}
     ];
@@ -47,7 +47,7 @@ export class DateRangeSelectionComponent implements OnInit {
     const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     this.setupPresets();
-    this.drpOptions = {
+    this.drpOptions = this.drpOptions || {
       presets: this.drpPresets,
       format: 'mediumDate',
       range: {fromDate: new Date(moment(today).startOf('day').valueOf()), toDate: new Date(moment(today).endOf('day').valueOf())},

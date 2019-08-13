@@ -11,3 +11,14 @@ if (environment.production) {
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
+
+
+declare global {
+    interface String {
+      trunc(length: number): string;
+    }
+}
+
+String.prototype.trunc = function(n) {
+  return this.substr(0, n - 1) + (this.length > n ? '&hellip;' : '');
+};

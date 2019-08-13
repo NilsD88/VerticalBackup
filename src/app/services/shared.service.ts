@@ -36,9 +36,9 @@ export class SharedService {
 
   public buildFilterQuery(queries: string[]) {
     let query = '';
-    for (let i = 0; i < queries.length; i++) {
-      if (!isNullOrUndefined(queries[i])) {
-        query += queries[i] + ';';
+    for (const q of queries) {
+      if (!isNullOrUndefined(q)) {
+        query += q + ';';
       }
     }
     query = query.length ? `?filter=${query}` : '';
@@ -132,13 +132,19 @@ export class SharedService {
      });
    }
 */
-  public showNotification(message: string, type: 'error' | 'warning' | 'success' | 'info' | 'primary', duration?: number, action?: string): MatSnackBarRef<any> {
+  public showNotification(
+    message: string,
+    type: 'error' | 'warning' | 'success' | 'info' | 'primary',
+    duration?: number,
+    action?: string
+    ): MatSnackBarRef<any> {
     return this.snackBar.open(
       message,
       action, {
         duration,
         panelClass: `${type}-snackbar`
-      });
+      }
+    );
   }
 
   public getDefaultFilter(type: 'ALERTFILTER' | 'INVENTORYFILTER' | 'LOCATIONSFILTER'): any {

@@ -34,6 +34,26 @@ export class LogsService {
     });
   }
 
+  getSensorReadingsV2(filter: ISensorReadingFilter) {
+    return new Promise(async (resolve, reject) => {
+      this.http.get(
+        `${environment.baseUrl}sensorreadings/v2?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&aggregationtype=none&from=${filter.from}&to=${filter.to}`)
+        .subscribe((response: any) => {
+          if (!isNullOrUndefined(response)) {
+            resolve(response);
+          } else {
+            this.sharedService.rejectPromise('LogsService: Invalid server response', reject);
+          }
+        }, (err) => {
+          if (err.status === 410) {
+            this.sharedService.rejectPromise('Error! Your session has expired, please login again.', reject);
+          } else {
+            this.sharedService.rejectPromise('Error! Failed to fetch sensor data. Please retry.', reject);
+          }
+        });
+    });
+  }
+
   getStandardDeviation(filter: ISensorReadingFilter) {
     return new Promise(async (resolve, reject) => {
       this.http.get(

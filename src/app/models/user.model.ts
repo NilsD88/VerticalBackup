@@ -7,6 +7,7 @@ export interface IUser {
   impersonation: boolean;
   features: Array<'fill' | 'counting' | 'tracking'>;
   roles: string[];
+  orgName: string;
 }
 
 export class User implements IUser {
@@ -16,6 +17,7 @@ export class User implements IUser {
   public impersonation: boolean;
   public roles: string[];
   public features = [];
+  public orgName: string;
 
   constructor(private user: IUser) {
     try {
@@ -25,6 +27,7 @@ export class User implements IUser {
       this.impersonation = user.impersonation ? user.impersonation : false;
       this.roles = (user.roles && user.roles.length) ? user.roles : [];
       this.features = ['fill', 'counting'];
+      this.orgName = user.orgName ? user.orgName : '';
     } catch (err) {
       console.error('UserModel: Invalid user model, cannot create user from passed object');
     }

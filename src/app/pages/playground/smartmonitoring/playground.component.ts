@@ -12,31 +12,31 @@ export class PlaygroundComponent implements OnInit {
 
   assets = [];
   locations = MOCK_LOCATIONS;
-  parentLocation:INewLocation;
+  parentLocation: INewLocation;
   
   constructor(private changeDetectorRef: ChangeDetectorRef) {}
 
   ngOnInit() {
   }
 
-  updateAssetsAndLocations(location:INewLocation) {
-    if(location){
+  updateAssetsAndLocations(location: INewLocation) {
+    console.log("Change location: "+location.name);
+    if (location) {
       console.log("there is a location");
       this.assets = [];
       this.locations = [];
       this.changeDetectorRef.detectChanges();
       this.assets = MOCK_ASSETS;
       this.parentLocation = location;
+      this.locations = location.sublocations;
       this.changeDetectorRef.detectChanges();
-    }else {
+    } else {
       this.assets = [];
-      this.locations = [];
       this.changeDetectorRef.detectChanges();
       this.locations = MOCK_LOCATIONS;
       this.parentLocation = null;
       this.changeDetectorRef.detectChanges();
     }
-    
   }
 }
 
@@ -74,6 +74,12 @@ ASSETS_GEOLOCATION.forEach(element => {
 LOCATIONS_GEOLOCATION.forEach(element => {
   const location = new NewLocation(null);
   location.geolocation = element;
-  location.name = "Location 1";
+  location.name = 'Location 1';
+  location.sublocations = [];
+  const sublocation = new NewLocation(null);
+  sublocation.name = 'Sublocation 1';
+  sublocation.geolocation = element;
+  location.sublocations.push(sublocation);
   MOCK_LOCATIONS.push(location);
 });
+

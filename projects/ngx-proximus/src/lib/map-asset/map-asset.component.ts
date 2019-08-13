@@ -19,7 +19,7 @@ export class MapAssetComponent implements OnInit {
   @Input() parentLocation: INewLocation;
   @Input() imageUrl: string;
 
-  @Output() change:EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
+  @Output() change: EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
 
   currentMap: Map;
   center: IGeolocation;
@@ -39,22 +39,21 @@ export class MapAssetComponent implements OnInit {
     this.center = {
       lat: 50.860160,
       lng: 4.358050
-    }
+    };
 
     this.markerClusterOptions = {
-      iconCreateFunction: function (cluster) {
-        var childCount = cluster.getChildCount();
-        var c = ' marker-cluster-';
+      iconCreateFunction(cluster) {
+        const childCount = cluster.getChildCount();
+        let c = ' marker-cluster-';
+
         if (childCount < 10) {
           c += 'small';
-        } 
-        else if (childCount < 100) {
+        } else if (childCount < 100) {
           c += 'medium';
-        } 
-        else {
+        } else {
           c += 'large';
         }
-       
+
         return divIcon({ html: '<div><span>' + childCount + '</span></div>', 
          className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
         }
@@ -62,8 +61,8 @@ export class MapAssetComponent implements OnInit {
 
     const assetIcon = divIcon({
       className: 'map-marker-asset',
-      iconSize:null,
-      html:'<div><span class="pxi-map-marker"></span></div>'
+      iconSize: null,
+      html: '<div><span class="pxi-map-marker"></span></div>'
     });
 
     for (const asset of this.assets) {
@@ -82,14 +81,14 @@ export class MapAssetComponent implements OnInit {
       image.src = this.imageUrl;
       image.onload = () => {
         const { width, height } = image;
-        const ratioW = height/width;
-        const ratioH = width/height;
-        this.imageBounds = latLngBounds([0, 0], [(image.width/100)*ratioW, (image.height/100)*ratioH]);
+        const ratioW = height / width;
+        const ratioH = width / height;
+        this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
         const imageMap = imageOverlay(this.imageUrl, this.imageBounds);
         this.options = {
           crs: CRS.Simple,
           layers: [imageMap],
-          zoom:20,
+          zoom: 20,
         };
       };
     } else {
@@ -105,11 +104,11 @@ export class MapAssetComponent implements OnInit {
     const locationIcon = divIcon({
       className: 'map-marker-location',
       iconSize: null,
-      html:'<div><span class="pxi-map-hotspot"></span></div>'
+      html: '<div><span class="pxi-map-hotspot"></span></div>'
     });
 
 
-    if(this.locations && this.locations.length){
+    if (this.locations && this.locations.length) {
       for (const location of this.locations) {
         const newMarker = marker(
           [location.geolocation.lat, location.geolocation.lng],
@@ -120,39 +119,39 @@ export class MapAssetComponent implements OnInit {
           console.log(e);
           this.change.emit(location);
         });
-  
+
         this.locationsLayer.push(newMarker);
       }
     }
-    
+
   }
 
 
   private setAssetsAndLocationsBounds() {
     const geoJsonData = {
-      "type": "Feature",
-      "properties": {},
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [[]]
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [[]]
       }
     };
 
-    if(this.assets && this.assets.length) {
+    if (this.assets && this.assets.length) {
       this.assets.forEach(asset => {
         const {lng, lat} = asset.geolocation;
         geoJsonData.geometry.coordinates[0].push([lng, lat]);
       });
     }
-    
-    if(this.locations && this.locations.length){
+
+    if (this.locations && this.locations.length){
       this.locations.forEach(location => {
         const {lng, lat} = location.geolocation;
         geoJsonData.geometry.coordinates[0].push([lng, lat]);
       });
     }
-    
-    const geoJsonLayer = geoJSON(<GeoJsonObject>geoJsonData);
+
+    const geoJsonLayer = geoJSON(geoJsonData as GeoJsonObject);
     this.assetsBounds = geoJsonLayer.getBounds();
   }
 
@@ -173,7 +172,7 @@ export class MapAssetComponent implements OnInit {
     } else if (this.assetsBounds) {
       const currentZoom = this.currentMap.getZoom();
       this.currentMap.fitBounds(this.assetsBounds);
-      this.currentMap.setZoom(currentZoom-0.75);
+      this.currentMap.setZoom(currentZoom - 0.75);
     }
   }
 }

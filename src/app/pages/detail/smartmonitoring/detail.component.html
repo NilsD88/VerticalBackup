@@ -12,13 +12,16 @@
                      [chartData]="chartData"
                      (updateChartData)="getChartData($event)"
                      [filter]="currentFilter"
+                     [drpOptions]="drpOptions"
+                     (download)="download()"
+                     #myChart
                      >
           </pxs-chart>
         </div>
       </div>
       <div class="row">
         <div class="col-12">
-          <pxs-aggregated-values *ngIf="chartData" [chartData]="chartData"></pxs-aggregated-values>
+          <pxs-aggregated-values *ngIf="chartData && !chartLoading && currentFilter.durationInHours > 24" [chartData]="chartData" #myAggregatedValues></pxs-aggregated-values>
         </div> 
       </div>
       <div class="row">
