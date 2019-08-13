@@ -20,9 +20,9 @@ app.use(helmet.hsts({
   maxAge: sixtyDaysInSeconds
 }));
 
-app.use('/smartapps/smartmonitoring', express.static(`${__dirname}/dist/vertical-foundations`));
+app.use('/smartapps/smartmonitoring/', express.static(`${__dirname}/dist/vertical-foundations`));
 
-app.get('/smartapps/smartmonitoring/*', function (req, res) {
+app.get('/*', function (req, res) {
   res.sendFile(path.join(`${__dirname}/dist/vertical-foundations/index.html`));
 });
 app.use(frameguard({action: 'sameorigin'}));
