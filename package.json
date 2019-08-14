@@ -36,6 +36,7 @@
     "@ngx-translate/http-loader": "^4.0.0",
     "@types/leaflet.markercluster": "^1.4.0",
     "canvg": "^2.0.0",
+    "acorn": "^7.0.0",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.5.4",
     "cropperjs": "^1.5.1",
