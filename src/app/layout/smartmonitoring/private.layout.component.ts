@@ -6,6 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/top-menu.component';
 import { AssetService } from 'src/app/services/asset.service';
 import { Asset } from 'src/app/models/asset.model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'pvf-layout',
@@ -23,15 +24,20 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   ];
   public footerConfig: IFooterConfig;
   public searchResults: any[];
+  public searchTerm$ = new Subject<string>();
 
-  constructor(private router: Router,
-              private translateService: TranslateService,
-              public sharedLayoutService: SharedLayoutService,
-              public assetService: AssetService) {
+  constructor(
+    private router: Router,
+    private translateService: TranslateService,
+    public sharedLayoutService: SharedLayoutService,
+    public assetService: AssetService) {
+      this.assetService.search(this.searchTerm$)
+      .subscribe(result => {
+        this.searchResults = result;
+      });
   }
 
   async ngOnInit(): Promise<void> {
-    console.log(this.assetService);
     this.topMenuConfig = {
       languages: this.sharedLayoutService.languages.map(this.sharedLayoutService.mapLanguage),
       activeLanguage: this.sharedLayoutService.currentLang,
@@ -53,7 +59,6 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   }
 
   navigateTo(url: string[]) {
-    console.log(url);
     this.router.navigate(url);
   }
 
@@ -65,13 +70,9 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     window.open('https://mythings.proximus.be/', '_blank');
   }
 
-  async search(event:string) {
-    this.searchResults = await this.assetService.getAssets({name: event});
-  }
-
-  autocompleteClick(event:Asset) {
+  autocompleteClick(event: Asset) {
     this.router.navigateByUrl(`/private/detail/${event.id}`);
     this.searchResults = null;
   }
-  
+
 }

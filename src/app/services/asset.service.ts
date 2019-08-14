@@ -1,3 +1,4 @@
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {Asset, IAsset, IPagedAssets} from '../models/asset.model';
 import {SharedService} from './shared.service';
@@ -5,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {isNullOrUndefined} from 'util';
 import {environment} from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 export interface IAssetFilter {
   name?: string;
@@ -54,7 +56,7 @@ export class AssetService {
       if(filter.name) {
         nameQuery = filter.name.length ? `name=="*${filter.name.toLowerCase()}*"` : null;
       }
-     
+
       if(filter.status) {
         statusQuery = filter.status.length ? `status=="${filter.status}"` : null;
         if (filter.status.length === 1) {
@@ -74,7 +76,6 @@ export class AssetService {
         : null;
       }
 
-    
       if(filter.locations) {
         locationsQuery = filter.locations.length ?
         `sublocation.location.id=in=(${filter.locations.toString()})` :
@@ -87,10 +88,10 @@ export class AssetService {
         `sublocation.id=in=(${filter.locations.toString()})` :
         null;
       }
-      
+
 
       query = this.sharedService.buildFilterQuery([
-      nameQuery,statusQuery,
+      nameQuery, statusQuery,
       thresholdTemplateQuery,
       locationTypeQuery,
       locationsQuery,
@@ -120,7 +121,6 @@ export class AssetService {
   public getPagedAssets(filter: IAssetFilter, pageIndex: number, pageSize: number, sort: string = null, order:string = "asc"): Promise<IPagedAssets> {
     let query;
     if (!isNullOrUndefined(filter)) {
-      console.log("Filter not null");
       const nameQuery = filter.name.length ? `name=="*${filter.name.toLowerCase()}*"` : undefined;
       const thresholdTemplateQuery = filter.thresholdTemplates.length ?
         `thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})`
@@ -145,10 +145,14 @@ export class AssetService {
         null;
       }
 
-     
 
-      query = this.sharedService.buildFilterQuery([nameQuery, thresholdTemplateQuery, locationTypeQuery, locationsQuery, sublocationsQuery]);
-      console.log("query", query);
+      query = this.sharedService.buildFilterQuery([
+        nameQuery,
+        thresholdTemplateQuery,
+        locationTypeQuery,
+        locationsQuery,
+        sublocationsQuery
+      ]);
     }
 
     let sortQuery = '';
@@ -198,5 +202,13 @@ export class AssetService {
           reject(err);
         });
     });
+  }
+
+  public search(terms: Observable<string>) {
+    return terms.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(term => this.getAssets({name: term}))
+    );
   }
 }

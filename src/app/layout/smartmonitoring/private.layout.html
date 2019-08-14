@@ -4,7 +4,7 @@
   (contactClick)="navigateTo('contact')"
   (autocompleteClick)="autocompleteClick($event)"
   [searchResults]="searchResults"
-  (search)="search($event)"
+  (search)="searchTerm$.next($event)"
   [config]="topMenuConfig"
 >
   <pxs-menu-item label="Proximus" (action)="pxsClicked()"></pxs-menu-item>
