@@ -1,3 +1,4 @@
+import { AlertsService } from '../../../services/alerts.service';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DetailComponent} from './detail.component';
@@ -5,7 +6,6 @@ import {RouterModule} from '@angular/router';
 import {DetailRoutes} from './detail.routing';
 import {TranslateModule} from '@ngx-translate/core';
 import {MatDividerModule, MatExpansionModule, MatTooltipModule} from '@angular/material';
-import {SharedAlertsService} from '../../alerts/shared-alerts.service';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {LogsService} from '../../../services/logs.service';
 import {ChartModule} from '../../../../../projects/ngx-proximus/src/lib/chart/chart.module';
@@ -37,7 +37,7 @@ import {DetailHeaderModule} from '../../../../../projects/ngx-proximus/src/lib/d
     DetailHeaderModule,
     RangeSliderModule
   ],
-  providers: [SharedAlertsService, LogsService]
+  providers: [AlertsService, LogsService]
 })
 export class DetailModule {
 }

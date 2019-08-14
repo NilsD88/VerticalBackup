@@ -7,6 +7,7 @@ import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/
 import { AssetService } from 'src/app/services/asset.service';
 import { Asset } from 'src/app/models/asset.model';
 import { Subject } from 'rxjs';
+import { AlertsService } from 'src/app/services/alerts.service';
 
 @Component({
   selector: 'pvf-layout',
@@ -25,12 +26,14 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   public footerConfig: IFooterConfig;
   public searchResults: any[];
   public searchTerm$ = new Subject<string>();
+  public numberOfUnreadAlerts = null;
 
   constructor(
     private router: Router,
     private translateService: TranslateService,
     public sharedLayoutService: SharedLayoutService,
-    public assetService: AssetService) {
+    public assetService: AssetService,
+    public alertsService: AlertsService) {
       this.assetService.search(this.searchTerm$)
       .subscribe(result => {
         this.searchResults = result;
@@ -52,7 +55,29 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
       }
     };
     this.footerConfig = await this.sharedLayoutService.getFooterTranslations();
+
+    this.getNumberOfUnreadAlerts();
+
   }
+
+
+  async getNumberOfUnreadAlerts() {
+    const result = await this.alertsService.getPagedAlerts(
+      {
+        dateRange: {
+          fromDate: new Date(0),
+          toDate: new Date()
+        },
+        sensorTypes: [],
+        thresholdTemplates: [],
+        name: '',
+        read: false
+      },
+      0, 1
+    );
+    this.numberOfUnreadAlerts = (result.totalElements > 0) ? ((result.totalElements > 99) ? '99+' : result.totalElements ) : null;
+  }
+
 
   ngOnDestroy(): void {
     // this.router.unsubscribe();

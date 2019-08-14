@@ -87,7 +87,7 @@
                    alt="">
               <div class="alert-message">
                 {{'SENSORTYPES.' + item?.thresholdAlert?.sensorType?.name | translate}}
-                {{sharedAlertsService.getAlertType(item.sensorReading.value, item.thresholdAlert.high, item.thresholdAlert.low) | translate}}
+                {{alertsService.getAlertType(item.sensorReading.value, item.thresholdAlert.high, item.thresholdAlert.low) | translate}}
               </div>
             </div>
           </div>
@@ -191,7 +191,7 @@
                    alt="">
               <div class="alert-message">
                 {{'SENSORTYPES.' + item?.thresholdAlert?.sensorType?.name | translate}}
-                {{sharedAlertsService.getAlertType(item.sensorReading.value, item.thresholdAlert.high, item.thresholdAlert.low) | translate}}
+                {{alertsService.getAlertType(item.sensorReading.value, item.thresholdAlert.high, item.thresholdAlert.low) | translate}}
               </div>
             </div>
           </div>

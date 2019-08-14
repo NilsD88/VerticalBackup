@@ -1459,3 +1459,10 @@ mat-form-field {
   justify-content: space-between;
   align-items: center;
 }
+
+.red-badge {
+  background-color : $error;
+  color            : $white;
+  border-radius    : 10px;
+  padding          : 2px 10px;
+}

@@ -1,3 +1,12 @@
-<ngx-mat-drp (selectedDateRangeChanged)="updateDrp($event)"
-             [(options)]="drpOptions">
+<button mat-button (click)="swapPeriod(false)">
+    <pxs-icon icon="chevron-left"></pxs-icon>
+</button>
+<ngx-mat-drp
+    (selectedDateRangeChanged)="updateDrp($event)"
+    [(options)]="drpOptions"
+    #dateRangePicker
+>
 </ngx-mat-drp>
+<button mat-button (click)="swapPeriod(true)">
+    <pxs-icon icon="chevron-right"></pxs-icon>
+</button>

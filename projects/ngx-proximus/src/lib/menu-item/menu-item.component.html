@@ -1,17 +1,17 @@
 <span *ngIf="url && !matMenuTriggerFor"  routerLink="{{url}}" routerLinkActive="active" class="pxs-menu-item">
   {{label}}
   <span *ngIf="!label"><ng-content></ng-content></span>
-  <sup *ngIf="badge" class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
+  <sup *ngIf="badge && badge.label" class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
 </span>
 
 <span *ngIf="url && matMenuTriggerFor" class="pxs-menu-item" [ngClass]="{'active': router.url.startsWith(url)}">
     {{label}}
     <span *ngIf="!label"><ng-content></ng-content></span>
-    <sup *ngIf="badge" class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
+    <sup *ngIf="badge && badge.label" class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
 </span>
 
 <span *ngIf="!url" (click)="menuItemClicked()" class="pxs-menu-item">
     {{label}}
     <span *ngIf="!label"><ng-content></ng-content></span>
-    <sup *ngIf="badge" class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
+    <sup *ngIf="badge && badge.label" class="pxs-menu-item-badge {{badge?.class}}">{{badge?.label}}</sup>
 </span>

@@ -39,7 +39,7 @@
               <div class="last-alert-content">
                 <span class="last-alert-description">
                   {{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}
-                  {{sharedAlertsService.getAlertType(lastAlert.sensorReading.value, lastAlert.thresholdAlert.high, lastAlert.thresholdAlert.low) | translate}}
+                  {{alertsService.getAlertType(lastAlert.sensorReading.value, lastAlert.thresholdAlert.high, lastAlert.thresholdAlert.low) | translate}}
                   <br>
                   <span class="last-alert-date">
                     {{lastAlert.sensorReading.timestamp | date : 'short'}}

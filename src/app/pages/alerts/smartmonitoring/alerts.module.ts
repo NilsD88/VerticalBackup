@@ -1,3 +1,4 @@
+import { AlertsService } from './../../../services/alerts.service';
 import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AlertsComponent} from './alerts.component';
@@ -17,7 +18,6 @@ import {
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {NgxMatDrpModule} from 'ngx-mat-daterange-picker';
-import {SharedAlertsService} from '../shared-alerts.service';
 import {DateRangeSelectionModule} from '../../../../../projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.module';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
@@ -45,7 +45,7 @@ import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/
     LoaderModule
   ],
   providers: [
-    SharedAlertsService
+    AlertsService
   ]
 })
 export class AlertsModule {

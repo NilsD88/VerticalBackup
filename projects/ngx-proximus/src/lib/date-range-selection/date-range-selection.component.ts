@@ -1,16 +1,20 @@
-import {Component, EventEmitter, OnInit, Output, Input} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, Input, ViewChild} from '@angular/core';
 import * as moment from 'moment';
 import {NgxDrpOptions, PresetItem} from 'ngx-mat-daterange-picker';
 
 @Component({
   selector: 'pxs-date-range-selection',
   templateUrl: './date-range-selection.component.html',
-  styleUrls: ['./date-range-selection.component.css']
+  styleUrls: ['./date-range-selection.component.scss']
 })
 export class DateRangeSelectionComponent implements OnInit {
+  @ViewChild('dateRangePicker') dateRangePicker;
+
   @Input() drpOptions: NgxDrpOptions;
-  public drpPresets: Array<PresetItem> = [];
+
   @Output() dateChange: EventEmitter<{fromDate: Date, toDate: Date}> = new EventEmitter();
+
+  public drpPresets: Array<PresetItem> = [];
 
   constructor() {
   }
@@ -60,7 +64,22 @@ export class DateRangeSelectionComponent implements OnInit {
       fromMinMax: {fromDate: null, toDate: fromMax},
       toMinMax: {fromDate: null, toDate: toMax}
     };
+  }
 
+  swapPeriod(direction: boolean) {
+    const {_fromDate, _toDate } = this.dateRangePicker.rangeStoreService;
+    const duration = moment.duration(moment(_toDate).diff(_fromDate));
+    if (direction){
+      this.dateRangePicker.resetDates({
+        fromDate: new Date (moment(_fromDate).add(duration).valueOf()),
+        toDate: new Date(moment(_toDate).add(duration).valueOf()),
+      });
+    } else {
+      this.dateRangePicker.resetDates({
+        fromDate: new Date (moment(_fromDate).subtract(duration).valueOf()),
+        toDate: new Date(moment(_toDate).subtract(duration).valueOf()),
+      });
+    }
   }
 
   updateDrp(dateRange: {fromDate: Date, toDate: Date}) {

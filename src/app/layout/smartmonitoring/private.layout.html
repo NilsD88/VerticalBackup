@@ -64,7 +64,10 @@
 
 <pxs-main-menu>
   <pxs-menu-item [label]="'Monitoring'" [url]="'/private/home'"></pxs-menu-item>
-  <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'"></pxs-menu-item>
+  <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
+    label: numberOfUnreadAlerts,
+    class: 'red-badge'
+  }"></pxs-menu-item>
   <pxs-menu-item
     [label]="'Tank monitoring'" 
     [url]="'/private/tankmonitoring'"

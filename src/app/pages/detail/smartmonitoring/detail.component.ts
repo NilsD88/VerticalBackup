@@ -5,7 +5,7 @@ import {formatDate} from '@angular/common';
 import {Asset} from '../../../models/asset.model';
 import {AssetService} from '../../../services/asset.service';
 import {isNullOrUndefined} from 'util';
-import {SharedAlertsService} from '../../alerts/shared-alerts.service';
+import {AlertsService} from '../../../services/alerts.service';
 import {Alert} from '../../../models/alert.model';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
@@ -59,7 +59,7 @@ export class DetailComponent implements OnInit {
     private translateService: TranslateService,
     private logsService: LogsService,
     private sharedService: SharedService,
-    public sharedAlertsService: SharedAlertsService) {
+    public alertsService: AlertsService) {
       activeRoute.params.subscribe(val => {
         this.init();
       });
@@ -115,7 +115,7 @@ export class DetailComponent implements OnInit {
     try {
       const id = await this.getRouteId();
       const assetPromise = this.assetService.getAssetById(id);
-      const lastAlertPromise = this.sharedAlertsService.getLastAlertByAssetId(id);
+      const lastAlertPromise = this.alertsService.getLastAlertByAssetId(id);
       this.asset = await assetPromise;
       this.lastAlert = await lastAlertPromise;
       this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {

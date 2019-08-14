@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SharedAlertsService} from '../shared-alerts.service';
+import {AlertsService} from '../../../services/alerts.service';
 import {Range} from 'ngx-mat-daterange-picker';
 import {PageEvent} from '@angular/material';
 import {FilterService} from '../../../services/filter.service';
@@ -15,8 +15,9 @@ export class AlertsComponent implements OnInit {
     dateRange: {fromDate: new Date(), toDate: new Date()},
     sensorTypes: [],
     thresholdTemplates: [],
-    name: ''
+    name: '',
   };
+
   public filterOptions = {
     sensorTypes: [],
     thresholdTemplates: []
@@ -43,14 +44,14 @@ export class AlertsComponent implements OnInit {
   public readAlertsPageSizeOptions: number[] = [5, 10, 25, 100, 500, 1000];
   public currentReadAlertsPage = 0;
 
-  constructor(public sharedAlertsService: SharedAlertsService, private filterService: FilterService) {
+  constructor(public alertsService: AlertsService, private filterService: FilterService) {
   }
 
   async ngOnInit(): Promise<void> {
     this.getSensorTypesOptions();
     this.getThresholdTemplateOptions();
-    this.alertsFilterChange('unread', null);
-    this.alertsFilterChange('read', null);
+    //this.alertsFilterChange('unread', null);
+    //this.alertsFilterChange('read', null);
   }
 
   public async getSensorTypesOptions(): Promise<void> {
@@ -83,7 +84,7 @@ export class AlertsComponent implements OnInit {
         this.currentUnreadAlertsPage = evt.pageIndex;
         this.unreadAlertsPageSize = evt.pageSize;
       }
-      const result = await this.sharedAlertsService.getPagedAlerts({
+      const result = await this.alertsService.getPagedAlerts({
         ...this.filter,
         read: false
       }, this.currentUnreadAlertsPage, this.unreadAlertsPageSize);
@@ -101,8 +102,7 @@ export class AlertsComponent implements OnInit {
         this.currentReadAlertsPage = evt.pageIndex;
         this.readAlertsPageSize = evt.pageSize;
       }
-
-      const result = await this.sharedAlertsService.getPagedAlerts({
+      const result = await this.alertsService.getPagedAlerts({
         ...this.filter,
         read: true
       }, this.currentReadAlertsPage, this.readAlertsPageSize);
@@ -177,7 +177,7 @@ export class AlertsComponent implements OnInit {
       alerts = this.readAlerts;
     }
     alerts = alerts.filter(item => item.selected).map(item => item.id);
-    await this.sharedAlertsService.markAlert(alerts, read);
+    await this.alertsService.markAlert(alerts, read);
     this.alertsFilterChange('read', null);
     this.alertsFilterChange('unread', null);
   }
