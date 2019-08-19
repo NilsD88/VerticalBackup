@@ -21,6 +21,7 @@ import {NgxMatDrpModule} from 'ngx-mat-daterange-picker';
 import {DateRangeSelectionModule} from '../../../../../projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.module';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
+import { SharedService } from 'src/app/services/shared.service';
 
 @NgModule({
   declarations: [AlertsComponent],
@@ -45,7 +46,8 @@ import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/
     LoaderModule
   ],
   providers: [
-    AlertsService
+    AlertsService,
+    SharedService
   ]
 })
 export class AlertsModule {

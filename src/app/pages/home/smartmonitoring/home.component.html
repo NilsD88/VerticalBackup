@@ -1,10 +1,17 @@
 <div class="home">
   <div class="main-image" [style.background-image]="'url(\'assets/smartmonitoring/images/home/main.jpg\')'">
-    <div class="main-image-overlay">
-      <h2 class="app-title">
-        {{'GENERAL.APP_NAME' | translate}} <br>
-        <small>{{'GENERAL.APP_SUBTITLE' | translate}}</small>
-      </h2>
+    <div class="video-container">
+        <video autoplay [muted]="true" loop id="background-video">
+            <source [src]="'assets/smartmonitoring/videos/1313944069.mp4'" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-gradient"></div>
+    <div class="overlay">
+      
+      <h1 class="app-title">
+        {{'GENERAL.APP_NAME' | translate}}
+      </h1>
+      <p class="app-subtitle">{{'GENERAL.APP_SUBTITLE' | translate}}</p>
 
       <div class="home-checklist">
         <div class="home-checklist-item" *ngFor="let item of checklistItems">

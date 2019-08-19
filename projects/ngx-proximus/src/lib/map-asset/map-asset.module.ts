@@ -1,3 +1,4 @@
+import { AlertsService } from './../../../../../src/app/services/alerts.service';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { MapAssetComponent } from './map-asset.component';
@@ -17,7 +18,10 @@ import { MatButtonModule } from '@angular/material';
     MatButtonModule,
     IconModule,
   ],
-  exports: [MapAssetComponent]
+  exports: [MapAssetComponent],
+  providers: [
+    AlertsService
+  ]
 })
 export class MapAssetModule {
 }

@@ -46,6 +46,16 @@ export class SharedService {
     return query;
   }
 
+  public downloadCSV(filename, text) {
+    const element = document.createElement('a');
+    filename += '.csv';
+    element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
 
   /* public rejectPromise(message: string, reject: IRejectedCallback) {
      reject(new Error(message));

@@ -5,6 +5,7 @@ import {AppComponent} from './app.component';
 import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';
 import {PublicLayoutComponent} from './layout/smartmonitoring/public.layout.component';
 import {RouterModule} from '@angular/router';
+import { MatProgressButtonsModule } from 'mat-progress-buttons';
 import {AdminAuthGuard, AppRoutes, PublicAuthGuard, UserAuthGuard} from './app.routing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MenuItemModule} from '../../projects/ngx-proximus/src/lib/menu-item/menu-item.module';
@@ -43,6 +44,7 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     RouterModule.forRoot(AppRoutes),
+    MatProgressButtonsModule.forRoot(),
     BrowserAnimationsModule,
     MenuItemModule,
     MatTooltipModule,
@@ -61,7 +63,6 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    
     MainMenuModule,
     IconModule,
     SharedModule,

@@ -1,3 +1,4 @@
+import { MatProgressButtonOptions } from 'mat-progress-buttons';
 import { SharedService } from 'src/app/services/shared.service';
 import {Component, OnInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -24,6 +25,8 @@ interface IFilterChartData {
   durationInHours?: number;
 }
 
+
+
 @Component({
   selector: 'pvf-detail',
   templateUrl: './detail.component.html',
@@ -36,6 +39,7 @@ export class DetailComponent implements OnInit {
 
   public asset: Asset;
   public lastAlert: Alert;
+  public numberOfAlertsOfTheDay: number;
   public chartSensorOptions = [];
   public chartLoading = false;
   public chartData = [];
@@ -51,6 +55,27 @@ export class DetailComponent implements OnInit {
 
   public drpPresets: any[];
   public drpOptions: any;
+
+  public btnOptsExportAlerts: MatProgressButtonOptions = {
+    active: false,
+    text: 'Download alerts of the day',
+    buttonColor: 'primary',
+    spinnerSize: 19,
+    raised: false,
+    stroked: true,
+    flat: false,
+    fab: false,
+    fullWidth: false,
+    disabled: false,
+    mode: 'indeterminate',
+  };
+
+  public filter = {
+    dateRange: {fromDate: new Date(), toDate: new Date()},
+    sensorTypes: [],
+    thresholdTemplates: [],
+    name: '',
+  };
 
   constructor(
     public activeRoute: ActivatedRoute,
@@ -118,6 +143,12 @@ export class DetailComponent implements OnInit {
       const lastAlertPromise = this.alertsService.getLastAlertByAssetId(id);
       this.asset = await assetPromise;
       this.lastAlert = await lastAlertPromise;
+      this.asset.lastAlert = this.lastAlert;
+      const alertsOfTheDay = this.alertsService.getPagedAlerts({
+        ...this.filter,
+        assetId: this.asset.id
+      }, 0, 1);
+      this.numberOfAlertsOfTheDay = (await alertsOfTheDay).totalElements;
       this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
         return {
           deveui: val.devEui,
@@ -195,12 +226,12 @@ export class DetailComponent implements OnInit {
 
     this.standardDeviations = await Promise.all(standardDeviationPromises);
     this.chartData = await Promise.all(logsPromises);
+    console.log(this.chartData);
     this.chartLoading = false;
   }
 
 
-  public async download() {
-
+  public async downloadPdfDetail() {
     const pdf = new jspdf('p', 'mm', 'a4', 1); // A4 size page of PDF (210 x 297)
     pdf.setFontSize(10);
 
@@ -299,6 +330,36 @@ export class DetailComponent implements OnInit {
 
     pdf.save(this.asset.name + '.pdf');
     this.isDownloading = false;
+  }
+
+  public async exportAlerts() {
+    this.btnOptsExportAlerts.active = true;
+    const result = await this.alertsService.getPagedAlerts(
+      {
+        ...this.filter,
+        assetId: this.asset.id,
+        //dateRange: {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)},
+      },
+      0,
+      10,
+      // TODO: Too long request, need to remove picture/asset from the request
+    );
+
+    let csv = 'Asset, Location type, Date, Message, Threshold template, read\n';
+    for (const alert of result.alerts) {
+      csv += alert.asset.name + ', ';
+      csv += alert.sublocation.location.locationType.name + ', ';
+      csv += moment(alert.sensorReading.timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
+      csv += alert.thresholdAlert.sensorType.name + ' ' +
+        this.alertsService.getAlertType(alert.sensorReading.value, alert.thresholdAlert.high, alert.thresholdAlert.low) +
+        ', ';
+      csv += alert.asset.thresholdTemplate.name + ', ';
+      csv += alert.read;
+      csv += '\n';
+    }
+    this.btnOptsExportAlerts.active = false;
+    console.log(csv);
+    this.sharedService.downloadCSV('csv export ' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
   }
 
   private async getTranslation(label: string) {

@@ -1,4 +1,4 @@
-<div class="map-asset-container" [style.height.px]="height" *ngIf="(locations && locations.length > 0) || (assets && assets.length > 0)">
+<div class="map-asset-container" [style.height.px]="height" *ngIf="location || (assets && assets.length > 0)">
     <div [ngStyle]="{'height.px': height}" *ngIf="options"
       leaflet 
       [leafletOptions]="options"
@@ -8,10 +8,10 @@
       (leafletMapReady)="onMapReady($event)"
     >
     </div>
-    <div *ngIf="parentLocation" class="parent-location-container">
-      <a (click)="change.emit(parentLocation.parentLocation)">
+    <div *ngIf="location && location.parent" class="parent-location-container">
+      <a (click)="change.emit({location: location.parent, parent: location.parent.parent})">
         <pxs-icon icon="chevron-left"></pxs-icon>
       </a>
-      {{parentLocation.name}}
+      {{location.name}}
     </div>
 </div>

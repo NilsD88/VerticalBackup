@@ -7,6 +7,10 @@ export const ManageThresholdTemplatesRoutes: Routes = [{
   path: '',
   component: ManageThresholdTemplatesListComponent
 }, {
+  path: 'new',
+  component: ManageThresholdTemplatesComponent
+},
+{
   path: ':id',
   component: ManageThresholdTemplatesComponent
 }];

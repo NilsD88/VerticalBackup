@@ -8,28 +8,47 @@
    
       a {
         text-decoration: none;
-        h6 {
-          margin: 5px 5px 5px 0;
-        }
       }
-      
+      h6 {
+        margin: 5px 5px 5px 0;
+      } 
+    }
+
+    .asset-picture {
+      width: 100%;
+      height: 40px;
+      background-size: cover;
     }
   
     .subtitle {
       margin-top: -5px;
     }
-    .row {
+
+    .last-alert {
+      margin: 5px 0 0;
+      font-style: italic;
+    }
+    
+    > ul {
+      list-style-type: none;
+      margin: 10px 0;
       padding: 0;
-      margin: 5px 0;
-      .col{
-        padding: 0;
-        margin: 0;
-        width: 100%;
-        img {
-          width: 100%;
-          margin-right: 5px;
-          padding-right: 10px;
+     
+      > li {
+        strong {
+          color: #00BCEE;
+        }
+        padding: 2px 4px;
+        border-radius: 0 0 10px 0;
+        margin: 0 0 5px;
+        border: 1px solid #f1f1f1;
+
+        > ul {
+          list-style-type: none;
+          margin: 0;
+          padding: 0;
         }
       }
+      
     }
   }

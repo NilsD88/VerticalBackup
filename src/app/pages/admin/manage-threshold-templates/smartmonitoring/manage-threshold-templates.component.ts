@@ -24,7 +24,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   async ngOnInit() {
     this.id = await this.getRouteId();
-    if (!isNullOrUndefined(this.id) && this.id !== 'add') {
+    if (!isNullOrUndefined(this.id)) {
       this.loadItem();
     } else {
       this.item = new NewThresholdTemplate(null);
@@ -96,7 +96,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
         if (!isNullOrUndefined(params.id)) {
           resolve(params.id);
         } else {
-          reject();
+          resolve();
         }
       }, reject);
     });

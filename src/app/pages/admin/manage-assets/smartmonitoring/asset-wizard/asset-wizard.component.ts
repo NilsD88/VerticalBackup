@@ -100,9 +100,13 @@ export class AssetWizardComponent implements OnInit {
   
 
   updateLocation(location: INewLocation) {
-    this.selectedLocation = null;
-    this.changeDetectorRef.detectChanges();
-    this.selectedLocation = location;
+    const oldSelectedLocation = this.selectedLocation;
+    if (location && location !== oldSelectedLocation) {
+      this.geolocation = null;
+      this.selectedLocation = null;
+      this.changeDetectorRef.detectChanges();
+      this.selectedLocation = location;
+    }
   }
 
   public getThingsList():void {

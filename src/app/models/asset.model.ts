@@ -28,6 +28,7 @@ export interface IAsset {
   thresholdTemplate: IThresholdTemplate;
   organization?: IOrganization;
   lastMeasurements?: any[]; // TODO: lastMeasurements
+  lastAlert?: IAlert;
   timeLastMeasurementReceived?: Date;
   geolocation: IGeolocation;
   status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
@@ -83,6 +84,7 @@ export class Asset implements IAsset {
   thresholdTemplate: ThresholdTemplate;
   organization: Organization;
   lastMeasurements: any[]; // TODO: lastMeasurements
+  lastAlert: Alert;
   status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
 
   geolocation: IGeolocation;

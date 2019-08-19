@@ -24,7 +24,7 @@
         </div>
       </mat-menu>
     </pxs-menu-item>
-    <pxs-menu-item [mat-menu-trigger-for]="admin">
+    <pxs-menu-item [mat-menu-trigger-for]="admin" *ngIf="sharedService.user.roles.includes('pxs:iot:localadmin')">
       <pxs-icon icon="cog"></pxs-icon>
       <span class="visible-md-inline visible-lg-inline" [translate]="'LAYOUT.ADMIN'"></span>
 

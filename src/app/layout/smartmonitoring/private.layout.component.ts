@@ -1,3 +1,4 @@
+import { SharedService } from 'src/app/services/shared.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedLayoutService} from '../shared-layout.service';
@@ -31,6 +32,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private translateService: TranslateService,
+    private sharedService: SharedService,
     public sharedLayoutService: SharedLayoutService,
     public assetService: AssetService,
     public alertsService: AlertsService) {

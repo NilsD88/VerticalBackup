@@ -3,6 +3,8 @@ import {AlertsService} from '../../../services/alerts.service';
 import {Range} from 'ngx-mat-daterange-picker';
 import {PageEvent} from '@angular/material';
 import {FilterService} from '../../../services/filter.service';
+import * as moment from 'moment';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'pvf-alerts',
@@ -44,7 +46,10 @@ export class AlertsComponent implements OnInit {
   public readAlertsPageSizeOptions: number[] = [5, 10, 25, 100, 500, 1000];
   public currentReadAlertsPage = 0;
 
-  constructor(public alertsService: AlertsService, private filterService: FilterService) {
+  constructor(
+    public alertsService: AlertsService,
+    private filterService: FilterService,
+    private sharedService: SharedService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -181,4 +186,34 @@ export class AlertsComponent implements OnInit {
     this.alertsFilterChange('read', null);
     this.alertsFilterChange('unread', null);
   }
+
+
+  public async exportAlerts(type) {
+    let alerts;
+    switch (type) {
+      case 'read':
+        alerts = this.readAlerts;
+        break;
+      default:
+        alerts = this.unreadAlerts;
+        break;
+    }
+
+    let csv = 'Asset, Location type, Date, Message, Threshold template, read\n';
+    for (const alert of alerts) {
+      csv += alert.asset.name + ', ';
+      csv += alert.sublocation.location.locationType.name + ', ';
+      csv += moment(alert.sensorReading.timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
+      csv += alert.thresholdAlert.sensorType.name + ' ' +
+        this.alertsService.getAlertType(alert.sensorReading.value, alert.thresholdAlert.high, alert.thresholdAlert.low) +
+        ', ';
+      csv += alert.asset.thresholdTemplate.name + ', ';
+      csv += alert.read;
+      csv += '\n';
+    }
+    this.sharedService.downloadCSV('csv export ' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
+  }
+
+
+
 }

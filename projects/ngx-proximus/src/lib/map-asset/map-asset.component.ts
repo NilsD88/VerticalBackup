@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, EventEmitter, Output} from '@angular/core';
+import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef} from '@angular/core';
 import {NgElement, WithProperties} from '@angular/elements';
 import {Asset, IAsset, IGeolocation} from 'src/app/models/asset.model';
 import {Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, icon, LatLngBounds, geoJSON, MarkerCluster, Point} from 'leaflet';
@@ -15,11 +15,11 @@ export class MapAssetComponent implements OnInit {
 
   @Input() height = 300;
   @Input() assets: IAsset[];
-  @Input() locations: INewLocation[];
+  @Input() location: INewLocation;
   @Input() parentLocation: INewLocation;
   @Input() imageUrl: string;
 
-  @Output() change: EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
+  @Output() change: EventEmitter<{location: INewLocation, parent: INewLocation}> = new EventEmitter<{location: INewLocation, parent: INewLocation}>();
 
   currentMap: Map;
   center: IGeolocation;
@@ -31,14 +31,13 @@ export class MapAssetComponent implements OnInit {
 
   markerClusterOptions: any;
 
+  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+
   ngOnInit() {
 
-    console.log(this.locations);
-    console.log(this.assets);
-
     this.center = {
-      lat: 50.860160,
-      lng: 4.358050
+      lat: 0,
+      lng: 0
     };
 
     this.markerClusterOptions = {
@@ -65,16 +64,51 @@ export class MapAssetComponent implements OnInit {
       html: '<div><span class="pxi-map-marker"></span></div>'
     });
 
-    for (const asset of this.assets) {
-      const newMarker = marker(
-        [asset.geolocation.lat, asset.geolocation.lng],
-        {
-          icon: assetIcon
-        }
-      ).bindPopup(fl => this.createPopupComponentWithMessage(asset)).openPopup();
-
-      this.markers.push(newMarker);
+    if (this.assets && this.assets.length) {
+      for (const asset of this.assets) {
+        const newMarker = marker(
+          [asset.geolocation.lat, asset.geolocation.lng],
+          {
+            icon: assetIcon
+          }
+        ).bindPopup(fl => this.createAssetPopup(asset)).openPopup();
+        this.markers.push(newMarker);
+      }
     }
+
+
+    const locationIcon = divIcon({
+      className: 'map-marker-location',
+      iconSize: null,
+      html: '<div><span class="pxi-map-hotspot"></span></div>'
+    });
+
+    if (this.location) {
+      const sublocations = this.location.sublocations;
+      if (sublocations && sublocations.length) {
+        for (const sublocation of sublocations) {
+          sublocation.parent = this.location;
+          const newMarker = marker(
+            [sublocation.geolocation.lat, sublocation.geolocation.lng],
+            {
+              icon: locationIcon
+            }
+          ).bindPopup(fl => this.createLocationPopup(sublocation)).openPopup();
+
+          /*.on('click', (e) => {
+            const parent = this.location;
+            this.change.emit({
+              location: sublocation,
+              parent,
+            });
+          });
+          */
+          this.locationsLayer.push(newMarker);
+        }
+      }
+    }
+
+    this.imageUrl = (this.imageUrl) ? (this.imageUrl) : (this.location) ? this.location.floorPlan : null;
 
     if (this.imageUrl) {
       const image: HTMLImageElement = new Image();
@@ -88,8 +122,10 @@ export class MapAssetComponent implements OnInit {
         this.options = {
           crs: CRS.Simple,
           layers: [imageMap],
-          zoom: 20,
+          zoom: 1,
+          maxZoom: 12,
         };
+        this.changeDetectorRef.detectChanges();
       };
     } else {
       this.setAssetsAndLocationsBounds();
@@ -99,29 +135,6 @@ export class MapAssetComponent implements OnInit {
         center: latLng(this.center.lat, this.center.lng),
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
       };
-    }
-
-    const locationIcon = divIcon({
-      className: 'map-marker-location',
-      iconSize: null,
-      html: '<div><span class="pxi-map-hotspot"></span></div>'
-    });
-
-
-    if (this.locations && this.locations.length) {
-      for (const location of this.locations) {
-        const newMarker = marker(
-          [location.geolocation.lat, location.geolocation.lng],
-          {
-            icon: locationIcon
-          }
-        ).on('click', (e) => {
-          console.log(e);
-          this.change.emit(location);
-        });
-
-        this.locationsLayer.push(newMarker);
-      }
     }
 
   }
@@ -144,22 +157,33 @@ export class MapAssetComponent implements OnInit {
       });
     }
 
-    if (this.locations && this.locations.length){
-      this.locations.forEach(location => {
-        const {lng, lat} = location.geolocation;
-        geoJsonData.geometry.coordinates[0].push([lng, lat]);
-      });
+    if (this.location) {
+      const sublocations = this.location.sublocations;
+      if (sublocations && sublocations.length){
+        sublocations.forEach(sublocation => {
+          const {lng, lat} = sublocation.geolocation;
+          geoJsonData.geometry.coordinates[0].push([lng, lat]);
+        });
+      }
     }
 
     const geoJsonLayer = geoJSON(geoJsonData as GeoJsonObject);
     this.assetsBounds = geoJsonLayer.getBounds();
   }
 
-  public createPopupComponentWithMessage(asset: IAsset) {
+  public createAssetPopup(asset: IAsset) {
     const popupEl: NgElement & WithProperties<MapAssetPopupComponent> = document.createElement('popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
-    console.log(asset);
+    document.body.appendChild(popupEl);
+    return popupEl;
+  }
+
+  public createLocationPopup(location: INewLocation) {
+    const popupEl: NgElement & WithProperties<MapAssetPopupComponent> = document.createElement('popup-element') as any;
+    popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+    popupEl.eventEmitter = this.change;
+    popupEl.location = location;
     document.body.appendChild(popupEl);
     return popupEl;
   }

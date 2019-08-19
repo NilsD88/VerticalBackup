@@ -1,6 +1,5 @@
 <div class="detail-page" *ngIf="asset">
   <pxs-detail-header [asset]="asset"></pxs-detail-header>
-
   <div class="detail-main-content">
     <div class="container">
       <div class="row">
@@ -13,7 +12,7 @@
                      (updateChartData)="getChartData($event)"
                      [filter]="currentFilter"
                      [drpOptions]="drpOptions"
-                     (download)="download()"
+                     (download)="downloadPdfDetail()"
                      #myChart
                      >
           </pxs-chart>
@@ -45,7 +44,6 @@
                     {{lastAlert.sensorReading.timestamp | date : 'short'}}
                   </span>
                 </span>
-
               </div>
             </div>
             <div class="last-alert-values">
@@ -63,6 +61,9 @@
                 <span>{{'DETAIL.LAST_ALERT.HIGH' | translate}}</span>
                 <span>{{lastAlert.thresholdAlert.high}}{{lastAlert.thresholdAlert.sensorType.postfix}}</span>
               </div>
+            </div>
+            <div class="last-alert-actions" *ngIf="numberOfAlertsOfTheDay > 0">
+              <mat-spinner-button (btnClick)="exportAlerts()" [options]="btnOptsExportAlerts"></mat-spinner-button>
             </div>
           </div>
           <div class="detail-thresholds">

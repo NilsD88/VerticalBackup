@@ -98,6 +98,10 @@ export class AlertsService {
       filter.thresholdTemplates.length ?
         `asset.thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})` :
         undefined;
+    const assetIdQuery =
+      filter.assetId ?
+        `asset.id=="${filter.assetId.toString()}"` :
+        undefined;
     const readQuery = !isNullOrUndefined(filter.read) ?
       `read==${filter.read}` :
       undefined;
@@ -111,6 +115,7 @@ export class AlertsService {
         undefined;
     const query = this.sharedService.buildFilterQuery([
       thresholdTemplateQuery,
+      assetIdQuery,
       nameQuery,
       dateRangeQuery,
       sensorTypesQuery,
@@ -158,7 +163,7 @@ export class AlertsService {
     });
   }
 
-  public getLastAlertByAssetId(id: string | number): Promise<Alert> {
+  public getLastAlertByAssetId(id: string | number): Promise<Alert> {
     return new Promise(async (resolve, reject) => {
       this.http.get(`${this.sharedService.baseUrl}alerts/?filter=asset.id==${id}&size=1&sort=sensorReading.timestamp,desc`)
         .subscribe((response: any) => {
@@ -173,4 +178,5 @@ export class AlertsService {
         });
     });
   }
+
 }
