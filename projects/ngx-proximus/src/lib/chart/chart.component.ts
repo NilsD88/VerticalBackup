@@ -3,6 +3,7 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
+import { IAsset } from 'src/app/models/asset.model';
 
 
 declare global {
@@ -70,6 +71,8 @@ export class ChartComponent implements OnInit, OnChanges {
     '#9BDE7E', '#7FA06F'
   ];
 
+  @Input() asset: IAsset;
+
   @Output() updateChartData = new EventEmitter<IFilterChartData>();
   @Output() download = new EventEmitter();
 
@@ -88,6 +91,7 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   public async ngOnChanges() {
+    const filename = this.asset ? (this.asset.name) : 'Chart';
     this.options = {
       navigator: {
         enabled: true
@@ -104,9 +108,10 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       exporting: {
         csv: {
-          dateFormat: '%d-%m-%Y %H:%M:%S'
+          dateFormat: '%d-%m-%Y %H:%M:%S',
         },
-        enabled: true
+        enabled: true,
+        filename
       },
       credits: {
         enabled: false
@@ -114,7 +119,7 @@ export class ChartComponent implements OnInit, OnChanges {
       colors: this.colors,
       tooltip: {
         crosshairs: true,
-        shared: true
+        shared: true,
       },
       yAxis: [],
       /*
@@ -274,8 +279,14 @@ export class ChartComponent implements OnInit, OnChanges {
     });
 
     await Promise.all(chartDataPromises);
-
-    this.chart = Highcharts.chart('chart-container', this.options);
+    try {
+      this.chart = Highcharts.chart('chart-container', this.options);
+    } catch (error) {
+      this.options.series = [];
+      this.chart = Highcharts.chart('chart-container', this.options);
+      console.log("error with data");
+      console.log(error);
+    }
   }
 
   public filterInt(value: string) {
@@ -303,11 +314,14 @@ export class ChartComponent implements OnInit, OnChanges {
 
   public dateRangeChanged(range: { fromDate: Date; toDate: Date; }) {
     const {fromDate, toDate} = range;
-    console.log(fromDate);
     this.updateChartData.emit({
       from: fromDate.getTime(),
       to: toDate.getTime(),
     });
+  }
+
+  downloadCSV() {
+    this.chart.downloadCSV();
   }
 
 }

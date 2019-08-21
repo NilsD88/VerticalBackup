@@ -63,35 +63,42 @@
     </div>
     
     <!-- Asset Results -->
-    <div *ngFor="let asset of assets" class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2"
-    routerLink="/private/detail/{{asset.id}}">
-    <div class="wrapper" style="background: url('') center / cover no-repeat;"
-    [ngStyle]="{ 'background-image': 'url(' + asset.pictureBase64 + ')'}">
-    <div class="header">
-      <div class="locations">
-        <span class="location">{{asset.sublocation?.location?.name}} -</span>
-        <span class="sublocation">{{asset.sublocation?.name}}</span>
-        <small class="locationType">({{asset.sublocation?.location?.locationType?.name}})</small>
-      </div>
-    </div>
-    <div class="data">
-      <div class="content">
-        <span
-        class="author">{{!asset.thresholdTemplate?.isCustom ? asset.thresholdTemplate?.name : ('THRESHOLD_TEMPLATES.CUSTOM' | translate)}}</span>
-        <h5 class="title"><a routerLink="/private/detail/{{asset.id}}" [matTooltip]="asset.name">{{asset.name}}</a></h5>
-        <p class="text">{{asset.description}}</p>
+    <div
+      class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2"
+      *ngFor="let asset of assets"
+      routerLink="/private/detail/{{asset.id}}"
+    >
+      <div
+        class="wrapper"
+        style="background: url('') center / cover no-repeat;"
+        [ngStyle]="{ 'background-image': 'url(' + asset.pictureBase64 + ')'}"
+        *ngIf="!assetsLoading"
+      >
+        <div class="header">
+          <div class="locations">
+            <span class="location">{{asset.sublocation?.location?.name}} -</span>
+            <span class="sublocation">{{asset.sublocation?.name}}</span>
+            <small class="locationType">({{asset.sublocation?.location?.locationType?.name}})</small>
+          </div>
+        </div>
+        <div class="data">
+          <div class="content">
+            <span
+            class="author">{{!asset.thresholdTemplate?.isCustom ? asset.thresholdTemplate?.name : ('THRESHOLD_TEMPLATES.CUSTOM' | translate)}}</span>
+            <h5 class="title"><a routerLink="/private/detail/{{asset.id}}" [matTooltip]="asset.name">{{asset.name}}</a></h5>
+            <p class="text">{{asset.description}}</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-</div>
 
-<!--Paginator -->
-<mat-paginator [(length)]="totalItems"
-[(pageIndex)]="page"
-(page)="pageChanged($event)"
-[pageSize]="pagesize"
-[pageSizeOptions]="[5, 10, 25, 50, 100]">
-</mat-paginator>
+  <!--Paginator -->
+  <mat-paginator [(length)]="totalItems"
+  [(pageIndex)]="page"
+  (page)="pageChanged($event)"
+  [pageSize]="pagesize"
+  [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  </mat-paginator>
 
 </div>

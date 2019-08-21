@@ -89,7 +89,7 @@ export class AssetWizardComponent implements OnInit {
   ngOnInit() {
     this.getThingsList();
     this.descriptionFormGroup = this._formBuilder.group({
-      NameCtrl: ['', Validators.required],
+      NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', Validators.required],
       TypeCtrl: ['', null],
     });
@@ -97,7 +97,6 @@ export class AssetWizardComponent implements OnInit {
         thingsCtrl: ['', Validators.required]
     });
   }
-  
 
   updateLocation(location: INewLocation) {
     const oldSelectedLocation = this.selectedLocation;
@@ -109,7 +108,7 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  public getThingsList():void {
+  public getThingsList(): void {
     this.thingService.getAll()
     .then((result) => {
       this.things = result;

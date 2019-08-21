@@ -162,7 +162,14 @@
     "MESSAGE": "Message",
     "THRESHOLD_TEMPLATE": "Threshold template",
     "MARK_SELECTED_READ": "Mark selected as read",
-    "MARK_SELECTED_UNREAD": "Mark selected as unread"
+    "MARK_SELECTED_UNREAD": "Mark selected as unread",
+    "UNREAD_ALERTS": "Unread alerts",
+    "READ_ALERTS": "Read alerts",
+    "FILTER": {
+      "NAME": "Asset name",
+      "SENSORS": "Sensors",
+      "THRESHOLD_TEMPLATES": "Threshold templates"
+    }
   },
   "SENSORTYPES": {
     "range": "range",
@@ -360,6 +367,11 @@
   "MANAGE_ASSETS": {
     "TITLE": "Manage assets",
     "NEW": "New asset",
+    "VALIDATORS": {
+      "NAME" : {
+        "MIN_LENGHT" : "Name not long enough"
+      }
+    },
     "TABLE_HEADERS": {
       "NAME": "Name",
       "ACTIONS": "Actions",

@@ -312,6 +312,11 @@
   "MANAGE_ASSETS": {
     "TITLE": "Assets beheren",
     "NEW": "Nieuwe asset",
+    "VALIDATORS": {
+      "NAME" : {
+        "MIN_LENGHT" : "Naam niet lang genoeg"
+      }
+    },
     "TABLE_HEADERS": {
       "NAME": "Naam",
       "ACTIONS": "Acties",

@@ -44,7 +44,7 @@
     <div class="alerts-section-header">
       <h6>{{'ALERTS.UNREAD_ALERTS' | translate}}
         <small><sup class="unread-alerts-badge">{{unreadAlertsTotal}}</sup></small>
-        <button mat-button matTooltip="Download CSV" (click)="exportAlerts('unread')">
+        <button *ngIf="unreadAlerts && unreadAlerts.length > 0" mat-button matTooltip="Download CSV" (click)="exportAlerts('unread')">
             <pxs-icon icon="download"></pxs-icon>
         </button>
       </h6>
@@ -154,7 +154,7 @@
     <div class="alerts-section-header">
       <h6>
         {{'ALERTS.READ_ALERTS' | translate}}
-        <button mat-button matTooltip="Download CSV" (click)="exportAlerts('read')">
+        <button *ngIf="readAlerts && readAlerts.length > 0" mat-button matTooltip="Download CSV" (click)="exportAlerts('read')">
             <pxs-icon icon="download"></pxs-icon>
         </button>
       </h6>

@@ -13,6 +13,7 @@ import { EditableImageModule } from '../../../../../../../projects/ngx-proximus/
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { ThingService } from 'src/app/services/thing.service';
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/st
     EditableImageModule,
     LocationExplorerModule,
     StepperNextModule,
+    TranslateModule
   ],
   providers: [ThingService]
 })

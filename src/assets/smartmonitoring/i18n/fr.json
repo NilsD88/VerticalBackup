@@ -311,6 +311,11 @@
   "MANAGE_ASSETS": {
     "TITLE": "Gérer les actifs",
     "NEW": "Nouvel actif",
+    "VALIDATORS": {
+      "NAME" : {
+        "MIN_LENGHT" : "Nom pas assez long"
+      }
+    },
     "TABLE_HEADERS": {
       "NAME": "Nom",
       "ACTIONS": "Actions",
