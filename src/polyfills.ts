@@ -58,7 +58,11 @@ import 'web-animations-js';  // Run `npm install --save web-animations-js`.
 import 'zone.js/dist/zone';  // Included with Angular CLI.
 
 
-import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
+/** Add support for window.customElements */
+import '@webcomponents/custom-elements/custom-elements.min';
+
+/** Required for custom elements for apps building to es5. */
+import '@webcomponents/custom-elements/src/native-shim';
 
 (window as any).global = window;
 /***************************************************************************************************
