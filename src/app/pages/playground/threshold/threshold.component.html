@@ -1,5 +1,5 @@
 <h1>Threshold test</h1>
-
+<button (click)='openDialog()'></button>
 <div class="threshold-container" *ngFor="let sensor of thresholdTemplate.sensors"  style="width: 300px;">
   <div class="title">
       <h6>
@@ -10,7 +10,6 @@
         <span>{{sensor.sensorType.min}} {{sensor.sensorType.postfix}}</span> - <span>{{sensor.sensorType.max}} {{sensor.sensorType.postfix}}</span> 
       </div>
   </div>
-  
   <div class="threshold-bar-container">
     <div 
       class="threshold-bar"
@@ -19,5 +18,17 @@
       [ngClass]="{'low': threshold.severity=='LOW', 'high': threshold.severity=='HIGH', 'critical': threshold.severity=='CRITICAL'}"
       [ngStyle]="{'left.%': threshold.range.fromPercent, 'width.%': threshold.range.widthPercent}"
     ></div>
+  </div>
+  <div class="threshold-indicator-container">
+    <div
+      class="threshold-indicator"
+      *ngFor="let indicator of sensor.indicators | keyvalue"
+      [style.left.%]="indicator.value"
+    >
+      <div class="bar">
+        <span></span>
+      </div>
+      <div class="value">{{indicator.key}}</div>
+    </div>
   </div>
 </div>

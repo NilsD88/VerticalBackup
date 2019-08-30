@@ -28,9 +28,26 @@ export class LocationsService {
 
   public getLocations(locationTypeId?: string | number): Promise<Location[]> {
     const url = `${environment.baseUrl}locations${!isNullOrUndefined(locationTypeId) ? '?filter=locationType.id==' + locationTypeId : '/'}`;
+
     return new Promise(async (resolve, reject) => {
       this.http.get(url)
         .subscribe((response: any) => {
+          resolve(Location.createArray(response.content));
+        }, (err: HttpErrorResponse) => {
+          this.sharedService.rejectPromise('Error! Failed to fetch locations. Please try again.', reject);
+        });
+    });
+  }
+
+  public getLocationsByName(name: string): Promise<Location[]> {
+    const nameQuery = name.length ? `name=="*${name.toLowerCase()}*"` : null;
+    const query = this.sharedService.buildFilterQuery([nameQuery]);
+    const url = `${environment.baseUrl}locations/${query ? query : ''}`;
+
+    return new Promise(async (resolve, reject) => {
+      this.http.get(url)
+        .subscribe((response: any) => {
+          console.log(response);
           resolve(Location.createArray(response.content));
         }, (err: HttpErrorResponse) => {
           this.sharedService.rejectPromise('Error! Failed to fetch locations. Please try again.', reject);

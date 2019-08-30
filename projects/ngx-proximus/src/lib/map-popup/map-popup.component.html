@@ -1,0 +1,34 @@
+<div class="container" *ngIf="asset">
+  <div *ngIf="asset.pictureBase64" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.pictureBase64 + ')'}"></div>
+  <div class="title">
+    <a routerLink="/private/detail/{{asset.id}}"><h6>{{asset.name}}</h6></a>
+  </div>
+  <div class="subtitle" *ngIf="asset.sublocation">
+    <b>{{asset.sublocation.location.name}}</b>, {{asset.sublocation.name}}
+  </div>
+  <div class="last-alert" *ngIf="lastAlert">
+    <strong>Last alert: </strong>{{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}
+    {{alertsService.getAlertType(lastAlert.sensorReading.value, lastAlert.thresholdAlert.high, lastAlert.thresholdAlert.low) | translate}}
+    <br>
+    <span class="last-alert-date">
+      {{lastAlert.sensorReading.timestamp | date : 'short'}}
+    </span>
+  </div>
+  <ul *ngIf="asset.things">
+    <li *ngFor="let thing of asset.things">
+      <strong>{{thing.name}}</strong>
+        <ul>
+          <li>Battery: {{(thing.batteryPercentage) ? (thing.batteryPercentage+'%') : 'null'}}</li>
+        </ul>
+    </li>
+  </ul>
+</div>
+
+<div class="container" *ngIf="location">
+    <div class="title">
+      <h6>{{location.name}}</h6>
+    </div>
+    <div class="subtitle">
+      <a (click)="openLocation()">Open this location</a>
+    </div>
+</div>

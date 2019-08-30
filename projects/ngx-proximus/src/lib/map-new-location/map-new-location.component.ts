@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges} from '@angular/core';
 import { IGeolocation, Geolocation } from 'src/app/models/asset.model';
 import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS } from 'leaflet';
@@ -15,12 +16,18 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   @Input() parentLocation: INewLocation;
   @Output() notify: EventEmitter<IGeolocation> = new EventEmitter<IGeolocation>();
 
-  currentMap:Map;
+  currentMap: Map;
   options: any;
   layers: any[];
   markers: Layer[] = [];
   imageBounds: LatLngBounds;
   backgroundLayer: Layer;
+  provider: OpenStreetMapProvider;
+  showNotifIfNoAddress = false;
+
+  constructor(public snackBar: MatSnackBar) {
+
+  }
 
   ngOnInit() {
     if(this.parentLocation){
@@ -47,7 +54,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         console.log("There is no floor plan");
         const { lat, lng } = this.parentLocation.geolocation;
         this.backgroundLayer = tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'); 
-        this.options = { 
+        this.options = {
           layers: this.backgroundLayer,
           zoom: 12,
           center: latLng(lat, lng),
@@ -64,48 +71,63 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     const parentLocationChanges = changes.parentLocation;
     console.log(changes);
   }
-  
+
   onMapReady(map: Map) {
     this.currentMap = map;
 
-    if(this.imageBounds) {
+    if (this.imageBounds) {
       this.currentMap.fitBounds(this.imageBounds);
       this.currentMap.setMaxBounds(this.imageBounds);
     } else {
-      const provider = new OpenStreetMapProvider();
-    
-      new GeoSearchControl({
-        provider: provider, 
-        style: "bar",
+      this.provider = new OpenStreetMapProvider();
+
+      const a = new GeoSearchControl({
+        provider: this.provider,
+        style: 'bar',
         showMarker: false,
         autoClose: true,
         autoComplete: true,
         autoCompleteDelay: 250,
-      }).addTo(map);
-  
-      map.on('geosearch/showlocation', (event: any) => {   
+        searchLabel: 'Enter address or geolocation (lattitude, longitude)',
+      }).addTo(map).onSubmit();
+
+      map.on('geosearch/showlocation', (event: any) => {
         this.addMarker({
           lat: event.location.y,
           lng: event.location.x
-        })
+        });
       });
     }
   }
 
-  onMapClick(event){
-    if(event.layerPoint.y > 60) {
+  onMapClick(event) {
+    if (event.layerPoint.y > 60) {
       const { lat, lng } = event.latlng;
-      this.addMarker({lat,lng});
+      this.addMarker({lat, lng});
     }
   }
 
-  createOptionsMapWithUserGeolocation(){
+  eventHandler(event) {
+    event.preventDefault();
+    if (event.path && event.path.length) {
+      if (event.path[0].className === 'glass ') {
+        if (event.path[0].value) {
+          this.markers = [];
+          this.snackBar.open('No address found!', null, {
+            duration: 2000,
+          });
+        }
+      }
+    }
+  }
+
+  createOptionsMapWithUserGeolocation() {
     this.backgroundLayer = tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'); 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         console.log("geolocation");
         const { latitude, longitude } = position.coords;
-        this.options = { 
+        this.options = {
           layers: this.backgroundLayer,
           zoom: 12,
           center: latLng(latitude, longitude),
@@ -115,7 +137,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     } else {
       console.log("default location");
       const defaultValue = new Geolocation(null);
-      this.options = { 
+      this.options = {
         layers: this.backgroundLayer,
         zoom: 12,
         center: latLng(defaultValue.lat, defaultValue.lng),
@@ -124,7 +146,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     }
   }
 
-  addMarker(geolocation:IGeolocation){
+  addMarker(geolocation:IGeolocation) {
     const {lat, lng} = geolocation;
 
     const newMarker = marker(
@@ -143,7 +165,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         lat: +event.target._latlng.lat,
         lng: +event.target._latlng.lng
       });
-    })
+    });
 
     this.markers = [];
     this.markers.push(newMarker);
@@ -154,13 +176,20 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     });
   }
 
-  sendNotifyEvent(geolocation:IGeolocation):void {
+  sendNotifyEvent(geolocation:IGeolocation): void {
     this.notify.emit(geolocation);
   }
 
+  addMarkerWithUserPosition() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        this.currentMap.flyTo({lat: latitude, lng: longitude}, 18);
+        this.addMarker({
+          lat: latitude,
+          lng: longitude
+        });
+      });
+    }
+  }
 }
-
-
-
-
-

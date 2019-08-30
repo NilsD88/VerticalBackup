@@ -1,3 +1,4 @@
+import { BadgeModule } from './../../../../../../projects/ngx-proximus/src/lib/badge/badge.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ManageThresholdTemplatesComponent} from './manage-threshold-templates.component';
@@ -9,7 +10,11 @@ import {
   MatDialogModule,
   MatInputModule,
   MatSelectModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSortModule
 } from '@angular/material';
 import {RangeSliderModule} from '../../../../../../projects/ngx-proximus/src/lib/range-slider/range-slider.module';
 import {RouterModule} from '@angular/router';
@@ -44,6 +49,11 @@ import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module
     MatButtonModule,
     MatSelectModule,
     ButtonModule,
+    BadgeModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   entryComponents: [AddSensorComponent],
   providers: [FilterService]

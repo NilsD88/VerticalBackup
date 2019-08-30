@@ -19,7 +19,7 @@ export class SharedService {
 
   constructor(
     public snackBar: MatSnackBar,
-    public translate: TranslateService,
+    public translate: TranslateService
   ) {
     this.user = JSON.parse(window.localStorage.getItem('user'));
   }
@@ -142,6 +142,8 @@ export class SharedService {
      });
    }
 */
+
+  
   public showNotification(
     message: string,
     type: 'error' | 'warning' | 'success' | 'info' | 'primary',

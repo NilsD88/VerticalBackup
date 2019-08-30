@@ -4,10 +4,7 @@
       <ng-template matStepLabel>Parent</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
-            <pxs-location-explorer 
-              [locations]="locationTree"
-              (notify)="updateLocation($event)"
-            ></pxs-location-explorer>
+            <pxs-location-explorer (notify)="updateLocation($event)"></pxs-location-explorer>
         </div>
       </div>
       <pxs-stepper-next [completed]="selectedLocation" (next)="stepper.next()"></pxs-stepper-next>  

@@ -1,4 +1,5 @@
 <div class="detail-page" *ngIf="asset">
+  <pxs-location-explorer [displayAssets]="true" [selectedLocation]="locations[0].sublocations[0].sublocations[0]"></pxs-location-explorer>
   <pxs-detail-header [asset]="asset"></pxs-detail-header>
   <div class="detail-main-content">
     <div class="container">

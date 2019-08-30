@@ -1,0 +1,53 @@
+<div class="relative">
+  <div class="form-bg not-found">
+    <div class="relative error-wrapper">
+      <h1>Oops! This is awkward</h1>
+      <div *ngIf="errorCode === 404">
+          <h2 >This page is no longer available …</h2>
+          <div class="error-details">
+            <p>Sorry, an error has occured, requested page not found!</p>
+          </div>
+          <div class="error-actions">
+            <pxs-button color="white" size="large" (click)="toHome()">
+              Take me to home
+            </pxs-button>
+          </div>
+      </div>
+      <div *ngIf="errorCode === 401">
+          <h2 >Unauthorized</h2>
+          <div class="error-details">
+            <p>Sorry, an error has occured, you are not authorized to see the requested page!</p>
+          </div>
+          <div class="error-actions">
+            <pxs-button color="white" size="large" (click)="toHome()">
+              Take me to home
+            </pxs-button>
+          </div>
+      </div>
+      <div *ngIf="errorCode === 403">
+          <h2 >Forbidden</h2>
+          <div class="error-details">
+            <p>Sorry, an error has occured, you are not authorized to see the requested page!</p>
+          </div>
+          <div class="error-actions">
+            <pxs-button color="white" size="large" (click)="logout()">
+              Logout
+            </pxs-button>
+          </div>
+      </div>
+      <div *ngIf="errorCode === 500">
+          <h2 >Server Error</h2>
+          <div class="error-details">
+            <p>Sorry, an error has occured, our servers might be down!</p>
+          </div>
+          <div class="error-actions">
+            <pxs-button color="white" size="large" (click)="toHome()">
+              Take me to home
+            </pxs-button>
+          </div>
+      </div>
+      
+      
+    </div>
+  </div>
+</div>

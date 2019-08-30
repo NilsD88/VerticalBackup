@@ -36,6 +36,7 @@ export class AssetWizardComponent implements OnInit {
       lat: 48.856614,
       lng: 2.3522219
     },
+    sublocationsId: null,
     sublocations: [
       {
         id: 1,
@@ -50,11 +51,13 @@ export class AssetWizardComponent implements OnInit {
           lat: 50.8467,
           lng: 4.3547
         },
+        sublocationsId: null,
         sublocations: [
           {
             id: 2,
             parentId: 1,
             name: "Grand child 1",
+            sublocationsId: null,
             locationType: {
               id: 0,
               name: "Type"
@@ -69,6 +72,7 @@ export class AssetWizardComponent implements OnInit {
             id: 3,
             parentId: 1,
             name: "Grand child 2",
+            sublocationsId: null,
             locationType: {
               id: 0,
               name: "Type"

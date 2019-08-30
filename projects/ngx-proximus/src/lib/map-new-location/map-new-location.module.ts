@@ -1,3 +1,4 @@
+import { MatSnackBarModule, MatIconModule } from '@angular/material';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { MapNewLocationComponent } from './map-new-location.component';
@@ -9,7 +10,9 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
   ],
   imports: [
     CommonModule,
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    MatSnackBarModule,
+    MatIconModule
   ],
   exports: [MapNewLocationComponent]
 })

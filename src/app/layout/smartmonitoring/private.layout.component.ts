@@ -1,11 +1,11 @@
 import { SharedService } from 'src/app/services/shared.service';
+import { GlobaleSearchService } from './../../services/global-search.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedLayoutService} from '../shared-layout.service';
 import {IFooterConfig} from '../../../../projects/ngx-proximus/src/lib/footer/footer.component';
 import {TranslateService} from '@ngx-translate/core';
 import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/top-menu.component';
-import { AssetService } from 'src/app/services/asset.service';
 import { Asset } from 'src/app/models/asset.model';
 import { Subject } from 'rxjs';
 import { AlertsService } from 'src/app/services/alerts.service';
@@ -32,13 +32,21 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private translateService: TranslateService,
-    private sharedService: SharedService,
     public sharedLayoutService: SharedLayoutService,
-    public assetService: AssetService,
+    private globaleSearchService: GlobaleSearchService,
+    public sharedService: SharedService,
     public alertsService: AlertsService) {
-      this.assetService.search(this.searchTerm$)
+      this.globaleSearchService.searchTerm(this.searchTerm$)
       .subscribe(result => {
-        this.searchResults = result;
+        const results = [];
+        for (const array of result) {
+          if (array.length > 0) {
+            for (const item of array) {
+              results.push(item);
+            }
+          }
+        }
+        this.searchResults = results;
       });
   }
 

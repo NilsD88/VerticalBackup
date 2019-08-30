@@ -1,6 +1,7 @@
 import { ILocationType } from './locations.model';
 import { IGeolocation } from './asset.model';
 import { isNullOrUndefined } from 'util';
+import { INewAsset } from './new-asset.model';
 
 export interface INewLocation {
   id: string | number;
@@ -8,9 +9,11 @@ export interface INewLocation {
   parent?: INewLocation;
   name: string;
   locationType: ILocationType;
+  sublocationsId: number[];
   sublocations?: INewLocation[];
   floorPlan: string;
   geolocation: IGeolocation;
+  assets?: INewAsset[];
 }
 
 export class NewLocation implements INewLocation {
@@ -19,9 +22,12 @@ export class NewLocation implements INewLocation {
   parent: INewLocation;
   name: string;
   locationType: ILocationType;
+  sublocationsId: number[];
   sublocations?: INewLocation[];
   floorPlan: string;
   geolocation: IGeolocation;
+  assets?: INewAsset[];
+
 
   constructor(private _locatiton: INewLocation) {
     if (!isNullOrUndefined(_locatiton)) {
@@ -33,6 +39,7 @@ export class NewLocation implements INewLocation {
       this.sublocations = !isNullOrUndefined(_locatiton.sublocations) ? _locatiton.sublocations : null;
       this.floorPlan = !isNullOrUndefined(_locatiton.floorPlan) ? _locatiton.floorPlan : null;
       this.geolocation = !isNullOrUndefined(_locatiton.geolocation) ? _locatiton.geolocation : null;
+      this.assets = !isNullOrUndefined(_locatiton.assets) ? _locatiton.assets : null;
     }
   }
 }

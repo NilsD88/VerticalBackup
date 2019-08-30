@@ -2,6 +2,7 @@
 
 .threshold-container {
     width: 100%;
+    padding: 0 20px;
     margin-bottom: 15px;
     
     .title {
@@ -43,6 +44,33 @@
             }
             &.critical {
                 background-color: #cc0000;
+            }
+        }
+    }
+    .threshold-indicator-container {
+        display: inline-block;
+        position: relative;
+        height: 30px;
+        margin-top: 2px;
+        width: 100%;
+        .threshold-indicator {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            width: 40px;
+            margin-left: -20px;
+            text-align: center;
+            font-size: 10px;
+            .bar {
+                height: 10px;
+                display: flex;
+                justify-content: center;
+                span {
+                    height: 100%;
+                    width: 1px;
+                    background: rgb(184, 184, 184);
+                    display: block;
+                }
             }
         }
     }

@@ -1,3 +1,5 @@
+@import "~/../src/variables.scss";
+
 .thresholds-container {
   .threshold {
     img {
@@ -6,4 +8,27 @@
       max-height : 20px;
     }
   }
+}
+
+
+::ng-deep {
+  .thresholdTemplate-list {
+      width: 100%;
+      &.loading {
+          tbody[role="rowgroup"]{
+              display: none;
+          }
+      }
+      tbody[role="rowgroup"]{
+          td:first-of-type{
+              font-weight: 500;
+              color: $primary;
+          }
+      }
+
+      .mat-sort-header-button {
+          overflow: hidden;
+          white-space: nowrap;
+      }
+  }   
 }

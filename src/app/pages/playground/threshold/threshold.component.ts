@@ -1,4 +1,8 @@
+import { MOCK_LOCATIONS } from './../../../mocks/newlocations';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
+
 
 @Component({
   selector: 'pvf-threshold',
@@ -9,18 +13,44 @@ export class ThresholdComponent implements OnInit {
 
   public thresholdTemplate = MOCK_THRESHOLD_TEMPLATE;
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
     this.thresholdTemplate.sensors.forEach(sensor => {
       const coef = 100 / (sensor.sensorType.max - sensor.sensorType.min);
+      const indicators = new Map <number, number> ();
+      const min = sensor.sensorType.min;
+      indicators.set(min, 0);
+      indicators.set(sensor.sensorType.max, 100);
       sensor.thresholds.forEach(threshold => {
-        threshold.range['fromPercent'] = (threshold.range.from - sensor.sensorType.min) * coef;
-        threshold.range['toPercent'] = (threshold.range.to - sensor.sensorType.min) * coef;
-        threshold.range['widthPercent'] = threshold.range['toPercent'] - threshold.range['fromPercent'];
+        const fromPercent = (threshold.range.from - min) * coef;
+        const toPercent = (threshold.range.to - min) * coef;
+        threshold.range['fromPercent'] = fromPercent;
+        threshold.range['toPercent'] = toPercent;
+        threshold.range['widthPercent'] = toPercent - fromPercent;
+        indicators.set(threshold.range.from, fromPercent);
+        indicators.set(threshold.range.to, toPercent);
       });
+      sensor['indicators'] = indicators;
     });
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(LocationPopupComponent, {
+      minWidth: '320px',
+      maxWidth: '600px',
+      width: '100vw',
+      data: {
+        displayAssets: true,
+        selectedLocation: MOCK_LOCATIONS[0].sublocations[0]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
 
 }
 

@@ -1,9 +1,11 @@
+import { LocationExplorerModule } from './../../../../../projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaygroundComponent } from './playground.component';
 import {RouterModule} from '@angular/router';
 import {PlaygroundRoutes} from './playground.routing';
-import { MapAssetModule } from 'projects/ngx-proximus/src/lib/map-asset/map-asset.module';
+import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
+import { NewLocationService } from 'src/app/services/new-location.service';
 @NgModule({
   declarations: [
     PlaygroundComponent,
@@ -11,7 +13,11 @@ import { MapAssetModule } from 'projects/ngx-proximus/src/lib/map-asset/map-asse
   imports: [
     CommonModule,
     RouterModule.forChild(PlaygroundRoutes),
-    MapAssetModule,
+    MapModule,
+    LocationExplorerModule
+  ],
+  providers: [
+    NewLocationService
   ]
 })
 export class PlaygroundModule { }

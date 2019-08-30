@@ -2,8 +2,7 @@
 
 .filter-container {
   background: $grey-light;
-  padding: 10px 0;
-  margin-bottom: 20px;
+  padding: 10px 0 20px;
 
   .row {
     > div:last-of-type {
@@ -144,10 +143,6 @@
   pxs-location-explorer {
     width: 100%;
     padding: 10px 0 20px;
-    mat-tab-body {
-      height: 200px;
-      overflow-y: scroll;
-    }
   }
 }
 

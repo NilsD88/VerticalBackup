@@ -1,3 +1,5 @@
+import { AssetWizardModule } from './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module';
+import { MapPopupComponent } from './../../projects/ngx-proximus/src/lib/map-popup/map-popup.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, Injector} from '@angular/core';
 
@@ -29,6 +31,9 @@ import { MapAssetPopupComponent } from 'projects/ngx-proximus/src/lib/map-asset-
 import { createCustomElement } from '@angular/elements';
 import { AssetService } from './services/asset.service';
 import { SharedModule } from './shared/shared.module';
+import { GlobaleSearchService } from './services/global-search.service';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './services/in-memory-data.service';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -39,7 +44,8 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     PrivateLayoutComponent,
     PublicLayoutComponent,
-    MapAssetPopupComponent
+    MapAssetPopupComponent,
+    MapPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +58,12 @@ export function createTranslateLoader(http: HttpClient) {
     FooterModule,
     MatSnackBarModule,
     HttpClientModule,
+    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+    // and returns simulated server responses.
+    // Remove it when a real server is ready to receive requests.
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true, delay: 3000, apiBase: 'fakeapi/'}
+    ),
     TopMenuActionsModule,
     MatMenuModule,
     MatSnackBarModule,
@@ -66,6 +78,8 @@ export function createTranslateLoader(http: HttpClient) {
     MainMenuModule,
     IconModule,
     SharedModule,
+    // TODO: Remove asset wizard !!!!
+    AssetWizardModule
   ],
   providers: [
     PublicAuthGuard,
@@ -77,13 +91,17 @@ export function createTranslateLoader(http: HttpClient) {
     ThresholdTemplateService,
     SharedLayoutService,
     AssetService,
+    GlobaleSearchService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MapAssetPopupComponent],
+  entryComponents: [MapAssetPopupComponent, MapPopupComponent],
 })
 export class AppModule {
   constructor(private injector: Injector) {
     const PopupElement = createCustomElement(MapAssetPopupComponent, {injector});
     customElements.define('popup-element', PopupElement);
+
+    const MapPopupElement = createCustomElement(MapPopupComponent, {injector});
+    customElements.define('map-popup-element', MapPopupElement);
   }
 }

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Location } from '../../../../../src/app/models/locations.model';
 
 export interface TopMenuConfig {
   languages?: { label: string; value: string }[];
@@ -63,7 +64,6 @@ export class TopMenuComponent implements OnInit {
   }
 
   ngOnInit() {
-    
   }
 
 
@@ -97,18 +97,25 @@ export class TopMenuComponent implements OnInit {
       }
     }
   }
-  
+
   searchFocusOut() {
     if (this.searchbarVisible) {
       this.searchbarVisible = false;
     }
   }
 
-  selectAnAutocompletedOption(option){
+  selectAnAutocompletedOption(option) {
     this.searchbarVisible = false;
-    this.searchText = "";
+    this.searchText = '';
     this.autocompleteClick.emit(option);
   }
-  
+
+  getTypeOf(option: object) {
+    if (option instanceof Location) {
+      return 'location';
+    } else {
+      return 'asset';
+    }
+  }
 
 }

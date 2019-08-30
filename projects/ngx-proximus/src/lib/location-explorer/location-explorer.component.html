@@ -1,15 +1,63 @@
-<mat-tab-group [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndexChange($event)">
+<mat-progress-spinner 
+  *ngIf="isDownloading"
+  style="margin:0 auto;"
+  color="primary" 
+  mode="indeterminate">
+</mat-progress-spinner>
+<mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndexChange($event)">
   <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-    <mat-list>
-      <mat-list-item 
-        *ngFor="let location of tab.sublocations"
-        (dblclick)="goToSublocation(location)"
-        (click)="selectLocation(location)"
-        [ngClass]="{'selected': selectedLocation === location}"
-      >
+  <div cdkDropList (cdkDropListDropped)="drop($event)" class="dropList" *ngIf="tab.sublocations && tab.sublocations.length > 0">
+    <hr data-content="LOCATIONS">
+    <div 
+      cdkDrag
+      class="dropListItem"
+      *ngFor="let location of tab.sublocations"
+      [ngClass]="{'selected': selectedLocation === location}"
+      (click)="clickOnLocation(location)"
+    >
+      <div>
+        <pxs-icon icon="globe" class="location"></pxs-icon>
         {{location.name}}
+        <button *ngIf="canManage" mat-icon-button matTooltip="Edit asset" color="accent">
+          <pxs-icon icon="edit"></pxs-icon>
+        </button>
+        <button *ngIf="canManage" mat-icon-button matTooltip="Delete asset" color="warn">
+          <pxs-icon icon="trash"></pxs-icon>
+        </button>
+      </div>
+      <div>
         <span (click)="goToSublocation(location)"><pxs-icon icon="chevron-right"></pxs-icon></span>
-    </mat-list-item>
-  </mat-list>
+      </div>
+    </div>
+    <div class="dropListItem newItem" *ngIf="canManage">
+      <div>
+        <pxs-icon icon="plus-o"></pxs-icon> Add new location
+      </div>
+    </div>
+  </div>
+  <div *ngIf="displayAssets" class="dropList">
+    <div>
+      <hr data-content="ASSETS">
+      <mat-progress-spinner 
+        *ngIf="loadingAsset"
+        style="margin:0 auto;"
+        [diameter]="25"
+        color="primary" 
+        mode="indeterminate">
+      </mat-progress-spinner>
+      <div *ngIf="currentLocation && !loadingAsset && (!currentLocation.assets ||currentLocation.assets.length < 1)">
+        No asset found at this location
+      </div>
+      <div *ngIf="currentLocation">
+        <div class="dropListItem" *ngFor="let asset of currentLocation.assets" [ngClass]="{'selected': selectedAsset === asset}">
+          <div>
+            <pxs-icon icon="document-img" class="asset"></pxs-icon>
+            {{asset.name}}
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
 </mat-tab>
 </mat-tab-group>

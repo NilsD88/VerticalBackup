@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Asset} from '../../../models/asset.model';
 import {AssetService} from '../../../services/asset.service';
@@ -6,6 +6,11 @@ import {FilterService} from '../../../services/filter.service';
 import {SharedService} from '../../../services/shared.service';
 import {LocationsService} from '../../../services/locations.service';
 import { ILocation, ISublocation } from 'src/app/models/locations.model';
+import { NewLocationService } from 'src/app/services/new-location.service';
+import { INewLocation } from 'src/app/models/new-location';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { GlobaleSearchService } from 'src/app/services/global-search.service';
 
 @Component({
   selector: 'pvf-inventory',
@@ -13,6 +18,10 @@ import { ILocation, ISublocation } from 'src/app/models/locations.model';
   styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
+
+  @ViewChild('inputSearch') set content(content: ElementRef) { this.inputSearch = content;}
+  inputSearch: ElementRef;
+
   public filter = {
     name: '',
     thresholdTemplates: [],
@@ -21,8 +30,8 @@ export class InventoryComponent implements OnInit {
     sublocations: []
   };
 
+  public listStyleValue = 'icons';
   public showFilter = false;
-  public showLocationExplorer = false;
 
   public thresholdTemplatesLoading = false;
   public locationsLoading = false;
@@ -42,14 +51,31 @@ export class InventoryComponent implements OnInit {
   public totalItems = 0;
   public pagesize = 10;
 
+  public rootLocation: INewLocation;
+  public selectedLocation: INewLocation;
 
-  constructor(public assetService: AssetService,
-              public filterService: FilterService,
-              public sharedService: SharedService,
-              public locationsService: LocationsService) {
+  // Search autocomplete for location
+  public searchTextLocation: string;
+  public myControl = new FormControl();
+  public searchResultsLocation: any[];
+  public searchTermLocation$ = new Subject<string>();
+
+  constructor(
+    public assetService: AssetService,
+    public filterService: FilterService,
+    public sharedService: SharedService,
+    public locationsService: LocationsService,
+    public newLocationService: NewLocationService,
+    public globaleSearchService: GlobaleSearchService) {
   }
 
   async ngOnInit() {
+
+    this.globaleSearchService.searchLocationTerm(this.searchTermLocation$)
+      .subscribe(locations => {
+        this.searchResultsLocation = locations;
+      });
+
     this.assetsLoading = true;
     const defaultFilter: any = this.sharedService.getDefaultFilter('INVENTORYFILTER');
     this.filter = defaultFilter ? defaultFilter : this.filter;
@@ -71,6 +97,22 @@ export class InventoryComponent implements OnInit {
       this.assetsLoading = false;
       console.error(err);
     }
+
+
+    this.newLocationService.getLocations().subscribe((locations: INewLocation[]) => {
+      this.rootLocation = {
+        id: null,
+        parentId: null,
+        locationType: null,
+        geolocation: null,
+        floorPlan: null,
+        name: 'Locations',
+        sublocationsId: null,
+        sublocations: locations,
+      };
+    });
+
+
   }
 
   public async onLocationTypeChange() {
@@ -129,21 +171,39 @@ export class InventoryComponent implements OnInit {
     }
   }
 
+  public listStyleOnChange(event) {
+    const { value } = event;
+    this.listStyleValue = value;
+    console.log(this.listStyleValue);
+  }
+
+  public searchLocationChanged(event) {
+    if (event) {
+      if (event.length > 2) {
+        this.searchTermLocation$.next(event);
+      }
+    }
+  }
+
+  public selectAnAutocompletedOption(option: ILocation) {
+    this.searchTextLocation = option.name;
+    //TODO: request to update asset according to the location
+  }
+
   public updateLocation(location: ILocation|ISublocation) {
     switch(location.constructor.name) {
       case "Sublocation": 
         this.filter.sublocations = [location.id];
         this.filter.locations = [];
         break;
-      case "Location": 
+      case "Location":
         this.filter.locations = [location.id];
         this.filter.sublocations = [];
-        break
+        break;
       default :
         this.filter.locations = [];
         this.filter.sublocations = [];
     }
     this.getPagedAssets();
   }
-  
 }

@@ -1,3 +1,4 @@
+import { NewAssetService } from './../../../services/new-asset.service';
 import { MatProgressButtonOptions } from 'mat-progress-buttons';
 import { SharedService } from 'src/app/services/shared.service';
 import {Component, OnInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
@@ -13,6 +14,8 @@ import * as moment from 'moment';
 import { ISensorReadingFilter } from 'src/app/models/sensor.model';
 import { LogsService } from 'src/app/services/logs.service';
 import jspdf from 'jspdf';
+import { INewLocation } from 'src/app/models/new-location';
+import { NewLocationService } from 'src/app/services/new-location.service';
 
 declare var require: any;
 
@@ -38,6 +41,7 @@ export class DetailComponent implements OnInit {
   @ViewChild('myAggregatedValues') myAggregatedValues;
 
   public asset: Asset;
+  public locations: INewLocation[];
   public lastAlert: Alert;
   public numberOfAlertsOfTheDay: number;
   public chartSensorOptions = [];
@@ -84,15 +88,18 @@ export class DetailComponent implements OnInit {
     private translateService: TranslateService,
     private logsService: LogsService,
     private sharedService: SharedService,
+    private newLocationService: NewLocationService,
     public alertsService: AlertsService) {
       activeRoute.params.subscribe(val => {
         this.init();
       });
   }
 
-
   async ngOnInit() {
     this.initDateFilterOptions();
+    this.newLocationService.getLocations().subscribe((data: INewLocation[]) => {
+      this.locations = data;
+    });
   }
 
   setupPresets() {

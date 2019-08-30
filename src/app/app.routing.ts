@@ -79,15 +79,16 @@ export class AdminAuthGuard implements CanActivate {
     } catch (err) {
       switch (err.status) {
         case 401:
-          this.router.navigate(['/']);
-          this.sharedService.showNotification('Unauthorized: 401', 'warning', 3000);
+          this.router.navigate(['/error/401']);
           break;
         case 403:
-          this.router.navigate(['/']);
-          this.sharedService.showNotification('Unauthorized: 403', 'warning', 3000);
+          this.router.navigate(['/error/403']);
           break;
         case 404:
           this.router.navigate(['/error/404']);
+          break;
+        case 302:
+          this.router.navigate(['/error/302']);
           break;
         default:
           this.router.navigate(['/error/500']);
@@ -109,7 +110,6 @@ export const AppRoutes: Routes = [
       loadChildren: environment.paths.home
     }]
   },
-  
   {
     path: 'contact',
     component: PublicLayoutComponent,
@@ -141,14 +141,24 @@ export const AppRoutes: Routes = [
     }]
   },
   {
+    path: 'error',
+    component: PublicLayoutComponent,
+    canActivate: [PublicAuthGuard],
+    children: [{
+      path: '',
+      loadChildren: './pages/error/smartmonitoring/error.module#ErrorModule'
+    }]
+  },
+  {
     path: 'playground',
     component: PublicLayoutComponent,
     canActivate: [PublicAuthGuard],
     children: [{
       path: '',
-      loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
+      //loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
       //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
       //loadChildren: './pages/playground/threshold/threshold.module#ThresholdModule'
+      loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
     }]
   },
   {
@@ -158,7 +168,7 @@ export const AppRoutes: Routes = [
       {
         path: 'test',
         canActivate: [UserAuthGuard],
-        loadChildren:'./pages/playground/wizard-asset/playground.module#PlaygroundModule'
+        loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
       },
       {
         path: 'home',

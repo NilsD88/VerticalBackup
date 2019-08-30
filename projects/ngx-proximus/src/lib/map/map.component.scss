@@ -1,0 +1,67 @@
+
+@import '~/../src/variables.scss';
+
+::ng-deep {
+    .marker-cluster {
+        background-color: $primary;
+        color: white;
+        border: 2px solid white; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 20px 0 rgba($color: #000000, $alpha: .3);
+        > div {
+            margin: 0;
+            background: none;
+            span {
+                font-weight: bold;
+                font-size: 1.6em;
+            }
+        }
+    }
+
+    .leaflet-marker-icon {
+        .pxi-map-marker {
+            position: relative;
+            font-size: 30px;
+            color: $primary;
+            background: white;
+            border-radius: 30px;
+            padding: 4px;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+            left: -17px;
+            top: -17px;
+        }
+
+        .pxi-map-hotspot {
+            position: relative;
+            font-size: 20px;
+            color: white;
+            background: $link;
+            border-radius: 35px;
+            padding: 10px;
+            box-shadow: 0 0 15px 0 rgba(0,0,0,0.2);
+            left: -15px;
+            top: -15px;
+        }
+    }
+    
+}
+
+.map-asset-container {
+    position: relative;
+    height: 100%;
+    > .parent-location-container {
+        position: absolute;
+        z-index: 999999;
+        background: $primary;
+        right: 30px;
+        top: 10px;
+        padding: 10px;
+        color: white;
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+}

@@ -17,6 +17,8 @@ import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {ImgFallbackModule} from 'ngx-img-fallback';
 import {DetailHeaderModule} from '../../../../../projects/ngx-proximus/src/lib/detail-header/detail-header.module';
+import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
+import { NewLocationService } from 'src/app/services/new-location.service';
 
 
 @NgModule({
@@ -37,9 +39,10 @@ import {DetailHeaderModule} from '../../../../../projects/ngx-proximus/src/lib/d
     MatTooltipModule,
     ImgFallbackModule,
     DetailHeaderModule,
-    RangeSliderModule
+    RangeSliderModule,
+    LocationExplorerModule
   ],
-  providers: [AlertsService, LogsService]
+  providers: [AlertsService, LogsService, NewLocationService]
 })
 export class DetailModule {
 }

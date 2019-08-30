@@ -1,3 +1,6 @@
+
 <div>
-  <pxs-map-asset *ngIf="assets.length>0 || location"  [assets]="assets" [location]="location" (change)="updateAssetsAndLocations($event)"></pxs-map-asset>
+  <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="rootLocation.sublocations[0].sublocations[0]"></pxs-map>
 </div>
+
+<pxs-location-explorer></pxs-location-explorer>

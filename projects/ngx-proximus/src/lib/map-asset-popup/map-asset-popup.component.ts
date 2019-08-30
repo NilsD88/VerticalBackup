@@ -20,14 +20,17 @@ export class MapAssetPopupComponent implements OnInit {
   constructor(private alertsService: AlertsService) {}
 
   ngOnInit() {
-    if (this.asset.lastAlert) {
-      this.lastAlert = this.asset.lastAlert;
-    } else {
-      this.getLastAlert();
+    if (this.asset) {
+      if (this.asset.lastAlert) {
+        this.lastAlert = this.asset.lastAlert;
+      } else {
+        this.getLastAlert();
+      }
     }
   }
 
   async getLastAlert() {
+    console.log("has no alert");
     const lastAlertPromise = this.alertsService.getLastAlertByAssetId(this.asset.id);
     this.lastAlert = await lastAlertPromise;
   }

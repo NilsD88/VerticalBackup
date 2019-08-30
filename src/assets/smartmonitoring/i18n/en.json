@@ -200,7 +200,8 @@
     "NONE_FOUND": "No assets found.",
     "FILTER": {
       "PLACEHOLDERS": {
-        "NAME": "Asset name"
+        "ASSET_NAME": "Asset name",
+        "LOCATION_NAME": "Location name"
       }
     }
   },

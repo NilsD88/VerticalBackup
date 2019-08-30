@@ -1,0 +1,37 @@
+@import '~/../src/variables.scss';
+
+:host {
+    display: block;
+    background-color: $promo;
+    background-image: linear-gradient(315deg, #5c2d91 55%,rgba(92,45,145,0.9) 65%,rgba(92,45,145,0.7) 75%,rgba(92,45,145,0) 100%);
+    color: white;
+    
+    >.relative {
+        display: flex;
+        align-content: center;
+        margin: 0 auto;
+        padding: 20px 0;
+        justify-content: center;
+        text-align: center;
+        min-height: calc(100vh - 55px - 60px); // remove header and footer height
+
+        .form-bg {
+            display: flex;
+            align-items: center;
+        }
+
+        h1{
+            margin-top:0;
+            font-family: ProximusBold, sans-serif;
+            color: white;
+        }
+
+        h2 {
+            font-family: ProximusLight, sans-serif;
+            color: rgba(255,255,255,0.7) !important;
+        }
+    }
+}
+
+
+

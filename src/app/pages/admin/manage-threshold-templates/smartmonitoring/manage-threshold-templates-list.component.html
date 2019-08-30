@@ -9,42 +9,73 @@
       ><pxs-icon icon="plus-o"></pxs-icon></button>
     </div>
   </div>
-  <div class="row" *ngIf="itemsLoading">
-    <div class="col-12">
-      <pxs-loader></pxs-loader>
-    </div>
+  <div class="row">
+      <div class="col-xs-12 col-md-6 mx-auto">
+          <mat-form-field class="w-100">
+              <input type="text" (change)="filterNameChange($event)" placeholder="Threshold template name" matInput
+                     [(ngModel)]="filter.name">
+            </mat-form-field>
+      </div>
   </div>
-
-
-  <div class="table" *ngIf="!itemsLoading">
-    <div class="row p-1 table-row" *ngFor="let item of items">
-
-      <div class="col-md-5">
-        <span class="text-primary">{{item.name}}</span>
+  <div>
+      <div style="overflow-x: scroll">
+        <table 
+          mat-table [dataSource]="dataSource" 
+          matSort class="mat-elevation-z8 thresholdTemplate-list" 
+          [ngClass]="{'loading': isLoading }"
+          matSortDisableClear
+        >
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element" > {{element.name}} </td>
+          </ng-container>
+          
+          <!-- Sensors Column -->
+          <ng-container matColumnDef="thresholds">
+              <th mat-header-cell *matHeaderCellDef> Thresholds </th>
+              <td mat-cell *matCellDef="let element" class="thresholds-container">
+                <div class="threshold">
+                    <img *ngFor="let threshold of element.thresholds"
+                      [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name + '.svg'"
+                      [matTooltip]="threshold.sensorType.name + ' ' + threshold.low + threshold.sensorType.postfix + ' - '+ threshold.high + threshold.sensorType.postfix"
+                      [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
+                    >
+                </div>
+              </td>
+          </ng-container>
+  
+          <!-- Actions template -->
+          <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef> Actions </th>
+              <td mat-cell *matCellDef="let element">
+                   <button mat-icon-button matTooltip="Edit threshold template" color="accent" routerLink="/private/admin/manage-threshold-templates/{{element.id}}">
+                    <pxs-icon icon="edit"></pxs-icon>
+                  </button>
+                  <button mat-icon-button matTooltip="Delete threshold template" color="warn" (click)="deleteItem(element)">
+                    <pxs-icon icon="trash"></pxs-icon>
+                  </button>
+              </td>
+          </ng-container>
+    
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+        </table>
       </div>
-
-      <div class="col-md-5">
-        <div class="thresholds-container">
-          <div class="threshold">
-            <img *ngFor="let threshold of item.thresholds"
-                 [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name + '.svg'"
-                 [matTooltip]="threshold.sensorType.name + ' ' + threshold.low + threshold.sensorType.postfix + ' - '+ threshold.high + threshold.sensorType.postfix"
-                 [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
-
-          </div>
-        </div>
-      </div>
-      <div class="col-md-2">
-        <button mat-icon-button matTooltip="Edit threshold template" color="accent"
-                routerLink="/private/admin/manage-threshold-templates/{{item.id}}">
-          <pxs-icon icon="edit"></pxs-icon>
-        </button>
-        <button mat-icon-button matTooltip="Delete threshold template" color="warn" (click)="deleteItem(item)">
-          <pxs-icon icon="trash"></pxs-icon>
-        </button>
-      </div>
+        <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; border-radius: 0;">
+          <mat-progress-spinner 
+            color="primary" 
+            mode="indeterminate">
+          </mat-progress-spinner>
+        </mat-card>
+        <mat-paginator [length]="totalItems"
+          [pageSize]="pagesize"
+          [pageSizeOptions]="pageSizeOptions"
+          (page)="pageChanged($event)">
+        </mat-paginator> 
     </div>
-  </div>
+  
 
 
 </div>

@@ -2,7 +2,7 @@ import {ISensorType, SensorType} from './sensor.model';
 import {isNullOrUndefined} from 'util';
 
 export interface IPagedThresholdTemplates {
-  thresholdTemplates: ThresholdTemplate[];
+  data: ThresholdTemplate[];
   pageNumber: number;
   totalElements: number;
 }
@@ -121,6 +121,7 @@ export class ThresholdTemplate implements ThresholdTemplate {
   public thresholds: Threshold[];
 
   constructor(private _thresholdTemplate: IThresholdTemplate) {
+    console.log(_thresholdTemplate);
     if (!isNullOrUndefined(_thresholdTemplate)) {
       this.id = _thresholdTemplate.id;
       this.name = _thresholdTemplate.name;
@@ -144,17 +145,17 @@ export class ThresholdTemplate implements ThresholdTemplate {
   }
 
   public static createPagedArray(response: any): IPagedThresholdTemplates {
-    if (!isNullOrUndefined(response.content)) {
-      const thresholdTemplates = response.content.map((value) => {
+    if (!isNullOrUndefined(response)) {
+      const thresholdTemplates = response.map((value) => {
+        console.log(value);
         return new ThresholdTemplate(value);
       });
-
       const pageNumber = response.number ? response.number : 0;
       const totalElements = response.totalElements ? response.totalElements : 0;
 
-      return {thresholdTemplates, pageNumber, totalElements};
+      return {data: thresholdTemplates, pageNumber, totalElements};
     } else {
-      return {thresholdTemplates: [], pageNumber: 0, totalElements: 0};
+      return {data: [], pageNumber: 0, totalElements: 0};
     }
   }
 }

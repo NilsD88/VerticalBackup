@@ -1,23 +1,38 @@
 <div class="filter-container">
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 col-md-3 col-xs-12">
-        <ng-select
-          [placeholder]="'LOCATIONTYPE_SELECT.PLACEHOLDER' | translate"
-          [items]="filterOptions.locationTypesOptions"
-          [loading]="locationTypesLoading"
-          [(ngModel)]="filter.locationType"
-          (change)="onLocationTypeChange()"
-          bindValue="id" bindLabel="name"
-        ></ng-select>
+      <div class="col-xs-12 col-md-6 mx-auto">
+        <mat-button-toggle-group  (change)="listStyleOnChange($event)" [value]="listStyleValue">
+          <mat-button-toggle value="icons"><mat-icon>view_comfy</mat-icon></mat-button-toggle>
+          <mat-button-toggle value="list"><mat-icon>list</mat-icon></mat-button-toggle>
+          <mat-button-toggle value="map"><mat-icon>map</mat-icon></mat-button-toggle>
+        </mat-button-toggle-group>
       </div>
-      <div class="col-sm-6 col-md-3 col-xs-12">
+    </div>
+  </div>
+  <div class="container" *ngIf="listStyleValue === 'icons'">
+    <div class="row">
+      <div class="col-sm-4 col-md-4 col-xs-12">
         <mat-form-field>
           <input type="text" matInput [(ngModel)]="filter.name" (change)="getPagedAssets()"
-          [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.NAME' | translate">
+          [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.ASSET_NAME' | translate">
         </mat-form-field>
       </div>
-      <div class="col-sm-6 col-md-3 col-xs-12">
+      <div class="col-sm-4 col-md-4 col-xs-12">
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            #inputSearch
+            [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.LOCATION_NAME' | translate"
+            [(ngModel)]="searchTextLocation"
+            [matAutocomplete]="auto"
+            [formControl]="myControl"
+            (ngModelChange)="searchLocationChanged($event)"
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-sm-4 col-md-4 col-xs-12">
         <ng-select [multiple]="true"
           [clearable]="true"
           [items]="filterOptions.thresholdTemplateOptions"
@@ -31,24 +46,10 @@
           [placeholder]="'FILTER.THRESHOLD_TEMPLATES.PLACEHOLDER' | translate">
         </ng-select>
       </div>
-      <div class="col-sm-6 col-md-3 col-xs-12">
-          <button mat-flat-button color="primary" (click)="showLocationExplorer=true">
-            <pxs-icon icon="globe"></pxs-icon>
-            Pick a location
-          </button>
-      </div>
-    </div>
-    <div class="row" *ngIf="showLocationExplorer">
-      <div class="col-xs-12 col-md-6 mx-auto">
-          <pxs-location-explorer 
-            [locations]="filterOptions.locationsOptions"
-            (notify)="updateLocation($event)"
-          ></pxs-location-explorer>
-      </div>
     </div>
   </div>
 </div>
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="listStyleValue === 'icons'">
   <div class="row assets-list">
     <!--No Assets Found-->
     <div *ngIf="!assets.length && !assetsLoading" class="text-center col-12">
@@ -102,3 +103,15 @@
   </mat-paginator>
 
 </div>
+<div *ngIf="listStyleValue === 'list'">
+  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event" [displayAssets]="true"></pxs-location-explorer>
+</div>
+<div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 190px);">
+  <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event"></pxs-map>
+</div>
+
+<mat-autocomplete  #auto="matAutocomplete">
+    <mat-option *ngFor="let option of searchResultsLocation" [value]="option" (click)="selectAnAutocompletedOption(option)">
+      {{ option.name }}
+    </mat-option>
+</mat-autocomplete>

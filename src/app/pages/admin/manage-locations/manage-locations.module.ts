@@ -1,3 +1,4 @@
+import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManageLocationsComponent } from './manage-locations.component';
@@ -20,6 +21,8 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     MatTreeModule,
     MatIconModule,
+    MatButtonModule,
+    LocationExplorerModule,
   ]
 })
 export class ManageLocationsModule { }
