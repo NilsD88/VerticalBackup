@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges} from '@angular/core';
 
 @Component({
   selector: 'pxs-range-slider',
@@ -14,27 +14,21 @@ export class RangeSliderComponent implements OnInit {
   @Input() max = 100;
   @Input() step = 1;
 
-  from:number;
-  to:number;
+  @Output() rangeChange: EventEmitter<[number, number]> = new EventEmitter();
 
-  @Output() change: EventEmitter<{ from: number, to: number }> = new EventEmitter();
+  public range;
 
   constructor() {
   }
 
   ngOnInit() {
-    this.from = this.startFrom;
-    this.to = this.startTo;
+    this.range = [this.startFrom, this.startTo];
   }
 
-  sliderChange(evt: number[]) {
-    if(evt.length === 2){
-      this.from = evt[0];
-      this.to = evt[1];
-      this.change.emit({
-        from: this.from,
-        to: this.to
-      });
+  onUpdate(evt: number[]) {
+    if (evt.length === 2) {
+      this.range = [evt[0], evt[1]];
+      this.rangeChange.emit(this.range);
     }
   }
 

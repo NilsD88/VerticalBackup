@@ -175,6 +175,7 @@ export interface INewThresholdTemplate {
 export type SeverityLevel = 'LOW' | 'HIGH' | 'CRITICAL';
 
 export interface INewThreshold {
+  id: number;
   range: {
     from: number;
     to: number;
@@ -223,6 +224,7 @@ export class NewThresholdTemplate implements INewThresholdTemplate {
 
 export class NewThreshold implements INewThreshold {
 
+  public id: number;
   public range = {
     from: null,
     to: null
@@ -234,14 +236,15 @@ export class NewThreshold implements INewThreshold {
     mail: false
   };
 
-  constructor(private threshold: INewThreshold) {
-    if (!isNullOrUndefined(this.threshold)) {
-      this.range.from = this.threshold.range && !isNullOrUndefined(this.threshold.range.from) ? this.threshold.range.from : null;
-      this.range.to = this.threshold.range && !isNullOrUndefined(this.threshold.range.to) ? this.threshold.range.to : null;
-      this.severity = this.threshold.severity ? this.threshold.severity : 'LOW';
-      this.alert.mail = this.threshold.alert && this.threshold.alert.mail ? this.threshold.alert.mail : false;
-      this.alert.sms = this.threshold.alert && this.threshold.alert.sms ? this.threshold.alert.sms : false;
-      this.alert.notification = this.threshold.alert && this.threshold.alert.notification ? this.threshold.alert.notification : false;
+  constructor(private _threshold: INewThreshold) {
+    if (!isNullOrUndefined(_threshold)) {
+      this.id = _threshold.id ? _threshold.id : new Date().getTime();
+      this.range.from = _threshold.range && !isNullOrUndefined(_threshold.range.from) ? _threshold.range.from : null;
+      this.range.to = _threshold.range && !isNullOrUndefined(_threshold.range.to) ? _threshold.range.to : null;
+      this.severity = _threshold.severity ? _threshold.severity : 'LOW';
+      this.alert.mail = _threshold.alert && _threshold.alert.mail ? _threshold.alert.mail : false;
+      this.alert.sms = _threshold.alert && _threshold.alert.sms ? _threshold.alert.sms : false;
+      this.alert.notification = _threshold.alert && _threshold.alert.notification ? _threshold.alert.notification : false;
     } else {
       this.range = {
         from: null,
@@ -254,6 +257,7 @@ export class NewThreshold implements INewThreshold {
         mail: false
       };
     }
+    delete this._threshold;
   }
 
   public static createArray(values: INewThreshold[]): NewThreshold[] {

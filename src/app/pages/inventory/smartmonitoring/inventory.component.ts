@@ -174,7 +174,6 @@ export class InventoryComponent implements OnInit {
   public listStyleOnChange(event) {
     const { value } = event;
     this.listStyleValue = value;
-    console.log(this.listStyleValue);
   }
 
   public searchLocationChanged(event) {
@@ -187,16 +186,17 @@ export class InventoryComponent implements OnInit {
 
   public selectAnAutocompletedOption(option: ILocation) {
     this.searchTextLocation = option.name;
-    //TODO: request to update asset according to the location
+    this.updateLocation(option);
+    // TODO: request to update asset according to the location
   }
 
   public updateLocation(location: ILocation|ISublocation) {
-    switch(location.constructor.name) {
-      case "Sublocation": 
+    switch (location.constructor.name) {
+      case 'Sublocation':
         this.filter.sublocations = [location.id];
         this.filter.locations = [];
         break;
-      case "Location":
+      case 'Location':
         this.filter.locations = [location.id];
         this.filter.sublocations = [];
         break;

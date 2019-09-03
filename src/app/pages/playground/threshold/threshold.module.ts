@@ -13,11 +13,6 @@ import { ThresholdRoutes } from './threshold.routing';
     CommonModule,
     RouterModule.forChild(ThresholdRoutes),
     MatTooltipModule,
-    MatDialogModule,
-    LocationPopupModule
-  ],
-  entryComponents: [
-    LocationPopupComponent
   ]
 })
 export class ThresholdModule { }

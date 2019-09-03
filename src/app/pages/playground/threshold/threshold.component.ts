@@ -1,7 +1,5 @@
 import { MOCK_LOCATIONS } from './../../../mocks/newlocations';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
 
 
 @Component({
@@ -13,7 +11,7 @@ export class ThresholdComponent implements OnInit {
 
   public thresholdTemplate = MOCK_THRESHOLD_TEMPLATE;
 
-  constructor(public dialog: MatDialog) { }
+  constructor() { }
 
   ngOnInit() {
     this.thresholdTemplate.sensors.forEach(sensor => {
@@ -34,23 +32,6 @@ export class ThresholdComponent implements OnInit {
       sensor['indicators'] = indicators;
     });
   }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(LocationPopupComponent, {
-      minWidth: '320px',
-      maxWidth: '600px',
-      width: '100vw',
-      data: {
-        displayAssets: true,
-        selectedLocation: MOCK_LOCATIONS[0].sublocations[0]
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-
 
 }
 

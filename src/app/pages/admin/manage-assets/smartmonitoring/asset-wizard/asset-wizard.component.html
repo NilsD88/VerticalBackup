@@ -14,7 +14,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" required></textarea>
+              <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"></textarea>
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="Type" matInput formControlName="TypeCtrl">
@@ -22,9 +22,17 @@
                 <mat-option value="type2">Type 2</mat-option>
               </mat-select>
             </mat-form-field>
+            <h6>Key Value</h6>
+            <mat-form-field *ngFor="let item of keyValues">
+              <input *ngIf="item.type === 'string' || item.type === 'number'" matInput [placeholder]="item.label" [type]="item.type" formControlName="{{item.label}}">
+            </mat-form-field>
           </div>
-        </div>        
+        </div>
+
+
+        <!--
         <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
+        -->
         <p>Form value: {{ descriptionFormGroup.value | json }}</p>
         <p>Form status: {{ descriptionFormGroup.status | json }}</p>
         
@@ -37,12 +45,9 @@
         <ng-template matStepLabel>Location</ng-template>
         <div class="row">
           <div class="col-xs-12 col-md-6 mx-auto">
-            <!--
             <pxs-location-explorer 
-              [locations]="locationTree"
               (notify)="updateLocation($event)"
             ></pxs-location-explorer>
-            -->
           </div>
         </div>
         <pxs-stepper-next [completed]="selectedLocation" (next)="stepper.next()"></pxs-stepper-next>
@@ -52,9 +57,9 @@
       <form>
         <ng-template matStepLabel>Geolocation</ng-template>
         <pxs-form-geolocation 
-        *ngIf="selectedLocation"
-        [location]="selectedLocation"
-        (notify)="geolocation=$event"
+          *ngIf="selectedLocation"
+          [location]="selectedLocation"
+          (notify)="geolocation=$event"
         ></pxs-form-geolocation>
         <pxs-stepper-next [completed]="geolocation" (next)="stepper.next()"></pxs-stepper-next>
       </form>

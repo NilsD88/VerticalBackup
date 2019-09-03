@@ -157,8 +157,8 @@ export const AppRoutes: Routes = [
       path: '',
       //loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
       //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
-      //loadChildren: './pages/playground/threshold/threshold.module#ThresholdModule'
-      loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
+      loadChildren: './pages/playground/threshold/threshold.module#ThresholdModule'
+      //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
     }]
   },
   {

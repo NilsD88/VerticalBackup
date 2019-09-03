@@ -14,7 +14,8 @@ import {
   MatTableModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
-  MatSortModule
+  MatSortModule,
+  MatSlideToggleModule,
 } from '@angular/material';
 import {RangeSliderModule} from '../../../../../../projects/ngx-proximus/src/lib/range-slider/range-slider.module';
 import {RouterModule} from '@angular/router';
@@ -22,7 +23,7 @@ import {ManageThresholdTemplatesRoutes} from './manage-threshold-templates.routi
 import {ImgFallbackModule} from 'ngx-img-fallback';
 import {IconModule} from '../../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import {ManageThresholdTemplatesListComponent} from './manage-threshold-templates-list.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {AddSensorComponent} from './add-sensor/add-sensor.component';
 import {FilterService} from '../../../../services/filter.service';
@@ -33,16 +34,16 @@ import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module
   imports: [
     CommonModule,
     RouterModule.forChild(ManageThresholdTemplatesRoutes),
+    FormsModule,
+    ReactiveFormsModule,
     LoaderModule,
     MatInputModule,
     RangeSliderModule,
-    FormsModule,
     MatTooltipModule,
     ImgFallbackModule,
     MatSelectModule,
     TranslateModule,
     MatCardModule,
-    RangeSliderModule,
     IconModule,
     MatCheckboxModule,
     MatDialogModule,
@@ -54,6 +55,7 @@ import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    MatSlideToggleModule
   ],
   entryComponents: [AddSensorComponent],
   providers: [FilterService]

@@ -1,4 +1,3 @@
-import { AssetWizardModule } from './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module';
 import { MapPopupComponent } from './../../projects/ngx-proximus/src/lib/map-popup/map-popup.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, Injector} from '@angular/core';
@@ -78,8 +77,6 @@ export function createTranslateLoader(http: HttpClient) {
     MainMenuModule,
     IconModule,
     SharedModule,
-    // TODO: Remove asset wizard !!!!
-    AssetWizardModule
   ],
   providers: [
     PublicAuthGuard,

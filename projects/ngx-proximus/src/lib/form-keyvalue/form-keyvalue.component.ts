@@ -8,27 +8,25 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class FormKeyvalueComponent implements OnInit {
 
-  @Input() parentFormGroup:FormGroup;
+  @Input() parentFormGroup: FormGroup;
 
-  keyValues:[String, String, String, number][] = [];
+  keyValues: [string, string, string, number][] = [];
 
   constructor() { }
 
-  ngOnInit(){
+  ngOnInit() {
   }
-  
 
-  addKeyValue(){
+
+  addKeyValue() {
     const id = new Date().getTime();
-    this.keyValues.push(["", "", "", id]);
-
+    this.keyValues.push(['', '', '', id]);
     this.parentFormGroup.addControl(
       `kv_k${id}`, new FormControl('', Validators.required)
     );
     this.parentFormGroup.addControl(
       `kv_v${id}`, new FormControl('', Validators.required)
     );
-    
   }
 
   removeKeyValue(index) {
@@ -36,14 +34,13 @@ export class FormKeyvalueComponent implements OnInit {
     this.parentFormGroup.removeControl(`kv_k${id}`);
     this.parentFormGroup.removeControl(`kv_kc${id}`);
     this.parentFormGroup.removeControl(`kv_v${id}`);
-    this.keyValues.splice(index,1);
+    this.keyValues.splice(index, 1);
   }
 
-  updateKey(id, value){
-    if(value !== 'other') {
+  updateKey(id, value) {
+    if (value !== 'other') {
       this.parentFormGroup.removeControl(`kv_kc${id}`);
-    }
-    else {
+    } else {
       this.parentFormGroup.addControl(
         `kv_kc${id}`, new FormControl('', Validators.required)
       );

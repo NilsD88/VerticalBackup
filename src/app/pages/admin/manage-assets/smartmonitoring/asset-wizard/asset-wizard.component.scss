@@ -1,5 +1,6 @@
 @import "~/../src/variables.scss";
 
+$max-width: 600px;
 
 .flex-inline-container{
     display: inline-flex;
@@ -15,9 +16,22 @@
     }
 }
 
+.col-md-6.mx-auto{
+    max-width: $max-width;
+}
+
+pxs-location-explorer {
+    margin: 20px auto 15px;
+}
+
+::ng-deep pxs-form-geolocation .row {
+    margin: 20px auto 15px;
+}
+
 ::ng-deep .stepper-next-container {
     display: flex;
     justify-content: flex-end;
+    max-width: $max-width;
 }
 
 ::ng-deep .mat-form-field-select{

@@ -1,19 +1,29 @@
 <div class="range-slider-wrapper">
   <div class="range-slider-values">
-    {{(from) + ' ' + postfix}}
+    {{(range[0]) + ' ' + postfix}}
     -
-    {{(to) + ' ' + postfix}}
+    {{(range[1]) + ' ' + postfix}}
   </div>
-  <div class="range-slider-slider">
+  <div *ngIf="parentFormGroup" class="range-slider-slider">
+      <nouislider 
+        [disabled]="disabled" 
+        [connect]="true"
+        [min]="min"
+        [max]="max"
+        [step]="step"
+        [ngModel]="range"
+        (update)="onUpdate($event)"
+      ></nouislider>
+  </div>
+  <div *ngIf="!parentFormGroup" class="range-slider-slider">
     <nouislider 
       [disabled]="disabled" 
       [connect]="true"
-      [config]="{start: [startFrom, startTo]}"
       [min]="min"
       [max]="max"
       [step]="step"
-      (update)="sliderChange($event)"
-      >
-    </nouislider>
-  </div>
+      [ngModel]="range"
+      (update)="onUpdate($event)"
+    ></nouislider>
+</div>
 </div>

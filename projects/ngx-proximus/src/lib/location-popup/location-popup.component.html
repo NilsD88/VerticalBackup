@@ -13,7 +13,7 @@
 </mat-progress-spinner>
 
 <div *ngIf="viewAs === 'list'">
-  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event" [displayAssets]="true"></pxs-location-explorer>
+    <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event" [displayAssets]="true"></pxs-location-explorer>
 </div>
 <div *ngIf="viewAs === 'map'" style="height: calc(100vh - 190px);">
   <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event"></pxs-map>

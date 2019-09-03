@@ -6,6 +6,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MOCK_LOCATIONS } from '../mocks/newlocations';
 import { INewLocation } from '../models/new-location';
 import { INewAsset } from '../models/new-asset.model';
+import { ISensorType } from '../models/sensor.model';
+import { MOCK_SENSORTYPES } from '../mocks/sensortypes';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +20,7 @@ export class InMemoryDataService implements InMemoryDbService {
     const db: {
       locations: INewLocation[],
       assets: INewAsset[],
-      locationsFlat: INewLocation[]
+      locationsFlat: INewLocation[],
     } = {locations: [], assets: [], locationsFlat: []};
 
     this.httpClient = this.inject.get(HttpClient);

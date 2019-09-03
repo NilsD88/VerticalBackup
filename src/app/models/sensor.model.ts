@@ -51,7 +51,7 @@ export interface ISensorType {
   postfix: string;
   min: number;
   max: number;
-  type: number;
+  type: string;
 }
 
 export class SensorType {
@@ -60,7 +60,7 @@ export class SensorType {
   postfix: string;
   min: number;
   max: number;
-  type: number;
+  type: string;
 
   constructor(private _sensorType: ISensorType) {
     if (!isNullOrUndefined(_sensorType)) {

@@ -7,11 +7,16 @@
           <sup>{{asset.thresholdTemplate.isCustom ? 'Custom' : asset.thresholdTemplate.name}}</sup>
         </h1>
         <h4 class="text-accent">
-          {{asset.sublocation.location.name}} - {{asset.sublocation.name}}
-          <span *ngIf="asset.sublocation.location.locationType.name">
-            ({{asset.sublocation.location.locationType.name}})
-          </span>
+          <a (click)="openDialog()" style="color: inherit;">
+            {{asset.sublocation.location.name}} - {{asset.sublocation.name}}
+            <span *ngIf="asset.sublocation.location.locationType.name">
+              ({{asset.sublocation.location.locationType.name}})
+            </span>
+          </a>
         </h4>
+        <p *ngIf="asset.description">
+          {{asset.description}}
+        </p>
      </span>
       <span class="last-measurements-wrapper">
         <span *ngFor="let measurement of asset?.lastMeasurements" class="last-measurement">
