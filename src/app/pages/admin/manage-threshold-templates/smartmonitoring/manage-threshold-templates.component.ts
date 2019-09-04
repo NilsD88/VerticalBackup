@@ -39,13 +39,13 @@ export class ManageThresholdTemplatesComponent implements OnInit {
       });
 
 
-      this.thresholdTemplateFormGroup.addControl(`sensor-${MOCK_SENSORTYPES[2].id}`, this.formBuilder.group({
+      this.thresholdTemplateFormGroup.addControl(`sensor-${MOCK_SENSORTYPES[1].id}`, this.formBuilder.group({
         thresholds: this.formBuilder.group({})
       }));
 
 
       this.item.sensors.push({
-        sensorType: MOCK_SENSORTYPES[2],
+        sensorType: MOCK_SENSORTYPES[1],
         thresholds: []
       });
 
@@ -114,8 +114,8 @@ export class ManageThresholdTemplatesComponent implements OnInit {
             sms: ['', Validators.required],
           }),
           counter: this.formBuilder.group({
-            mode: ['', Validators.required],
-            limit: ['', Validators.required],
+            from: ['', Validators.required],
+            to: ['', Validators.required],
           })
         }));
       }
@@ -135,7 +135,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
             mail: ['', Validators.required],
             sms: ['', Validators.required],
           }),
-          value: ['', Validators.required],
+          boolean: ['', Validators.required],
         }));
       }
     }

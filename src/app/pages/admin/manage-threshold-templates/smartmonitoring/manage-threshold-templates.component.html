@@ -43,17 +43,14 @@
               ></pxs-range-slider>
             </div>
             <div class="col-md-4" *ngIf="sensor.sensorType.type === 'BOOLEAN'">
-              <mat-slide-toggle [color]="primary" [(ngModel)]="threshold.range.to" formControlName="value" required></mat-slide-toggle>
+              <mat-slide-toggle color="primary" [(ngModel)]="threshold.range.to" formControlName="boolean" required></mat-slide-toggle>
             </div>
             <div class="col-md-4" *ngIf="sensor.sensorType.type === 'COUNTER'" formGroupName="counter">
-              <mat-form-field class="col-md-8">
-                <mat-select placeholder="Select" [value]="greater" required formControlName="mode">
-                  <mat-option value="greater">Greater than</mat-option>
-                  <mat-option value="less">Less than</mat-option>
-                </mat-select>
+              <mat-form-field class="col-md-6">
+                <input type="number" matInput placeholder="From" [(ngModel)]="threshold.range.from" required formControlName="from">
               </mat-form-field>
-              <mat-form-field class="col-md-4">
-                <input type="number" matInput placeholder="Number" [(ngModel)]="threshold.number" required formControlName="limit">
+              <mat-form-field class="col-md-6">
+                <input type="number" matInput placeholder="To" [(ngModel)]="threshold.range.to" required formControlName="to">
               </mat-form-field>
             </div>
             <div class="col-md-2">
