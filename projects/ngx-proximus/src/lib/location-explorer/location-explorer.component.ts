@@ -20,7 +20,7 @@ export class LocationExplorerComponent implements OnInit {
   @Input() rootLocation: INewLocation;
   @Input() selectedLocation: INewLocation;
   @Input() asset: INewAsset;
-  @Input() canManage = false;
+  @Input() admin = false;
   @Input() displayAssets = false;
 
   @Output() notify: EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
@@ -137,7 +137,7 @@ export class LocationExplorerComponent implements OnInit {
   }
 
   clickOnLocation(location) {
-    if (!this.displayAssets && !this.canManage) {
+    if (!this.displayAssets && !this.admin) {
       this.selectLocation(location);
     }
   }

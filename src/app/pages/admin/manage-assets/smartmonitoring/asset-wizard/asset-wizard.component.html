@@ -29,7 +29,6 @@
           </div>
         </div>
 
-
         <!--
         <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
         -->
@@ -64,22 +63,17 @@
         <pxs-stepper-next [completed]="geolocation" (next)="stepper.next()"></pxs-stepper-next>
       </form>
     </mat-step>
-    <mat-step [stepControl]="thingsFormGroup">       
-      <form [formGroup]="thingsFormGroup">
+    <mat-step>       
+      <form >
         <ng-template matStepLabel>Things</ng-template>
-        <div class="row">
-          <div class="col-xs-12 col-md-6 mx-auto">
-            <mat-selection-list formControlName="thingsCtrl">
-              <mat-list-option 
-                *ngFor="let thing of things"
-                [value]="thing.devEui"
-              >
-                {{thing.devEui}} - {{thing.name}}
-              </mat-list-option>
-            </mat-selection-list>
-          </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mx-auto">
+                    <pxs-list-things [selectedThings]="selectedThings" (selectChange)="selectChange($event)"></pxs-list-things>
+                </div>
+            </div>
+            <pxs-stepper-next [completed]="selectedThings.size" (next)="stepper.next()"></pxs-stepper-next>
         </div>
-        <pxs-stepper-next [formGroup]="thingsFormGroup" (next)="stepper.next()"></pxs-stepper-next>
       </form>
     </mat-step>
   </mat-horizontal-stepper>

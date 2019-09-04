@@ -14,14 +14,12 @@ import { ThingService } from 'src/app/services/thing.service';
 export class AssetWizardComponent implements OnInit {
 
 
-  things:IThing[];
+  selectedThings: Map<number, boolean> = new Map<number, boolean>();
 
-  thingsFormGroup: FormGroup;
   descriptionFormGroup: FormGroup;
   selectedLocation: INewLocation;
   geolocation: IGeolocation;
   assetImage: string;
-
 
   public keyValues: {
     label: string;
@@ -40,14 +38,10 @@ export class AssetWizardComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder,  private changeDetectorRef: ChangeDetectorRef, private thingService: ThingService ) {}
 
   ngOnInit() {
-    this.getThingsList();
     this.descriptionFormGroup = this._formBuilder.group({
       NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', null],
       TypeCtrl: ['', null],
-    });
-    this.thingsFormGroup = this._formBuilder.group( {
-        thingsCtrl: ['', Validators.required]
     });
     for (const kv of this.keyValues) {
       this.descriptionFormGroup.addControl(kv.label, new FormControl());
@@ -64,13 +58,13 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  public getThingsList(): void {
-    this.thingService.getAll()
-    .then((result) => {
-      this.things = result;
-    });
+  public selectChange(thingId: number) {
+    if (!this.selectedThings.get(thingId)) {
+      this.selectedThings.set(thingId, true);
+    } else {
+      this.selectedThings.delete(thingId);
+    }
   }
-
 
   submit() {
     console.log(this.descriptionFormGroup);

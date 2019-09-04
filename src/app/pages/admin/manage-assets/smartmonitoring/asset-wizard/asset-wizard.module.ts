@@ -1,3 +1,4 @@
+import { ListThingsModule } from './../../../../../../../projects/ngx-proximus/src/lib/list-things/list-things.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AssetWizardComponent } from './asset-wizard.component';
@@ -36,7 +37,8 @@ import { TranslateModule } from '@ngx-translate/core';
     EditableImageModule,
     LocationExplorerModule,
     StepperNextModule,
-    TranslateModule
+    TranslateModule,
+    ListThingsModule
   ],
   providers: [ThingService]
 })

@@ -95,11 +95,14 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    cursor: move;
     background: white;
     font-size: 14px;
     height: 60px;
     margin: 5px 10px;
+
+    &.cdk-drag{
+      cursor: move;
+    }
 
     >div {
       display: inline-flex;

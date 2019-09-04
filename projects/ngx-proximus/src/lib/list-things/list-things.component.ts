@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { Thing } from 'src/app/models/thing.model';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { ThingService } from 'src/app/services/thing.service';
@@ -13,6 +13,11 @@ import { Subject } from 'rxjs';
 })
 export class ListThingsComponent implements OnInit {
 
+  @Input() admin = false;
+  @Input() selectedThings: Map<number, boolean> = new Map<number, boolean>();
+
+  @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -26,14 +31,22 @@ export class ListThingsComponent implements OnInit {
   };
 
   public dataSource: MatTableDataSource<Thing>;
-  public displayedColumns: string[] = ['name', 'devEui', 'sensors', 'actions'];
+  public displayedColumns: string[];
 
   public isLoading = false;
 
   constructor(private thingService: ThingService, private sharedService: SharedService, private newThingsService: NewThingsService) {
   }
 
-  public ngOnInit() {
+  public async ngOnInit() {
+    this.displayedColumns = ['name', 'devEui', 'sensors'];
+    if (this.selectedThings) {
+      this.displayedColumns.unshift('select');
+    }
+    if (this.admin) {
+      this.displayedColumns.push('actions');
+    }
+    await this.getThings();
     this.newThingsService.searchTerm(this.searchTerm$)
       .subscribe(things => {
         const results = [];
@@ -48,7 +61,6 @@ export class ListThingsComponent implements OnInit {
         this.updateDataSource();
         this.isLoading = false;
       });
-    this.getThings();
   }
 
   public async getThings(): Promise<void> {
