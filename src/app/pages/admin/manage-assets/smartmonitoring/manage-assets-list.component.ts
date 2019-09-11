@@ -95,7 +95,7 @@ export class ManageAssetsListComponent implements OnInit {
     });
   }
 
-  public onFilterChange(event) {
+  public onFilterChange() {
     this.isLoading = true;
     this.searchFilter$.next({...this.filter});
   }
