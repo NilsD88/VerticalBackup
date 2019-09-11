@@ -6,7 +6,7 @@
     </div>
     <div class="col-md-12">
       <mat-form-field>
-          <input matInput placeholder="Name" formControlName="name" required>
+          <input matInput placeholder="Name" formControlName="name" [(ngModel)]="item.name" required>
       </mat-form-field>
     </div>
     <div class="col-md-12" style="display:flex; justify-content: space-between; margin-bottom: 20px;">
@@ -30,7 +30,7 @@
             <pxs-icon icon="trash"></pxs-icon>
           </button>
         </mat-card-header>
-        <mat-card-content formGroupName="thresholds">
+        <mat-card-content formGroupName="thresholds" *ngIf="thresholdTemplateFormGroup.get('sensor-'+sensor.sensorType.id)">
           <div class="row threshold-row" *ngFor="let threshold of sensor.thresholds" style="margin-bottom: 30px;" formGroupName="{{threshold.id}}">
             <div class="col-md-4" *ngIf="sensor.sensorType.type === 'NUMBER'">
               <pxs-range-slider
@@ -65,7 +65,7 @@
           <div class="col-md-3" formGroupName="alerts">
             <div class="alerts">
               <div class="alert-type">
-                <mat-checkbox [(ngModel)]="threshold.alert.notification" formControlName="web">Alert</mat-checkbox>
+                <mat-checkbox [(ngModel)]="threshold.alert.web" formControlName="web">Alert</mat-checkbox>
               </div>
               <div class="alert-type">
                 <mat-checkbox [(ngModel)]="threshold.alert.mail" formControlName="mail">Mail</mat-checkbox>

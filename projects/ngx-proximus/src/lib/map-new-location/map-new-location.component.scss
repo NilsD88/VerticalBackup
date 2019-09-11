@@ -2,9 +2,11 @@
 
 .container {
     position: relative;
+    margin-bottom: 20px;
+    
     > .widget-mylocation {
         position: absolute;
-        z-index: 999999;
+        z-index: 400;
         right: 25px;
         top: 10px;
         padding: 5px;
@@ -17,6 +19,36 @@
         border: 2px solid rgba(0, 0, 0, 0.2);
         a {
             color: $primary
+        }
+    }
+    > .no-position-selected {
+        position: absolute;
+        bottom: 0;
+        z-index: 400;
+        width: calc(100% - 30px);
+        background: $sub;
+        text-align: center;
+        color: white;
+        padding: 2px 0;
+        font-size: 12px;
+    }
+
+    > .position-selected {
+        position: absolute;
+        bottom: 0;
+        z-index: 400;
+        width: calc(100% - 30px);
+        background: $success;
+        text-align: center;
+        color: white;
+        padding: 2px 0;
+        font-size: 12px;
+        a {
+            color: white;
+            text-decoration: underline;
+            &:hover {
+                color: white;
+            }
         }
     }
 }

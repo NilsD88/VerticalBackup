@@ -15,7 +15,7 @@ export class PlaygroundComponent implements OnInit {
   constructor(private changeDetectorRef: ChangeDetectorRef, private newLocationService: NewLocationService) {}
 
   ngOnInit() {
-    this.newLocationService.getLocations().subscribe((locations: INewLocation[]) => {
+    this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,
@@ -23,6 +23,7 @@ export class PlaygroundComponent implements OnInit {
         geolocation: null,
         floorPlan: null,
         name: 'Locations',
+        description: null,
         sublocationsId: null,
         sublocations: locations,
       };

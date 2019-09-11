@@ -3,14 +3,17 @@ import {ManageThresholdTemplatesComponent} from './manage-threshold-templates.co
 import {ManageThresholdTemplatesListComponent} from './manage-threshold-templates-list.component';
 
 
-export const ManageThresholdTemplatesRoutes: Routes = [{
-  path: '',
-  component: ManageThresholdTemplatesListComponent
-}, {
-  path: 'new',
-  component: ManageThresholdTemplatesComponent
-},
-{
-  path: ':id',
-  component: ManageThresholdTemplatesComponent
-}];
+export const ManageThresholdTemplatesRoutes: Routes = [
+  {
+    path: '',
+    component: ManageThresholdTemplatesListComponent
+  },
+  {
+    path: 'new',
+    component: ManageThresholdTemplatesComponent
+  },
+  {
+    path: ':id',
+    component: ManageThresholdTemplatesComponent
+  }
+];

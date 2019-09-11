@@ -9,10 +9,11 @@ import {SharedService} from './shared.service';
 })
 export class ContactService {
 
-  constructor(private http: HttpClient,
-              private snackBar: MatSnackBar,
-              public sharedService: SharedService) {
-  }
+  constructor(
+    private http: HttpClient,
+    private snackBar: MatSnackBar,
+    public sharedService: SharedService
+  ) {}
 
   sendSupportMessage(body) {
     return new Promise((resolve, reject) => {

@@ -1,6 +1,5 @@
-import { Inject, Optional } from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { INewLocation } from 'src/app/models/new-location';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -8,6 +7,7 @@ import { NewAsset, INewAsset } from 'src/app/models/new-asset.model';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -23,7 +23,6 @@ export class LocationExplorerComponent implements OnInit {
   @Input() admin = false;
   @Input() displayAssets = false;
 
-  @Output() notify: EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
   @Output() changeLocation: EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
 
   tabs: {name: string, sublocations: INewLocation[]}[] = [];
@@ -33,40 +32,17 @@ export class LocationExplorerComponent implements OnInit {
   loadingAsset = false;
   assets: INewAsset[] = [];
   isDownloading = false;
+  isNullOrUndefined = isNullOrUndefined;
 
   private assetsRequestSource = new Subject();
 
   constructor(
     private newAssetService: NewAssetService,
-    private newLocationService: NewLocationService
+    private newLocationService: NewLocationService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
-
-    /*
-    this.selectedLocationsRequestSource.pipe(
-      concatMap(req => {
-        return this.newLocationService.getLocationById(+req);
-      }),
-      tap(req => {
-        if (!isNullOrUndefined(req.parentId)) {
-          this.selectedLocationsRequestSource.next(req.parentId);
-        }
-      })
-    ).subscribe(location => {
-      const { sublocations } = this.findLocationById(this.selectedLocationsTree, location.id);
-      this.tabs.unshift({
-        name: location.name,
-        sublocations,
-      });
-      if (isNullOrUndefined(location.parentId)) {
-        this.tabs.unshift({
-          name: 'Locations',
-          sublocations: this.selectedLocationsTree.sublocations,
-        });
-      }
-    });
-    */
 
     this.assetsRequestSource.pipe(
       switchMap(req => this.newAssetService.getAssetsByLocationId(+this.currentLocation.id))
@@ -74,13 +50,6 @@ export class LocationExplorerComponent implements OnInit {
       this.loadingAsset = false;
       this.currentLocation.assets = data;
     });
-
-    /*
-    this.tabs = [{
-      name: this.selectedLocation.name,
-      sublocations: this.selectedLocation.sublocations
-    }];
-    */
 
     this.isDownloading = true;
     if (this.rootLocation) {
@@ -96,7 +65,8 @@ export class LocationExplorerComponent implements OnInit {
 
   getLocations() {
     this.isDownloading = true;
-    this.newLocationService.getLocations().subscribe((locations: INewLocation[]) => {
+    this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
+      console.log('getLocationsTree then');
       this.rootLocation = {
         id: null,
         parentId: null,
@@ -104,6 +74,7 @@ export class LocationExplorerComponent implements OnInit {
         geolocation: null,
         floorPlan: null,
         name: 'Locations',
+        description: null,
         sublocationsId: null,
         sublocations: locations,
       };
@@ -115,36 +86,57 @@ export class LocationExplorerComponent implements OnInit {
     });
   }
 
+  deleteLocation(locationId: number) {
+    console.log('want delete ', locationId);
+    this.newLocationService.deleteLocation(locationId).subscribe((result) => {
+      this.rootLocation = null;
+      this.selectedLocation = this.currentLocation;
+      this.changeDetectorRef.detectChanges();
+      this.ngOnInit();
+    });
+  }
+
   private checkIfSelectedLocation() {
     this.currentLocation = this.rootLocation;
     this.isDownloading = true;
-    if (this.selectedLocation && this.selectedLocation.id) {
+    if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
       const { path } = findLocationById(this.rootLocation, +this.selectedLocation.id);
       for (const location of path) {
         this.goToSublocation(location);
       }
+    } else {
+      console.log('no selection location found');
+      this.changeLocation.emit(this.rootLocation);
     }
     this.isDownloading = false;
   }
 
-  selectLocation(location) {
+  selectLocation(location, emit) {
     this.currentLocation = location;
     if (this.displayAssets) {
       this.getAssetsBySelectedLocation();
     }
-    this.notify.emit(location);
-    this.changeLocation.emit(location);
+    if (emit) {
+      this.changeLocation.emit(location);
+    }
   }
 
   clickOnLocation(location) {
     if (!this.displayAssets && !this.admin) {
-      this.selectLocation(location);
+      if (this.currentLocation !== location) {
+        this.selectLocation(location, true);
+      }
     }
+  }
+
+  openLocation(location) {
+    this.goToSublocation(location);
+    this.changeLocation.emit(location);
   }
 
   goToSublocation(location) {
     if (this.selectLocation !== location) {
-      this.selectLocation(location);
+      this.selectLocation(location, false);
     }
     this.selectedIndex = this.tabs.length;
     this.tabs.push(location);
@@ -155,7 +147,7 @@ export class LocationExplorerComponent implements OnInit {
     this.selectedIndex = index;
 
     if (index < length) {
-      this.selectLocation(this.tabs[index]);
+      this.selectLocation(this.tabs[index], true);
       this.tabs.splice(index + 1, length - index + 1);
     }
   }

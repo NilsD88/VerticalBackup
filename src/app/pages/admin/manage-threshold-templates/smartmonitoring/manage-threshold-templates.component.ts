@@ -1,13 +1,14 @@
+import { NewThresholdTemplateService } from './../../../../services/new-threshold-templates';
 import { MOCK_SENSORTYPES } from './../../../../mocks/sensortypes';
 import {Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import {NewThreshold, NewThresholdTemplate, ThresholdTemplate, INewThreshold} from '../../../../models/threshold.model';
 import {ThresholdTemplateService} from '../../../../services/threshold-template.service';
 import {ActivatedRoute} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 import {MatDialog} from '@angular/material';
 import {AddSensorComponent} from './add-sensor/add-sensor.component';
 import { SensorType } from 'src/app/models/sensor.model';
+import { INewThresholdTemplate, INewThreshold, NewThresholdTemplate, NewThreshold } from 'src/app/models/new-threshold-template.model';
 
 @Component({
   selector: 'pvf-manage-threshold-templates',
@@ -17,61 +18,48 @@ import { SensorType } from 'src/app/models/sensor.model';
 export class ManageThresholdTemplatesComponent implements OnInit {
 
   public thresholdTemplateFormGroup: FormGroup;
-  public item: NewThresholdTemplate;
-  public id: string | number;
-  public severities = ['LOW', 'HIGH', 'CRITICAL'];
+  public item: INewThresholdTemplate;
+  public severities = ['LOW', 'MEDIUM', 'CRITICAL'];
 
 
   constructor(
     private formBuilder: FormBuilder,
     private thresholdTemplateService: ThresholdTemplateService,
+    private newThresholdTemplateService: NewThresholdTemplateService,
     private activeRoute: ActivatedRoute,
     private dialog: MatDialog) {}
 
   async ngOnInit() {
-    this.id = await this.getRouteId();
-    if (!isNullOrUndefined(this.id)) {
-      await this.loadItem();
+    const thresholdTemplateId = await this.getRouteId();
+    if (!isNullOrUndefined(thresholdTemplateId)) {
+      this.item = await this.newThresholdTemplateService.getThresholdTemplateById(+thresholdTemplateId);
+      this.thresholdTemplateFormGroup = this.formBuilder.group({
+        name: ['', Validators.required],
+      });
+      for (const sensor of this.item.sensors) {
+        const sensorId = sensor.sensorType.id;
+        this.thresholdTemplateFormGroup.addControl(`sensor-${sensorId}`, this.formBuilder.group({
+          thresholds: this.formBuilder.group({})
+        }));
+        for (const threshold of sensor.thresholds) {
+          switch (sensor.sensorType.type) {
+            case 'NUMBER':
+              this.createFormControlForNumberItem(sensorId, threshold.id);
+              break;
+            case 'COUNTER':
+              this.createFormControlForCounterItem(sensorId, threshold.id);
+              break;
+            case 'BOOLEAN':
+              this.createFormControlForBooleanItem(sensorId, threshold.id);
+              break;
+          }
+        }
+      }
     } else {
       this.item = new NewThresholdTemplate(null);
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.required],
       });
-
-
-      this.thresholdTemplateFormGroup.addControl(`sensor-${MOCK_SENSORTYPES[1].id}`, this.formBuilder.group({
-        thresholds: this.formBuilder.group({})
-      }));
-
-
-      this.item.sensors.push({
-        sensorType: MOCK_SENSORTYPES[1],
-        thresholds: []
-      });
-
-
-
-      /*
-      this.thresholdTemplateFormGroup.addControl(MOCK_SENSORTYPES[1].id, this.formBuilder.group({
-      thresholds: this.formBuilder.group({
-        0: this.formBuilder.group({
-          severity: ['', Validators.required],
-          label: ['', null],
-          alerts: this.formBuilder.group({
-            web: ['', Validators.required],
-            mail: ['', Validators.required],
-            sms: ['', Validators.required],
-          }),
-          counter: this.formBuilder.group({
-            mode: ['', Validators.required],
-            limit: ['', Validators.required],
-          })
-        })
-      })
-    }));
-
-  */
-
     }
   }
 
@@ -141,22 +129,16 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     }
   }
 
-  private async loadItem() {
-    // this.item = await this.thresholdTemplateService.getThresholdTemplate(this.id);
-  }
-
-
   public addThreshold(sensorId: number) {
 
     const sensor = this.item.sensors.find((elt) => elt.sensorType.id === sensorId);
-    console.log({...this.item.sensors});
-    console.log(sensorId);
+
     const threshold = new NewThreshold({
       id: new Date().getTime(),
       range: {from: sensor.sensorType.min, to: sensor.sensorType.max},
       severity: 'LOW',
       alert: {
-        notification: false,
+        web: false,
         sms: false,
         mail: false
       }

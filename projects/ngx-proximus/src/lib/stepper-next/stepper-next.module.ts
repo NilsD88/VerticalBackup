@@ -8,8 +8,8 @@ import { ButtonModule } from '../button/button.module';
   declarations: [StepperNextComponent],
   imports: [
     CommonModule,
-    ButtonModule,
-    IconModule
+    IconModule,
+    ButtonModule
   ],
   exports: [
     StepperNextComponent

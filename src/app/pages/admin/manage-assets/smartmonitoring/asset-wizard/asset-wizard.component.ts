@@ -1,9 +1,19 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { NewLocationService } from './../../../../../services/new-location.service';
+import { NewAssetService } from './../../../../../services/new-asset.service';
+import { INewThresholdTemplate } from 'src/app/models/new-threshold-template.model';
+import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IGeolocation } from 'src/app/models/asset.model';
 import { INewLocation } from 'src/app/models/new-location';
 import { IThing } from 'src/app/models/thing.model';
 import { ThingService } from 'src/app/services/thing.service';
+import { NewThingsService } from 'src/app/services/new-things.service';
+import { MatStepper } from '@angular/material/stepper';
+import { MatDialog } from '@angular/material';
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
+import { ActivatedRoute } from '@angular/router';
+import { isNullOrUndefined } from 'util';
+import { INewAsset } from 'src/app/models/new-asset.model';
 
 
 @Component({
@@ -13,13 +23,13 @@ import { ThingService } from 'src/app/services/thing.service';
 })
 export class AssetWizardComponent implements OnInit {
 
+  @ViewChild('stepper') stepper: MatStepper;
 
-  selectedThings: Map<number, boolean> = new Map<number, boolean>();
+  public asset: INewAsset;
+
+  dialogConfirmForIncompatibleThreshold: {title: string, content: string};
 
   descriptionFormGroup: FormGroup;
-  selectedLocation: INewLocation;
-  geolocation: IGeolocation;
-  assetImage: string;
 
   public keyValues: {
     label: string;
@@ -35,39 +45,157 @@ export class AssetWizardComponent implements OnInit {
     }
   ];
 
-  constructor(private _formBuilder: FormBuilder,  private changeDetectorRef: ChangeDetectorRef, private thingService: ThingService ) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private changeDetectorRef: ChangeDetectorRef,
+    private thingService: ThingService,
+    public dialog: MatDialog,
+    private newAssetService: NewAssetService,
+    private newLocationService: NewLocationService,
+    public activatedRoute: ActivatedRoute
+    ) {}
 
-  ngOnInit() {
-    this.descriptionFormGroup = this._formBuilder.group({
+  async ngOnInit() {
+    this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', null],
       TypeCtrl: ['', null],
     });
+
     for (const kv of this.keyValues) {
       this.descriptionFormGroup.addControl(kv.label, new FormControl());
+    }
+
+    this.dialogConfirmForIncompatibleThreshold = {
+      title: 'Warning!',
+      content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
+    };
+
+    const assetId = await this.getRouteId();
+    if (assetId) {
+      this.asset = await this.newAssetService.getAssetById(+assetId).toPromise();
+      if (!isNullOrUndefined(this.asset.locationId)) {
+        this.asset.location = await this.newLocationService.getLocationById(+this.asset.locationId).toPromise();
+      }
+      console.log({...this.asset});
+      console.log(this.asset.geolocation);
+
+      if (isNullOrUndefined(this.asset.things)) {
+        this.asset.things = [];
+      }
+
+    } else {
+      console.log('new asset');
+      this.asset = {
+        id: null,
+        name: null,
+        locationId: null,
+        things: [],
+        thresholdTemplate: null
+      };
     }
   }
 
   updateLocation(location: INewLocation) {
-    const oldSelectedLocation = this.selectedLocation;
+    const oldSelectedLocation = this.asset.location;
     if (location && location !== oldSelectedLocation) {
-      this.geolocation = null;
-      this.selectedLocation = null;
+      this.asset.geolocation = null;
+      this.asset.location = null;
       this.changeDetectorRef.detectChanges();
-      this.selectedLocation = location;
+      this.asset.location = location;
     }
   }
 
-  public selectChange(thingId: number) {
-    if (!this.selectedThings.get(thingId)) {
-      this.selectedThings.set(thingId, true);
+  public selectedThingsChange(thing: IThing) {
+    const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
+    if (thingIndex > -1) {
+      this.asset.things.splice(thingIndex, 1);
     } else {
-      this.selectedThings.delete(thingId);
+      this.asset.things.push(thing);
     }
   }
 
-  submit() {
-    console.log(this.descriptionFormGroup);
-    console.log(this.geolocation);
+  thresholdTemplateIsCompatibleWithThings() {
+    const thresholdTemplate = this.asset.thresholdTemplate;
+    if (thresholdTemplate) {
+      for (const sensor of thresholdTemplate.sensors) {
+        const sensorTypeId = sensor.sensorType.id;
+        let hasAtLeastOneCompatibleSensor = false;
+        const things = this.asset.things;
+        for (const thing of things) {
+          hasAtLeastOneCompatibleSensor = thing.sensors.some((thingSensor) => +thingSensor.sensorType.id === +sensorTypeId);
+          if (hasAtLeastOneCompatibleSensor) {
+            break;
+          }
+        }
+        if (!hasAtLeastOneCompatibleSensor) {
+          return false;
+        }
+      }
+      return true;
+    } else {
+      return true;
+    }
+  }
+
+  checkThresholdTemplate(event) {
+    if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
+      const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
+      if(!compatibleThresholdTemplate) {
+        const dialogRef = this.dialog.open(PopupConfirmationComponent, {
+          width: '250px',
+          data: {
+            title: 'Warning',
+            content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
+          }
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          if (!result) {
+            this.stepper.selectedIndex = 1;
+          }
+        });
+      }
+    }
+  }
+
+  public wantToSaveAsset() {
+    console.log('wantToSaveAsset');
+    const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
+    if (!compatibleThresholdTemplate) {
+      const dialogRef = this.dialog.open(PopupConfirmationComponent, {
+        width: '250px',
+        data: {
+          title: 'Warning',
+          content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
+        }
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.submit();
+        }
+      });
+    } else {
+      this.submit();
+    }
+  }
+
+  private getRouteId(): Promise<string | number> {
+    return new Promise((resolve, reject) => {
+      this.activatedRoute.params.subscribe((params) => {
+        if (!isNullOrUndefined(params.id)) {
+          resolve(params.id);
+        } else {
+          resolve();
+        }
+      }, reject);
+    });
+  }
+
+  private submit() {
+
+    // TODO: submit the new asset to the backend!
+    console.log('submit!');
+
+    console.log(this.asset);
   }
 }

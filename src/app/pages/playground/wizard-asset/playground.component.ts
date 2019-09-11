@@ -27,6 +27,7 @@ export class PlaygroundComponent implements OnInit {
     id: 0,
     parentId: null,
     name: "Big Parent",
+    description: null,
     locationType: {
       id: 0,
       name: "Type"
@@ -42,6 +43,7 @@ export class PlaygroundComponent implements OnInit {
         id: 1,
         parentId: 0,
         name: "Child",
+        description: null,
         locationType: {
           id: 0,
           name: "Type"
@@ -57,6 +59,7 @@ export class PlaygroundComponent implements OnInit {
             id: 2,
             parentId: 1,
             name: "Grand child 1",
+            description: null,
             sublocationsId: null,
             locationType: {
               id: 0,
@@ -72,6 +75,7 @@ export class PlaygroundComponent implements OnInit {
             id: 3,
             parentId: 1,
             name: "Grand child 2",
+            description: null,
             sublocationsId: null,
             locationType: {
               id: 0,

@@ -1,14 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IThing, Thing } from 'src/app/models/thing.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class NewThingsService {
     public thingsUrl = 'fakeapi/things';
+
+    private headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
+    private perfop = { headers: this.headers };
+    private httpOptions = { headers: this.headers };
+
+    private handleError(error: any) {
+        console.error(error);
+        return throwError(error);
+    }
+
 
     constructor(public http: HttpClient) { }
 
@@ -43,6 +53,10 @@ export class NewThingsService {
                     reject(console.error('Error! Failed to fetch things. Please reload.'));
                 });
         });
+    }
+
+    updateThing(thing: IThing) {
+        return this.http.put(`${this.thingsUrl}/${thing.id}`, thing, this.httpOptions);
     }
 
     public searchTerm(terms: Observable<string>) {

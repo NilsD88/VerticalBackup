@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { NewLocation } from 'src/app/models/new-location';
+import { NewLocation, INewLocation } from 'src/app/models/new-location';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -10,19 +11,20 @@ import { NewLocation } from 'src/app/models/new-location';
 })
 export class ManageLocationsComponent implements OnInit {
 
-  public locations: NewLocation[];
+  public rootLocation: INewLocation;
+  public selectedLocation: INewLocation;
 
-  constructor(private newLocationService: NewLocationService) {}
+  constructor(
+    private newLocationService: NewLocationService,
+    private activedRoute: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
-    this.getLocations();
-  }
-
-  getLocations() {
-    this.newLocationService.getLocations().subscribe((data: NewLocation[]) => {
-      console.log(data);
-      this.locations = data;
+    this.activedRoute.params.subscribe(async (params) => {
+      const selectedLocationId = params.selectedLocationId;
+      if (selectedLocationId) {
+        this.selectedLocation = await this.newLocationService.getLocationById(selectedLocationId).toPromise();
+      }
     });
   }
-
 }

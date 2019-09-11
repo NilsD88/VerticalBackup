@@ -5,6 +5,7 @@ import { MatTooltipModule, MatDialogModule } from '@angular/material';
 import {ImgFallbackModule} from 'ngx-img-fallback';
 import { LocationPopupModule } from '../location-popup/location-popup.module';
 import { LocationPopupComponent } from '../location-popup/location-popup.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [DetailHeaderComponent],
@@ -13,7 +14,8 @@ import { LocationPopupComponent } from '../location-popup/location-popup.compone
     MatTooltipModule,
     ImgFallbackModule,
     MatDialogModule,
-    LocationPopupModule
+    LocationPopupModule,
+    NgxSkeletonLoaderModule
   ],
   exports: [DetailHeaderComponent],
   entryComponents: [

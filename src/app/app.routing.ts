@@ -157,7 +157,12 @@ export const AppRoutes: Routes = [
       path: '',
       //loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
       //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
-      loadChildren: './pages/playground/threshold/threshold.module#ThresholdModule'
+      //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
+      //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
+      //loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+      //loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
+      //loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
+      loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
       //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
     }]
   },

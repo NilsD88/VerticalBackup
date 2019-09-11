@@ -21,7 +21,7 @@ export class LocationPopupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.newLocationService.getLocations().subscribe((locations: INewLocation[]) => {
+    this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,
@@ -29,6 +29,7 @@ export class LocationPopupComponent implements OnInit {
         geolocation: null,
         floorPlan: null,
         name: 'Locations',
+        description: null,
         sublocationsId: null,
         sublocations: locations,
       };

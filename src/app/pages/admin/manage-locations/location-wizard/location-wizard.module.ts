@@ -11,6 +11,7 @@ import { FormGeolocationModule } from 'projects/ngx-proximus/src/lib/form-geoloc
 import { EditableImageModule } from 'projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { CommonModule } from '@angular/common';
+import { NewLocationService } from 'src/app/services/new-location.service';
 
 @NgModule({
   imports: [
@@ -31,8 +32,12 @@ import { CommonModule } from '@angular/common';
     LocationExplorerModule,
   ],
   exports: [],
-  declarations: [LocationWizardComponent],
-  providers: [],
+  declarations: [
+    LocationWizardComponent
+  ],
+  providers: [
+    NewLocationService
+  ],
 })
 
 export class LocationWizardModule { }

@@ -11,4 +11,12 @@ export const ManageLocationsRoutes: Routes = [
     path: 'new',
     loadChildren: './location-wizard/location-wizard.module#LocationWizardModule'
   },
+  {
+    path: 'location/:id',
+    loadChildren: './location-wizard/location-wizard.module#LocationWizardModule'
+  },
+  {
+    path: ':selectedLocationId',
+    component: ManageLocationsComponent
+  }
 ];

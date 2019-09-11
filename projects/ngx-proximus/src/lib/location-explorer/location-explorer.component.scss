@@ -121,8 +121,11 @@
         &.asset {
           background: $link;
         }
-      }
-      
+      }      
+    }
+
+    pxs-icon.chevron-right {
+      cursor: pointer;
     }
 
     &.newItem {

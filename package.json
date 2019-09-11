@@ -61,6 +61,7 @@
     "ngx-img": "^10.19.0",
     "ngx-img-fallback": "^1.3.4",
     "ngx-mat-daterange-picker": "^1.1.4",
+    "ngx-skeleton-loader": "^1.2.2",
     "nouislider": "^13.1.5",
     "npm": "^6.11.1",
     "numeral": "^2.0.6",

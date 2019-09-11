@@ -91,13 +91,14 @@ export class DetailComponent implements OnInit {
     private newLocationService: NewLocationService,
     public alertsService: AlertsService) {
       activeRoute.params.subscribe(val => {
-        this.init();
+        //this.init();
       });
   }
 
-  async ngOnInit() {
+  ngOnInit() {
+    this.init();
     this.initDateFilterOptions();
-    this.newLocationService.getLocations().subscribe((data: INewLocation[]) => {
+    this.newLocationService.getLocationsTree().then((data: INewLocation[]) => {
       this.locations = data;
     });
   }
@@ -146,10 +147,13 @@ export class DetailComponent implements OnInit {
   async init() {
     try {
       const id = await this.getRouteId();
+      console.log('-----id');
       const assetPromise = this.assetService.getAssetById(id);
       const lastAlertPromise = this.alertsService.getLastAlertByAssetId(id);
       this.asset = await assetPromise;
+      console.log('-----asset');
       this.lastAlert = await lastAlertPromise;
+      console.log('-----alert');
       this.asset.lastAlert = this.lastAlert;
       const alertsOfTheDay = this.alertsService.getPagedAlerts({
         ...this.filter,

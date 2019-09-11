@@ -4,6 +4,7 @@ import { IGeolocation, Geolocation } from 'src/app/models/asset.model';
 import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS } from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { INewLocation } from 'src/app/models/new-location';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -14,6 +15,8 @@ import { INewLocation } from 'src/app/models/new-location';
 export class MapNewLocationComponent implements OnInit, OnChanges {
 
   @Input() parentLocation: INewLocation;
+  @Input() geolocation: IGeolocation;
+
   @Output() notify: EventEmitter<IGeolocation> = new EventEmitter<IGeolocation>();
 
   currentMap: Map;
@@ -30,7 +33,8 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if(this.parentLocation){
+    console.log(this.geolocation);
+    if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
       console.log("There is a parent location");
       const floorPlan = this.parentLocation.floorPlan;
       if(floorPlan){
@@ -39,9 +43,9 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         image.src = floorPlan;
         image.onload = () => {
           const { width, height } = image;
-          const ratioW = height/width;
-          const ratioH = width/height;
-          this.imageBounds = latLngBounds([0, 0], [(image.width/100)*ratioW, (image.height/100)*ratioH]);
+          const ratioW = height / width;
+          const ratioH = width / height;
+          this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
           const imageMap = imageOverlay(floorPlan, this.imageBounds);
           this.backgroundLayer = imageMap;
           this.options = {
@@ -65,6 +69,10 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
       console.log("There is no parent location");
       this.createOptionsMapWithUserGeolocation();
     }
+
+    if (this.geolocation) {
+      this.addMarker(this.geolocation);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -79,8 +87,10 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
       this.currentMap.fitBounds(this.imageBounds);
       this.currentMap.setMaxBounds(this.imageBounds);
     } else {
+      if (this.geolocation) {
+        map.panTo(this.geolocation);
+      }
       this.provider = new OpenStreetMapProvider();
-
       const a = new GeoSearchControl({
         provider: this.provider,
         style: 'bar',
@@ -89,7 +99,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         autoComplete: true,
         autoCompleteDelay: 250,
         searchLabel: 'Enter address or geolocation (lattitude, longitude)',
-      }).addTo(map).onSubmit();
+      }).addTo(this.currentMap);
 
       map.on('geosearch/showlocation', (event: any) => {
         this.addMarker({
@@ -146,8 +156,9 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     }
   }
 
-  addMarker(geolocation:IGeolocation) {
+  addMarker(geolocation: IGeolocation) {
     const {lat, lng} = geolocation;
+    const that = this;
 
     const newMarker = marker(
       [ lat, lng ],
@@ -176,7 +187,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     });
   }
 
-  sendNotifyEvent(geolocation:IGeolocation): void {
+  sendNotifyEvent(geolocation: IGeolocation): void {
     this.notify.emit(geolocation);
   }
 
@@ -191,5 +202,10 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         });
       });
     }
+  }
+
+  removeMarker() {
+    console.log('remove marker');
+    this.markers = [];
   }
 }

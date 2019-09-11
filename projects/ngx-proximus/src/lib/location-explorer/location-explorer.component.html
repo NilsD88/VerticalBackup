@@ -4,12 +4,22 @@
   color="primary" 
   mode="indeterminate">
 </mat-progress-spinner>
-<mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndexChange($event)">
+<mat-tab-group 
+  *ngIf="!isDownloading"
+  [selectedIndex]="selectedIndex"
+  (selectedIndexChange)="selectedIndexChange($event)"
+>
   <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-  <div cdkDropList (cdkDropListDropped)="drop($event)" class="dropList" *ngIf="tab.sublocations && tab.sublocations.length > 0">
+  <div 
+    *ngIf="tab.sublocations && tab.sublocations.length > 0"
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+    [cdkDropListDisabled]="!admin"
+    class="dropList"
+  >
     <hr data-content="LOCATIONS">
     <div 
-      [attr.cdkDrag]="value ? '' : null"
+      cdkDrag
       class="dropListItem"
       *ngFor="let location of tab.sublocations"
       [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false)}"
@@ -19,17 +29,22 @@
         <pxs-icon icon="globe" class="location"></pxs-icon>
         {{location.name}}
         <button *ngIf="admin" mat-icon-button matTooltip="Edit asset" color="accent">
-          <pxs-icon icon="edit"></pxs-icon>
+          <pxs-icon icon="edit" [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
         </button>
         <button *ngIf="admin" mat-icon-button matTooltip="Delete asset" color="warn">
-          <pxs-icon icon="trash"></pxs-icon>
+          <pxs-icon icon="trash" (click)="deleteLocation(location.id)"></pxs-icon>
         </button>
       </div>
       <div>
-        <span (click)="goToSublocation(location)"><pxs-icon icon="chevron-right"></pxs-icon></span>
+        <span (click)="openLocation(location)"><pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon></span>
       </div>
     </div>
-    <div class="dropListItem newItem" *ngIf="admin">
+    <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
+      <div>
+        <pxs-icon icon="plus-o"></pxs-icon> Add new location
+      </div>
+    </div>
+    <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/']">
       <div>
         <pxs-icon icon="plus-o"></pxs-icon> Add new location
       </div>

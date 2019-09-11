@@ -10,14 +10,16 @@ import { INewLocation } from 'src/app/models/new-location';
 })
 export class FormGeolocationComponent implements OnInit {
 
-  @Input() location:INewLocation;
-  @Input() parentFormGroup:FormGroup;
+  @Input() location: INewLocation;
+  @Input() geolocation: IGeolocation;
+  @Input() parentFormGroup: FormGroup;
   @Output() notify: EventEmitter<IGeolocation> = new EventEmitter<IGeolocation>();
 
   ngOnInit() {
+    console.log(this.geolocation);
   }
 
-  onNotify(geolocation:IGeolocation) {
+  onNotify(geolocation: IGeolocation) {
     this.notify.emit(geolocation);
   }
 

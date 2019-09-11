@@ -3,10 +3,9 @@
       <div class="col-xs-12 col-md-6 mx-auto">
           <mat-form-field>
             <input 
-              type="text"
-              (change)="filterChange($event)"
-              placeholder="Thing name or devEui"
               matInput
+              type="text"
+              placeholder="Thing name or devEui"
               [(ngModel)]="filter.name"
               (ngModelChange)="searchChanged($event)"
             >
@@ -28,15 +27,24 @@
             <td mat-cell *matCellDef="let element">
               <mat-checkbox 
                 (click)="$event.stopPropagation()"
-                (change)="selectChange.emit(element.id)"
-                [checked]="selectedThings.get(element.id)"
+                (change)="selectChange.emit(element)"
+                [checked]="checkOneThing(element.id)"
               ></mat-checkbox>
             </td>
           </ng-container>
           <!-- Name Column -->
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let element" > {{element.name}} </td>
+            <td mat-cell *matCellDef="let element">
+              <div *ngIf="!element.editing">
+                  {{element.name}}
+              </div> 
+              <div *ngIf="element.editing">
+                <mat-form-field style="margin-right: -40px; padding-right: 20px;">
+                  <input matInput [(ngModel)]="element.tempName" required>
+                </mat-form-field>
+              </div> 
+            </td>
           </ng-container>
 
           <!-- Name Column -->
@@ -63,8 +71,14 @@
           <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef> Actions </th>
               <td mat-cell *matCellDef="let element">
-                   <button mat-icon-button matTooltip="Edit thing" color="accent">
+                  <button *ngIf="!element.editing" (click)="element.editing = true; element.tempName = element.name;" mat-icon-button matTooltip="Edit thing" color="accent">
                     <pxs-icon icon="edit"></pxs-icon>
+                  </button>
+                  <button *ngIf="element.editing" (click)="updateThing(element)" mat-icon-button matTooltip="Update" color="primary">
+                    <pxs-icon icon="check"></pxs-icon>
+                  </button>
+                  <button *ngIf="element.editing" (click)="element.editing = false" mat-icon-button matTooltip="Cancel" color="warn">
+                    <pxs-icon icon="close"></pxs-icon>
                   </button>
               </td>
           </ng-container>

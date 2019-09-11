@@ -1,4 +1,5 @@
 import { INewAsset } from '../models/new-asset.model';
+import { floorPlanImage } from './image';
 
 export let MOCK_ASSETS: INewAsset[] = [];
 
@@ -6,7 +7,8 @@ MOCK_ASSETS = [
     {
         id: 0,
         name: 'Asset 1',
-        locationId: 2
+        locationId: 2,
+        image: floorPlanImage
     },
     {
         id: 1,
@@ -35,6 +37,11 @@ MOCK_ASSETS = [
     {
         id: 5,
         name: 'Asset 6',
+        locationId: 1
+    },
+    {
+        id: 6,
+        name: 'Asset 7',
         locationId: 1
     },
 ];

@@ -1,10 +1,20 @@
 import {ISensorType, SensorType} from './sensor.model';
 import {isNullOrUndefined} from 'util';
+import { INewThreshold } from './new-threshold-template.model';
 
 export interface IPagedThresholdTemplates {
-  data: ThresholdTemplate[];
+  data: INewThresholdTemplate[];
   pageNumber: number;
   totalElements: number;
+
+  number?: number;
+  size?: number;
+  hasContent?: boolean;
+  last?: boolean;
+  numberOfElements?: number;
+  totalPages?: number;
+  first?: boolean;
+  sort?: string;
 }
 
 export interface IThresholdAlert {
@@ -170,104 +180,4 @@ export interface INewThresholdTemplate {
     sensorType: ISensorType | SensorType;
     thresholds: INewThreshold[];
   }[];
-}
-
-export type SeverityLevel = 'LOW' | 'HIGH' | 'CRITICAL';
-
-export interface INewThreshold {
-  id: number;
-  range: {
-    from: number;
-    to: number;
-  };
-  severity: SeverityLevel;
-  alert: {
-    notification: boolean;
-    sms: boolean;
-    mail: boolean;
-  };
-}
-
-
-export class NewThresholdTemplate implements INewThresholdTemplate {
-  public id = null;
-  public isCustom = false;
-  public name = '';
-  public sensors: {
-    sensorType: ISensorType | SensorType;
-    thresholds: INewThreshold[];
-  }[] = [];
-
-  constructor(private thresholdTemplate: INewThresholdTemplate) {
-    if (!isNullOrUndefined(thresholdTemplate)) {
-      this.id = !isNullOrUndefined(thresholdTemplate.id) ? thresholdTemplate.id : null;
-      this.isCustom = !isNullOrUndefined(thresholdTemplate.isCustom) ? thresholdTemplate.isCustom : false;
-      this.name = !isNullOrUndefined(thresholdTemplate.name) ? thresholdTemplate.name : '';
-      if (this.thresholdTemplate.sensors && this.thresholdTemplate.sensors.length) {
-        this.sensors = this.thresholdTemplate.sensors.map((item) => {
-          return {
-            sensorType: new SensorType(item.sensorType),
-            thresholds: NewThreshold.createArray(item.thresholds)
-          };
-        });
-      } else {
-        this.sensors = [];
-      }
-    } else {
-      this.id = null;
-      this.isCustom = false;
-      this.name = '';
-    }
-
-  }
-}
-
-export class NewThreshold implements INewThreshold {
-
-  public id: number;
-  public range = {
-    from: null,
-    to: null
-  };
-  public severity: SeverityLevel = 'LOW';
-  public alert = {
-    notification: false,
-    sms: false,
-    mail: false
-  };
-
-  constructor(private _threshold: INewThreshold) {
-    if (!isNullOrUndefined(_threshold)) {
-      this.id = _threshold.id ? _threshold.id : new Date().getTime();
-      this.range.from = _threshold.range && !isNullOrUndefined(_threshold.range.from) ? _threshold.range.from : null;
-      this.range.to = _threshold.range && !isNullOrUndefined(_threshold.range.to) ? _threshold.range.to : null;
-      this.severity = _threshold.severity ? _threshold.severity : 'LOW';
-      this.alert.mail = _threshold.alert && _threshold.alert.mail ? _threshold.alert.mail : false;
-      this.alert.sms = _threshold.alert && _threshold.alert.sms ? _threshold.alert.sms : false;
-      this.alert.notification = _threshold.alert && _threshold.alert.notification ? _threshold.alert.notification : false;
-    } else {
-      this.range = {
-        from: null,
-        to: null
-      };
-      this.severity = 'LOW';
-      this.alert = {
-        notification: false,
-        sms: false,
-        mail: false
-      };
-    }
-    delete this._threshold;
-  }
-
-  public static createArray(values: INewThreshold[]): NewThreshold[] {
-    if (!isNullOrUndefined(values)) {
-      return values.map((value) => {
-        return new NewThreshold(value);
-      });
-    } else {
-      return [];
-    }
-  }
-
 }

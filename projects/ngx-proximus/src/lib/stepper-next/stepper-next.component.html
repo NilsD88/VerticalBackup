@@ -1,11 +1,11 @@
 <div class="row">
     <div class="col-xs-12 col-md-6 mx-auto stepper-next-container">
       <pxs-button *ngIf="(formGroup && formGroup.status==='INVALID') || (!completed && !formGroup)" color="inactive" disabled="true" size="large" (click)="callNext()">
-        Next
+        {{text}}
         <pxs-icon [icon]="'chevron-right'"></pxs-icon>
       </pxs-button>
-      <pxs-button *ngIf="(formGroup && formGroup.status==='VALID') || completed" color="primary" size="large" (click)="callNext()">
-        Next
+      <pxs-button *ngIf="(formGroup && formGroup.status==='VALID') || completed" [color]="color" size="large" (click)="callNext()">
+        {{text}}
         <pxs-icon [icon]="'chevron-right'"></pxs-icon>
       </pxs-button>
     </div>

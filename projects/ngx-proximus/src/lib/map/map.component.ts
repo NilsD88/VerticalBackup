@@ -1,16 +1,20 @@
+import { MapDialogComponent } from './map-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewLocationService } from './../../../../../src/app/services/new-location.service';
-import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef} from '@angular/core';
-import {NgElement, WithProperties} from '@angular/elements';
-import {Asset, IAsset, IGeolocation} from 'src/app/models/asset.model';
-import {Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, icon, LatLngBounds, geoJSON, MarkerCluster, Point} from 'leaflet';
+import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { NgElement, WithProperties } from '@angular/elements';
+import { IGeolocation } from 'src/app/models/asset.model';
+import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point} from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 import { INewLocation } from 'src/app/models/new-location';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { Subject } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { NewAsset, INewAsset } from 'src/app/models/new-asset.model';
-import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { findLocationById } from 'src/app/shared/utils';
+import { isNullOrUndefined } from 'util';
+import { MatDialog } from '@angular/material/dialog';
+import { MapPopupComponent } from '../map-popup/map-popup.component';
 
 @Component({
   selector: 'pxs-map',
@@ -33,9 +37,7 @@ export class MapComponent implements OnInit {
   locationsLayer: Layer[] = [];
   imageBounds: LatLngBounds;
   bounds: LatLngBounds;
-
   markerClusterOptions: any;
-
 
   private assetsRequestSource = new Subject();
   public assets: INewAsset[];
@@ -44,12 +46,20 @@ export class MapComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private newAssetService: NewAssetService,
-    private newLocationService: NewLocationService) {}
+    private newLocationService: NewLocationService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {
 
     this.assetsRequestSource.pipe(
-      switchMap(req => this.newAssetService.getAssetsByLocationId(+this.selectedLocation.id))
+      switchMap(req => {
+        if (req === 'STOP') {
+          return of(this.assets);
+        }
+        return this.newAssetService.getAssetsByLocationId(+this.selectedLocation.id);
+      })
     ).subscribe((data: NewAsset[]) => {
       this.markers = [];
       this.assets = data;
@@ -83,7 +93,7 @@ export class MapComponent implements OnInit {
     if (this.rootLocation) {
       this.checkIfSelectedLocation();
     } else {
-      this.newLocationService.getLocations().subscribe((locations: INewLocation[]) => {
+      this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
         this.rootLocation = {
           id: null,
           parentId: null,
@@ -91,6 +101,7 @@ export class MapComponent implements OnInit {
           geolocation: null,
           floorPlan: null,
           name: 'Locations',
+          description: null,
           sublocationsId: null,
           sublocations: locations,
         };
@@ -100,14 +111,14 @@ export class MapComponent implements OnInit {
   }
 
   private checkIfSelectedLocation() {
-    if (this.selectedLocation && this.selectedLocation.id) {
+    if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
       const selectedLocation = {...this.selectedLocation};
       this.selectedLocation = this.rootLocation;
       const { path } = findLocationById(this.rootLocation, +selectedLocation.id);
       for (const location of path) {
         this.goToSublocation(location);
       }
-      this.getAssetsBySelectedLocation();
+      //this.getAssetsBySelectedLocation();
     } else {
       this.initMap();
     }
@@ -120,6 +131,9 @@ export class MapComponent implements OnInit {
       html: '<div><span class="pxi-map-marker"></span></div>'
     });
 
+    this.markers = [];
+    const assetWithoutPosition: INewAsset[] = [];
+
     if (this.assets && this.assets.length) {
       for (const asset of this.assets) {
         if (asset.geolocation) {
@@ -130,8 +144,23 @@ export class MapComponent implements OnInit {
             }
           ).bindPopup(() => this.createAssetPopup(asset)).openPopup();
           this.markers.push(newMarker);
+        } else {
+          assetWithoutPosition.push(asset);
         }
       }
+    }
+
+    if (assetWithoutPosition.length > 0) {
+      this.snackBar.open(`${assetWithoutPosition.length} asset(s) without position`, 'See', {
+        duration: 3000
+      }).onAction().subscribe(() => {
+          this.dialog.open(MapDialogComponent, {
+            width: '300px',
+            data: {
+              assets: assetWithoutPosition
+            }
+          });
+      });
     }
   }
 
@@ -240,10 +269,6 @@ export class MapComponent implements OnInit {
     }
   }
 
-
-
-
-
   public createAssetPopup(asset: INewAsset) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
@@ -283,8 +308,8 @@ export class MapComponent implements OnInit {
 
   getAssetsBySelectedLocation() {
     if (this.selectedLocation.assets && this.selectedLocation.assets.length) {
-      this.markers = [];
       this.assets = this.selectedLocation.assets;
+      this.assetsRequestSource.next('STOP');
       this.populateMarkersWithAssets();
     } else {
       this.markers = [];

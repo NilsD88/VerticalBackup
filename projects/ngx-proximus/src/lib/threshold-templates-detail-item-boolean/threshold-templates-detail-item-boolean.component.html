@@ -1,0 +1,32 @@
+<div class="title">
+    <h6>
+      <img [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name.toLowerCase() + '.svg'">
+      {{sensor.sensorType.name}}
+    </h6>
+    <div>
+      <span>FALSE</span> - <span>TRUE</span> 
+    </div>
+</div>
+<div class="threshold-bar-container">
+  <div 
+    class="threshold-ball"
+    matTooltip="{{threshold.severity}}, from {{threshold.range.from}} to {{threshold.range.to}}"
+    *ngFor="let threshold of sensor.thresholds"
+    [ngClass]="{'low': threshold.severity=='LOW', 'medium': threshold.severity=='MEDIUM', 'critical': threshold.severity=='CRITICAL'}"
+    [style.left.%]="threshold.range.fromPercent"
+  ></div>
+</div>
+<div class="threshold-indicator-container">
+  <div class="threshold-indicator" [style.left.%]="0">
+    <div class="bar">
+      <span></span>
+    </div>
+    <div class="value">FALSE</div>
+  </div>
+  <div class="threshold-indicator" [style.left.%]="100">
+      <div class="bar">
+        <span></span>
+      </div>
+      <div class="value">TRUE</div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+@import "~/../src/variables.scss";
+
+.dropListItem {
+    padding: 0 10px;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+    height: 60px;
+    margin: 5px 10px;
+
+    &.cdk-drag{
+      cursor: move;
+    }
+
+    >div {
+      display: inline-flex;
+      align-items: center;
+      
+      > pxs-icon {
+        color: white;
+        padding: 2px;
+        border-radius: 2px;
+        display: inline-flex;
+        margin-right: 8px; 
+
+        &.location {
+          background: $primary;
+        }
+        &.asset {
+          background: $link;
+        }
+      }
+      
+    }
+
+    &.newItem {
+      border: none;
+      cursor: pointer;
+      color: #888;
+      &:hover {
+        box-shadow:none;
+        color: $primary;
+      }
+    }
+  }

@@ -1,10 +1,11 @@
+import { ListThresholdTemplatesModule } from './../../../../../../../projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import { ListThingsModule } from './../../../../../../../projects/ngx-proximus/src/lib/list-things/list-things.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AssetWizardComponent } from './asset-wizard.component';
 import {RouterModule} from '@angular/router';
 import {AssetWizardRoutes} from './asset-wizard.routing';
-import {MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, MatListModule} from '@angular/material';
+import { MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, MatListModule, MatDialogModule } from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {IconModule} from '../../../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
@@ -15,6 +16,10 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
 import { ThingService } from 'src/app/services/thing.service';
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { NewThingsService } from 'src/app/services/new-things.service';
+import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
+import { NewAssetService } from 'src/app/services/new-asset.service';
+import { NewLocationService } from 'src/app/services/new-location.service';
 
 @NgModule({
   declarations: [
@@ -38,8 +43,15 @@ import { TranslateModule } from '@ngx-translate/core';
     LocationExplorerModule,
     StepperNextModule,
     TranslateModule,
-    ListThingsModule
+    ListThingsModule,
+    ListThresholdTemplatesModule,
+    MatDialogModule,
+    PopupConfirmationModule
   ],
-  providers: [ThingService]
+  providers: [
+    ThingService,
+    NewAssetService,
+    NewLocationService
+  ]
 })
 export class AssetWizardModule { }

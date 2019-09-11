@@ -1,0 +1,6 @@
+<div class="dropListItem" *ngFor="let asset of data.assets" [ngClass]="{'selected': selectedAsset === asset}">
+  <div>
+    <pxs-icon icon="document-img" class="asset"></pxs-icon>
+    {{asset.name}}
+  </div>
+</div>

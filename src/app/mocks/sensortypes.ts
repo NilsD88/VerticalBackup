@@ -13,8 +13,8 @@ MOCK_SENSORTYPES = [
         "id": 3,
         "name": "counter",
         "postfix": "people",
-        "min": 0,
-        "max": 1023,
+        "min": null,
+        "max": null,
         "type": "COUNTER"
     },
     {

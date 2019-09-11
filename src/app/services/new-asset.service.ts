@@ -14,6 +14,10 @@ export class NewAssetService {
         return this.http.get<INewAsset[]>(this.assetUrl);
     }
 
+    getAssetById(id: number): Observable<INewAsset> {
+        return this.http.get<INewAsset>(`${this.assetUrl}/${id}`);
+    }
+
     getAssetsByLocationId(id: number): Observable<INewAsset[]> {
         return this.http.get<INewAsset[]>(`${this.assetUrl}/?locationId=${id}`);
     }

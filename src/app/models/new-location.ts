@@ -8,6 +8,7 @@ export interface INewLocation {
   parentId: string | number;
   parent?: INewLocation;
   name: string;
+  description: string;
   locationType: ILocationType;
   sublocationsId: number[];
   sublocations?: INewLocation[];
@@ -21,6 +22,7 @@ export class NewLocation implements INewLocation {
   parentId: string | number;
   parent: INewLocation;
   name: string;
+  description: string;
   locationType: ILocationType;
   sublocationsId: number[];
   sublocations?: INewLocation[];
@@ -29,17 +31,18 @@ export class NewLocation implements INewLocation {
   assets?: INewAsset[];
 
 
-  constructor(private _locatiton: INewLocation) {
-    if (!isNullOrUndefined(_locatiton)) {
-      this.id =  !isNullOrUndefined(_locatiton.id) ? _locatiton.id : null;
-      this.parentId = !isNullOrUndefined(_locatiton.parentId) ? _locatiton.parentId : null;
-      this.parent = !isNullOrUndefined(_locatiton.parent) ? _locatiton.parent : null;
-      this.name = !isNullOrUndefined(_locatiton.name) ? _locatiton.name : null;
-      this.locationType = !isNullOrUndefined(_locatiton.locationType) ? _locatiton.locationType : null;
-      this.sublocations = !isNullOrUndefined(_locatiton.sublocations) ? _locatiton.sublocations : null;
-      this.floorPlan = !isNullOrUndefined(_locatiton.floorPlan) ? _locatiton.floorPlan : null;
-      this.geolocation = !isNullOrUndefined(_locatiton.geolocation) ? _locatiton.geolocation : null;
-      this.assets = !isNullOrUndefined(_locatiton.assets) ? _locatiton.assets : null;
+  constructor(private location: INewLocation) {
+    if (!isNullOrUndefined(location)) {
+      this.id =  !isNullOrUndefined(location.id) ? location.id : null;
+      this.parentId = !isNullOrUndefined(location.parentId) ? location.parentId : null;
+      this.parent = !isNullOrUndefined(location.parent) ? location.parent : null;
+      this.name = !isNullOrUndefined(location.name) ? location.name : null;
+      this.description = !isNullOrUndefined(location.description) ? location.description : null;
+      this.locationType = !isNullOrUndefined(location.locationType) ? location.locationType : null;
+      this.sublocations = !isNullOrUndefined(location.sublocations) ? location.sublocations : null;
+      this.floorPlan = !isNullOrUndefined(location.floorPlan) ? location.floorPlan : null;
+      this.geolocation = !isNullOrUndefined(location.geolocation) ? location.geolocation : null;
+      this.assets = !isNullOrUndefined(location.assets) ? location.assets : null;
     }
   }
 }

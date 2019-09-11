@@ -6,6 +6,7 @@ import { IconModule } from '../icon/icon.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [LocationExplorerComponent],
@@ -19,7 +20,8 @@ import { NewLocationService } from 'src/app/services/new-location.service';
     MatTooltipModule,
     MatButtonModule,
     IconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RouterModule,
   ],
   providers: [
     NewAssetService,

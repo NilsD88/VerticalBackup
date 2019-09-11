@@ -1,0 +1,11 @@
+<div class="threshold-container" *ngFor="let sensor of thresholdTemplate.sensors">
+  <div *ngIf="sensor.sensorType.type === 'NUMBER'">
+    <pxs-threshold-templates-detail-item-number *ngIf="sensor.thresholds && sensor.thresholds.length" [sensor]="sensor" ></pxs-threshold-templates-detail-item-number>
+  </div>
+  <div *ngIf="sensor.sensorType.type === 'COUNTER'">
+    <pxs-threshold-templates-detail-item-counter *ngIf="sensor.thresholds && sensor.thresholds.length" [sensor]="sensor" ></pxs-threshold-templates-detail-item-counter>
+  </div>
+  <div *ngIf="sensor.sensorType.type === 'BOOLEAN'">
+    <pxs-threshold-templates-detail-item-boolean *ngIf="sensor.thresholds && sensor.thresholds.length" [sensor]="sensor" ></pxs-threshold-templates-detail-item-boolean>
+  </div>
+</div>

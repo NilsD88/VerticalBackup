@@ -1,10 +1,16 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { Thing } from 'src/app/models/thing.model';
-import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { IThing, Thing } from 'src/app/models/thing.model';
+import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular/material';
 import { ThingService } from 'src/app/services/thing.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { NewThingsService } from 'src/app/services/new-things.service';
 import { Subject } from 'rxjs';
+
+
+interface IThingEditing extends IThing {
+  editing: boolean;
+  tempName: string;
+}
 
 @Component({
   selector: 'pxs-list-things',
@@ -14,29 +20,33 @@ import { Subject } from 'rxjs';
 export class ListThingsComponent implements OnInit {
 
   @Input() admin = false;
-  @Input() selectedThings: Map<number, boolean> = new Map<number, boolean>();
+  @Input() selectedThings: IThing[];
 
-  @Output() selectChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() selectChange: EventEmitter<IThing> = new EventEmitter<IThing>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  public things: IThing[];
   public searchTerm$ = new Subject<string>();
 
-  public things: Thing[] = [];
   public activeInput: number = null;
   public filter = {
     devEui: '',
     name: ''
   };
 
-  public dataSource: MatTableDataSource<Thing>;
+  public dataSource: MatTableDataSource<IThing>;
   public displayedColumns: string[];
 
   public isLoading = false;
 
-  constructor(private thingService: ThingService, private sharedService: SharedService, private newThingsService: NewThingsService) {
-  }
+  constructor(
+    private thingService: ThingService,
+    private sharedService: SharedService,
+    private newThingsService: NewThingsService,
+    public snackBar: MatSnackBar
+  ) {}
 
   public async ngOnInit() {
     this.displayedColumns = ['name', 'devEui', 'sensors'];
@@ -46,7 +56,9 @@ export class ListThingsComponent implements OnInit {
     if (this.admin) {
       this.displayedColumns.push('actions');
     }
+
     await this.getThings();
+
     this.newThingsService.searchTerm(this.searchTerm$)
       .subscribe(things => {
         const results = [];
@@ -71,6 +83,10 @@ export class ListThingsComponent implements OnInit {
     this.things = await this.newThingsService.getThings();
     this.updateDataSource();
     this.isLoading = false;
+  }
+
+  public checkOneThing(id: number) {
+    return this.selectedThings.some((thing) => thing.id === id);
   }
 
   private updateDataSource() {
@@ -99,15 +115,36 @@ export class ListThingsComponent implements OnInit {
     this.activeInput = null;
   }
 
-  public async saveThing(thing: Thing): Promise<void> {
+  public async saveThing(thing: IThing): Promise<void> {
     try {
-      await this.thingService.updateName(thing);
+      await this.thingService.updateName(thing as Thing);
       this.getThings();
       this.sharedService.showNotification('Successfully saved thing name', 'success');
       this.activeInput = null;
     } catch (err) {
       this.sharedService.showNotification('Error saving thing name', 'error');
     }
+  }
+
+  public async updateThing(thing: IThingEditing) {
+    const orignalName = thing.name;
+    thing.name = thing.tempName;
+
+    delete thing.editing;
+    delete thing.tempName;
+
+    this.newThingsService.updateThing(thing).subscribe(
+      res => {
+        console.log('HTTP response', res);
+      },
+      err => {
+        thing.name = orignalName;
+        this.snackBar.open(`Failed to update the thing's name!`, null, {
+          duration: 2000,
+        });
+        console.log('HTTP Error', err);
+      }
+    );
   }
 
   public searchChanged(event) {

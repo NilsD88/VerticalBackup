@@ -1,4 +1,4 @@
-<div class="detail-page" *ngIf="asset">
+<div class="detail-page">
   <pxs-detail-header [asset]="asset"></pxs-detail-header>
   <div class="detail-main-content">
     <div class="container">
@@ -26,10 +26,10 @@
       </div>
       <div class="row">
         <div class="col-lg-8 col-md-7">
-          <pxs-map-asset [height]="400" [assets]="[asset]"></pxs-map-asset>
+          <pxs-map-asset *ngIf="asset" [height]="400" [assets]="[asset]"></pxs-map-asset>
         </div>
         <div class="col-lg-4 col-md-5">
-          <div id="asset-image" [style.background-image]="'url('+asset.pictureBase64+')'"></div>
+          <div id="asset-image" [style.background-image]="'url('+asset?.pictureBase64+')'"></div>
           <div class="last-alert-container" *ngIf="lastAlert">
             <span class="last-alert-title">{{'DETAIL.LAST_ALERT.TITLE' | translate}}</span>
             <div class="last-alert-wrapper">
@@ -88,4 +88,3 @@
     </div>
   </div>
 </div>
-

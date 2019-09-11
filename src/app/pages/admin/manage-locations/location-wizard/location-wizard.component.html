@@ -1,13 +1,17 @@
-<mat-horizontal-stepper [linear]="true" #stepper>
-  <mat-step [completed]="selectedLocation">
+<mat-horizontal-stepper [linear]="true" #stepper *ngIf="location">
+  <mat-step [completed]="location.parent">
     <form>
       <ng-template matStepLabel>Parent</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
-            <pxs-location-explorer (notify)="updateLocation($event)"></pxs-location-explorer>
+            <pxs-location-explorer
+              *ngIf="canLoadLocationExplorer"
+              (changeLocation)="updateLocation($event)"
+              [selectedLocation]="location.parent"
+            ></pxs-location-explorer>
         </div>
       </div>
-      <pxs-stepper-next [completed]="selectedLocation" (next)="stepper.next()"></pxs-stepper-next>  
+      <pxs-stepper-next [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
     </form>
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
@@ -16,45 +20,47 @@
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
           <mat-form-field>
-            <input matInput placeholder="Name" formControlName="NameCtrl" required>
+            <input matInput placeholder="Name" formControlName="NameCtrl" [(ngModel)]="location.name" required>
           </mat-form-field>
           <mat-form-field>
-            <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" required></textarea>
+            <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
           </mat-form-field>
           <mat-form-field>
-            <mat-select placeholder="Type" matInput formControlName="TypeCtrl" required>
+            <mat-select placeholder="Type" matInput formControlName="TypeCtrl" [(ngModel)]="location.type">
               <mat-option value="type1">Type 1</mat-option>
               <mat-option value="type2">Type 2</mat-option>
             </mat-select>
           </mat-form-field>
+          <h6>Key Value</h6>
+          <mat-form-field *ngFor="let item of keyValues">
+            <input *ngIf="item.type === 'string' || item.type === 'number'" matInput [placeholder]="item.label" [type]="item.type" formControlName="{{item.label}}">
+          </mat-form-field>
         </div>
-      </div>        
-      <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
-      <p>Form value: {{ descriptionFormGroup.value | json }}</p>
-      <p>Form status: {{ descriptionFormGroup.status | json }}</p>
+      </div>
       <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
-  <mat-step [completed]="geolocation">
+  <mat-step [completed]="location.geolocation">
     <form>
       <ng-template matStepLabel>Geolocation</ng-template>
       <pxs-form-geolocation 
-        *ngIf="selectedLocation"
-        [location]="selectedLocation"
-        (notify)="geolocation=$event"
+        *ngIf="location.parent && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
+        [location]="location.parent"
+        (notify)="location.geolocation=$event"
+        [geolocation]="location.geolocation"
       ></pxs-form-geolocation>
-      <pxs-stepper-next [completed]="geolocation" (next)="stepper.next()"></pxs-stepper-next> 
+      <pxs-stepper-next [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
     </form>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Floor plan</ng-template>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
-        <pxs-editable-image (change)="floorPlan=$event"></pxs-editable-image>
+        <div class="location-image">
+          <pxs-editable-image (change)="location.floorPlan=$event" [image]="location.floorPlan"></pxs-editable-image>
+        </div>
       </div>
     </div>
-    <div class="flex-center">
-      <button mat-button (click)="submit()">Submit</button>
-    </div>
+    <pxs-stepper-next [completed]="location.geolocation" [text]="'Save'" [color]="'success'" (next)="submit()"></pxs-stepper-next> 
   </mat-step>
 </mat-horizontal-stepper>

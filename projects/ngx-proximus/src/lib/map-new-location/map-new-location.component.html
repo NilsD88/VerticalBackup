@@ -1,15 +1,23 @@
 <div class="container" style="height:400px;" (keyup.enter)="eventHandler($event)">
-    <div style="height:400px;" *ngIf="options"
+    <div
+      *ngIf="options"
       leaflet 
       [leafletOptions]="options"
       [leafletLayers]="markers"
       (leafletMapReady)="onMapReady($event)"
       (leafletClick)="onMapClick($event)"
+      style="height:400px;"
     >
     </div>
     <div *ngIf="!imageBounds" class="widget-mylocation" (click)="addMarkerWithUserPosition()">
       <a>
         <mat-icon>person_pin</mat-icon>
       </a>
+    </div>
+    <div *ngIf="!markers.length" class="no-position-selected">
+      No position selected
+    </div>
+    <div *ngIf="markers.length" class="position-selected">
+      Position selected (<a (click)="removeMarker()">remove the position</a>)
     </div>
 </div>

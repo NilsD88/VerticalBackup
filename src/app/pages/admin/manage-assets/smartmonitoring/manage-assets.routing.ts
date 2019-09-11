@@ -15,6 +15,12 @@ export const ManageAssetsRoutes: Routes = [
   },
   {
     path: ':id',
+    loadChildren: './asset-wizard/asset-wizard.module#AssetWizardModule'
+  }
+  /*
+  {
+    path: ':id',
     component: ManageAssetsComponent
   }
+  */
 ];

@@ -9,7 +9,9 @@ import { FormGroup } from '@angular/forms';
 export class StepperNextComponent implements OnInit {
 
   @Input() completed;
-  @Input() formGroup:FormGroup;
+  @Input() text = 'Next';
+  @Input() color = 'primary';
+  @Input() formGroup: FormGroup;
   @Output() next = new EventEmitter();
 
   constructor() { }
@@ -17,7 +19,7 @@ export class StepperNextComponent implements OnInit {
   ngOnInit() {
   }
 
-  callNext(){
+  callNext() {
     this.next.emit();
   }
 

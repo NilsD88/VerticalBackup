@@ -1,5 +1,5 @@
+import { MOCK_THRESHOLD_TEMPLATES_PAGED, MOCK_THRESHOLD_TEMPLATES } from './../mocks/threshold-templates';
 import { MOCK_THINGS } from './../mocks/things';
-import { MOCK_LOCATIONS_FLAT } from './../mocks/newlocations';
 import { MOCK_ASSETS } from './../mocks/newasset';
 import { InMemoryDbService, ResponseOptions } from 'angular-in-memory-web-api';
 import { Injectable, Injector } from '@angular/core';
@@ -10,6 +10,8 @@ import { INewAsset } from '../models/new-asset.model';
 import { ISensorType } from '../models/sensor.model';
 import { MOCK_SENSORTYPES } from '../mocks/sensortypes';
 import { IThing } from '../models/thing.model';
+import { INewThresholdTemplate } from '../models/new-threshold-template.model';
+import { ThresholdTemplate, IPagedThresholdTemplates } from '../models/threshold.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,15 +24,23 @@ export class InMemoryDataService implements InMemoryDbService {
     const db: {
       locations: INewLocation[],
       assets: INewAsset[],
-      locationsFlat: INewLocation[],
       things: IThing[],
-    } = {locations: [], assets: [], locationsFlat: [], things: []};
+      thresholdTemplatesPaged: any | IPagedThresholdTemplates,
+      thresholdTemplates: INewThresholdTemplate[],
+    } = {
+      locations: [],
+      assets: [],
+      things: [],
+      thresholdTemplatesPaged: {},
+      thresholdTemplates: []
+    };
 
     this.httpClient = this.inject.get(HttpClient);
     db.locations =  MOCK_LOCATIONS;
-    db.locationsFlat = MOCK_LOCATIONS_FLAT;
     db.assets = MOCK_ASSETS;
     db.things = MOCK_THINGS;
+    db.thresholdTemplatesPaged = MOCK_THRESHOLD_TEMPLATES_PAGED;
+    db.thresholdTemplates = MOCK_THRESHOLD_TEMPLATES;
     return db;
   }
 

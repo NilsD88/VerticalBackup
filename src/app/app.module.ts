@@ -61,7 +61,7 @@ export function createTranslateLoader(http: HttpClient) {
     // and returns simulated server responses.
     // Remove it when a real server is ready to receive requests.
     HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true, delay: 3000, apiBase: 'fakeapi/'}
+      InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true, delay: 500, apiBase: 'fakeapi/'}
     ),
     TopMenuActionsModule,
     MatMenuModule,

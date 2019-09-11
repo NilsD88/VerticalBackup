@@ -5,6 +5,7 @@ import { IGeolocation } from './asset.model';
 import { IAlert } from './alert.model';
 import { IThing } from './thing.model';
 import { IOrganization } from './organization.model';
+import { INewThresholdTemplate } from './new-threshold-template.model';
 
 
 export interface INewAsset {
@@ -19,12 +20,13 @@ export interface INewAsset {
     alerts?: IAlert[];
     things?: IThing[];
     location?: INewLocation;
-    thresholdTemplate?: IThresholdTemplate;
+    thresholdTemplate?: INewThresholdTemplate;
     organization?: IOrganization;
     lastMeasurements?: any[]; // TODO: lastMeasurements
     lastAlert?: IAlert;
     timeLastMeasurementReceived?: Date;
     status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
+    image?: string;
 }
 
 export class NewAsset implements INewAsset {
@@ -39,12 +41,14 @@ export class NewAsset implements INewAsset {
     alerts?: IAlert[];
     things?: IThing[];
     location?: INewLocation;
-    thresholdTemplate?: IThresholdTemplate;
+    thresholdTemplate?: INewThresholdTemplate;
     organization?: IOrganization;
     lastMeasurements?: any[]; // TODO: lastMeasurements
     lastAlert?: IAlert;
     timeLastMeasurementReceived?: Date;
     status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
+    image?: string;
+
 
     constructor(private asset: INewAsset) {
         if (asset) {
@@ -57,6 +61,7 @@ export class NewAsset implements INewAsset {
             this.id = null;
             this.name = '';
             this.description = '';
+            this.locationId = null;
         }
     }
 
