@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { NewLocation, INewLocation } from 'src/app/models/new-location';
+import { INewLocation } from 'src/app/models/new-location';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -26,5 +26,7 @@ export class ManageLocationsComponent implements OnInit {
         this.selectedLocation = await this.newLocationService.getLocationById(selectedLocationId).toPromise();
       }
     });
+
   }
+
 }

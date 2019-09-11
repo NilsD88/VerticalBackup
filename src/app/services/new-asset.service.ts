@@ -29,7 +29,7 @@ export class NewAssetService {
             let request = this.assetUrl;
             if (filter) {
                 if (filter.name) {
-                    request += `?name=^${filter.name}`;
+                    request += `?name=${filter.name}`;
                 }
             }
             this.http.get<INewAsset[]>(request).subscribe(

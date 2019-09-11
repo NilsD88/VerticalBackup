@@ -24,10 +24,21 @@ export class NewThresholdTemplateService {
 
     constructor(public http: HttpClient) { }
 
-    getPagedThresholdTemplates(): Promise<IPagedThresholdTemplates> {
+
+    getThresholdTemplates(filter: any = null): Observable<INewThresholdTemplate[]> {
+        let request = this.thresholdTemplatesUrl;
+        if (filter) {
+            if (filter.name) {
+                request += `?name=${filter.name}`;
+            }
+        }
+        return this.http.get<INewThresholdTemplate[]>(request);
+    }
+
+
+    getPagedThresholdTemplates(filter: any = null): Promise<IPagedThresholdTemplates> {
         return new Promise(async (resolve, reject) => {
-            return this.http.get<INewThresholdTemplate[]>(this.thresholdTemplatesUrl)
-                .subscribe((response: INewThresholdTemplate[]) => {
+            this.getThresholdTemplates(filter).subscribe((response: INewThresholdTemplate[]) => {
                     resolve ({
                         number: 0,
                         data: response,
@@ -62,17 +73,6 @@ export class NewThresholdTemplateService {
         });
     }
 
-    getThresholdTemplatesByName(name: string): Promise<INewThresholdTemplate[]> {
-        return new Promise(async (resolve, reject) => {
-            return this.http.get<INewThresholdTemplate[]>(`${this.thresholdTemplatesUrl}/?name=${name}`)
-                .subscribe((response: INewThresholdTemplate[]) => {
-                    resolve(response);
-                }, () => {
-                    reject(console.error('Error! Failed to fetch things. Please reload.'));
-                });
-        });
-    }
-
     public updateThresholdTemplate(thresholdTemplate: INewThresholdTemplate) {
         return this.http.put(`${this.thresholdTemplatesUrl}/${thresholdTemplate.id}`, thresholdTemplate, this.httpOptions);
     }
@@ -85,19 +85,18 @@ export class NewThresholdTemplateService {
     }
 
     public deleteThresholdTemplate(thresholdTemplateId: number) {
-        console.log('will remove', thresholdTemplateId);
         return this.http.delete(`${this.thresholdTemplatesUrl}/${thresholdTemplateId}`, this.httpOptions).pipe(
             catchError(this.handleError)
         );
     }
 
 
-    public searchTerm(terms: Observable<string>) {
-        return terms.pipe(
+    public searchThresholdTemplatesWithFilter(filters: Observable<any>) {
+        return filters.pipe(
             debounceTime(500),
             distinctUntilChanged(),
-            switchMap(term => {
-                return this.getThresholdTemplatesByName(term);
+            switchMap(filter => {
+                return this.getPagedThresholdTemplates(filter);
             })
         );
     }

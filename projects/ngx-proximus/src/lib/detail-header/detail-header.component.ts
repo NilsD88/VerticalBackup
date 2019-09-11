@@ -26,7 +26,7 @@ export class DetailHeaderComponent implements OnInit {
       width: '100vw',
       data: {
         displayAssets: true,
-        selectedLocation: MOCK_LOCATIONS[0].sublocations[0]
+        selectedLocation: MOCK_LOCATIONS[2]
       }
     });
   }

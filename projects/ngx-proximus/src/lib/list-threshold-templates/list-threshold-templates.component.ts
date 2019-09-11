@@ -1,9 +1,10 @@
 import { NewThresholdTemplateService } from './../../../../../src/app/services/new-threshold-templates';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ThresholdTemplate, INewThresholdTemplate } from 'src/app/models/threshold.model';
+import { ThresholdTemplate, INewThresholdTemplate, IPagedThresholdTemplates } from 'src/app/models/threshold.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { ThresholdTemplateService } from 'src/app/services/threshold-template.service';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'pxs-list-threshold-templates',
@@ -26,6 +27,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
   public totalItems = 0;
   public pagesize = 10;
   public pageSizeOptions = [5, 10, 25, 100, 500, 1000];
+  public searchFilter$ = new Subject<any>();
 
   public isLoading = false;
   public dataSource: MatTableDataSource<INewThresholdTemplate>;
@@ -54,6 +56,20 @@ export class ListThresholdTemplatesComponent implements OnInit {
     this.sort.sortChange.subscribe(() => {
       this.getThresholdTemplateByFilter();
     });
+
+    this.newThresholdTemplateService.searchThresholdTemplatesWithFilter(this.searchFilter$).subscribe(
+      (pagedThresholdTemplate: IPagedThresholdTemplates) => {
+        this.thresholdTemplates = pagedThresholdTemplate.data;
+        this.totalItems = pagedThresholdTemplate.totalElements;
+        this.isLoading = false;
+        this.updateDataSource();
+      }
+    );
+  }
+
+
+  public onFilterChange() {
+    this.searchFilter$.next({...this.filter});
   }
 
   public filterNameChange(evt) {
@@ -68,7 +84,10 @@ export class ListThresholdTemplatesComponent implements OnInit {
     this.thresholdTemplates = pagedThresholdTemplate.data;
     this.totalItems = pagedThresholdTemplate.totalElements;
     this.isLoading = false;
+    this.updateDataSource();
+  }
 
+  private updateDataSource() {
     this.dataSource = new MatTableDataSource(this.thresholdTemplates);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (thresholdTemplate, property) => {
@@ -101,7 +120,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
     this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe((result) => {
       this.thresholdTemplates = null;
       this.changeDetectorRef.detectChanges();
-      this.ngOnInit();
+      this.getThresholdTemplateByFilter();
     });
   }
 

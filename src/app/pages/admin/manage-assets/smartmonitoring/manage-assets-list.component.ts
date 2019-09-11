@@ -91,7 +91,7 @@ export class ManageAssetsListComponent implements OnInit {
     this.newAssetService.deleteAsset(assetId).subscribe((result) => {
       this.assets = null;
       this.changeDetectorRef.detectChanges();
-      this.ngOnInit();
+      this.getAssetsByFilter();
     });
   }
 

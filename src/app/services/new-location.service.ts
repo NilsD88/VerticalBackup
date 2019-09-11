@@ -2,7 +2,7 @@ import { INewLocation } from 'src/app/models/new-location';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { tap, catchError } from 'rxjs/operators';
+import { tap, catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -22,9 +22,14 @@ export class NewLocationService {
 
     constructor(public http: HttpClient) { }
 
-
-    getLocationsFlat(): Observable<INewLocation[]> {
-        return this.http.get<INewLocation[]>(`${this.locationsUrl}`);
+    getLocations(filter: any = null): Observable<INewLocation[]>  {
+        let request = this.locationsUrl;
+        if (filter) {
+            if (filter.name) {
+                request += `?name=${filter.name}`;
+            }
+        }
+        return this.http.get<INewLocation[]>(request);
     }
 
     async getLocationsTree(): Promise<INewLocation[]> {
@@ -35,6 +40,16 @@ export class NewLocationService {
     getLocationById(id: number): Observable<INewLocation> {
         return this.http.get<INewLocation>(`${this.locationsUrl}/${id}`);
     }
+
+    searchLocationsWithFilter(filters: Observable<any>) {
+        return filters.pipe(
+          debounceTime(500),
+          distinctUntilChanged(),
+          switchMap(filter => {
+            return this.getLocations(filter);
+          })
+        );
+      }
 
     updateLocation(location: INewLocation) {
         return this.http.put(`${this.locationsUrl}/${location.id}`, location, this.httpOptions);

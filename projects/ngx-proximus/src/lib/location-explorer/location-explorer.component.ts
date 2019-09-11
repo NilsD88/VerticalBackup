@@ -34,6 +34,10 @@ export class LocationExplorerComponent implements OnInit {
   isDownloading = false;
   isNullOrUndefined = isNullOrUndefined;
 
+  public filter = {name: null };
+  public searchFilter$ = new Subject<any>();
+  public searchResults: INewLocation[];
+
   private assetsRequestSource = new Subject();
 
   constructor(
@@ -61,6 +65,10 @@ export class LocationExplorerComponent implements OnInit {
     } else {
       this.getLocations();
     }
+
+    this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: INewLocation[]) => {
+      this.searchResults = locations;
+    });
   }
 
   getLocations() {
@@ -90,7 +98,7 @@ export class LocationExplorerComponent implements OnInit {
       this.rootLocation = null;
       this.selectedLocation = this.currentLocation;
       this.changeDetectorRef.detectChanges();
-      this.ngOnInit();
+      this.getLocations();
     });
   }
 
@@ -159,6 +167,19 @@ export class LocationExplorerComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.currentLocation.sublocations, event.previousIndex, event.currentIndex);
+  }
+
+  public onFilterChange() {
+    this.searchFilter$.next({...this.filter});
+  }
+
+  public selectAutocompletedOption(location: INewLocation) {
+    this.filter = { name: null };
+    this.selectedLocation = location;
+    this.isDownloading = true;
+    this.changeDetectorRef.detectChanges();
+    this.isDownloading = false;
+    this.checkIfSelectedLocation();
   }
 
 }

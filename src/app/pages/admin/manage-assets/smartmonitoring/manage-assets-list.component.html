@@ -6,7 +6,9 @@
         mat-mini-fab color="primary"
         routerLink="/private/admin/manage-assets/new"
         [matTooltip]="'MANAGE_ASSETS.NEW' | translate"
-      ><pxs-icon icon="plus-o"></pxs-icon></button>
+      >
+        <pxs-icon icon="plus-o"></pxs-icon>
+      </button>
     </div>
   </div>
   <div class="row">
@@ -88,42 +90,4 @@
         (page)="pageChanged($event)">
       </mat-paginator> 
   </div>
-
-  <!--
-    <div class="alerts-section-content">
-      <div class="table">
-        <div class="row p-1 table-row" *ngFor="let item of assets">
-          <div class="col-md-9">
-            <div class="alerts-table-asset-name">
-              {{item.name}}
-              <pxs-badge>{{item.thresholdTemplate.isCustom ? 'Custom' : item.thresholdTemplate.name}}</pxs-badge>
-            </div>
-            <div class="alerts-table-date">{{item.sublocation.name}} - {{item.sublocation.location.name}}</div>
-          </div>
-          <div class="col-md-3">
-            <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/detail/{{item.id}}">
-              <pxs-icon icon="eye"></pxs-icon>
-            </button>
-            <button mat-icon-button matTooltip="Edit asset" color="accent"
-                    routerLink="/private/admin/manage-assets/{{item.id}}">
-              <pxs-icon icon="edit"></pxs-icon>
-            </button>
-            <button mat-icon-button matTooltip="Delete asset" color="warn" (click)="deleteAsset(item)">
-              <pxs-icon icon="trash"></pxs-icon>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="alerts-section-footer">
-      <mat-paginator [length]="totalItems"
-                     [pageSize]="pagesize"
-                     [pageSizeOptions]="pageSizeOptions"
-                     (page)="pageChanged($event)">
-      </mat-paginator>
-    </div>
-  </div>
-
-  -->
-
 </div>

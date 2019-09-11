@@ -1,79 +1,98 @@
-<mat-progress-spinner 
-  *ngIf="isDownloading"
-  style="margin:0 auto;"
-  color="primary" 
-  mode="indeterminate">
-</mat-progress-spinner>
-<mat-tab-group 
-  *ngIf="!isDownloading"
-  [selectedIndex]="selectedIndex"
-  (selectedIndexChange)="selectedIndexChange($event)"
->
-  <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-  <div 
-    *ngIf="tab.sublocations && tab.sublocations.length > 0"
-    cdkDropList
-    (cdkDropListDropped)="drop($event)"
-    [cdkDropListDisabled]="!admin"
-    class="dropList"
+
+<mat-form-field>
+  <input 
+    matInput
+    type="text" 
+    [matAutocomplete]="auto"
+    placeholder="Location name"
+    [(ngModel)]="filter.name"
+    (ngModelChange)="onFilterChange()"
   >
-    <hr data-content="LOCATIONS">
+</mat-form-field>
+<mat-autocomplete  #auto="matAutocomplete">
+    <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
+      {{ option.name }}
+    </mat-option>
+</mat-autocomplete>      
+
+<div>
+    <mat-progress-spinner 
+    *ngIf="isDownloading"
+    style="margin:0 auto;"
+    color="primary" 
+    mode="indeterminate">
+  </mat-progress-spinner>
+  <mat-tab-group 
+    *ngIf="!isDownloading"
+    [selectedIndex]="selectedIndex"
+    (selectedIndexChange)="selectedIndexChange($event)"
+  >
+    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
     <div 
-      cdkDrag
-      class="dropListItem"
-      *ngFor="let location of tab.sublocations"
-      [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false)}"
-      (click)="clickOnLocation(location)"
+      *ngIf="tab.sublocations && tab.sublocations.length > 0"
+      cdkDropList
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListDisabled]="!admin"
+      class="dropList"
     >
-      <div>
-        <pxs-icon icon="globe" class="location"></pxs-icon>
-        {{location.name}}
-        <button *ngIf="admin" mat-icon-button matTooltip="Edit asset" color="accent">
-          <pxs-icon icon="edit" [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
-        </button>
-        <button *ngIf="admin" mat-icon-button matTooltip="Delete asset" color="warn">
-          <pxs-icon icon="trash" (click)="deleteLocation(location.id)"></pxs-icon>
-        </button>
-      </div>
-      <div>
-        <span (click)="openLocation(location)"><pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon></span>
-      </div>
-    </div>
-    <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
-      <div>
-        <pxs-icon icon="plus-o"></pxs-icon> Add new location
-      </div>
-    </div>
-    <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/']">
-      <div>
-        <pxs-icon icon="plus-o"></pxs-icon> Add new location
-      </div>
-    </div>
-  </div>
-  <div *ngIf="displayAssets" class="dropList">
-    <div>
-      <hr data-content="ASSETS">
-      <mat-progress-spinner 
-        *ngIf="loadingAsset"
-        style="margin:0 auto;"
-        [diameter]="25"
-        color="primary" 
-        mode="indeterminate">
-      </mat-progress-spinner>
-      <div *ngIf="currentLocation && !loadingAsset && (!currentLocation.assets ||currentLocation.assets.length < 1)">
-        No asset found at this location
-      </div>
-      <div *ngIf="currentLocation">
-        <div class="dropListItem" *ngFor="let asset of currentLocation.assets" [ngClass]="{'selected': selectedAsset === asset}">
-          <div>
-            <pxs-icon icon="document-img" class="asset"></pxs-icon>
-            {{asset.name}}
-          </div>
+      <hr data-content="LOCATIONS">
+      <div 
+        cdkDrag
+        class="dropListItem"
+        *ngFor="let location of tab.sublocations"
+        [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false)}"
+        (click)="clickOnLocation(location)"
+      >
+        <div>
+          <pxs-icon icon="globe" class="location"></pxs-icon>
+          {{location.name}}
+          <button *ngIf="admin" mat-icon-button matTooltip="Edit asset" color="accent">
+            <pxs-icon icon="edit" [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
+          </button>
+          <button *ngIf="admin" mat-icon-button matTooltip="Delete asset" color="warn">
+            <pxs-icon icon="trash" (click)="deleteLocation(location.id)"></pxs-icon>
+          </button>
+        </div>
+        <div>
+          <span (click)="openLocation(location)"><pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon></span>
         </div>
       </div>
-      
+      <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
+        <div>
+          <pxs-icon icon="plus-o"></pxs-icon> Add new location
+        </div>
+      </div>
+      <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/']">
+        <div>
+          <pxs-icon icon="plus-o"></pxs-icon> Add new location
+        </div>
+      </div>
     </div>
-  </div>
-  <br><br>
-</mat-tab>
-</mat-tab-group>
+    <div *ngIf="displayAssets" class="dropList">
+      <div>
+        <hr data-content="ASSETS">
+        <mat-progress-spinner 
+          *ngIf="loadingAsset"
+          style="margin:0 auto;"
+          [diameter]="25"
+          color="primary" 
+          mode="indeterminate">
+        </mat-progress-spinner>
+        <div *ngIf="currentLocation && !loadingAsset && (!currentLocation.assets ||currentLocation.assets.length < 1)">
+          No asset found at this location
+        </div>
+        <div *ngIf="currentLocation">
+          <div class="dropListItem" *ngFor="let asset of currentLocation.assets" [ngClass]="{'selected': selectedAsset === asset}">
+            <div>
+              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+              {{asset.name}}
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <br><br>
+  </mat-tab>
+  </mat-tab-group>
+</div>

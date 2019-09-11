@@ -1,6 +1,6 @@
 @import "~/../src/variables.scss";
 
-:host {
+:host > div {
   margin: 0 auto;
   width: 100%;
   max-width: 600px;
@@ -8,6 +8,13 @@
   border: 1px solid $grey-light;
   padding: 0;
   background: white;
+}
+
+:host > mat-form-field {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
 }
 
 ::ng-deep .mat-tab-label-container {
