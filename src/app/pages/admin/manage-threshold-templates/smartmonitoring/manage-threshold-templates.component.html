@@ -1,12 +1,12 @@
-<pxs-loader *ngIf="!item"></pxs-loader>
-<div class="container" *ngIf="item" [formGroup]="thresholdTemplateFormGroup">
+<pxs-loader *ngIf="!thresholdTemplate"></pxs-loader>
+<div class="container" *ngIf="thresholdTemplate" [formGroup]="thresholdTemplateFormGroup">
   <div class="row">
     <div class="col-12">
       <h2>Threshold template</h2>
     </div>
     <div class="col-md-12">
       <mat-form-field>
-          <input matInput placeholder="Name" formControlName="name" [(ngModel)]="item.name" required>
+          <input matInput placeholder="Name" formControlName="name" [(ngModel)]="thresholdTemplate.name" required>
       </mat-form-field>
     </div>
     <div class="col-md-12" style="display:flex; justify-content: space-between; margin-bottom: 20px;">
@@ -16,10 +16,10 @@
         Add sensor
       </button>
     </div>
-    <div class="col-md-12" *ngIf="!item.sensors || !item.sensors.length">
+    <div class="col-md-12" *ngIf="!thresholdTemplate.sensors || !thresholdTemplate.sensors.length">
       No sensors added yet
     </div>
-    <div class="col-md-12 sensor-card" *ngFor="let sensor of item.sensors;" formGroupName="sensor-{{sensor.sensorType.id}}">
+    <div class="col-md-12 sensor-card" *ngFor="let sensor of thresholdTemplate.sensors;" formGroupName="sensor-{{sensor.sensorType.id}}">
       <mat-card>
         <mat-card-header style="display: flex; align-content: center;">
           <div class="title">

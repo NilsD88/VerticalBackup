@@ -3,7 +3,7 @@ import { MOCK_SENSORTYPES } from './../../../../mocks/sensortypes';
 import {Component, OnInit} from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {ThresholdTemplateService} from '../../../../services/threshold-template.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 import {MatDialog} from '@angular/material';
 import {AddSensorComponent} from './add-sensor/add-sensor.component';
@@ -18,25 +18,27 @@ import { INewThresholdTemplate, INewThreshold, NewThresholdTemplate, NewThreshol
 export class ManageThresholdTemplatesComponent implements OnInit {
 
   public thresholdTemplateFormGroup: FormGroup;
-  public item: INewThresholdTemplate;
+  public thresholdTemplate: INewThresholdTemplate;
   public severities = ['LOW', 'MEDIUM', 'CRITICAL'];
+  public editMode = false;
 
 
   constructor(
     private formBuilder: FormBuilder,
-    private thresholdTemplateService: ThresholdTemplateService,
     private newThresholdTemplateService: NewThresholdTemplateService,
+    private router: Router,
     private activeRoute: ActivatedRoute,
     private dialog: MatDialog) {}
 
   async ngOnInit() {
     const thresholdTemplateId = await this.getRouteId();
     if (!isNullOrUndefined(thresholdTemplateId)) {
-      this.item = await this.newThresholdTemplateService.getThresholdTemplateById(+thresholdTemplateId);
+      this.editMode = true;
+      this.thresholdTemplate= await this.newThresholdTemplateService.getThresholdTemplateById(+thresholdTemplateId);
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.required],
       });
-      for (const sensor of this.item.sensors) {
+      for (const sensor of this.thresholdTemplate.sensors) {
         const sensorId = sensor.sensorType.id;
         this.thresholdTemplateFormGroup.addControl(`sensor-${sensorId}`, this.formBuilder.group({
           thresholds: this.formBuilder.group({})
@@ -56,13 +58,12 @@ export class ManageThresholdTemplatesComponent implements OnInit {
         }
       }
     } else {
-      this.item = new NewThresholdTemplate(null);
+      this.thresholdTemplate = new NewThresholdTemplate(null);
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.required],
       });
     }
   }
-
 
   private createFormControlForItem(sensorId: number) {
     this.thresholdTemplateFormGroup.addControl(`sensor-${sensorId}`, this.formBuilder.group({
@@ -131,7 +132,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   public addThreshold(sensorId: number) {
 
-    const sensor = this.item.sensors.find((elt) => elt.sensorType.id === sensorId);
+    const sensor = this.thresholdTemplate.sensors.find((elt) => elt.sensorType.id === sensorId);
 
     const threshold = new NewThreshold({
       id: new Date().getTime(),
@@ -158,9 +159,9 @@ export class ManageThresholdTemplatesComponent implements OnInit {
   }
 
   public deleteThreshold(sensorId, thresholdId) {
-    const findSensorIndex = this.item.sensors.findIndex((elt) => elt.sensorType.id === sensorId);
-    const findThresholdIndex = this.item.sensors[findSensorIndex].thresholds.findIndex((elt) => elt.id === thresholdId);
-    this.item.sensors[findSensorIndex].thresholds.splice(findThresholdIndex, 1);
+    const findSensorIndex = this.thresholdTemplate.sensors.findIndex((elt) => elt.sensorType.id === sensorId);
+    const findThresholdIndex = this.thresholdTemplate.sensors[findSensorIndex].thresholds.findIndex((elt) => elt.id === thresholdId);
+    this.thresholdTemplate.sensors[findSensorIndex].thresholds.splice(findThresholdIndex, 1);
     const sensorControl: AbstractControl = this.thresholdTemplateFormGroup.get(`sensor-${sensorId}`);
     if (sensorControl instanceof FormGroup) {
       const thresholdControl: AbstractControl = sensorControl.get(`thresholds`);
@@ -171,8 +172,8 @@ export class ManageThresholdTemplatesComponent implements OnInit {
   }
 
   public deleteSensor(sensorId) {
-    const findSensorIndex = this.item.sensors.findIndex((elt) => elt.sensorType.id === sensorId);
-    this.item.sensors.splice(findSensorIndex, 1);
+    const findSensorIndex = this.thresholdTemplate.sensors.findIndex((elt) => elt.sensorType.id === sensorId);
+    this.thresholdTemplate.sensors.splice(findSensorIndex, 1);
     this.thresholdTemplateFormGroup.removeControl(`sensor-${sensorId}`);
   }
 
@@ -187,10 +188,10 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     });
     ref.afterClosed().subscribe((result: SensorType) => {
       if (result) {
-        if (!this.item.sensors.find((item) => {
+        if (!this.thresholdTemplate.sensors.find((item) => {
           return item.sensorType.name === result.name;
         })) {
-          this.item.sensors.push({
+          this.thresholdTemplate.sensors.push({
             sensorType: result,
             thresholds: []
           });
@@ -214,7 +215,19 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
 
   public saveThresholdTemplate() {
-    console.log(this.item);
+    if (this.editMode) {
+      this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe((result) => {
+        this.goToManageThresholdTemplate();
+      });
+    } else {
+      this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe((result) => {
+        this.goToManageThresholdTemplate();
+      });
+    }
+  }
+
+  private goToManageThresholdTemplate() {
+    this.router.navigateByUrl(`/private/admin/manage-threshold-templates`);
   }
 
 

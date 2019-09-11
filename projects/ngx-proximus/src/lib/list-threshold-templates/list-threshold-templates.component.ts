@@ -1,5 +1,5 @@
 import { NewThresholdTemplateService } from './../../../../../src/app/services/new-threshold-templates';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { ThresholdTemplate, INewThresholdTemplate } from 'src/app/models/threshold.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { ThresholdTemplateService } from 'src/app/services/threshold-template.service';
@@ -20,8 +20,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public itemsLoading = false;
-  public items: INewThresholdTemplate[];
+  public thresholdTemplates: INewThresholdTemplate[];
   public filter: { name: string } = {name: ''};
   public page = 0;
   public totalItems = 0;
@@ -35,11 +34,16 @@ export class ListThresholdTemplatesComponent implements OnInit {
   constructor(
     public thresholdTemplateService: ThresholdTemplateService,
     public newThresholdTemplateService: NewThresholdTemplateService,
+    private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog
     ) {}
 
   async ngOnInit() {
-    this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
+    if (this.admin) {
+      this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
+    } else {
+      this.displayedColumns = ['select', 'name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate'];
+    }
 
     if (this.selectedThresholdTemplate || this.selectedThresholdTemplate === null ) {
       this.displayedColumns.unshift('select');
@@ -58,15 +62,14 @@ export class ListThresholdTemplatesComponent implements OnInit {
 
   private async getThresholdTemplateByFilter() {
     this.isLoading = true;
-    this.items = [];
+    this.thresholdTemplates = [];
 
-    //const pagedThresholdTemplate = await this.thresholdTemplateService.getPagedThresholdTemplates(this.filter, this.page, this.pagesize);
     const pagedThresholdTemplate = await this.newThresholdTemplateService.getPagedThresholdTemplates();
-    this.items = pagedThresholdTemplate.data;
+    this.thresholdTemplates = pagedThresholdTemplate.data;
     this.totalItems = pagedThresholdTemplate.totalElements;
     this.isLoading = false;
 
-    this.dataSource = new MatTableDataSource(this.items);
+    this.dataSource = new MatTableDataSource(this.thresholdTemplates);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (thresholdTemplate, property) => {
         if (property.includes('.')) {
@@ -94,9 +97,12 @@ export class ListThresholdTemplatesComponent implements OnInit {
   }
 
 
-  public async deleteItem(item: ThresholdTemplate) {
-    this.itemsLoading = true;
-    await this.thresholdTemplateService.deleteThresholdTemplate(item.id);
+  public async deleteThresholdTemplate(thresholdTemplateId: number) {
+    this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe((result) => {
+      this.thresholdTemplates = null;
+      this.changeDetectorRef.detectChanges();
+      this.ngOnInit();
+    });
   }
 
   openDetailDialog(thresholdTemplate: INewThresholdTemplate): void {

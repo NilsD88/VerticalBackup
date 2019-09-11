@@ -83,7 +83,7 @@
                 <button *ngIf="admin" mat-icon-button matTooltip="Edit threshold template" color="accent" routerLink="/private/admin/manage-threshold-templates/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>
-                <button *ngIf="admin" mat-icon-button matTooltip="Delete threshold template" color="warn" (click)="deleteItem(element)">
+                <button *ngIf="admin" mat-icon-button matTooltip="Delete threshold template" color="warn" (click)="deleteThresholdTemplate(element.id)">
                   <pxs-icon icon="trash"></pxs-icon>
                 </button>
             </td>

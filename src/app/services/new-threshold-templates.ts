@@ -78,8 +78,6 @@ export class NewThresholdTemplateService {
     }
 
     public createThresholdTemplate(thresholdTemplate: INewThresholdTemplate) {
-        console.log('want create this location:');
-        console.log({...location});
         return this.http.post<INewThresholdTemplate>(`${this.thresholdTemplatesUrl}`, thresholdTemplate, this.httpOptions).pipe(
             tap(data => console.log(data)),
             catchError(this.handleError)

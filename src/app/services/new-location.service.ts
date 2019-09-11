@@ -28,9 +28,7 @@ export class NewLocationService {
     }
 
     async getLocationsTree(): Promise<INewLocation[]> {
-        console.log('----- getLocationsTree -----');
         const result = await this.getSublocations(null);
-        console.log('----- finish ---- ');
         return result;
     }
 
@@ -43,8 +41,6 @@ export class NewLocationService {
     }
 
     createLocation(location: INewLocation) {
-        console.log('want create this location:');
-        console.log({...location});
         return this.http.post<INewLocation>(`${this.locationsUrl}`, location, this.httpOptions).pipe(
             tap(data => console.log(data)),
             catchError(this.handleError)
@@ -52,7 +48,6 @@ export class NewLocationService {
     }
 
     deleteLocation(locationId: number) {
-        console.log('will remove', locationId);
         return this.http.delete(`${this.locationsUrl}/${locationId}`, this.httpOptions).pipe(
             catchError(this.handleError)
         );

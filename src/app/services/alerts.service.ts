@@ -19,7 +19,6 @@ export class AlertsService {
 
 
   public getPagedAlertByAssetId(assetId: string | number, pageIndex: number, pageSize: number): Promise<IPagedAlerts> {
-    console.log("getPagedAlertByAssetId");
     const url = `${this.sharedService.baseUrl}alerts?filter=asset.id==${assetId}&page=${pageIndex}&size=${pageSize}&sort=sensorReading.timestamp,desc`;
 
     return new Promise(async (resolve, reject) => {
@@ -33,7 +32,6 @@ export class AlertsService {
   }
 
   public getUnreadAlerts(): Promise<Alert[]> {
-    console.log("getUnreadAlerts");
     return new Promise(async (resolve, reject) => {
       this.http.get(`${environment.baseUrl}alerts?filter=read==false&sort=sensorReading.timestamp,desc`)
         .subscribe((response: any) => {
@@ -53,7 +51,6 @@ export class AlertsService {
   }
 
   public getTodayAlerts(): Promise<Alert[]> {
-    console.log("getTodayAlerts");
     return new Promise(async (resolve, reject) => {
       this.http.get(`${environment.baseUrl}alerts?filter=sensorReading.timestamp>=${moment().startOf('day')}
       &sort=sensorReading.timestamp,desc`

@@ -1,7 +1,6 @@
 import { MapPopupComponent } from './../../projects/ngx-proximus/src/lib/map-popup/map-popup.component';
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule, Injector} from '@angular/core';
-
 import {AppComponent} from './app.component';
 import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';
 import {PublicLayoutComponent} from './layout/smartmonitoring/public.layout.component';
@@ -19,7 +18,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {environment} from '../environments/environment';
 import {FooterModule} from '../../projects/ngx-proximus/src/lib/footer/footer.module';
-import {MatMenuModule, MatSnackBar, MatSnackBarModule, MatTooltipModule} from '@angular/material';
+import {MatMenuModule, MatSnackBarModule, MatTooltipModule} from '@angular/material';
 import {SharedService} from './services/shared.service';
 import {AuthService} from './services/auth.service';
 import {SharedLayoutService} from './layout/shared-layout.service';

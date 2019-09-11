@@ -66,7 +66,6 @@ export class LocationExplorerComponent implements OnInit {
   getLocations() {
     this.isDownloading = true;
     this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
-      console.log('getLocationsTree then');
       this.rootLocation = {
         id: null,
         parentId: null,
@@ -87,7 +86,6 @@ export class LocationExplorerComponent implements OnInit {
   }
 
   deleteLocation(locationId: number) {
-    console.log('want delete ', locationId);
     this.newLocationService.deleteLocation(locationId).subscribe((result) => {
       this.rootLocation = null;
       this.selectedLocation = this.currentLocation;
@@ -105,7 +103,6 @@ export class LocationExplorerComponent implements OnInit {
         this.goToSublocation(location);
       }
     } else {
-      console.log('no selection location found');
       this.changeLocation.emit(this.rootLocation);
     }
     this.isDownloading = false;

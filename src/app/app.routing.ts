@@ -155,8 +155,6 @@ export const AppRoutes: Routes = [
     canActivate: [PublicAuthGuard],
     children: [{
       path: '',
-      //loadChildren: './pages/playground/smartmonitoring/playground.module#PlaygroundModule'
-      //loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
       //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
       //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
       //loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
@@ -170,11 +168,6 @@ export const AppRoutes: Routes = [
     path: 'private',
     component: PrivateLayoutComponent,
     children: [
-      {
-        path: 'test',
-        canActivate: [UserAuthGuard],
-        loadChildren: './pages/playground/wizard-asset/playground.module#PlaygroundModule'
-      },
       {
         path: 'home',
         canActivate: [UserAuthGuard],

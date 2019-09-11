@@ -7,6 +7,11 @@ import { IThing } from './thing.model';
 import { IOrganization } from './organization.model';
 import { INewThresholdTemplate } from './new-threshold-template.model';
 
+export interface IPagedNewAssets {
+    data: INewAsset[];
+    pageNumber: number;
+    totalElements: number;
+}
 
 export interface INewAsset {
     id: number | string;

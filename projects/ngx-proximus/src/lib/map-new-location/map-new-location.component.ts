@@ -35,7 +35,6 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log(this.geolocation);
     if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
-      console.log("There is a parent location");
       const floorPlan = this.parentLocation.floorPlan;
       if(floorPlan){
         console.log("There is a floor plan");
@@ -66,7 +65,6 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         }
       }
     } else {
-      console.log("There is no parent location");
       this.createOptionsMapWithUserGeolocation();
     }
 

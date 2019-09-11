@@ -30,7 +30,6 @@ export class MapAssetPopupComponent implements OnInit {
   }
 
   async getLastAlert() {
-    console.log("has no alert");
     const lastAlertPromise = this.alertsService.getLastAlertByAssetId(this.asset.id);
     this.lastAlert = await lastAlertPromise;
   }

@@ -43,7 +43,6 @@ export class ThingsListComponent implements OnInit, OnChanges {
   public itemSelectChanged(item, evt) {
 
     this.itemList[this.itemList.findIndex(i => i.id === item.id)].selected = evt.checked;
-    console.log(this.itemList);
     this.change.emit(this.itemList.filter(i => i.selected).map((i) => {
       delete i.selected;
       return (i as IThing);

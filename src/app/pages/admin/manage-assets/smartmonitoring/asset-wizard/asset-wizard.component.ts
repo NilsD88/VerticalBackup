@@ -1,17 +1,14 @@
 import { NewLocationService } from './../../../../../services/new-location.service';
 import { NewAssetService } from './../../../../../services/new-asset.service';
-import { INewThresholdTemplate } from 'src/app/models/new-threshold-template.model';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { IGeolocation } from 'src/app/models/asset.model';
 import { INewLocation } from 'src/app/models/new-location';
 import { IThing } from 'src/app/models/thing.model';
 import { ThingService } from 'src/app/services/thing.service';
-import { NewThingsService } from 'src/app/services/new-things.service';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import { INewAsset } from 'src/app/models/new-asset.model';
 
@@ -26,6 +23,7 @@ export class AssetWizardComponent implements OnInit {
   @ViewChild('stepper') stepper: MatStepper;
 
   public asset: INewAsset;
+  public editMode = false;
 
   dialogConfirmForIncompatibleThreshold: {title: string, content: string};
 
@@ -52,6 +50,7 @@ export class AssetWizardComponent implements OnInit {
     public dialog: MatDialog,
     private newAssetService: NewAssetService,
     private newLocationService: NewLocationService,
+    private router: Router,
     public activatedRoute: ActivatedRoute
     ) {}
 
@@ -191,11 +190,19 @@ export class AssetWizardComponent implements OnInit {
     });
   }
 
-  private submit() {
+  public submit() {
+    if (this.editMode) {
+      this.newAssetService.updateAsset(this.asset).subscribe((result) => {
+        this.goToManageAssets();
+      });
+    } else {
+      this.newAssetService.createAsset(this.asset).subscribe((result) => {
+        this.goToManageAssets();
+      });
+    }
+  }
 
-    // TODO: submit the new asset to the backend!
-    console.log('submit!');
-
-    console.log(this.asset);
+  private goToManageAssets() {
+    this.router.navigateByUrl('/private/admin/manage-assets');
   }
 }

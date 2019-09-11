@@ -16,12 +16,12 @@ export class LocationWizardComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
-  descriptionFormGroup: FormGroup;
-  location: INewLocation;
-  editMode = false;
+  public descriptionFormGroup: FormGroup;
+  public location: INewLocation;
+  public editMode = false;
 
-  canLoadLocationExplorer = false;
-  keyValues = [];
+  public canLoadLocationExplorer = false;
+  public keyValues = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -92,7 +92,7 @@ export class LocationWizardComponent implements OnInit {
     }
   }
 
-  submit() {
+  public submit() {
     if (this.editMode) {
       this.newLocationService.updateLocation(this.location).subscribe((result) => {
         this.goToManageLocation();

@@ -1,11 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {Asset} from '../../../../models/asset.model';
-import {AssetService} from '../../../../services/asset.service';
 import { MatPaginator } from '@angular/material';
-import { merge } from 'rxjs/internal/observable/merge';
-import { tap } from 'rxjs/operators';
+import { NewAssetService } from 'src/app/services/new-asset.service';
+import { INewAsset } from 'src/app/models/new-asset.model';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'pvf-manage-assets-list',
@@ -13,42 +13,46 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./manage-assets-list.component.scss']
 })
 export class ManageAssetsListComponent implements OnInit {
-  
+
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator; 
-  
-  public assets: Asset[] = [];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  public assets: INewAsset[] = [];
   public page = 0;
   public totalItems = 0;
   public pagesize = 10;
   public pageSizeOptions = [5, 10, 25, 100, 500, 1000];
-  public isLoading: boolean = false;
+  public isLoading = false;
 
-  
-  public dataSource:MatTableDataSource<Asset>;
-  public displayedColumns: string[] = ['name', 'sublocation.location.locationType.name', 'sublocation.location.name', 'sublocation.name', 'thresholdTemplate.name', 'actions'];
+  public dataSource: MatTableDataSource<INewAsset>;
+  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'actions'];
   public filter = {
-    name: '',
-    thresholdTemplates: [],
-    locationType: null,
-    locations: [],
-    statuses: []
+    name: null,
   };
 
+  public searchFilter$ = new Subject<any>();
 
 
-  constructor(public assetService: AssetService) {
-  }
+  constructor(
+    public newAssetService: NewAssetService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
 
   public async ngOnInit() {
     await this.getAssetsByFilter();
 
-    this.sort.sortChange.subscribe(() => { 
+    this.newAssetService.searchAssetsWithFilter(this.searchFilter$).subscribe(pagedAssets => {
+      this.assets = pagedAssets.data;
+      this.totalItems = pagedAssets.totalElements;
+      this.isLoading = false;
+      this.updateDataSource();
+    });
+
+    this.sort.sortChange.subscribe(() => {
       this.getAssetsByFilter();
     });
 
   }
-
 
   public async pageChanged(evt) {
     this.page = evt.pageIndex;
@@ -59,11 +63,14 @@ export class ManageAssetsListComponent implements OnInit {
   private async getAssetsByFilter() {
     this.isLoading = true;
     this.assets = [];
-    const pagedAssets = await this.assetService.getPagedAssets(this.filter, this.page, this.pagesize, this.sort.active, this.sort.direction);
+    const pagedAssets = await this.newAssetService.getPagedAssets(this.filter);
     this.assets = pagedAssets.data;
     this.totalItems = pagedAssets.totalElements;
     this.isLoading = false;
+    this.updateDataSource();
+  }
 
+  private updateDataSource() {
     this.dataSource = new MatTableDataSource(this.assets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
@@ -80,9 +87,17 @@ export class ManageAssetsListComponent implements OnInit {
     this.getAssetsByFilter();
   }
 
-  public async deleteAsset(asset: Asset) {
-    await this.assetService.deleteAsset(asset.id);
-    this.getAssetsByFilter();
+  public async deleteAsset(assetId: number) {
+    this.newAssetService.deleteAsset(assetId).subscribe((result) => {
+      this.assets = null;
+      this.changeDetectorRef.detectChanges();
+      this.ngOnInit();
+    });
+  }
+
+  public onFilterChange(event) {
+    this.isLoading = true;
+    this.searchFilter$.next({...this.filter});
   }
 
 }

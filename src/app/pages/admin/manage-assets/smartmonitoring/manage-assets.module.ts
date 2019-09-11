@@ -21,6 +21,7 @@ import {IconModule} from '../../../../../../projects/ngx-proximus/src/lib/icon/i
 import {BadgeModule} from '../../../../../../projects/ngx-proximus/src/lib/badge/badge.module';
 import {ThingsListModule} from '../../../../../../projects/ngx-proximus/src/lib/things-list/things-list.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { NewAssetService } from 'src/app/services/new-asset.service';
 
 @NgModule({
   declarations: [ManageAssetsComponent, ManageAssetsListComponent],
@@ -50,6 +51,9 @@ import { TranslateModule } from '@ngx-translate/core';
     IconModule,
     TranslateModule
   ],
+  providers: [
+    NewAssetService
+  ]
 })
 export class ManageAssetsModule {
 }

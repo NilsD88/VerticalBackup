@@ -20,19 +20,19 @@ export interface INewThreshold {
 
 export class NewThreshold implements INewThreshold {
 
-    public id: string | number;
-    public severity: SeverityLevel;
-    public label?: string;
+    public id: string | number = null;
+    public severity: SeverityLevel = null;
+    public label: string = null;
 
-    public range: {
-        from: number;
-        to?: number;
+    public range = {
+        from: null,
+        to: null,
     };
 
-    public alert: {
-        web: boolean;
-        sms: boolean;
-        mail: boolean
+    public alert = {
+        web: false,
+        sms: false,
+        mail: false,
     };
 
     constructor(private threshold: INewThreshold) {
@@ -44,17 +44,6 @@ export class NewThreshold implements INewThreshold {
             this.alert.mail = threshold.alert && threshold.alert.mail ? threshold.alert.mail : false;
             this.alert.sms = threshold.alert && threshold.alert.sms ? threshold.alert.sms : false;
             this.alert.web = threshold.alert && threshold.alert.web ? threshold.alert.web : false;
-        } else {
-            this.range = {
-                from: null,
-                to: null
-            };
-            this.severity = 'LOW';
-            this.alert = {
-                web: false,
-                sms: false,
-                mail: false
-            };
         }
         delete this.threshold;
     }
@@ -101,13 +90,14 @@ export interface INewThresholdTemplate {
 export class NewThresholdTemplate implements INewThresholdTemplate {
     public id = null;
     public name = '';
+    public sensors = [];
     public metadata = {
         lastModificationDate: null,
         creationDate: null,
         lastModificationAuthor: null,
         creationAuthor: null,
     };
-    public sensors = [];
+
 
     constructor(private thresholdTemplate: INewThresholdTemplate) {
         if (!isNullOrUndefined(thresholdTemplate)) {
