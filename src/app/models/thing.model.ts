@@ -31,6 +31,7 @@ export class Thing implements IThing {
       this.name = '';
       this.batteryPercentage = null;
     }
+    delete this._thing;
     this.unreadAlerts = Alert.createArray(_thing ? _thing.unreadAlerts : null);
     this.sensors = Sensor.createArray(_thing ? _thing.sensors : null)
       .sort((a: Sensor, b: Sensor): number => {

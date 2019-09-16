@@ -32,6 +32,7 @@ export interface INewAsset {
     timeLastMeasurementReceived?: Date;
     status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
     image?: string;
+    test?: any;
 }
 
 export class NewAsset implements INewAsset {
@@ -53,7 +54,7 @@ export class NewAsset implements INewAsset {
     timeLastMeasurementReceived?: Date;
     status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
     image?: string;
-
+    test?: any;
 
     constructor(private asset: INewAsset) {
         if (asset) {

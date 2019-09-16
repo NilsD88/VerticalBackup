@@ -429,6 +429,15 @@
     "TO" : "to",
     "AGGREGATED_VALUES" : "AGGREGATED VALUES"
   },
+  "DASHBOARD" : {
+    "TANK_MONITORING": {
+      "STATUS": {
+        "EMPTY": "Empty fuel",
+        "LOW": "Low fuel",
+        "OK": "No problem"
+      }
+    }
+  },
   "temperature": "Temperature",
   "humidity": "Humidity",
   "motion": "Motion",

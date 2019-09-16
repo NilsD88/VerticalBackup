@@ -38,7 +38,6 @@ export class AlertsService {
           if (!isNullOrUndefined(response)) {
             resolve(Alert.createArray(response.content));
           } else {
-            resolve(Alert.createArray(response.content));
             console.warn(
               'AlertsService: getUnreadAlerts => Response is null or undefined. ' +
               'Resolving with default empty array.'

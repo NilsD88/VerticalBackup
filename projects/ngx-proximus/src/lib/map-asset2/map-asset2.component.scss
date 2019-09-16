@@ -44,38 +44,17 @@
             left: -15px;
             top: -15px;
         }
-
-        &.tank-monitoring {
-            .pxi-map-marker {
-                background: green;
-                color: white;
-            }
-
-            &.low-fuel {
-                .pxi-map-marker {
-                    background: yellow;
-                    color: white;
-                }
-            }
-            &.empty-fuel {
-                .pxi-map-marker {
-                    background: red;
-                    color: white;
-                }
-            }
-        }
     }
     
 }
 
 .map-asset-container {
     position: relative;
-    height: 100%;
     > .parent-location-container {
         position: absolute;
         z-index: 999999;
         background: $primary;
-        right: 10px;
+        right: 30px;
         top: 10px;
         padding: 10px;
         color: white;

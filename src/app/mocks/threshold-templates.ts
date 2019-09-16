@@ -4,8 +4,7 @@ export let MOCK_THRESHOLD_TEMPLATES;
 MOCK_THRESHOLD_TEMPLATES = [
   {
     id: 1,
-    name: 'Threshold mock 1',
-    isCustom: false,
+    name: 'Threshold mock 1 with very very long title to test',
     metadata: {
       lastModificationDate: new Date(2019, 8),
       creationDate: new Date(1970, 3),
@@ -160,7 +159,6 @@ MOCK_THRESHOLD_TEMPLATES = [
   {
     id: 2,
     name: 'Threshold mock 2',
-    isCustom: false,
     metadata: {
       lastModificationDate: new Date(2019, 7),
       creationDate: new Date(1990, 2),

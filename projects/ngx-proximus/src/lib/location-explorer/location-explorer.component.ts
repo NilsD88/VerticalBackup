@@ -55,6 +55,14 @@ export class LocationExplorerComponent implements OnInit {
       this.currentLocation.assets = data;
     });
 
+    this.initLocationTree();
+
+    this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: INewLocation[]) => {
+      this.searchResults = locations;
+    });
+  }
+
+  private initLocationTree() {
     this.isDownloading = true;
     if (this.rootLocation) {
       this.tabs = [{
@@ -65,10 +73,6 @@ export class LocationExplorerComponent implements OnInit {
     } else {
       this.getLocations();
     }
-
-    this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: INewLocation[]) => {
-      this.searchResults = locations;
-    });
   }
 
   getLocations() {
@@ -179,7 +183,7 @@ export class LocationExplorerComponent implements OnInit {
     this.isDownloading = true;
     this.changeDetectorRef.detectChanges();
     this.isDownloading = false;
-    this.checkIfSelectedLocation();
+    this.initLocationTree();
   }
 
 }

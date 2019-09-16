@@ -1,5 +1,5 @@
 <div class="detail-page">
-  <pxs-detail-header [asset]="asset"></pxs-detail-header>
+  <pxs-detail2-header [asset]="asset"></pxs-detail2-header>
   <div class="detail-main-content">
     <div class="container">
       <div class="row">
@@ -26,10 +26,10 @@
       </div>
       <div class="row">
         <div class="col-lg-8 col-md-7">
-          <pxs-map-asset *ngIf="asset" [height]="400" [assets]="[asset]"></pxs-map-asset>
+          <pxs-map-asset2 *ngIf="asset && asset.geolocation" [height]="400" [assets]="[asset]" [imageUrl]="asset.location.floorPlan"></pxs-map-asset2>
         </div>
         <div class="col-lg-4 col-md-5">
-          <div id="asset-image" [style.background-image]="'url('+asset?.pictureBase64+')'"></div>
+          <div id="asset-image" [style.background-image]="'url('+asset?.image+')'"></div>
         </div>
       </div>
       <div class="row">

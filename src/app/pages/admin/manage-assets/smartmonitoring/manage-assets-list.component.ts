@@ -41,7 +41,7 @@ export class ManageAssetsListComponent implements OnInit {
   public async ngOnInit() {
     await this.getAssetsByFilter();
 
-    this.newAssetService.searchAssetsWithFilter(this.searchFilter$).subscribe(pagedAssets => {
+    this.newAssetService.searchPagedAssetsWithFilter(this.searchFilter$).subscribe(pagedAssets => {
       this.assets = pagedAssets.data;
       this.totalItems = pagedAssets.totalElements;
       this.isLoading = false;

@@ -77,6 +77,7 @@ export class SensorType {
       this.min = 0;
       this.max = 0;
     }
+    delete this._sensorType;
   }
 
   public static createArray(values: ISensorType[]): SensorType[] {
@@ -109,10 +110,10 @@ export class Sensor implements ISensor {
     } else {
       this.devEui = '';
     }
-
     this.organization = new Organization(_sensor ? _sensor.organization : null);
     this.thing = new Thing(_sensor ? _sensor.thing : null);
     this.sensorType = new SensorType(_sensor ? _sensor.sensorType : null);
+    delete this._sensor;
   }
 
   public static createArray(values: ISensor[]): Sensor[] {

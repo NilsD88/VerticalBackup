@@ -7,6 +7,9 @@ import {IMapPosition, MapPosition} from './map-position.model';
 import {isNullOrUndefined} from 'util';
 import {ISensor, Sensor} from './sensor.model';
 
+
+export type TankStatus = 'EMPTY' | 'LOW' | 'OK';
+
 export interface IAsset {
   id: number | string;
   name: string;
@@ -31,7 +34,7 @@ export interface IAsset {
   lastAlert?: IAlert;
   timeLastMeasurementReceived?: Date;
   geolocation: IGeolocation;
-  status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
+  status?: TankStatus;
 }
 
 export interface IGeolocation {
@@ -85,7 +88,7 @@ export class Asset implements IAsset {
   organization: Organization;
   lastMeasurements: any[]; // TODO: lastMeasurements
   lastAlert: Alert;
-  status?: 'OK' | 'LOW' | 'HIGH' | 'CRITICAL';
+  status?: TankStatus;
 
   geolocation: IGeolocation;
 

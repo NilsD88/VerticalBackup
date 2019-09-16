@@ -17,6 +17,7 @@ import { LogsService } from 'src/app/services/logs.service';
 import jspdf from 'jspdf';
 import { INewLocation } from 'src/app/models/new-location';
 import { NewLocationService } from 'src/app/services/new-location.service';
+import { INewAsset } from 'src/app/models/new-asset.model';
 
 declare var require: any;
 
@@ -32,16 +33,16 @@ interface IFilterChartData {
 
 
 @Component({
-  selector: 'pvf-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.scss']
+  selector: 'pvf-detail2',
+  templateUrl: './detail2.component.html',
+  styleUrls: ['./detail2.component.scss']
 })
-export class DetailComponent implements OnInit {
+export class Detail2Component implements OnInit {
 
   @ViewChild('myChart') myChart;
   @ViewChild('myAggregatedValues') myAggregatedValues;
 
-  public asset: Asset;
+  public asset: INewAsset;
   public locations: INewLocation[];
   public lastAlert: Alert;
   public numberOfAlertsOfTheDay: number;
@@ -92,7 +93,8 @@ export class DetailComponent implements OnInit {
     private logsService: LogsService,
     private sharedService: SharedService,
     private newLocationService: NewLocationService,
-    public alertsService: AlertsService
+    public alertsService: AlertsService,
+    public newAssetService: NewAssetService
   ) {}
 
   ngOnInit() {
@@ -147,6 +149,23 @@ export class DetailComponent implements OnInit {
   async init() {
     try {
       const id = await this.getRouteId();
+      this.asset = await this.newAssetService.getAssetById(+id).toPromise();
+      this.lastAlert = await this.alertsService.getLastAlertByAssetId(309);
+      const alertsOfTheDay = this.alertsService.getPagedAlerts({
+        ...this.filter,
+        assetId: 309
+      }, 0, 1);
+      this.numberOfAlertsOfTheDay = (await alertsOfTheDay).totalElements;
+      this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
+        return {
+          deveui: val.devEui,
+          sensorTypeId: val.sensorType.id
+        };
+      }) : [];
+      this.getChartData(null);
+
+
+      /*
       console.log('-----id');
       const assetPromise = this.assetService.getAssetById(id);
       const lastAlertPromise = this.alertsService.getLastAlertByAssetId(id);
@@ -167,6 +186,7 @@ export class DetailComponent implements OnInit {
         };
       }) : [];
       this.getChartData(null);
+      */
 
     } catch (err) {
       this.router.navigate(['/error/404']);
@@ -259,7 +279,7 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    pdf.addImage(this.asset.pictureBase64, 'JPEG', 10 , 10, 30, 30);
+    pdf.addImage(this.asset.image, 'JPEG', 10 , 10, 30, 30);
     const assetNameTranslation: string = await this.getTranslation('PDF.ASSET_NAME');
     pdf.text(assetNameTranslation + ' : ' + this.asset.name, 45, 15);
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
@@ -268,8 +288,8 @@ export class DetailComponent implements OnInit {
     const options = this.myChart.options;
     const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
     const sublocationNameTranslation: string = await this.getTranslation('PDF.SUBLOCATION_NAME');
-    pdf.text(locationNameTranslation + ' : ' + this.asset.sublocation.location.name + '\n'
-      + sublocationNameTranslation + ' : ' + this.asset.sublocation.name, 45, 30);
+    pdf.text(locationNameTranslation + ' : ' + this.asset.location.name + '\n'
+      + sublocationNameTranslation + ' : ' + this.asset.location.name, 45, 30);
 
     if ( options.series.length > 0) {
       setStyle('title');

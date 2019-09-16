@@ -64,25 +64,25 @@ export class AssetService {
         }
       }
 
-      if(filter.thresholdTemplates) {
+      if (filter.thresholdTemplates) {
         thresholdTemplateQuery = filter.thresholdTemplates.length ?
         `thresholdTemplate.id=in=(${filter.thresholdTemplates.toString()})`
         : null;
       }
 
-      if(filter.locationType) {
+      if (filter.locationType) {
         locationTypeQuery = !isNullOrUndefined(filter.locationType) ?
         `sublocation.location.locationType.id==${filter.locationType}`
         : null;
       }
 
-      if(filter.locations) {
+      if (filter.locations) {
         locationsQuery = filter.locations.length ?
         `sublocation.location.id=in=(${filter.locations.toString()})` :
         null;
       }
 
-      if(filter.sublocations) {
+      if (filter.sublocations) {
         locationsQuery = null;
         sublocationsQuery = filter.locations.length ?
         `sublocation.id=in=(${filter.locations.toString()})` :

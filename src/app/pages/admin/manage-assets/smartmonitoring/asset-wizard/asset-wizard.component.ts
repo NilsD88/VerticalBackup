@@ -102,6 +102,7 @@ export class AssetWizardComponent implements OnInit {
       this.asset.location = null;
       this.changeDetectorRef.detectChanges();
       this.asset.location = location;
+      this.asset.locationId = +location.id;
     }
   }
 
@@ -140,7 +141,7 @@ export class AssetWizardComponent implements OnInit {
   checkThresholdTemplate(event) {
     if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
       const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
-      if(!compatibleThresholdTemplate) {
+      if (!compatibleThresholdTemplate) {
         const dialogRef = this.dialog.open(PopupConfirmationComponent, {
           width: '250px',
           data: {

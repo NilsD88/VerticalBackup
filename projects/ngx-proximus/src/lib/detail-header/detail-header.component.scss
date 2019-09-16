@@ -1,5 +1,64 @@
+@import "~/../src/variables.scss";
+
 .detail-header-wrapper {
     span {
         width: 100%;
     }
 }
+
+.detail-header {
+    background-image: url("../../../../../src/assets/smartmonitoring/images/detail/header-background.png");
+    background-position : center center;
+    background-repeat   : no-repeat;
+    background-size     : cover;
+    
+    h1 {
+        line-height : 0;
+        
+        sup {
+            background-color : $promo;
+            margin-left      : .5rem;
+            font-size        : .5em;
+            padding          : .2em .5em;
+            border-radius    : 0 0 10px 0;
+        }
+    }
+    
+    h4 {
+        font-family : ProximusLight, sans-serif;
+    }
+    
+    .detail-header-wrapper {
+        padding       : 2rem;
+        display       : flex;
+        align-content : space-between;
+    }
+    
+}
+
+.last-measurements-wrapper {
+    margin-left    : auto;
+    display        : flex;
+    flex-direction : row;
+  
+    .last-measurement {
+      img {
+        height  : 3rem;
+        padding : .5rem;
+      }
+  
+      margin         : .5rem;
+      text-align     : center;
+      display        : flex;
+      flex-direction : column;
+      color          : $white;
+  
+      .last-measurement-date {
+        color : $accent;
+      }
+  
+      .last-measurement-time {
+        color : $accent;
+      }
+    }
+  }

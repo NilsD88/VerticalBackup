@@ -1,19 +1,17 @@
 <div class="detail-header">
   <div class="container">
-    <div class="detail-header-wrapper">
-     <span>
-        <h1 class="text-white" *ngIf="asset">
-        {{asset?.name}}
-          <sup>{{asset?.thresholdTemplate?.isCustom ? 'Custom' : asset?.thresholdTemplate?.name}}</sup>
-        </h1>
+    <div class="row detail-header-wrapper">
+     <div class="col-sm-6 col-xs-12">
+        <h1 class="text-white" *ngIf="asset"> {{asset?.name}}</h1>
+        <h3>{{asset?.thresholdTemplate?.name}}</h3>
         <h1 class="text-white" *ngIf="!asset">
             <ngx-skeleton-loader count="1" [theme]="{ width: '100%', 'max-width': '300px' }"></ngx-skeleton-loader>
         </h1>
         <h4 class="text-accent" *ngIf="asset">
           <a (click)="openDialog()" style="color: inherit;">
-            {{asset?.sublocation.location.name}} - {{asset?.sublocation.name}}
-            <span *ngIf="asset?.sublocation.location.locationType.name">
-              ({{asset?.sublocation.location.locationType.name}})
+            {{asset?.location?.name}}
+            <span *ngIf="asset?.location?.locationType?.name">
+              ({{asset?.location?.locationType?.name}})
             </span>
           </a>
         </h4>
@@ -23,12 +21,11 @@
             </a>
           </h4>
         <p>
-          {{asset?.description}}
+          {{asset?.description.trunc(120)}}
         </p>
-     </span>
-      <span class="last-measurements-wrapper" *ngIf="asset">
+     </div>
+      <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">
         <span *ngFor="let measurement of asset?.lastMeasurements" class="last-measurement">
-          
           <img
             [matTooltip]="measurement.sensorType.name"
             [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
@@ -37,7 +34,7 @@
           <small class="last-measurement-date">{{measurement.timestamp | date : 'd/M/yy'}}</small>
           <small class="last-measurement-time">{{measurement.timestamp | date : 'H:mm'}}</small>
         </span>
-      </span>
+      </div>
       <span class="last-measurements-wrapper" *ngIf="!asset">
         <span *ngFor="let measurement of [].constructor(3)" class="last-measurement">
           <ngx-skeleton-loader 

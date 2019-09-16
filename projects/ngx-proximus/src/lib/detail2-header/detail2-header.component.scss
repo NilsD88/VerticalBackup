@@ -1,0 +1,90 @@
+@import "~/../src/variables.scss";
+
+.detail-header-wrapper {
+  span {
+    width: 100%;
+  }
+}
+
+.detail-header {
+  background: rgb(41,25,69);
+  background: linear-gradient(90deg, rgba(41,25,69,1) 0%, rgba(28,80,125,1) 50%, rgba(41,25,69,1) 100%);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  
+  .detail-header-wrapper {
+    padding: 2rem;
+    display: flex;
+    align-content: space-between;
+    
+    h1 {
+      font-size: 34px;
+      line-height: 38px;
+      margin-bottom: 20px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+    
+    h3 {
+      background-color : $promo;
+      padding: .2em .5em;
+      border-radius: 0 0 10px 0;
+      color: white;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 18px;
+      white-space: nowrap;
+      display: inline-block;
+      margin: 0;
+    }
+    
+    h4 {
+      margin-top: 12px;
+      font-family : ProximusLight, sans-serif;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 18px;
+      white-space: nowrap;
+      display: block;
+      margin: 0;
+    }
+    
+    p {
+      color: rgba(255,255,255, 0.7);
+    }
+  }
+  
+}
+
+.last-measurements-wrapper {
+  margin-left    : auto;
+  display        : flex;
+  flex-direction : row;
+  
+  .last-measurement {
+    img {
+      height  : 3rem;
+      padding : .5rem;
+    }
+    
+    margin         : .5rem;
+    text-align     : center;
+    display        : flex;
+    flex-direction : column;
+    color          : $white;
+    
+    .last-measurement-date {
+      color : $accent;
+    }
+    
+    .last-measurement-time {
+      color : $accent;
+    }
+  }
+}

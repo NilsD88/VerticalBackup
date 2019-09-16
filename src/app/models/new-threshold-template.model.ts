@@ -1,7 +1,7 @@
 import { ISensorType, SensorType } from './sensor.model';
 import { isNullOrUndefined } from 'util';
 
-export type SeverityLevel = 'LOW' | 'HIGH' | 'CRITICAL';
+export type SeverityLevel = 'LOW' | 'MEDIUM' | 'CRITICAL';
 
 export interface INewThreshold {
     id: string | number;

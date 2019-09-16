@@ -5,6 +5,7 @@ import { ThingService } from 'src/app/services/thing.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { NewThingsService } from 'src/app/services/new-things.service';
 import { Subject } from 'rxjs';
+import { isNullOrUndefined } from 'util';
 
 
 interface IThingEditing extends IThing {
@@ -50,7 +51,8 @@ export class ListThingsComponent implements OnInit {
 
   public async ngOnInit() {
     this.displayedColumns = ['name', 'devEui', 'sensors'];
-    if (this.selectedThings) {
+
+    if (!isNullOrUndefined(this.selectedThings)) {
       this.displayedColumns.unshift('select');
     }
     if (this.admin) {

@@ -34,6 +34,7 @@ export class NewAssetService {
             }
             this.http.get<INewAsset[]>(request).subscribe(
                 async (assets: INewAsset[]) => {
+                    console.log(assets);
                     const locations = [];
                     await Promise.all(assets.map(async (asset) => {
                         const location = await this.http.get<INewLocation[]>(`${this.locationUrl}/${asset.locationId}`).toPromise();
@@ -65,10 +66,11 @@ export class NewAssetService {
     }
 
     getAssetsByLocationId(id: number): Observable<INewAsset[]> {
+        console.log('getAssetsByLocationId', id);
         return this.http.get<INewAsset[]>(`${this.assetUrl}/?locationId=${id}`);
     }
 
-    searchAssetsWithFilter(filters: Observable<any>) {
+    searchPagedAssetsWithFilter(filters: Observable<any>) {
       return filters.pipe(
         debounceTime(500),
         distinctUntilChanged(),
@@ -76,6 +78,16 @@ export class NewAssetService {
           return this.getPagedAssets(filter);
         })
       );
+    }
+
+    searchAssetsWithFilter(filters: Observable<any>) {
+        return filters.pipe(
+            debounceTime(500),
+            distinctUntilChanged(),
+            switchMap(filter => {
+            return this.getAssets(filter);
+            })
+        );
     }
 
     updateAsset(asset: INewAsset) {

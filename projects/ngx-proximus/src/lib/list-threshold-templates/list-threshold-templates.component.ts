@@ -5,6 +5,7 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/m
 import { ThresholdTemplateService } from 'src/app/services/threshold-template.service';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { Subject } from 'rxjs';
+import { isUndefined } from 'util';
 
 @Component({
   selector: 'pxs-list-threshold-templates',
@@ -44,10 +45,10 @@ export class ListThresholdTemplatesComponent implements OnInit {
     if (this.admin) {
       this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
     } else {
-      this.displayedColumns = ['select', 'name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate'];
+      this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate'];
     }
 
-    if (this.selectedThresholdTemplate || this.selectedThresholdTemplate === null ) {
+    if (!isUndefined(this.selectedThresholdTemplate)) {
       this.displayedColumns.unshift('select');
     }
 

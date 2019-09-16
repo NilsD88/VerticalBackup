@@ -157,10 +157,17 @@ export const AppRoutes: Routes = [
       path: '',
       //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
       //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-      //loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+      loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
       //loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
       //loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
-      loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
+      /*
+      children: [{
+          path: 'dashboard',
+          loadChildren: './pages/dashboard/tankmonitoring/dashboard.module#DashboardModule'
+        },
+      ]
+      */
+      //loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
       //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
     }]
   },
@@ -180,6 +187,11 @@ export const AppRoutes: Routes = [
         path: 'detail/:id',
         canActivate: [UserAuthGuard],
         loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
+      },
+      {
+        path: 'detail2/:id',
+        canActivate: [UserAuthGuard],
+        loadChildren: './pages/detail2/smartmonitoring/detail2.module#Detail2Module'
       },
       {
         path: 'tankmonitoring',

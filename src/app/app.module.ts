@@ -32,6 +32,7 @@ import { SharedModule } from './shared/shared.module';
 import { GlobaleSearchService } from './services/global-search.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
+import { GraphQLModule } from './graphql.module';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -76,6 +77,7 @@ export function createTranslateLoader(http: HttpClient) {
     MainMenuModule,
     IconModule,
     SharedModule,
+    GraphQLModule,
   ],
   providers: [
     PublicAuthGuard,
