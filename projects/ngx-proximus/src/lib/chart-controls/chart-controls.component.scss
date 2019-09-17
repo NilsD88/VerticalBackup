@@ -1,0 +1,22 @@
+@import "~/../src/variables.scss";
+
+:host {
+    .chart-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        div.right {
+            display: flex;
+            align-items: center;
+            button {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    .mat-button-toggle-checked {
+        background: $primary;
+        color: white !important;
+    }
+}

@@ -1,3 +1,4 @@
+<!--
 <div class="chart-controls">
     <div>
         <mat-button-toggle-group *ngIf="filter.durationInHours > 24" (change)="intervalChanged($event)" [value]="filter.interval">
@@ -23,6 +24,18 @@
         </mat-menu>
     </div>
 </div>
+-->
+
+<pxs-chart-controls
+    [chartDataIsLoading]="loading"
+    [chartDataLength]="chartData.length"
+    [filter]="filter"
+    [drpOptions]="drpOptions"
+    (intervalChanged)="intervalChanged($event)"
+    (dateRangeChanged)="dateRangeChanged($event)"
+    (downloadPDF)="download.emit()"
+    (downloadCSV)="downloadCSV()"
+></pxs-chart-controls>
 
 <div [hidden]="loading || !chartData.length" id="chart-container"></div>
 <pxs-loader *ngIf="loading || !chartData.length"></pxs-loader>

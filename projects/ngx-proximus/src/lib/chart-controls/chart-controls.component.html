@@ -1,0 +1,25 @@
+<div class="chart-controls">
+    <div>
+        <mat-button-toggle-group *ngIf="filter.durationInHours > 24" (change)="intervalChanged.emit($event)" [value]="filter.interval">
+            <mat-button-toggle *ngFor="let interval of intervals" [value]="interval">
+            {{interval}}
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+    <div class="right">
+        <pxs-date-range-selection (dateChange)="dateRangeChanged.emit($event)" [drpOptions]="drpOptions"></pxs-date-range-selection>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Chart menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="downloadPDF.emit()" [disabled]="chartDataIsLoading || !chartDataLength">
+                <mat-icon>picture_as_pdf</mat-icon>
+                <span>Export PDF</span>
+            </button>
+            <button mat-menu-item disabled (click)="downloadCSV.emit()" [disabled]="chartDataIsLoading || !chartDataLength">
+                <mat-icon>insert_drive_file</mat-icon>
+                <span>Export CSV</span>
+            </button>
+        </mat-menu>
+    </div>
+</div>

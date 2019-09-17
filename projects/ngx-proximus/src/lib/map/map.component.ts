@@ -71,7 +71,8 @@ export class MapComponent implements OnInit, OnChanges{
         if (isNullOrUndefined(this.selectedLocation.id)) {
           return of([]);
         } else {
-          return this.newAssetService.getAssetsByLocationId(+this.selectedLocation.id);
+          // TODO: reach only asset with the filter?
+          return this.newAssetService.getAssetsByLocationId(+this.selectedLocation.id, this.assetFilter);
         }
       })
     ).subscribe((data: NewAsset[]) => {

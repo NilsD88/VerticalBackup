@@ -63,10 +63,9 @@ export class PieChartComponent implements OnInit {
         series: {
           point: {
             events: {
-              click: function(event) {
+              click: function (event) {
                 this.slice(null);
                 this.select(null, true);
-
                 const points = this.series.points;
                 const selected = this.series.chart.getSelectedPoints();
                 if (selected.length) {
@@ -130,9 +129,7 @@ export class PieChartComponent implements OnInit {
 }
 
 function changeRgbaColorOpacity(rgba: string, alpha: number) {
-  console.log('before: ', rgba);
   const index = rgba.lastIndexOf(',') + 1;
   const result = rgba.substring(0, index) + alpha + ')';
-  console.log('after: ', result);
   return result;
 }

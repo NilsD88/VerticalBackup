@@ -24,16 +24,16 @@
         <ng-container matColumnDef="select">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element" style="width: 70px;">
-            <mat-radio-group [value]="selectedThresholdTemplate.id" (click)="onSelectedThresholdTemplateChange(element)">
+            <mat-radio-group [value]="selectedThresholdTemplate?.id" (click)="onSelectedThresholdTemplateChange(element)">
               <mat-radio-button 
                 color="primary"
                 [value]="element.id"
-                *ngIf="selectedThresholdTemplate.id === element.id"
+                *ngIf="selectedThresholdTemplate?.id === element.id"
               ></mat-radio-button>
               <mat-radio-button 
                 color="primary"
                 value="other"
-                *ngIf="selectedThresholdTemplate.id !== element.id"
+                *ngIf="selectedThresholdTemplate?.id !== element.id"
               ></mat-radio-button>
             </mat-radio-group>
           </td>

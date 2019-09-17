@@ -65,9 +65,14 @@ export class NewAssetService {
         return this.http.get<INewAsset>(`${this.assetUrl}/${id}`);
     }
 
-    getAssetsByLocationId(id: number): Observable<INewAsset[]> {
+    getAssetsByLocationId(id: number, filter: any = null): Observable<INewAsset[]> {
         console.log('getAssetsByLocationId', id);
-        return this.http.get<INewAsset[]>(`${this.assetUrl}/?locationId=${id}`);
+        if (filter) {
+            console.log(filter);
+            return this.http.get<INewAsset[]>(`${this.assetUrl}/?locationId=${id}`);
+        } else {
+            return this.http.get<INewAsset[]>(`${this.assetUrl}/?locationId=${id}`);
+        }
     }
 
     searchPagedAssetsWithFilter(filters: Observable<any>) {

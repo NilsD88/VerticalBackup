@@ -78,7 +78,6 @@ export class ChartComponent implements OnInit, OnChanges {
 
   @ViewChild('dataRangeSelection') dataRangeSelection;
 
-  public intervals: string[] = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
   public options: any;
   public chart: any;
   public range: {fromDate: number; toDate: number};
