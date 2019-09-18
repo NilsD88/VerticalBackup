@@ -4,24 +4,24 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <pxs-chart style="display: flex; height: 100%;"
-                     [loading]="chartLoading"
-                     [height]="400"
-                     [title]="'Data'"
-                     [chartData]="chartData"
-                     (updateChartData)="getChartData($event)"
-                     [filter]="currentFilter"
-                     [drpOptions]="drpOptions"
-                     (download)="downloadPdfDetail()"
-                     [asset]="asset"
-                     #myChart
-                     >
-          </pxs-chart>
+          <pxs-chart 
+            style="display: flex; height: 100%;"
+            [loading]="chartIsLoading"
+            [height]="400"
+            [title]="'Data'"
+            [chartData]="chartData"
+            (updateChartData)="updateChartData($event)"
+            [filter]="currentFilter"
+            [drpOptions]="drpOptions"
+            (download)="downloadPdfDetail()"
+            [asset]="asset"
+            #myChart
+          ></pxs-chart>
         </div>
       </div>
-      <div class="row" *ngIf="chartData && !chartLoading && currentFilter.durationInHours > 24">
+      <div class="row" *ngIf="chartData && !chartIsLoading && currentFilter.durationInHours > 24">
         <div class="col-12">
-          <pxs-aggregated-values [chartData]="chartData" #myAggregatedValues></pxs-aggregated-values>
+          <pxs-aggregated-values *ngIf="!sdIsLoading" [standardDeviations]="standardDeviations" #myAggregatedValues></pxs-aggregated-values>
         </div> 
       </div>
       <div class="row">

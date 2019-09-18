@@ -20,7 +20,6 @@ export interface INewAsset {
     description?: string;
     sensors?: ISensor[];
     thumbnail?: string;
-    thresholds?: IThreshold[];
     geolocation?: IGeolocation;
     alerts?: IAlert[];
     things?: IThing[];

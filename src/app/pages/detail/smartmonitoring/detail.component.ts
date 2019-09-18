@@ -17,6 +17,12 @@ import { LogsService } from 'src/app/services/logs.service';
 import jspdf from 'jspdf';
 import { INewLocation } from 'src/app/models/new-location';
 import { NewLocationService } from 'src/app/services/new-location.service';
+import { debounceTime, distinctUntilChanged, switchMap, concatAll } from 'rxjs/operators';
+import { Subject } from 'rxjs/internal/Subject';
+import { Observable } from 'rxjs/internal/Observable';
+import { forkJoin } from 'rxjs';
+import { fromPromise } from 'rxjs/internal/observable/fromPromise';
+import { of } from 'rxjs';
 
 declare var require: any;
 
@@ -46,10 +52,11 @@ export class DetailComponent implements OnInit {
   public lastAlert: Alert;
   public numberOfAlertsOfTheDay: number;
   public chartSensorOptions = [];
-  public chartLoading = false;
   public chartData = [];
   public standardDeviations = [];
   public isDownloading = false;
+  public chartIsLoading = false;
+  public sdIsLoading = false;
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
     from: moment().subtract(1, 'day').toDate().getTime(),
@@ -84,6 +91,9 @@ export class DetailComponent implements OnInit {
 
   public MOCK_THRESHOLD_TEMPLATE = MOCK_THRESHOLD_TEMPLATES[0];
 
+  public chartData$ = new Subject<any>();
+  public standardDeviation$ = new Subject<any>();
+
   constructor(
     public activeRoute: ActivatedRoute,
     private assetService: AssetService,
@@ -101,6 +111,31 @@ export class DetailComponent implements OnInit {
     this.newLocationService.getLocationsTree().then((data: INewLocation[]) => {
       this.locations = data;
     });
+
+
+    this.getChartData(this.chartData$).subscribe((result: any[]) => {
+        console.log('suscribe--chart----');
+        console.log(result);
+        this.chartIsLoading = false;
+        this.chartData = result;
+        /*
+        const { standardDeviations, chartData } = result ;
+
+        this.standardDeviations = standardDeviations;
+        */
+        //this.chartData = result;
+    });
+
+
+    
+    this.getStandardDeviation(this.standardDeviation$).subscribe((result) => {
+      console.log('suscribe--sd----');
+      console.log(result);
+      this.sdIsLoading = false;
+      this.standardDeviations = result;
+    });
+    
+
   }
 
   setupPresets() {
@@ -166,10 +201,11 @@ export class DetailComponent implements OnInit {
           sensorTypeId: val.sensorType.id
         };
       }) : [];
-      this.getChartData(null);
+      this.updateChartData(null);
 
     } catch (err) {
-      this.router.navigate(['/error/404']);
+      console.log(err);
+      //this.router.navigate(['/error/404']);
     }
   }
 
@@ -186,7 +222,7 @@ export class DetailComponent implements OnInit {
   }
 
 
-  public async getChartData(options: { interval?: string; from?: number; to?: number; }) {
+  public async updateChartData(options: { interval?: string; from?: number; to?: number; }) {
 
     if (!options) {
       options = this.currentFilter;
@@ -205,41 +241,80 @@ export class DetailComponent implements OnInit {
       durationInHours
     };
 
+    const chartDataFilters = [];
+    const sdFilters = [];
 
-    this.chartLoading = true;
-    const logsPromises = [];
-    const standardDeviationPromises = [];
-
-    if (durationInHours <= 24) {
-      for (const sensorType of this.chartSensorOptions) {
-        const filter: ISensorReadingFilter = {
-          deveui: sensorType.deveui,
-          sensortypeid: sensorType.sensorTypeId,
-          from,
-          to,
-          interval,
-        };
-        logsPromises.push(this.logsService.getSensorReadingsV2(filter));
+    for (const sensorType of this.chartSensorOptions) {
+      const filter: ISensorReadingFilter = {
+        deveui: sensorType.deveui,
+        sensortypeid: sensorType.sensorTypeId,
+        from,
+        to,
+        interval,
+      };
+      if (durationInHours > 24) {
+        sdFilters.push(filter);
       }
-    } else {
-      for (const sensorType of this.chartSensorOptions) {
-        const filter: ISensorReadingFilter = {
-          deveui: sensorType.deveui,
-          sensortypeid: sensorType.sensorTypeId,
-          from,
-          to,
-          interval,
-        };
-        logsPromises.push(this.logsService.getSensorReadings(filter));
-        standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
-      }
+      chartDataFilters.push(filter);
     }
 
-    this.standardDeviations = await Promise.all(standardDeviationPromises);
-    this.chartData = await Promise.all(logsPromises);
-    console.log(this.chartData);
-    this.chartLoading = false;
+    if (chartDataFilters.length) {
+      this.chartData$.next({
+        filters: chartDataFilters,
+        durationInHours
+      });
+    }
+
+    if (sdFilters.length) {
+      this.standardDeviation$.next(sdFilters);
+    }
+
+
   }
+
+  private getChartData(request: Observable<any>) {
+    return request.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(data => {
+        this.chartIsLoading = true;
+        const observables: Observable<any>[] = [];
+        const {filters, durationInHours} = data;
+        if (durationInHours <= 24) {
+          for (const filter of filters) {
+            observables.push(
+              this.logsService.getSensorReadingsV2(filter)
+            );
+          }
+        } else {
+          for (const filter of filters) {
+            observables.push(
+              this.logsService.getSensorReadings(filter)
+            );
+          }
+        }
+        return forkJoin(observables);
+      })
+    );
+  }
+
+  private getStandardDeviation(request: Observable<any>) {
+    return request.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(filters => {
+        this.sdIsLoading = true;
+        const observables = [];
+        for (const filter of filters) {
+          observables.push(
+            this.logsService.getStandardDeviation(filter)
+          );
+        }
+        return forkJoin(observables).toPromise();
+      })
+    );
+  }
+
 
 
   public async downloadPdfDetail() {

@@ -71,17 +71,17 @@
   <pxs-menu-item
     [label]="'Tank monitoring'" 
     [url]="'/private/tankmonitoring'"
-    *ngIf="sharedLayoutService.user.hasFeature('fill')" 
+    *ngIf="sharedLayoutService.user.hasModule('TANK_MONITORING')" 
     [mat-menu-trigger-for]="tankMonitoring"
   ></pxs-menu-item>
   <pxs-menu-item 
     [label]="'Visitor counting'"
-    *ngIf="sharedLayoutService.user.hasFeature('counting')"
+    *ngIf="sharedLayoutService.user.hasModule('PEOPLE_COUNTING')"
     [mat-menu-trigger-for]="visitorCounting"
   ></pxs-menu-item>
   <pxs-menu-item
     [label]="'Asset tracking'"
-    *ngIf="sharedLayoutService.user.hasFeature('tracking')"
+    *ngIf="sharedLayoutService.user.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"
   ></pxs-menu-item>
 </pxs-main-menu>

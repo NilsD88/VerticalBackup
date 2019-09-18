@@ -1,9 +1,11 @@
+import { PeriodicDuration } from './../chart-controls/chart-controls.component';
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 import { IAsset } from 'src/app/models/asset.model';
+import { Intervals } from '../chart-controls/chart-controls.component';
 
 
 declare global {
@@ -45,6 +47,18 @@ enum ESensorColors {
   BATTERY = 'monochrome'
 }
 
+interface IChartData {
+  label: string;
+  series: IChartSerie[];
+}
+
+interface IChartSerie {
+  label: string;
+  avg?: number;
+  min?: number;
+  max?: number;
+  value?: number;
+}
 
 @Component({
   selector: 'pxs-chart',
@@ -52,10 +66,7 @@ enum ESensorColors {
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit, OnChanges {
-  @Input() chartData: {
-    label: string;
-    series: { label: string, avg?: number, min?: number, max?: number, value?: number }[];
-  }[];
+  @Input() chartData: IChartData[];
   @Input() drpOptions: NgxDrpOptions;
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
@@ -121,41 +132,6 @@ export class ChartComponent implements OnInit, OnChanges {
         shared: true,
       },
       yAxis: [],
-      /*
-      yAxis: [{ // Temperature yAxis
-        opposite: false,
-        showEmpty: false,
-        title: {
-          text: 'Temperature'
-        },
-        softMin: 0,
-        softMax: 40
-      }, { // humidity yAxis
-        opposite: true,
-        showEmpty: false,
-        title: {
-          text: 'Humidity'
-        },
-        softMin: 0,
-        softMax: 100
-      }, { // Luminosity yAxis
-        opposite: false,
-        showEmpty: false,
-        title: {
-          text: 'Luminosity'
-        },
-        softMin: 0,
-        softMax: 500
-      }, { // motion yAxis
-        opposite: true,
-        showEmpty: false,
-        title: {
-          text: 'Motion'
-        },
-        softMin: 0,
-        softMax: 1000
-      }],
-      */
       xAxis: {
         type: 'datetime'
       },
@@ -177,101 +153,24 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     const chartDataPromises = [];
-    const rangeTranslation = await new Promise((resolve) => {
+    const rangeTranslation: string = await new Promise((resolve) => {
       this.translateService.get('SENSORTYPES.range').subscribe((result) => {
         resolve(result);
       });
     });
 
 
-    this.chartData.forEach(async (item) => {
+    this.chartData.forEach(async (item: IChartData) => {
       chartDataPromises.push(new Promise(async (resolveChartDataPromise) => {
-        const labelTranslation = await new Promise((resolve) => {
-          this.translateService.get('SENSORTYPES.' + item.label).subscribe((result) => {
+
+        const labelTranslation: string = await new Promise((resolve) => {
+          this.translateService.get('SENSORTYPES.' + item.label).subscribe((result: string) => {
             resolve(result);
           });
         });
 
-        const axisOpposite = this.options.yAxis.length % 2 > 0;
-        let shouldAddYAxis = false;
-
-        if (item.series.length > 0) {
-          shouldAddYAxis = true;
-          if (this.options.yAxis.length > 0) {
-            shouldAddYAxis = !this.options.yAxis.some((e) => {
-              return e.title.text === labelTranslation;
-            });
-          }
-        }
-
-        if (shouldAddYAxis) {
-          this.options.yAxis.push({
-            opposite: axisOpposite,
-            showEmpty: false,
-            title: {
-              text: labelTranslation
-            }
-          });
-        }
-
-        const color = randomColor({ hue: ESensorColors[String(labelTranslation).toUpperCase()] });
-
-        if (this.filter.durationInHours > 24) {
-
-          this.options.series.push({
-            name: labelTranslation,
-            color,
-            yAxis: this.getYAxisByLabel(item.label),
-            zIndex: 1,
-            type: 'spline',
-            data: item.series.map((serie) => {
-              let label = this.filterInt(serie.label);
-              if (isNaN(label)) {
-                console.warn('Unable to perse timestamp for chart, using default value of 0');
-                label = 0;
-              }
-              return [label, parseFloat(serie.avg.toFixed(2))];
-            })
-          });
-
-          this.options.series.push({
-            name: labelTranslation + ' ' + rangeTranslation,
-            color,
-            type: 'arearange',
-            yAxis: this.getYAxisByLabel(item.label),
-            lineWidth: 0,
-            linkedTo: ':previous',
-            fillOpacity: 0.3,
-            zIndex: 0,
-            marker: {
-              enabled: false
-            },
-            data: item.series.map((serie) => {
-              let label = this.filterInt(serie.label);
-              if (isNaN(label)) {
-                console.warn('Unable to perse timestamp for chart, using default value of 0');
-                label = 0;
-              }
-              return [label, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-            })
-          });
-        } else {
-          this.options.series.push({
-            name: labelTranslation,
-            color,
-            yAxis: this.getYAxisByLabel(item.label),
-            zIndex: 1,
-            type: 'spline',
-            data: item.series.map((serie) => {
-              let label = this.filterInt(serie.label);
-              if (isNaN(label)) {
-                console.warn('Unable to perse timestamp for chart, using default value of 0');
-                label = 0;
-              }
-              return [label, parseFloat(serie.value.toFixed(2))];
-            })
-          });
-        }
+        this.addYAxisOption(item.series.length, labelTranslation);
+        this.addYAxisValues(item, labelTranslation, rangeTranslation);
 
         resolveChartDataPromise();
       }));
@@ -294,6 +193,94 @@ export class ChartComponent implements OnInit, OnChanges {
     return NaN;
   }
 
+  private addYAxisOption(lengthOfSerie: number, labelTranslation: string) {
+    const axisOpposite = this.options.yAxis.length % 2 > 0;
+    let shouldAddYAxis = false;
+
+    if (lengthOfSerie > 0) {
+      shouldAddYAxis = true;
+      if (this.options.yAxis.length > 0) {
+        shouldAddYAxis = !this.options.yAxis.some((e) => {
+          return e.title.text === labelTranslation;
+        });
+      }
+    }
+
+    if (shouldAddYAxis) {
+      this.options.yAxis.push({
+        opposite: axisOpposite,
+        showEmpty: false,
+        title: {
+          text: labelTranslation
+        }
+      });
+    }
+  }
+
+  private addYAxisValues(item: IChartData, labelTranslation: string, rangeTranslation: string) {
+    const color = randomColor({ hue: ESensorColors[String(labelTranslation).toUpperCase()] });
+    if (this.filter.durationInHours > 24) {
+      // AVERAGE
+      this.options.series.push({
+        name: labelTranslation,
+        color,
+        yAxis: this.getYAxisByLabel(item.label),
+        zIndex: 1,
+        type: 'spline',
+        showInLegend: (item.series.length) ? true : false,
+        data: item.series.map((serie) => {
+          let label = this.filterInt(serie.label);
+          if (isNaN(label)) {
+            console.warn('Unable to perse timestamp for chart, using default value of 0');
+            label = 0;
+          }
+          return [label, parseFloat(serie.avg.toFixed(2))];
+        })
+      });
+      // MIN AND MAX
+      this.options.series.push({
+        name: labelTranslation + ' ' + rangeTranslation,
+        color,
+        type: 'arearange',
+        yAxis: this.getYAxisByLabel(item.label),
+        showInLegend: (item.series.length) ? true : false,
+        lineWidth: 0,
+        linkedTo: ':previous',
+        fillOpacity: 0.3,
+        zIndex: 0,
+        marker: {
+          enabled: false
+        },
+        data: item.series.map((serie) => {
+          let label = this.filterInt(serie.label);
+          if (isNaN(label)) {
+            console.warn('Unable to perse timestamp for chart, using default value of 0');
+            label = 0;
+          }
+          return [label, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+        })
+      });
+    } else {
+      // REAL VALUES
+      this.options.series.push({
+        name: labelTranslation,
+        color,
+        yAxis: this.getYAxisByLabel(item.label),
+        zIndex: 1,
+        type: 'spline',
+        showInLegend: (item.series.length) ? true : false,
+        data: item.series.map((serie) => {
+          let label = this.filterInt(serie.label);
+          if (isNaN(label)) {
+            console.warn('Unable to perse timestamp for chart, using default value of 0');
+            label = 0;
+          }
+          return [label, parseFloat(serie.value.toFixed(2))];
+        })
+      });
+    }
+  }
+
   getYAxisByLabel(label) {
     let result;
     for ( let i = 0; i < this.options.yAxis.length; i++) {
@@ -310,11 +297,12 @@ export class ChartComponent implements OnInit, OnChanges {
     });
   }
 
-  public dateRangeChanged(range: { fromDate: Date; toDate: Date; }) {
-    const {fromDate, toDate} = range;
+  public dateRangeChanged(periodicDuration: PeriodicDuration) {
+    const {interval, from, to} = periodicDuration;
     this.updateChartData.emit({
-      from: fromDate.getTime(),
-      to: toDate.getTime(),
+      interval,
+      from,
+      to
     });
   }
 
