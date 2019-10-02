@@ -2,18 +2,18 @@
   <div class="container">
     <div class="row detail-header-wrapper">
      <div class="col-sm-6 col-xs-12">
+        <h2>{{orgName}}</h2>
         <h1 class="text-white" *ngIf="asset"> {{asset?.name}}</h1>
-        <h3>{{asset?.thresholdTemplate?.name}}</h3>
+        <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
+        <br>
         <h1 class="text-white" *ngIf="!asset">
             <ngx-skeleton-loader count="1" [theme]="{ width: '100%', 'max-width': '300px' }"></ngx-skeleton-loader>
         </h1>
-        <h4 class="text-accent" *ngIf="asset">
-          <a (click)="openDialog()" style="color: inherit;">
-            {{asset?.location?.name}}
-            <span *ngIf="asset?.location?.locationType?.name">
-              ({{asset?.location?.locationType?.name}})
-            </span>
-          </a>
+        <h4 (click)="openDialog()" class="text-accent" *ngIf="asset">
+          {{asset?.location?.name}}
+          <span *ngIf="asset?.location?.locationType?.name">
+            ({{asset?.location?.locationType?.name}})
+          </span>
         </h4>
         <h4 class="text-accent" *ngIf="!asset">
             <a style="color: inherit;">
@@ -21,7 +21,7 @@
             </a>
           </h4>
         <p>
-          {{asset?.description.trunc(120)}}
+          {{asset?.description?.trunc(120)}}
         </p>
      </div>
       <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">

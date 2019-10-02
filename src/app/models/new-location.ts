@@ -12,7 +12,7 @@ export interface INewLocation {
   locationType: ILocationType;
   sublocationsId: number[];
   sublocations?: INewLocation[];
-  floorPlan: string;
+  image: string;
   geolocation: IGeolocation;
   assets?: INewAsset[];
 }
@@ -26,7 +26,7 @@ export class NewLocation implements INewLocation {
   locationType: ILocationType;
   sublocationsId: number[];
   sublocations?: INewLocation[];
-  floorPlan: string;
+  image: string;
   geolocation: IGeolocation;
   assets?: INewAsset[];
 
@@ -40,9 +40,10 @@ export class NewLocation implements INewLocation {
       this.description = !isNullOrUndefined(location.description) ? location.description : null;
       this.locationType = !isNullOrUndefined(location.locationType) ? location.locationType : null;
       this.sublocations = !isNullOrUndefined(location.sublocations) ? location.sublocations : null;
-      this.floorPlan = !isNullOrUndefined(location.floorPlan) ? location.floorPlan : null;
+      this.image = !isNullOrUndefined(location.image) ? location.image : null;
       this.geolocation = !isNullOrUndefined(location.geolocation) ? location.geolocation : null;
       this.assets = !isNullOrUndefined(location.assets) ? location.assets : null;
     }
+    delete this.location;
   }
 }

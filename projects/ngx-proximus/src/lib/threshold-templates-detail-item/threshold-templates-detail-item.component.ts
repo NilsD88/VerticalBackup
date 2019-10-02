@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { INewThresholdTemplate } from 'src/app/models/new-threshold-template.model';
+import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail-item',
@@ -8,27 +8,62 @@ import { INewThresholdTemplate } from 'src/app/models/new-threshold-template.mod
 })
 export class ThresholdTemplatesDetailItemComponent implements OnInit {
 
-  @Input() thresholdTemplate: INewThresholdTemplate;
+  @Input() thresholdTemplate: IThresholdTemplate;
+  @Input() lastValues: {
+    sensorTypeId: string;
+    thingName: string;
+    value: number
+  }[];
 
   constructor() { }
 
   ngOnInit() {
-    this.thresholdTemplate.sensors.forEach(sensor => {
-      const coef = 100 / (sensor.sensorType.max - sensor.sensorType.min);
+
+    //TODO: remove these lines
+    this.lastValues = [
+      {
+        sensorTypeId: '1',
+        thingName: "Thing 120",
+        value: 46
+      },
+      {
+        sensorTypeId: '2',
+        thingName: "Thing 220",
+        value: 32
+      }
+    ];
+
+    this.thresholdTemplate.thresholds.forEach(threshold => {
+      const coef = 100 / (threshold.sensorType.max - threshold.sensorType.min);
       const indicators = new Map <number, number> ();
-      const min = sensor.sensorType.min;
+      const min = threshold.sensorType.min;
       indicators.set(min, 0);
-      indicators.set(sensor.sensorType.max, 100);
-      sensor.thresholds.forEach(threshold => {
-        const fromPercent = (threshold.range.from - min) * coef;
-        const toPercent = (threshold.range.to - min) * coef;
-        threshold.range['fromPercent'] = fromPercent;
-        threshold.range['toPercent'] = toPercent;
-        threshold.range['widthPercent'] = toPercent - fromPercent;
-        indicators.set(threshold.range.from, fromPercent);
-        indicators.set(threshold.range.to, toPercent);
+      indicators.set(threshold.sensorType.max, 100);
+      threshold.thresholdItems.forEach(thresholdItem => {
+        const fromPercent = (thresholdItem.range.from - min) * coef;
+        const toPercent = (thresholdItem.range.to - min) * coef;
+        thresholdItem.range['fromPercent'] = fromPercent;
+        thresholdItem.range['toPercent'] = toPercent;
+        thresholdItem.range['widthPercent'] = toPercent - fromPercent;
+        indicators.set(thresholdItem.range.from, fromPercent);
+        indicators.set(thresholdItem.range.to, toPercent);
       });
-      sensor['indicators'] = indicators;
+      threshold['indicators'] = indicators;
+
+      // last values
+      if (this.lastValues) {
+        const lastSensorValues = [];
+        this.lastValues.forEach(lastValue => {
+          if (+lastValue.sensorTypeId === +threshold.sensorType.id) {
+            lastSensorValues.push({
+              name: lastValue.thingName,
+              value: lastValue.value,
+              percent: lastValue.value * coef
+            });
+          }
+        });
+        threshold['lastValues'] = lastSensorValues;
+      }
     });
   }
 

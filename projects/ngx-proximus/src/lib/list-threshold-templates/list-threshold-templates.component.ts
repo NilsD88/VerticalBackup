@@ -1,6 +1,6 @@
 import { NewThresholdTemplateService } from './../../../../../src/app/services/new-threshold-templates';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { ThresholdTemplate, INewThresholdTemplate, IPagedThresholdTemplates } from 'src/app/models/threshold.model';
+import { IThresholdTemplate, IThresholdTemplatePaged } from 'src/app/models/g-threshold-template.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { ThresholdTemplateService } from 'src/app/services/threshold-template.service';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
@@ -15,14 +15,14 @@ import { isUndefined } from 'util';
 export class ListThresholdTemplatesComponent implements OnInit {
 
   @Input() admin = false;
-  @Input() selectedThresholdTemplate: INewThresholdTemplate;
+  @Input() selectedThresholdTemplate: IThresholdTemplate;
 
-  @Output() selectChange: EventEmitter<INewThresholdTemplate> = new EventEmitter<INewThresholdTemplate>();
+  @Output() selectChange: EventEmitter<IThresholdTemplate> = new EventEmitter<IThresholdTemplate>();
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public thresholdTemplates: INewThresholdTemplate[];
+  public thresholdTemplates: IThresholdTemplate[];
   public filter: { name: string } = {name: ''};
   public page = 0;
   public totalItems = 0;
@@ -31,7 +31,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
   public searchFilter$ = new Subject<any>();
 
   public isLoading = false;
-  public dataSource: MatTableDataSource<INewThresholdTemplate>;
+  public dataSource: MatTableDataSource<IThresholdTemplate>;
   public displayedColumns: string[];
 
   constructor(
@@ -43,9 +43,11 @@ export class ListThresholdTemplatesComponent implements OnInit {
 
   async ngOnInit() {
     if (this.admin) {
-      this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
+      //this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
+      this.displayedColumns = ['name', 'thresholds', 'actions'];
     } else {
-      this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate'];
+      //this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate'];
+      this.displayedColumns = ['name', 'thresholds'];
     }
 
     if (!isUndefined(this.selectedThresholdTemplate)) {
@@ -59,8 +61,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
     });
 
     this.newThresholdTemplateService.searchThresholdTemplatesWithFilter(this.searchFilter$).subscribe(
-      (pagedThresholdTemplate: IPagedThresholdTemplates) => {
-        this.thresholdTemplates = pagedThresholdTemplate.data;
+      (pagedThresholdTemplate: IThresholdTemplatePaged) => {
+        this.thresholdTemplates = pagedThresholdTemplate.thresholdTemplates;
         this.totalItems = pagedThresholdTemplate.totalElements;
         this.isLoading = false;
         this.updateDataSource();
@@ -107,7 +109,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
     await this.getThresholdTemplateByFilter();
   }
 
-  public onSelectedThresholdTemplateChange(thresholdTemplate: INewThresholdTemplate) {
+  public onSelectedThresholdTemplateChange(thresholdTemplate: IThresholdTemplate) {
     if (this.selectedThresholdTemplate && this.selectedThresholdTemplate.id === thresholdTemplate.id) {
       this.selectedThresholdTemplate = null;
     } else {
@@ -117,7 +119,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
   }
 
 
-  public async deleteThresholdTemplate(thresholdTemplateId: number) {
+  public async deleteThresholdTemplate(thresholdTemplateId: string) {
     this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe((result) => {
       this.thresholdTemplates = null;
       this.changeDetectorRef.detectChanges();
@@ -125,7 +127,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
     });
   }
 
-  openDetailDialog(thresholdTemplate: INewThresholdTemplate): void {
+  openDetailDialog(thresholdTemplate: IThresholdTemplate): void {
     const dialogRef = this.dialog.open(ThresholdTemplatesDetailComponent, {
       minWidth: '320px',
       maxWidth: '600px',

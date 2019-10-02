@@ -1,7 +1,7 @@
 <pxs-top-menu
   *ngIf="topMenuConfig"
   (languageChange)="sharedLayoutService.changeLanguage($event)"
-  (contactClick)="navigateTo('contact')"
+  (contactClick)="navigateTo(['private', 'contact'])"
   (autocompleteClick)="autocompleteClick($event)"
   [searchResults]="searchResults"
   (search)="searchTerm$.next($event)"

@@ -19,6 +19,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationWizardComponent } from '../../../manage-locations/location-wizard/location-wizard.component';
+import { ManageThresholdTemplatesComponent } from '../../../manage-threshold-templates/smartmonitoring/manage-threshold-templates.component';
+import { AddSensorComponent } from '../../../manage-threshold-templates/smartmonitoring/add-sensor/add-sensor.component';
 
 @NgModule({
   declarations: [
@@ -48,9 +51,13 @@ import { NewLocationService } from 'src/app/services/new-location.service';
     PopupConfirmationModule
   ],
   providers: [
-    ThingService,
     NewAssetService,
     NewLocationService
+  ],
+  entryComponents: [
+    LocationWizardComponent,
+    ManageThresholdTemplatesComponent,
+    AddSensorComponent
   ]
 })
 export class AssetWizardModule { }

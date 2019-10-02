@@ -37,9 +37,13 @@
     padding: 10px !important;
     .dropListItem {
         &.selected {
-            background-color: rgba($primary, .1);
-            border-color: $primary;
-            color: $primary;
+          background-color: rgba($primary, .1);
+          border-color: $primary;
+          color: $primary;
+        }
+        &.ghost {
+          opacity: 0.2;
+          cursor: default !important;
         }
         cursor: pointer;
         border: 1px solid #F5F5F5;
@@ -111,9 +115,10 @@
       cursor: move;
     }
 
-    >div {
+    >div,> a {
       display: inline-flex;
       align-items: center;
+      text-decoration: none;
       
       > pxs-icon {
         color: white;

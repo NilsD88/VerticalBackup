@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { IThing, Thing } from 'src/app/models/thing.model';
+import { IThing } from 'src/app/models/g-thing.model';
 import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular/material';
 import { ThingService } from 'src/app/services/thing.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -20,7 +20,7 @@ interface IThingEditing extends IThing {
 })
 export class ListThingsComponent implements OnInit {
 
-  @Input() admin = false;
+  @Input() admin = true;
   @Input() selectedThings: IThing[];
 
   @Output() selectChange: EventEmitter<IThing> = new EventEmitter<IThing>();
@@ -87,7 +87,7 @@ export class ListThingsComponent implements OnInit {
     this.isLoading = false;
   }
 
-  public checkOneThing(id: number) {
+  public checkOneThing(id: string) {
     return this.selectedThings.some((thing) => thing.id === id);
   }
 
@@ -119,7 +119,7 @@ export class ListThingsComponent implements OnInit {
 
   public async saveThing(thing: IThing): Promise<void> {
     try {
-      await this.thingService.updateName(thing as Thing);
+      await this.thingService.updateName(thing as IThing);
       this.getThings();
       this.sharedService.showNotification('Successfully saved thing name', 'success');
       this.activeInput = null;

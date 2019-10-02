@@ -1,11 +1,15 @@
-<div class="threshold-container" *ngFor="let sensor of thresholdTemplate.sensors">
-  <div *ngIf="sensor.sensorType.type === 'NUMBER'">
-    <pxs-threshold-templates-detail-item-number *ngIf="sensor.thresholds && sensor.thresholds.length" [sensor]="sensor" ></pxs-threshold-templates-detail-item-number>
+<div class="threshold-container" *ngFor="let threshold of thresholdTemplate.thresholds">
+  <div *ngIf="threshold.sensorType.type === 'NUMBER'">
+    <pxs-threshold-templates-detail-item-number *ngIf="threshold.thresholdItems && threshold.thresholdItems.length" [threshold]="threshold" ></pxs-threshold-templates-detail-item-number>
   </div>
-  <div *ngIf="sensor.sensorType.type === 'COUNTER'">
-    <pxs-threshold-templates-detail-item-counter *ngIf="sensor.thresholds && sensor.thresholds.length" [sensor]="sensor" ></pxs-threshold-templates-detail-item-counter>
+  <div *ngIf="threshold.sensorType.type === 'COUNTER'">
+    <pxs-threshold-templates-detail-item-counter *ngIf="threshold.thresholdItems && threshold.thresholdItems.length" [threshold]="threshold" ></pxs-threshold-templates-detail-item-counter>
   </div>
-  <div *ngIf="sensor.sensorType.type === 'BOOLEAN'">
-    <pxs-threshold-templates-detail-item-boolean *ngIf="sensor.thresholds && sensor.thresholds.length" [sensor]="sensor" ></pxs-threshold-templates-detail-item-boolean>
+  <div *ngIf="threshold.sensorType.type === 'BOOLEAN'">
+    <pxs-threshold-templates-detail-item-boolean *ngIf="threshold.thresholdItems && threshold.thresholdItems.length" [threshold]="threshold" ></pxs-threshold-templates-detail-item-boolean>
+  </div>
+  <!-- LAST VALUES -->
+  <div *ngFor="let lastValue of threshold.lastValues">
+    <span matTooltip="{{lastValue.name}}: {{lastValue.value}}"><i class="material-icons">arrow_drop_down</i></span>
   </div>
 </div>

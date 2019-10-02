@@ -155,21 +155,13 @@ export const AppRoutes: Routes = [
       canActivate: [PublicAuthGuard],
       children: [{
         path: '',
-        // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-        // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-        loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
-        // loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
-        // loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
-        /*
-        children: [{
-          path: 'dashboard',
-          loadChildren: './pages/dashboard/tankmonitoring/dashboard.module#DashboardModule'
-        },
-      ]
-      */
-      // loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
-      // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-    }]
+        //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
+        //loadChildren: './pages/smart-monitoring/detail2/detail2.module#Detail2Module'
+        //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
+        //loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+        //loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
+        loadChildren: './pages/admin/manage-locations/manage-locations.module#ManageLocationsModule'
+      }]
   },
   {
     path: 'private',
@@ -178,20 +170,22 @@ export const AppRoutes: Routes = [
       {
         path: 'home',
         canActivate: [UserAuthGuard],
-        loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
-      }, {
+        redirectTo: 'smartmonitoring',
+      },
+      {
+        path: 'contact',
+        canActivate: [UserAuthGuard],
+        loadChildren: './pages/contact/contact.module#ContactModule'
+      },
+      {
+        path: 'smartmonitoring',
+        canActivate: [UserAuthGuard],
+        loadChildren: './pages/smart-monitoring/smart-monitoring.module#SmartMonitoringModule'
+      },
+      {
         path: 'alerts',
         canActivate: [UserAuthGuard],
         loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
-      }, {
-        path: 'detail/:id',
-        canActivate: [UserAuthGuard],
-        loadChildren: './pages/detail/smartmonitoring/detail.module#DetailModule'
-      },
-      {
-        path: 'detail2/:id',
-        canActivate: [UserAuthGuard],
-        loadChildren: './pages/detail2/smartmonitoring/detail2.module#Detail2Module'
       },
       {
         path: 'tankmonitoring',
@@ -209,13 +203,16 @@ export const AppRoutes: Routes = [
           {
             path: 'manage-assets',
             loadChildren: './pages/admin/manage-assets/smartmonitoring/manage-assets.module#ManageAssetsModule'
-          }, {
+          },
+          {
             path: 'manage-things',
             loadChildren: './pages/admin/manage-things/smartmonitoring/manage-things.module#ManageThingsModule'
-          }, {
+          },
+          {
             path: 'manage-threshold-templates',
             loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
-          }, {
+          },
+          {
             path: 'manage-alert-definition',
             loadChildren: './pages/admin/alert-definition/smartmonitoring/alert-definition.module#AlertDefinitionModule'
           },

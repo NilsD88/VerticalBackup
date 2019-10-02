@@ -1,9 +1,10 @@
+import { SharedService } from './../../../../../src/app/services/shared.service';
 import {Component, Input, OnInit} from '@angular/core';
 import {Asset} from '../../../../../src/app/models/asset.model';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
 import { MOCK_LOCATIONS } from 'src/app/mocks/newlocations';
-import { INewAsset } from 'src/app/models/new-asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({
   selector: 'pxs-detail2-header',
@@ -12,12 +13,16 @@ import { INewAsset } from 'src/app/models/new-asset.model';
 })
 export class Detail2HeaderComponent implements OnInit {
 
-  @Input() asset: INewAsset;
+  @Input() asset: IAsset;
+  public orgName: string;
 
-  constructor(public dialog: MatDialog) {
-  }
+  constructor(
+    public dialog: MatDialog,
+    private sharedService: SharedService,
+  ) {}
 
   ngOnInit() {
+    this.orgName = this.sharedService.user.orgName;
   }
 
   openDialog(): void {

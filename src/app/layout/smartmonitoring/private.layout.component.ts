@@ -94,6 +94,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   }
 
   navigateTo(url: string[]) {
+    console.log('navigateTo', url);
     this.router.navigate(url);
   }
 
@@ -106,7 +107,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   }
 
   autocompleteClick(event: Asset) {
-    this.router.navigateByUrl(`/private/detail/${event.id}`);
+    this.router.navigateByUrl(`/private/smartmonitoring/detail/${event.id}`);
     this.searchResults = null;
   }
 

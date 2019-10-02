@@ -1,14 +1,38 @@
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-3" style="padding-right:0;">
-      <pxs-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="400" [colors]="chartColors"></pxs-pie-chart>
+    <div class="col col-md-3" style="padding-right:0;">
+      <div class="filters">
+        <span>Battery level</span>
+        <pxs-range-slider
+          [min]="0"
+          [max]="100"
+          [startFrom]="0"
+          [startTo]="100"
+          [postfix]="'%'"
+          (rangeChange)="updateBatteryLevelFilter($event)"
+        ></pxs-range-slider>
+      </div>
+      <div class="filters">
+        <span>Fuel level</span>
+        <pxs-range-slider
+        [min]="0"
+        [max]="100"
+        [startFrom]="0"
+        [startTo]="100"
+        [postfix]="'%'"
+        (rangeChange)="updateFuelLevelFilter($event)"
+        ></pxs-range-slider>
+      </div>
+      <pxs-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="300" [colors]="chartColors"></pxs-pie-chart>
     </div>
-    <div class="col-md-9" style="padding-left:0;">
-      <pxs-map [mode]="'TANK_MONITORING'" [assetFilter]="{property:'test', values: filter.status}" [height]="400"></pxs-map>
+    <div class="col col-md-9" style="padding-left:0;">
+      <pxs-map [mode]="'TANK_MONITORING'" [assetFilter]="{property:'test', values: filter.status}"></pxs-map>
     </div>
   </div>
+</div>
+<div class="container">
   <div class="row" style="margin-top:25px;">
-    <div class="col-xs-12 col-md-6">
+    <div class="col-xs-12 col-md-6 mx-auto">
       <mat-form-field>
         <input
         matInput
@@ -18,28 +42,6 @@
         (ngModelChange)="onFilterChange()"
         >
       </mat-form-field>
-    </div>
-    <div class="col-xs-6 col-md-3">
-      <span>Battery level</span>
-      <pxs-range-slider
-      [min]="0"
-      [max]="100"
-      [startFrom]="0"
-      [startTo]="100"
-      [postfix]="'%'"
-      (rangeChange)="updateBatteryLevelFilter($event)"
-      ></pxs-range-slider>
-    </div>
-    <div class="col-xs-6 col-md-3">
-      <span>Fuel level</span>
-      <pxs-range-slider
-      [min]="0"
-      [max]="100"
-      [startFrom]="0"
-      [startTo]="100"
-      [postfix]="'%'"
-      (rangeChange)="updateFuelLevelFilter($event)"
-      ></pxs-range-slider>
     </div>
   </div>
   <div class="row">

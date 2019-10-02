@@ -3,14 +3,14 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 
 
-interface IFilterChartData {
+export interface IFilterChartData {
   interval?: string;
   from?: number;
   to?: number;
   durationInHours?: number;
 }
 
-export type Intervals = 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+export type Intervals = 'ALL' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
 export interface PeriodicDuration {
   interval: Intervals;
   from: number;
@@ -28,7 +28,7 @@ export class ChartControlsComponent implements OnInit {
   @Input() filter: IFilterChartData;
   @Input() chartDataIsLoading: boolean;
   @Input() chartDataLength: number;
-  @Input() drpOptions: NgxDrpOptions;
+
 
   @Output() intervalChanged: EventEmitter<any> = new EventEmitter();
   @Output() dateRangeChanged: EventEmitter<PeriodicDuration> = new EventEmitter();
@@ -36,33 +36,74 @@ export class ChartControlsComponent implements OnInit {
   @Output() downloadCSV: EventEmitter<null> = new EventEmitter();
 
   public intervals: Intervals[] = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
-
+  public drpOptions: NgxDrpOptions;
 
   constructor() { }
 
   ngOnInit() {
+    this.initDateFilterOptions();
+  }
+
+  public initDateFilterOptions() {
+    const today = new Date();
+    const fromMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    const backDate = (numOfDays) => {
+      const tday = new Date();
+      return new Date(tday.setDate(tday.getDate() - numOfDays));
+    };
+
+    const minus7 = backDate(7);
+    const minus30 = backDate(30);
+
+    const drpPresets = [
+      {presetLabel: 'Last 24 hours', range: {fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()}},
+      {presetLabel: 'Last 7 Days', range: {fromDate: minus7, toDate: today}},
+      {presetLabel: 'Last 30 Days', range: {fromDate: minus30, toDate: today}}
+    ];
+
+    this.drpOptions = this.drpOptions || {
+      presets: drpPresets,
+      format: 'mediumDate',
+      range: {fromDate: new Date(this.filter.from) , toDate: new Date(this.filter.to)},
+      applyLabel: 'Submit',
+      calendarOverlayConfig: {
+        shouldCloseOnBackdropClick: true
+      },
+      cancelLabel: 'Cancel',
+      excludeWeekends: false,
+      fromMinMax: {fromDate: null, toDate: fromMax},
+      toMinMax: {fromDate: null, toDate: toMax}
+    };
   }
 
   public dateRangeChange(range: { fromDate: Date; toDate: Date; }) {
     const {fromDate, toDate} = range;
     const duration = moment.duration(moment(toDate).diff(fromDate));
     const durationHours =  +duration.asHours().toFixed(0);
-    let interval: Intervals = 'HOURLY';
+    let interval: Intervals = 'ALL';
 
+    this.intervals = ['ALL', 'HOURLY', 'DAILY'];
     if (durationHours > 24) {
+      this.intervals = ['HOURLY', 'DAILY', 'WEEKLY'];
+      interval = 'HOURLY';
       const durationDays =  +duration.asDays().toFixed(0);
-      if (durationDays >= 4) {
+      if (durationDays > 7) {
+        this.intervals = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY'];
         interval = 'DAILY';
         const durationWeeks =  +duration.asWeeks().toFixed(0);
-        if (durationWeeks >= 4) {
+        if (durationWeeks > 8) {
+          this.intervals = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
           interval = 'WEEKLY';
           const durationMonths =  +duration.asMonths().toFixed(0);
-          if (durationMonths >= 4) {
+          if (durationMonths > 48) {
             interval = 'YEARLY';
           }
         }
       }
     }
+
 
     this.dateRangeChanged.emit({
       interval,

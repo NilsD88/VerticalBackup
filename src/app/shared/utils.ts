@@ -1,18 +1,19 @@
 import _ from 'lodash';
-import { INewLocation } from 'src/app/models/new-location';
-import { Sublocation } from '../models/locations.model';
+import { ILocation } from 'src/app/models/g-location.model';
 
-function findLocationById(location: INewLocation, id: number, path: INewLocation[] = []): {location: INewLocation, path: INewLocation []} {
+function findLocationById(location: ILocation, id: string, path: ILocation[] = []): {location: ILocation, path: ILocation []} {
+    console.log(`find this id ${id} in this location:`);
+    console.log(location);
     if (location && location.id === id) {
         return {location, path};
     } else {
-        const sublocations = location.sublocations;
-        if (sublocations && sublocations.length) {
-            for (const sublocation of sublocations) {
-                if (sublocation) {
-                    const result = findLocationById(sublocation, id, path);
+        const children = location.children;
+        if (children && children.length) {
+            for (const child of children) {
+                if (child) {
+                    const result = findLocationById(child, id, path);
                     if (result) {
-                        path.unshift(sublocation);
+                        path.unshift(child);
                         return result;
                     }
                 }
@@ -21,7 +22,21 @@ function findLocationById(location: INewLocation, id: number, path: INewLocation
     }
 }
 
+function compareTwoObjectOnSpecificProperties(object1: object, object2: object, properties: string[]) {
+    // return an empty array if no difference
+    // return propertie names on differences
+
+    return _.reduce(object1, (result, value, key) => {
+        if (properties.indexOf(key) > -1) {
+            return _.isEqual(value, object2[key]) ? result : result.concat(key);
+        } else {
+            return result;
+        }
+    }, []);
+}
+
 export {
-    findLocationById
+    findLocationById,
+    compareTwoObjectOnSpecificProperties
 };
 

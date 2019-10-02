@@ -67,7 +67,7 @@
     <div
       class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2"
       *ngFor="let asset of assets"
-      routerLink="/private/detail/{{asset.id}}"
+      routerLink="/private/smartmonitoring/detail/{{asset.id}}"
     >
       <div
         class="wrapper"
@@ -86,7 +86,7 @@
           <div class="content">
             <span
             class="author">{{!asset.thresholdTemplate?.isCustom ? asset.thresholdTemplate?.name : ('THRESHOLD_TEMPLATES.CUSTOM' | translate)}}</span>
-            <h5 class="title"><a routerLink="/private/detail/{{asset.id}}" [matTooltip]="asset.name">{{asset.name}}</a></h5>
+            <h5 class="title"><a routerLink="/private/smartmonitoring/detail/{{asset.id}}" [matTooltip]="asset.name">{{asset.name}}</a></h5>
             <p class="text">{{asset.description}}</p>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import { MatTooltipModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThresholdTemplatesDetailItemComponent } from './threshold-templates-detail-item.component';
@@ -11,7 +12,8 @@ import { ThresholdTemplatesDetailItemBooleanModule } from '../threshold-template
     CommonModule,
     ThresholdTemplatesDetailItemNumberModule,
     ThresholdTemplatesDetailItemCounterModule,
-    ThresholdTemplatesDetailItemBooleanModule
+    ThresholdTemplatesDetailItemBooleanModule,
+    MatTooltipModule
   ],
   exports: [
     ThresholdTemplatesDetailItemComponent

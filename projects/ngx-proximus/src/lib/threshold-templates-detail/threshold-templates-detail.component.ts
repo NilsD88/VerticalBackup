@@ -10,6 +10,7 @@ import { INewThresholdTemplate } from 'src/app/models/threshold.model';
 export class ThresholdTemplatesDetailComponent implements OnInit {
 
   @Input() thresholdTemplate: INewThresholdTemplate;
+  @Input() lastValues;
 
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any) { }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { IThreshold } from 'src/app/models/g-threshold.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail-item-counter',
@@ -7,30 +8,30 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ThresholdTemplatesDetailItemCounterComponent implements OnInit {
 
-  @Input() sensor: any;
+  @Input() threshold: IThreshold;
 
   constructor() { }
 
   ngOnInit() {
 
-    const sensorType = this.sensor.sensorType;
-    sensorType.min = this.sensor.thresholds[0].range.from;
-    sensorType.max = this.sensor.thresholds[0].range.to;
+    const sensorType = this.threshold.sensorType;
+    sensorType.min = this.threshold.thresholdItems[0].range.from;
+    sensorType.max = this.threshold.thresholdItems[0].range.to;
 
     // Find min and max value
-    for (const threshold of this.sensor.thresholds) {
-      if (threshold.range.from < sensorType.min) {
-        sensorType.min = threshold.range.from;
+    for (const thresholdItem of this.threshold.thresholdItems) {
+      if (thresholdItem.range.from < sensorType.min) {
+        sensorType.min = thresholdItem.range.from;
       }
-      if (threshold.range.to < sensorType.min) {
-        sensorType.min = threshold.range.to;
+      if (thresholdItem.range.to < sensorType.min) {
+        sensorType.min = thresholdItem.range.to;
       }
 
-      if (threshold.range.from > sensorType.max) {
-        sensorType.max = threshold.range.from;
+      if (thresholdItem.range.from > sensorType.max) {
+        sensorType.max = thresholdItem.range.from;
       }
-      if (threshold.range.to > sensorType.max) {
-        sensorType.max = threshold.range.to;
+      if (thresholdItem.range.to > sensorType.max) {
+        sensorType.max = thresholdItem.range.to;
       }
     }
 
@@ -41,16 +42,16 @@ export class ThresholdTemplatesDetailItemCounterComponent implements OnInit {
     const min = sensorType.min;
     indicators.set(min, 0);
     indicators.set(sensorType.max, 100);
-    this.sensor.thresholds.forEach(threshold => {
-      const fromPercent = (threshold.range.from - min) * coef;
-      const toPercent = (threshold.range.to - min) * coef;
-      threshold.range['fromPercent'] = fromPercent;
-      threshold.range['toPercent'] = toPercent;
-      threshold.range['widthPercent'] = toPercent - fromPercent;
-      indicators.set(threshold.range.from, fromPercent);
-      indicators.set(threshold.range.to, toPercent);
+    this.threshold.thresholdItems.forEach(thresholdItem => {
+      const fromPercent = (thresholdItem.range.from - min) * coef;
+      const toPercent = (thresholdItem.range.to - min) * coef;
+      thresholdItem.range['fromPercent'] = fromPercent;
+      thresholdItem.range['toPercent'] = toPercent;
+      thresholdItem.range['widthPercent'] = toPercent - fromPercent;
+      indicators.set(thresholdItem.range.from, fromPercent);
+      indicators.set(thresholdItem.range.to, toPercent);
     });
-    this.sensor['indicators'] = indicators;
+    this.threshold['indicators'] = indicators;
   }
 
 }

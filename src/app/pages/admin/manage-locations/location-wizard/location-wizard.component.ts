@@ -1,11 +1,16 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { ILocation } from 'src/app/models/g-location.model';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { INewLocation, NewLocation } from 'src/app/models/new-location';
 import { IGeolocation } from 'src/app/models/asset.model';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatStepper } from '@angular/material/stepper';
+import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material';
+
+import _ from 'lodash';
+import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'pvf-location-wizard',
@@ -16,36 +21,59 @@ export class LocationWizardComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
+  private originalLocation: ILocation;
+
   public descriptionFormGroup: FormGroup;
-  public location: INewLocation;
+  public location: ILocation;
   public editMode = false;
+  public fromPopup = false;
 
   public canLoadLocationExplorer = false;
   public keyValues = [];
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() private dialogRef: MatDialogRef<LocationWizardComponent>,
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     private activedRoute: ActivatedRoute,
     private newLocationService: NewLocationService,
-    private router: Router
+    private router: Router,
   ) {}
 
   async ngOnInit() {
+
+
+    //TODO: remove next line
+    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+      console.log(locations);
+    });
+
+    const params = await this.getRouteParams();
+    const locationId = params.id;
+    let parentId = params.parentId;
+
+    if (this.data) {
+      if (this.data.fromPopup) {
+        this.fromPopup = true;
+      }
+      if (this.data.parentLocation) {
+        parentId = this.data.parentLocation.id;
+      }
+    }
+
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.required],
       DescriptionCtrl: ['', null],
       TypeCtrl: ['', null],
     });
 
-    const params = await this.getRouteParams();
-    const locationId = params.id;
-    if (locationId) {
+
+    if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       this.editMode = true;
-      this.location = await this.newLocationService.getLocationById(+locationId).toPromise();
-      if (!isNullOrUndefined(this.location.parentId)) {
-        this.location.parent = await this.newLocationService.getLocationById(+this.location.parentId).toPromise();
-      }
+      this.location = await this.newLocationService.getLocationById(locationId).toPromise();
+      this.originalLocation = cloneDeep(this.location);
+      console.log(this.originalLocation);
     } else {
       this.location = {
         id: null,
@@ -53,13 +81,11 @@ export class LocationWizardComponent implements OnInit {
         parent: null,
         description: null,
         name: null,
-        locationType: null,
-        sublocationsId: null,
-        floorPlan: null,
+        image: null,
         geolocation: null
       };
-      if (!isNullOrUndefined(params.parentId)) {
-        this.location.parent = await this.newLocationService.getLocationById(+params.parentId).toPromise();
+      if (!isNullOrUndefined(parentId)) {
+        this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
         this.location.parentId = this.location.parent.id;
       }
     }
@@ -74,7 +100,7 @@ export class LocationWizardComponent implements OnInit {
     });
   }
 
-  updateLocation(location: INewLocation) {
+  updateLocation(location: ILocation) {
     let oldParentId = null;
     if (this.location.parent) {
       if (this.location.parent.id) {
@@ -94,13 +120,46 @@ export class LocationWizardComponent implements OnInit {
 
   public submit() {
     if (this.editMode) {
+
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image'];
+      const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
+
+      const location: ILocation = {
+        id: this.location.id,
+      };
+
+      console.log({...this.originalLocation});
+      console.log({...this.location});
+
+      for (const difference of differences) {
+        location[difference] = this.location[difference];
+      }
+
+      this.newLocationService.updateLocation(location).subscribe((result: ILocation) => {
+        this.goToManageLocation();
+      });
+
+      /*
       this.newLocationService.updateLocation(this.location).subscribe((result) => {
         this.goToManageLocation();
       });
+      */
     } else {
+      /*
       this.newLocationService.createLocation(this.location).subscribe((result) => {
-        this.goToManageLocation();
+        if (this.fromPopup) {
+          this.dialogRef.close(result);
+        } else {
+          this.goToManageLocation();
+        }
       });
+      */
+
+     this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
+       if (location) {
+        this.goToManageLocation();
+       }
+     });
     }
   }
 
@@ -108,7 +167,12 @@ export class LocationWizardComponent implements OnInit {
     if (!isNullOrUndefined(this.location.parentId)) {
       this.router.navigateByUrl(`/private/admin/manage-locations/${this.location.parentId}`);
     } else {
-      this.router.navigateByUrl('/private/admin/manage-locations');
+      const parentId = (this.location.parent) ? this.location.parent.id : null;
+      if (parentId) {
+        this.router.navigateByUrl(`/private/admin/manage-locations/${parentId}`);
+      } else {
+        this.router.navigateByUrl('/private/admin/manage-locations');
+      }
     }
   }
 }

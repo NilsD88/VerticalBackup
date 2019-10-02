@@ -9,6 +9,7 @@ import {PublicAuthGuard} from '../app/app.routing';
 export const environment = {
   production: false,
   baseUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/api/',
+  api: 'https://www-uat.proximus.be/smartapps/smartmonitoring/api2/',
   loginUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/auth/login',
   authUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/auth/',
   assetPrefix: 'smartmonitoring',

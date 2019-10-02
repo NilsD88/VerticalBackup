@@ -1,3 +1,12 @@
-<p>
-  consumptions works!
-</p>
+<pvf-tankmonitoring-chart
+  style="display: flex; height: 100%;"
+  [loading]="chartIsLoading"
+  [height]="400"
+  [title]="'Data'"
+  [chartData]="chartData"
+  (updateChartData)="updateChartData($event)"
+  [filter]="currentFilter"
+  [asset]="asset"
+  #myChart
+></pvf-tankmonitoring-chart>
+

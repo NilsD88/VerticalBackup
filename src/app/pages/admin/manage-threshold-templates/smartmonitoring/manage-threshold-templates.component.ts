@@ -1,14 +1,14 @@
-import { NewThresholdTemplateService } from './../../../../services/new-threshold-templates';
-import { MOCK_SENSORTYPES } from './../../../../mocks/sensortypes';
-import {Component, OnInit} from '@angular/core';
-import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
-import {ThresholdTemplateService} from '../../../../services/threshold-template.service';
+import {Component, OnInit, Optional, Inject} from '@angular/core';
+import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 import {MatDialog} from '@angular/material';
 import {AddSensorComponent} from './add-sensor/add-sensor.component';
-import { SensorType } from 'src/app/models/sensor.model';
-import { INewThresholdTemplate, INewThreshold, NewThresholdTemplate, NewThreshold } from 'src/app/models/new-threshold-template.model';
+import { ISensorType } from 'src/app/models/g-sensor-type.model';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import { IThresholdTemplate, ThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import { IThresholdItem, ThresholdItem } from 'src/app/models/g-threshold-item.model';
+import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 
 @Component({
   selector: 'pvf-manage-threshold-templates',
@@ -18,12 +18,15 @@ import { INewThresholdTemplate, INewThreshold, NewThresholdTemplate, NewThreshol
 export class ManageThresholdTemplatesComponent implements OnInit {
 
   public thresholdTemplateFormGroup: FormGroup;
-  public thresholdTemplate: INewThresholdTemplate;
+  public thresholdTemplate: IThresholdTemplate;
   public severities = ['LOW', 'MEDIUM', 'CRITICAL'];
   public editMode = false;
+  public fromPopup = false;
 
 
   constructor(
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    @Optional() private dialogRef: MatDialogRef<ManageThresholdTemplatesComponent>,
     private formBuilder: FormBuilder,
     private newThresholdTemplateService: NewThresholdTemplateService,
     private router: Router,
@@ -32,54 +35,62 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   async ngOnInit() {
     const thresholdTemplateId = await this.getRouteId();
+
+    if (this.data) {
+      if (this.data.fromPopup) {
+        this.fromPopup = true;
+      }
+    }
+
     if (!isNullOrUndefined(thresholdTemplateId)) {
       this.editMode = true;
-      this.thresholdTemplate= await this.newThresholdTemplateService.getThresholdTemplateById(+thresholdTemplateId);
+      this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId);
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.required],
       });
-      for (const sensor of this.thresholdTemplate.sensors) {
-        const sensorId = sensor.sensorType.id;
-        this.thresholdTemplateFormGroup.addControl(`sensor-${sensorId}`, this.formBuilder.group({
-          thresholds: this.formBuilder.group({})
+      for (const threshold of this.thresholdTemplate.thresholds) {
+        const sensorId = threshold.sensorType.id;
+        this.thresholdTemplateFormGroup.addControl(`threshold-${sensorId}`, this.formBuilder.group({
+          thresholdItems: this.formBuilder.group({})
         }));
-        for (const threshold of sensor.thresholds) {
-          switch (sensor.sensorType.type) {
+        for (const thresholdItem of threshold.thresholdItems) {
+          switch (threshold.sensorType.type) {
             case 'NUMBER':
-              this.createFormControlForNumberItem(sensorId, threshold.id);
+              this.createFormControlForNumberItem(sensorId, thresholdItem.id);
               break;
             case 'COUNTER':
-              this.createFormControlForCounterItem(sensorId, threshold.id);
+              this.createFormControlForCounterItem(sensorId, thresholdItem.id);
               break;
             case 'BOOLEAN':
-              this.createFormControlForBooleanItem(sensorId, threshold.id);
+              this.createFormControlForBooleanItem(sensorId, thresholdItem.id);
               break;
           }
         }
       }
     } else {
-      this.thresholdTemplate = new NewThresholdTemplate(null);
+      this.thresholdTemplate = new ThresholdTemplate();
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.required],
       });
+      console.log(this.thresholdTemplate);
     }
   }
 
-  private createFormControlForItem(sensorId: number) {
-    this.thresholdTemplateFormGroup.addControl(`sensor-${sensorId}`, this.formBuilder.group({
-      thresholds: this.formBuilder.group({})
+  private createFormControlForItem(thresholdId: number) {
+    this.thresholdTemplateFormGroup.addControl(`threshold-${thresholdId}`, this.formBuilder.group({
+      thresholdItems: this.formBuilder.group({})
     }));
   }
 
-  private createFormControlForNumberItem(sensorId, thresholdId) {
-    const sensorControl: AbstractControl = this.thresholdTemplateFormGroup.get(`sensor-${sensorId}`);
-    if (sensorControl instanceof FormGroup) {
-      const thresholdControl: AbstractControl = sensorControl.get(`thresholds`);
-      if (thresholdControl instanceof FormGroup) {
-        (thresholdControl as FormGroup).addControl(thresholdId, this.formBuilder.group({
+  private createFormControlForNumberItem(thresholdId, thresholdItemId) {
+    const thresholdControl: AbstractControl = this.thresholdTemplateFormGroup.get(`threshold-${thresholdId}`);
+    if (thresholdControl instanceof FormGroup) {
+      const thresholdItemControl: AbstractControl = thresholdControl.get(`thresholdItems`);
+      if (thresholdItemControl instanceof FormGroup) {
+        (thresholdItemControl as FormGroup).addControl(thresholdItemId, this.formBuilder.group({
           severity: ['', Validators.required],
           label: ['', null],
-          alerts: this.formBuilder.group({
+          notification: this.formBuilder.group({
             web: ['', Validators.required],
             mail: ['', Validators.required],
             sms: ['', Validators.required],
@@ -89,15 +100,15 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     }
   }
 
-  private createFormControlForCounterItem(sensorId, thresholdId) {
-    const sensorControl: AbstractControl = this.thresholdTemplateFormGroup.get(`sensor-${sensorId}`);
-    if (sensorControl instanceof FormGroup) {
-      const thresholdControl: AbstractControl = sensorControl.get(`thresholds`);
-      if (thresholdControl instanceof FormGroup) {
-        (thresholdControl as FormGroup).addControl(thresholdId, this.formBuilder.group({
+  private createFormControlForCounterItem(thresholdId, thresholdItemId) {
+    const thresholdControl: AbstractControl = this.thresholdTemplateFormGroup.get(`threshold-${thresholdId}`);
+    if (thresholdControl instanceof FormGroup) {
+      const thresholdItemControl: AbstractControl = thresholdControl.get(`thresholdItems`);
+      if (thresholdItemControl instanceof FormGroup) {
+        (thresholdItemControl as FormGroup).addControl(thresholdItemId, this.formBuilder.group({
           severity: ['', Validators.required],
           label: ['', null],
-          alerts: this.formBuilder.group({
+          notification: this.formBuilder.group({
             web: ['', Validators.required],
             mail: ['', Validators.required],
             sms: ['', Validators.required],
@@ -111,15 +122,15 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     }
   }
 
-  private createFormControlForBooleanItem(sensorId, thresholdId) {
-    const sensorControl: AbstractControl = this.thresholdTemplateFormGroup.get(`sensor-${sensorId}`);
-    if (sensorControl instanceof FormGroup) {
-      const thresholdControl: AbstractControl = sensorControl.get(`thresholds`);
-      if (thresholdControl instanceof FormGroup) {
-        (thresholdControl as FormGroup).addControl(thresholdId, this.formBuilder.group({
+  private createFormControlForBooleanItem(thresholdId, thresholdItemId) {
+    const thresholdControl: AbstractControl = this.thresholdTemplateFormGroup.get(`threshold-${thresholdId}`);
+    if (thresholdControl instanceof FormGroup) {
+      const thresholdItemControl: AbstractControl = thresholdControl.get(`thresholdItems`);
+      if (thresholdItemControl instanceof FormGroup) {
+        (thresholdItemControl as FormGroup).addControl(thresholdItemId, this.formBuilder.group({
           severity: ['', Validators.required],
           label: ['', null],
-          alerts: this.formBuilder.group({
+          notification: this.formBuilder.group({
             web: ['', Validators.required],
             mail: ['', Validators.required],
             sms: ['', Validators.required],
@@ -130,70 +141,74 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     }
   }
 
-  public addThreshold(sensorId: number) {
+  public addThresholdItem(thresholdId: string) {
 
-    const sensor = this.thresholdTemplate.sensors.find((elt) => elt.sensorType.id === sensorId);
+    const threshold = this.thresholdTemplate.thresholds.find((elt) => elt.sensorType.id === thresholdId);
 
-    const threshold = new NewThreshold({
-      id: new Date().getTime(),
-      range: {from: sensor.sensorType.min, to: sensor.sensorType.max},
+    const thresholdItem = new ThresholdItem({
+      id: new Date().getTime().toString(),
+      range: {from: threshold.sensorType.min, to: threshold.sensorType.max},
       severity: 'LOW',
-      alert: {
+      notification: {
         web: false,
         sms: false,
         mail: false
       }
     });
-    sensor.thresholds.push(threshold);
-    switch (sensor.sensorType.type) {
+    threshold.thresholdItems.push(thresholdItem);
+    switch (threshold.sensorType.type) {
       case 'NUMBER':
-          this.createFormControlForNumberItem(sensorId, threshold.id);
+          this.createFormControlForNumberItem(thresholdId, thresholdItem.id);
           break;
       case 'COUNTER':
-          this.createFormControlForCounterItem(sensorId, threshold.id);
+          this.createFormControlForCounterItem(thresholdId, thresholdItem.id);
           break;
       case 'BOOLEAN':
-          this.createFormControlForBooleanItem(sensorId, threshold.id);
+          this.createFormControlForBooleanItem(thresholdId, thresholdItem.id);
           break;
     }
   }
 
-  public deleteThreshold(sensorId, thresholdId) {
-    const findSensorIndex = this.thresholdTemplate.sensors.findIndex((elt) => elt.sensorType.id === sensorId);
-    const findThresholdIndex = this.thresholdTemplate.sensors[findSensorIndex].thresholds.findIndex((elt) => elt.id === thresholdId);
-    this.thresholdTemplate.sensors[findSensorIndex].thresholds.splice(findThresholdIndex, 1);
-    const sensorControl: AbstractControl = this.thresholdTemplateFormGroup.get(`sensor-${sensorId}`);
-    if (sensorControl instanceof FormGroup) {
-      const thresholdControl: AbstractControl = sensorControl.get(`thresholds`);
-      if (thresholdControl instanceof FormGroup) {
-        thresholdControl.removeControl(thresholdId);
+  public deleteThresholdItem(thresholdId, thresholdItemId) {
+    const findSensorIndex = this.thresholdTemplate.thresholds.findIndex((elt) => elt.sensorType.id === thresholdId);
+    const findThresholdIndex = this.thresholdTemplate.thresholds[findSensorIndex].thresholdItems.findIndex((elt) => elt.id === thresholdItemId);
+    this.thresholdTemplate.thresholds[findSensorIndex].thresholdItems.splice(findThresholdIndex, 1);
+    const thresholdControl: AbstractControl = this.thresholdTemplateFormGroup.get(`threshold-${thresholdId}`);
+    if (thresholdControl instanceof FormGroup) {
+      const thresholdItemControl: AbstractControl = thresholdControl.get(`thresholdItems`);
+      if (thresholdItemControl instanceof FormGroup) {
+        thresholdItemControl.removeControl(thresholdItemId);
       }
     }
   }
 
-  public deleteSensor(sensorId) {
-    const findSensorIndex = this.thresholdTemplate.sensors.findIndex((elt) => elt.sensorType.id === sensorId);
-    this.thresholdTemplate.sensors.splice(findSensorIndex, 1);
-    this.thresholdTemplateFormGroup.removeControl(`sensor-${sensorId}`);
+  public deleteThreshold(thresholdId) {
+    const findSensorIndex = this.thresholdTemplate.thresholds.findIndex((elt) => elt.sensorType.id === thresholdId);
+    this.thresholdTemplate.thresholds.splice(findSensorIndex, 1);
+    this.thresholdTemplateFormGroup.removeControl(`threshold-${thresholdId}`);
   }
 
-  public changeRange(threshold: INewThreshold, event: [number, number]) {
-    threshold.range.from = event[0];
-    threshold.range.to = event[1];
+  public changeRange(thresholdItem: IThresholdItem, event: [number, number]) {
+    thresholdItem.range.from = event[0];
+    thresholdItem.range.to = event[1];
   }
 
-  public addSensor() {
+  public addThreshold() {
     const ref = this.dialog.open(AddSensorComponent, {
       width: '90vw'
     });
-    ref.afterClosed().subscribe((result: SensorType) => {
+    ref.afterClosed().subscribe((result: ISensorType) => {
       if (result) {
-        if (!this.thresholdTemplate.sensors.find((item) => {
-          return item.sensorType.name === result.name;
+        console.log({...this.thresholdTemplate});
+        console.log({...result});
+        if (!this.thresholdTemplate.thresholds.find((threshold) => {
+          console.log({...threshold});
+          console.log({...result});
+          return threshold.sensorType.name === result.name;
         })) {
-          this.thresholdTemplate.sensors.push({
+          this.thresholdTemplate.thresholds.push({
             sensorType: result,
-            thresholds: []
+            thresholdItems: []
           });
           this.createFormControlForItem(+result.id);
         }
@@ -201,7 +216,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     });
   }
 
-  private getRouteId(): Promise<string | number> {
+  private getRouteId(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.activeRoute.params.subscribe((params) => {
         if (!isNullOrUndefined(params.id)) {
@@ -215,22 +230,29 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
 
   public saveThresholdTemplate() {
+
+    console.log('SAVE THRESHOLDS');
+    console.log({...this.thresholdTemplate});
+    /*
     if (this.editMode) {
       this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe((result) => {
         this.goToManageThresholdTemplate();
       });
     } else {
       this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe((result) => {
-        this.goToManageThresholdTemplate();
+        if (this.fromPopup) {
+          this.dialogRef.close(result);
+        } else {
+          this.goToManageThresholdTemplate();
+        }
       });
     }
+    */
   }
 
   private goToManageThresholdTemplate() {
     this.router.navigateByUrl(`/private/admin/manage-threshold-templates`);
   }
-
-
 
 }
 

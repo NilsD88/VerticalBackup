@@ -1,16 +1,21 @@
+import { LocationWizardComponent } from './../../../manage-locations/location-wizard/location-wizard.component';
 import { NewLocationService } from './../../../../../services/new-location.service';
 import { NewAssetService } from './../../../../../services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { INewLocation } from 'src/app/models/new-location';
-import { IThing } from 'src/app/models/thing.model';
-import { ThingService } from 'src/app/services/thing.service';
+import { ILocation } from 'src/app/models/g-location.model';
+import { IThing } from 'src/app/models/g-thing.model';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
-import { INewAsset } from 'src/app/models/new-asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
+import { ManageThresholdTemplatesComponent } from '../../../manage-threshold-templates/smartmonitoring/manage-threshold-templates.component';
+import { NewThresholdTemplate } from 'src/app/models/new-threshold-template.model';
+import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+
+import { cloneDeep } from 'lodash';
 
 
 @Component({
@@ -22,12 +27,15 @@ export class AssetWizardComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
-  public asset: INewAsset;
+  private originalAsset: IAsset;
+
+  public asset: IAsset;
   public editMode = false;
 
-  dialogConfirmForIncompatibleThreshold: {title: string, content: string};
+  public displayLocationExplorer = true;
+  public displayThresholdTemplateList = true;
 
-  descriptionFormGroup: FormGroup;
+  public descriptionFormGroup: FormGroup;
 
   public keyValues: {
     label: string;
@@ -46,13 +54,12 @@ export class AssetWizardComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private thingService: ThingService,
     public dialog: MatDialog,
     private newAssetService: NewAssetService,
     private newLocationService: NewLocationService,
     private router: Router,
     public activatedRoute: ActivatedRoute
-    ) {}
+  ) {}
 
   async ngOnInit() {
     this.descriptionFormGroup = this.formBuilder.group({
@@ -65,26 +72,24 @@ export class AssetWizardComponent implements OnInit {
       this.descriptionFormGroup.addControl(kv.label, new FormControl());
     }
 
-    this.dialogConfirmForIncompatibleThreshold = {
-      title: 'Warning!',
-      content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
-    };
+    this.checkIfEdtitingOrCreating();
+  }
 
+  public async checkIfEdtitingOrCreating() {
     const assetId = await this.getRouteId();
     if (assetId) {
+      console.log('[ASSET] UPDATE ASSET_ID', assetId);
       this.asset = await this.newAssetService.getAssetById(+assetId).toPromise();
+      this.editMode = true;
+      this.originalAsset = cloneDeep(this.asset);
       if (!isNullOrUndefined(this.asset.locationId)) {
-        this.asset.location = await this.newLocationService.getLocationById(+this.asset.locationId).toPromise();
+        this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
       }
-      console.log({...this.asset});
-      console.log(this.asset.geolocation);
-
       if (isNullOrUndefined(this.asset.things)) {
         this.asset.things = [];
       }
-
     } else {
-      console.log('new asset');
+      console.log('[ASSET] NEW', assetId);
       this.asset = {
         id: null,
         name: null,
@@ -95,14 +100,14 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  updateLocation(location: INewLocation) {
+  public updateLocation(location: ILocation) {
     const oldSelectedLocation = this.asset.location;
     if (location && location !== oldSelectedLocation) {
       this.asset.geolocation = null;
       this.asset.location = null;
       this.changeDetectorRef.detectChanges();
       this.asset.location = location;
-      this.asset.locationId = +location.id;
+      this.asset.locationId = location.id;
     }
   }
 
@@ -115,11 +120,11 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  thresholdTemplateIsCompatibleWithThings() {
+  public thresholdTemplateIsCompatibleWithThings() {
     const thresholdTemplate = this.asset.thresholdTemplate;
     if (thresholdTemplate) {
-      for (const sensor of thresholdTemplate.sensors) {
-        const sensorTypeId = sensor.sensorType.id;
+      for (const threshold of thresholdTemplate.thresholds) {
+        const sensorTypeId = threshold.sensorType.id;
         let hasAtLeastOneCompatibleSensor = false;
         const things = this.asset.things;
         for (const thing of things) {
@@ -138,7 +143,7 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  checkThresholdTemplate(event) {
+  public checkThresholdTemplate(event) {
     if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
       const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
       if (!compatibleThresholdTemplate) {
@@ -159,7 +164,7 @@ export class AssetWizardComponent implements OnInit {
   }
 
   public wantToSaveAsset() {
-    console.log('wantToSaveAsset');
+    console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
@@ -191,9 +196,30 @@ export class AssetWizardComponent implements OnInit {
     });
   }
 
-  public submit() {
+  private submit() {
     if (this.editMode) {
-      this.newAssetService.updateAsset(this.asset).subscribe((result) => {
+
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+      const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
+
+      const asset: IAsset = {
+        id: this.asset.id,
+      };
+
+      for (const difference of differences) {
+        switch (difference) {
+          case 'thresholdTemplate':
+            asset.thresholdTemplateId = this.asset.thresholdTemplate.id;
+            break;
+          case 'things':
+            asset.thingsId = this.asset.things.map(thing => thing.id);
+            break;
+          default:
+            asset[difference] = this.asset[difference];
+        }
+      }
+
+      this.newAssetService.a_updateAsset(asset).subscribe((result) => {
         this.goToManageAssets();
       });
     } else {
@@ -206,4 +232,46 @@ export class AssetWizardComponent implements OnInit {
   private goToManageAssets() {
     this.router.navigateByUrl('/private/admin/manage-assets');
   }
+
+
+  // POPUPS
+
+  public async openAddLocation() {
+    const dialogRef = this.dialog.open(LocationWizardComponent, {
+      minWidth: '320px',
+      maxWidth: '1024px',
+      width: '100vw',
+      data: {
+        parentLocation: this.asset.location,
+        fromPopup: true,
+      }
+    });
+    const result: ILocation = await dialogRef.afterClosed().toPromise();
+    if (result) {
+      this.displayLocationExplorer = false;
+      this.changeDetectorRef.detectChanges();
+      this.asset.location = result;
+      this.displayLocationExplorer = true;
+    }
+  }
+
+  public async openAddThresholdTemplate() {
+    const dialogRef = this.dialog.open(ManageThresholdTemplatesComponent, {
+      minWidth: '320px',
+      maxWidth: '1024px',
+      width: '100vw',
+      data: {
+        parentLocation: this.asset.location,
+        fromPopup: true,
+      }
+    });
+    const result: NewThresholdTemplate = (await dialogRef.afterClosed().toPromise()) as NewThresholdTemplate;
+    if (result) {
+      this.displayThresholdTemplateList = false;
+      this.changeDetectorRef.detectChanges();
+      this.asset.thresholdTemplate = result;
+      this.displayThresholdTemplateList = true;
+    }
+  }
+
 }

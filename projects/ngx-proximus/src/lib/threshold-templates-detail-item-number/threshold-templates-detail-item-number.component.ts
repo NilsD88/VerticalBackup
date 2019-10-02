@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { IThreshold } from 'src/app/models/g-threshold.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail-item-number',
@@ -7,26 +8,26 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ThresholdTemplatesDetailItemNumberComponent implements OnInit {
 
-  @Input() sensor: any;
+  @Input() threshold: IThreshold;
   constructor() { }
 
   ngOnInit() {
-    const sensorType = this.sensor.sensorType;
+    const sensorType = this.threshold.sensorType;
     const coef = 100 / (sensorType.max - sensorType.min);
     const indicators = new Map <number, number> ();
     const min = sensorType.min;
     indicators.set(min, 0);
     indicators.set(sensorType.max, 100);
-    this.sensor.thresholds.forEach(threshold => {
-      const fromPercent = (threshold.range.from - min) * coef;
-      const toPercent = (threshold.range.to - min) * coef;
-      threshold.range['fromPercent'] = fromPercent;
-      threshold.range['toPercent'] = toPercent;
-      threshold.range['widthPercent'] = toPercent - fromPercent;
-      indicators.set(threshold.range.from, fromPercent);
-      indicators.set(threshold.range.to, toPercent);
+    this.threshold.thresholdItems.forEach(thresholdItem => {
+      const fromPercent = (thresholdItem.range.from - min) * coef;
+      const toPercent = (thresholdItem.range.to - min) * coef;
+      thresholdItem.range['fromPercent'] = fromPercent;
+      thresholdItem.range['toPercent'] = toPercent;
+      thresholdItem.range['widthPercent'] = toPercent - fromPercent;
+      indicators.set(thresholdItem.range.from, fromPercent);
+      indicators.set(thresholdItem.range.to, toPercent);
     });
-    this.sensor['indicators'] = indicators;
+    this.threshold['indicators'] = indicators;
   }
 
 }

@@ -1,5 +1,21 @@
 @import "~/../src/variables.scss";
 
+.container-fluid {
+    .row {
+        .col {
+            padding: 0;
+            .filters {
+                &:first-of-type {
+                    padding-top: 20px;
+                }
+                padding: 0 20px 0 7px;
+                background-color: $grey-light;
+            }
+        }
+    }
+}
+
+
 ::ng-deep {
     .assets-list {
         width: 100%;

@@ -1,7 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { IGeolocation } from 'src/app/models/asset.model';
 import { FormGroup } from '@angular/forms';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 
 @Component({
   selector: 'pxs-form-geolocation',
@@ -10,7 +10,7 @@ import { INewLocation } from 'src/app/models/new-location';
 })
 export class FormGeolocationComponent implements OnInit {
 
-  @Input() location: INewLocation;
+  @Input() location: ILocation;
   @Input() geolocation: IGeolocation;
   @Input() parentFormGroup: FormGroup;
   @Output() notify: EventEmitter<IGeolocation> = new EventEmitter<IGeolocation>();

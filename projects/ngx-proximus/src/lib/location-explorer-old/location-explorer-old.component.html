@@ -2,7 +2,7 @@
   <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
     <mat-list>
       <mat-list-item 
-        *ngFor="let location of tab.sublocations"
+        *ngFor="let location of tab.children"
         (click)="selectLocation(location)"
         [ngClass]="{'selected': selectedLocation === location}"
       >

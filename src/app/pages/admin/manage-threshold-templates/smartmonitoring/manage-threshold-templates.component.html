@@ -10,85 +10,85 @@
       </mat-form-field>
     </div>
     <div class="col-md-12" style="display:flex; justify-content: space-between; margin-bottom: 20px;">
-      <h4 style="margin: 0; padding: 0;">Sensors</h4>
-      <button style="height: 40px; " mat-raised-button (click)="addSensor()">
+      <h4 style="margin: 0; padding: 0;">Thresholds</h4>
+      <button style="height: 40px; " mat-raised-button (click)="addThreshold()">
         <pxs-icon icon="plus-o"></pxs-icon>
-        Add sensor
+        Add threshold
       </button>
     </div>
-    <div class="col-md-12" *ngIf="!thresholdTemplate.sensors || !thresholdTemplate.sensors.length">
-      No sensors added yet
+    <div class="col-md-12" *ngIf="!thresholdTemplate.thresholds || !thresholdTemplate.thresholds.length">
+      No threshold added yet
     </div>
-    <div class="col-md-12 sensor-card" *ngFor="let sensor of thresholdTemplate.sensors;" formGroupName="sensor-{{sensor.sensorType.id}}">
+    <div class="col-md-12 sensor-card" *ngFor="let threshold of thresholdTemplate.thresholds;" formGroupName="threshold-{{threshold.sensorType.id}}">
       <mat-card>
         <mat-card-header style="display: flex; align-content: center;">
           <div class="title">
-            <img [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'">
-            <h5 style="margin: 0;">{{sensor.sensorType.name}}</h5>
+            <img [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name + '.svg'">
+            <h5 style="margin: 0;">{{threshold.sensorType.name}}</h5>
           </div>
-          <button style="margin-left: 15px;" mat-icon-button color="warn" (click)="deleteSensor(sensor.sensorType.id)">
+          <button style="margin-left: 15px;" mat-icon-button color="warn" (click)="deleteThreshold(threshold.sensorType.id)">
             <pxs-icon icon="trash"></pxs-icon>
           </button>
         </mat-card-header>
-        <mat-card-content formGroupName="thresholds" *ngIf="thresholdTemplateFormGroup.get('sensor-'+sensor.sensorType.id)">
-          <div class="row threshold-row" *ngFor="let threshold of sensor.thresholds" style="margin-bottom: 30px;" formGroupName="{{threshold.id}}">
-            <div class="col-md-4" *ngIf="sensor.sensorType.type === 'NUMBER'">
+        <mat-card-content formGroupName="thresholdItems" *ngIf="thresholdTemplateFormGroup.get('threshold-'+threshold.sensorType.id)">
+          <div class="row threshold-row" *ngFor="let thresholdItem of threshold.thresholdItems" style="margin-bottom: 30px;" formGroupName="{{thresholdItem.id}}">
+            <div class="col-md-4" *ngIf="threshold.sensorType.type === 'NUMBER'">
               <pxs-range-slider
-                [min]="sensor.sensorType.min"
-                [max]="sensor.sensorType.max"
-                [startFrom]="threshold.range.from"
-                [startTo]="threshold.range.to"
-                [postfix]="sensor.sensorType.postfix"
-                (rangeChange)="changeRange(threshold, $event)"
+                [min]="threshold.sensorType.min"
+                [max]="threshold.sensorType.max"
+                [startFrom]="thresholdItem.range.from"
+                [startTo]="thresholdItem.range.to"
+                [postfix]="threshold.sensorType.postfix"
+                (rangeChange)="changeRange(thresholdItem, $event)"
               ></pxs-range-slider>
             </div>
-            <div class="col-md-4" *ngIf="sensor.sensorType.type === 'BOOLEAN'">
-              <mat-slide-toggle color="primary" [(ngModel)]="threshold.range.to" formControlName="boolean" required></mat-slide-toggle>
+            <div class="col-md-4" *ngIf="threshold.sensorType.type === 'BOOLEAN'">
+              <mat-slide-toggle color="primary" [(ngModel)]="thresholdItem.range.to" formControlName="boolean" required></mat-slide-toggle>
             </div>
-            <div class="col-md-4" *ngIf="sensor.sensorType.type === 'COUNTER'" formGroupName="counter">
+            <div class="col-md-4" *ngIf="threshold.sensorType.type === 'COUNTER'" formGroupName="counter">
               <mat-form-field class="col-md-6">
-                <input type="number" matInput placeholder="From" [(ngModel)]="threshold.range.from" required formControlName="from">
+                <input type="number" matInput placeholder="From" [(ngModel)]="thresholdItem.range.from" required formControlName="from">
               </mat-form-field>
               <mat-form-field class="col-md-6">
-                <input type="number" matInput placeholder="To" [(ngModel)]="threshold.range.to" required formControlName="to">
+                <input type="number" matInput placeholder="To" [(ngModel)]="thresholdItem.range.to" required formControlName="to">
               </mat-form-field>
             </div>
             <div class="col-md-2">
               <mat-form-field>
-                <mat-select [(ngModel)]="threshold.severity" placeholder="Severity" required formControlName="severity">
+                <mat-select [(ngModel)]="thresholdItem.severity" placeholder="Severity" required formControlName="severity">
                   <mat-option *ngFor="let severity of severities" [value]="severity">
                     <span style="text-transform: capitalize">{{severity}}</span>
                   </mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
-          <div class="col-md-3" formGroupName="alerts">
+          <div class="col-md-3" formGroupName="notification">
             <div class="alerts">
               <div class="alert-type">
-                <mat-checkbox [(ngModel)]="threshold.alert.web" formControlName="web">Alert</mat-checkbox>
+                <mat-checkbox [(ngModel)]="thresholdItem.notification.web" formControlName="web">Web</mat-checkbox>
               </div>
               <div class="alert-type">
-                <mat-checkbox [(ngModel)]="threshold.alert.mail" formControlName="mail">Mail</mat-checkbox>
+                <mat-checkbox [(ngModel)]="thresholdItem.notification.mail" formControlName="mail">Mail</mat-checkbox>
               </div>
               <div class="alert-type">
-                <mat-checkbox [(ngModel)]="threshold.alert.sms" formControlName="sms">Sms</mat-checkbox>
+                <mat-checkbox [(ngModel)]="thresholdItem.notification.sms" formControlName="sms">Sms</mat-checkbox>
               </div>
             </div>
           </div>
           <div class="col-md-2">
             <mat-form-field>
-              <input type="text" matInput placeholder="Label" [(ngModel)]="threshold.label" formControlName="label">
+              <input type="text" matInput placeholder="Label" [(ngModel)]="thresholdItem.label" formControlName="label">
             </mat-form-field>
           </div>
           <div class="col-md-1">
-            <button color="warn" mat-icon-button (click)="deleteThreshold(sensor.sensorType.id,threshold.id)">
+            <button color="warn" mat-icon-button (click)="deletethresholdItem(threshold.sensorType.id,thresholdItem.id)">
               <pxs-icon icon="trash"></pxs-icon>
             </button>
           </div>
           </div>
-          <button mat-raised-button (click)="addThreshold(sensor.sensorType.id)" style="margin-top: 10px;">
+          <button mat-raised-button (click)="addThresholdItem(threshold.sensorType.id)" style="margin-top: 10px;">
             <pxs-icon icon="plus-o"></pxs-icon>
-              Add threshold
+              Add threshold item
           </button>
       </mat-card-content>
     </mat-card>  

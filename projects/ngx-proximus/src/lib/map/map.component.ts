@@ -6,16 +6,16 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { IGeolocation } from 'src/app/models/asset.model';
 import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point} from 'leaflet';
 import { GeoJsonObject } from 'geojson';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { Subject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { NewAsset, INewAsset } from 'src/app/models/new-asset.model';
 import { findLocationById } from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
 import { generateAssetIcon } from './assetIcon';
+import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({
   selector: 'pxs-map',
@@ -25,12 +25,12 @@ import { generateAssetIcon } from './assetIcon';
 export class MapComponent implements OnInit, OnChanges{
 
   @Input() height;
-  @Input() rootLocation: INewLocation;
-  @Input() selectedLocation: INewLocation;
+  @Input() rootLocation: ILocation;
+  @Input() selectedLocation: ILocation;
   @Input() mode: string;
   @Input() assetFilter: {property: string; values: string[]};
 
-  @Output() changeLocation: EventEmitter<INewLocation> = new EventEmitter<INewLocation>();
+  @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
 
   currentMap: Map;
@@ -43,7 +43,7 @@ export class MapComponent implements OnInit, OnChanges{
   markerClusterOptions: any;
 
   private assetsRequestSource = new Subject();
-  public assets: INewAsset[];
+  public assets: IAsset[];
 
 
   constructor(
@@ -75,7 +75,7 @@ export class MapComponent implements OnInit, OnChanges{
           return this.newAssetService.getAssetsByLocationId(+this.selectedLocation.id, this.assetFilter);
         }
       })
-    ).subscribe((data: NewAsset[]) => {
+    ).subscribe((data: IAsset[]) => {
       this.markers = [];
       this.assets = data;
       this.populateMarkersWithAssets();
@@ -108,17 +108,15 @@ export class MapComponent implements OnInit, OnChanges{
     if (this.rootLocation) {
       this.checkIfSelectedLocation();
     } else {
-      this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
+      this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
         this.rootLocation = {
           id: null,
           parentId: null,
-          locationType: null,
           geolocation: null,
-          floorPlan: null,
+          image: null,
           name: 'Locations',
           description: null,
-          sublocationsId: null,
-          sublocations: locations,
+          children: locations,
         };
         this.checkIfSelectedLocation();
       });
@@ -129,9 +127,9 @@ export class MapComponent implements OnInit, OnChanges{
     if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
       const selectedLocation = {...this.selectedLocation};
       this.selectedLocation = this.rootLocation;
-      const { path } = findLocationById(this.rootLocation, +selectedLocation.id);
+      const { path } = findLocationById(this.rootLocation, selectedLocation.id);
       for (const location of path) {
-        this.goToSublocation(location);
+        this.goToChild(location);
       }
       //this.getAssetsBySelectedLocation();
     } else {
@@ -142,7 +140,7 @@ export class MapComponent implements OnInit, OnChanges{
   private populateMarkersWithAssets() {
     const mode = this.mode;
     this.markers = [];
-    const assetWithoutPosition: INewAsset[] = [];
+    const assetWithoutPosition: IAsset[] = [];
 
     if (this.assets && this.assets.length) {
       for (const asset of this.assets) {
@@ -196,7 +194,7 @@ export class MapComponent implements OnInit, OnChanges{
     }
   }
 
-  private populateMarkersWithSublocations() {
+  private populateMarkersWithchildren() {
     this.locationsLayer = [];
     const locationIcon = divIcon({
       className: 'map-marker-location',
@@ -205,25 +203,25 @@ export class MapComponent implements OnInit, OnChanges{
     });
 
     this.selectedLocation = this.selectedLocation ? this.selectedLocation : this.rootLocation;
-    const sublocations = this.selectedLocation.sublocations;
-    if (sublocations && sublocations.length) {
-      for (const sublocation of sublocations) {
-        sublocation.parent = this.selectedLocation;
+    const children = this.selectedLocation.children;
+    if (children && children.length) {
+      for (const child of children) {
+        child.parent = this.selectedLocation;
         const newMarker = marker(
-          [sublocation.geolocation.lat, sublocation.geolocation.lng],
+          [child.geolocation.lat, child.geolocation.lng],
           {
             icon: locationIcon
           }
-        ).bindPopup(() => this.createLocationPopup(sublocation)).openPopup();
+        ).bindPopup(() => this.createLocationPopup(child)).openPopup();
         this.locationsLayer.push(newMarker);
       }
     }
   }
 
   private initMap() {
-    this.populateMarkersWithSublocations();
+    this.populateMarkersWithchildren();
     this.imageBounds = null;
-    const floorPlan = (this.selectedLocation) ? this.selectedLocation.floorPlan : null;
+    const floorPlan = (this.selectedLocation) ? this.selectedLocation.image : null;
     if (floorPlan) {
       const image: HTMLImageElement = new Image();
       image.src = floorPlan;
@@ -292,17 +290,17 @@ export class MapComponent implements OnInit, OnChanges{
 
   private addLocationsBounds(geoJsonData, location) {
     if (location) {
-      const sublocations = location.sublocations;
-      if (sublocations && sublocations.length) {
-        sublocations.forEach(sublocation => {
-          const {lng, lat} = sublocation.geolocation;
+      const children = location.children;
+      if (children && children.length) {
+        children.forEach(child => {
+          const {lng, lat} = child.geolocation;
           geoJsonData.geometry.coordinates[0].push([lng, lat]);
         });
       }
     }
   }
 
-  public createAssetPopup(asset: INewAsset) {
+  public createAssetPopup(asset: IAsset) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
@@ -310,16 +308,16 @@ export class MapComponent implements OnInit, OnChanges{
     return popupEl;
   }
 
-  public createLocationPopup(location: INewLocation) {
+  public createLocationPopup(location: ILocation) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
-    popupEl.goToSublocation = (location) => { this.goToSublocation(location); };
+    popupEl.goToChild = (location) => { this.goToChild(location); };
     popupEl.location = location;
     document.body.appendChild(popupEl);
     return popupEl;
   }
 
-  goToSublocation(location: INewLocation) {
+  goToChild(location: ILocation) {
     const parent = {...this.selectedLocation};
     location.parent = parent;
     this.options = null;
@@ -329,7 +327,7 @@ export class MapComponent implements OnInit, OnChanges{
     this.initMap();
   }
 
-  goToParentLocation(location: INewLocation) {
+  goToParentLocation(location: ILocation) {
     this.options = null;
     this.changeDetectorRef.detectChanges();
     this.selectedLocation = location;

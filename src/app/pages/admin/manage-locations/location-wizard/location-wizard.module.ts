@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { LocationWizardComponent } from './location-wizard.component';
 import { RouterModule } from '@angular/router';
 import { LocationWizardRoutes } from './location-wizard.routing';
-import { MatStepperModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule } from '@angular/material';
+import { MatStepperModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatDialogModule } from '@angular/material';
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MapNewLocation } from 'projects/ngx-proximus/src/lib/map-new-location/map-new-location.module';
@@ -30,6 +30,7 @@ import { NewLocationService } from 'src/app/services/new-location.service';
     FormGeolocationModule,
     EditableImageModule,
     LocationExplorerModule,
+    MatDialogModule,
   ],
   exports: [],
   declarations: [

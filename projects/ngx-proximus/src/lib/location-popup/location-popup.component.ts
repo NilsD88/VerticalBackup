@@ -1,4 +1,4 @@
-import { INewLocation } from './../../../../../src/app/models/new-location';
+import { ILocation } from './../../../../../src/app/models/g-location.model';
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import { NewLocationService } from 'src/app/services/new-location.service';
@@ -12,8 +12,8 @@ export class LocationPopupComponent implements OnInit {
 
   public viewAs = 'list';
   public displayAssets = true;
-  public selectedLocation: INewLocation;
-  public rootLocation: INewLocation;
+  public selectedLocation: ILocation;
+  public rootLocation: ILocation;
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,17 +21,15 @@ export class LocationPopupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
+    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,
-        locationType: null,
         geolocation: null,
-        floorPlan: null,
+        image: null,
         name: 'Locations',
         description: null,
-        sublocationsId: null,
-        sublocations: locations,
+        children: locations,
       };
     });
 

@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title [translate]="'DETAIL.LINKED_THINGS'"></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card *ngFor="let thing of things">
+      <mat-card-content>
+        <h6>{{thing.devEui}}</h6>
+        <img 
+          *ngFor="let sensor of thing.sensors"
+          [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
+          [matTooltip]="sensor.sensorType.name + ' ' + sensor.low + sensor.sensorType.postfix + ' - '+ sensor.high + sensor.sensorType.postfix"
+          [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
+        >
+        <p class="mb-0 pb-0" *ngIf="thing.name">{{thing.name}}</p>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>

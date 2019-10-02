@@ -1,8 +1,8 @@
 import { AlertsService } from './../../../../../src/app/services/alerts.service';
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { IAlert } from 'src/app/models/alert.model';
-import { INewAsset } from 'src/app/models/new-asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({
   selector: 'pxs-map-popup',
@@ -10,9 +10,9 @@ import { INewAsset } from 'src/app/models/new-asset.model';
   styleUrls: ['./map-popup.component.scss']
 })
 export class MapPopupComponent implements OnInit {
-  @Input() asset: INewAsset;
-  @Input() location: INewLocation;
-  @Input() goToSublocation;
+  @Input() asset: IAsset;
+  @Input() location: ILocation;
+  @Input() goToChild;
 
   public lastAlert: IAlert;
 
@@ -35,7 +35,7 @@ export class MapPopupComponent implements OnInit {
   }
 
   openLocation() {
-    this.goToSublocation(this.location);
+    this.goToChild(this.location);
   }
 
 }

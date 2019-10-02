@@ -1,4 +1,4 @@
-import { INewLocation } from './new-location';
+import { ILocation } from './g-location.model';
 import { ISensor } from './sensor.model';
 import { IThreshold, IThresholdTemplate } from './threshold.model';
 import { IGeolocation } from './asset.model';
@@ -14,16 +14,16 @@ export interface IPagedNewAssets {
 }
 
 export interface INewAsset {
-    id: number | string;
-    name: string;
-    locationId: number;
+    id?: number | string;
+    name?: string;
+    locationId?: number;
     description?: string;
     sensors?: ISensor[];
     thumbnail?: string;
     geolocation?: IGeolocation;
     alerts?: IAlert[];
     things?: IThing[];
-    location?: INewLocation;
+    location?: ILocation;
     thresholdTemplate?: INewThresholdTemplate;
     organization?: IOrganization;
     lastMeasurements?: any[]; // TODO: lastMeasurements
@@ -45,7 +45,7 @@ export class NewAsset implements INewAsset {
     geolocation?: IGeolocation;
     alerts?: IAlert[];
     things?: IThing[];
-    location?: INewLocation;
+    location?: ILocation;
     thresholdTemplate?: INewThresholdTemplate;
     organization?: IOrganization;
     lastMeasurements?: any[]; // TODO: lastMeasurements

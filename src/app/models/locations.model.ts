@@ -122,6 +122,7 @@ export class LocationType implements ILocationType {
       this.id = null;
       this.name = '';
     }
+    delete this._locationType;
   }
 
   public static createArray(values: ILocationType[]): LocationType[] {

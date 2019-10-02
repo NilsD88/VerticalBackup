@@ -1,4 +1,4 @@
-import { INewAsset, NewAsset } from 'src/app/models/new-asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {Asset, TankStatus} from '../../../models/asset.model';
 import {AssetService} from '../../../services/asset.service';
@@ -8,9 +8,6 @@ import {MatTableDataSource} from '@angular/material/table';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { MatPaginator } from '@angular/material';
-
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
 
 
 const statuses = ['EMPTY', 'LOW', 'OK'];
@@ -26,7 +23,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public assets: INewAsset[] = [];
+  public assets: IAsset[] = [];
   public pageSizeOptions = [2, 5, 10, 25, 100, 500, 1000];
 
   public dataSource;
@@ -65,13 +62,12 @@ export class DashboardComponent implements OnInit {
     private assetService: AssetService,
     private translateService: TranslateService,
     private newAssetService: NewAssetService,
-    private apollo: Apollo,
   ) {}
 
   ngOnInit() {
     this.filter.status = statuses;
 
-    this.newAssetService.searchAssetsWithFilter(this.searchFilter$).subscribe((assets: INewAsset[]) => {
+    this.newAssetService.searchAssetsWithFilter(this.searchFilter$).subscribe((assets: IAsset[]) => {
       this.page = 0;
       this.totalItems = assets.length;
       this.assets = assets;
@@ -82,28 +78,12 @@ export class DashboardComponent implements OnInit {
     });
 
     this.onFilterChange();
-
-
-    this.apollo
-      .watchQuery({
-        query: gql`
-          {
-            rates(currency: "USD") {
-              currency
-              rate
-            }
-          }
-        `,
-      })
-      .valueChanges.subscribe(result => {
-        console.log(result);
-      });
   }
 
 
 
   public updateDataSource() {
-    const assets: INewAsset[] = [];
+    const assets: IAsset[] = [];
     for (const asset of this.assets) {
       if (this.filter.status.some((value) => value === asset.test)) {
         assets.push(asset);
@@ -128,7 +108,7 @@ export class DashboardComponent implements OnInit {
       chartData.push({
         name: await this.translateService.get('DASHBOARD.TANK_MONITORING.STATUS.' + status).toPromise(),
         keyName: status,
-        y: this.assets.filter((asset: INewAsset) => {
+        y: this.assets.filter((asset: IAsset) => {
           console.log(asset);
           return asset.test === status;
         }).length

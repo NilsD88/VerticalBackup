@@ -3,7 +3,7 @@ import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges
 import { IGeolocation, Geolocation } from 'src/app/models/asset.model';
 import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS } from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { isNullOrUndefined } from 'util';
 
 
@@ -14,7 +14,7 @@ import { isNullOrUndefined } from 'util';
 })
 export class MapNewLocationComponent implements OnInit, OnChanges {
 
-  @Input() parentLocation: INewLocation;
+  @Input() parentLocation: ILocation;
   @Input() geolocation: IGeolocation;
 
   @Output() notify: EventEmitter<IGeolocation> = new EventEmitter<IGeolocation>();
@@ -35,7 +35,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log(this.geolocation);
     if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
-      const floorPlan = this.parentLocation.floorPlan;
+      const floorPlan = this.parentLocation.image;
       if(floorPlan){
         console.log("There is a floor plan");
         const image:HTMLImageElement = new Image();
@@ -50,11 +50,10 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
           this.options = {
             crs: CRS.Simple,
             layers: this.backgroundLayer,
-            zoom:20,
+            zoom: 20,
           };
         }
       } else {
-        console.log("There is no floor plan");
         const { lat, lng } = this.parentLocation.geolocation;
         this.backgroundLayer = tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'); 
         this.options = {

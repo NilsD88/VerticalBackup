@@ -1,28 +1,25 @@
-import { MOCK_THRESHOLD_TEMPLATES } from './../../../mocks/threshold-templates';
-import { NewAssetService } from './../../../services/new-asset.service';
+import { MOCK_THRESHOLD_TEMPLATES } from 'src/app/mocks/threshold-templates';
 import { MatProgressButtonOptions } from 'mat-progress-buttons';
 import { SharedService } from 'src/app/services/shared.service';
 import {Component, OnInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
-import {Asset} from '../../../models/asset.model';
-import {AssetService} from '../../../services/asset.service';
+import {Asset} from 'src/app/models/asset.model';
+import {AssetService} from 'src/app/services/asset.service';
 import {isNullOrUndefined} from 'util';
-import {AlertsService} from '../../../services/alerts.service';
-import {Alert} from '../../../models/alert.model';
+import {AlertsService} from 'src/app/services/alerts.service';
+import {Alert} from 'src/app/models/alert.model';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ISensorReadingFilter } from 'src/app/models/sensor.model';
 import { LogsService } from 'src/app/services/logs.service';
 import jspdf from 'jspdf';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { debounceTime, distinctUntilChanged, switchMap, concatAll } from 'rxjs/operators';
 import { Subject } from 'rxjs/internal/Subject';
 import { Observable } from 'rxjs/internal/Observable';
 import { forkJoin } from 'rxjs';
-import { fromPromise } from 'rxjs/internal/observable/fromPromise';
-import { of } from 'rxjs';
 
 declare var require: any;
 
@@ -48,7 +45,7 @@ export class DetailComponent implements OnInit {
   @ViewChild('myAggregatedValues') myAggregatedValues;
 
   public asset: Asset;
-  public locations: INewLocation[];
+  public locations: ILocation[];
   public lastAlert: Alert;
   public numberOfAlertsOfTheDay: number;
   public chartSensorOptions = [];
@@ -59,14 +56,12 @@ export class DetailComponent implements OnInit {
   public sdIsLoading = false;
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
-    from: moment().subtract(1, 'day').toDate().getTime(),
+    from: moment().subtract(1, 'week').toDate().getTime(),
     to: moment().toDate().getTime(),
   };
   public mapLayers = [];
   public mapConfig;
 
-  public drpPresets: any[];
-  public drpOptions: any;
 
   public btnOptsExportAlerts: MatProgressButtonOptions = {
     active: false,
@@ -107,77 +102,23 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.init();
-    this.initDateFilterOptions();
-    this.newLocationService.getLocationsTree().then((data: INewLocation[]) => {
-      this.locations = data;
+    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+      this.locations = locations;
     });
 
 
     this.getChartData(this.chartData$).subscribe((result: any[]) => {
-        console.log('suscribe--chart----');
-        console.log(result);
         this.chartIsLoading = false;
         this.chartData = result;
-        /*
-        const { standardDeviations, chartData } = result ;
-
-        this.standardDeviations = standardDeviations;
-        */
-        //this.chartData = result;
     });
 
-
-    
     this.getStandardDeviation(this.standardDeviation$).subscribe((result) => {
-      console.log('suscribe--sd----');
-      console.log(result);
       this.sdIsLoading = false;
       this.standardDeviations = result;
     });
-    
 
   }
 
-  setupPresets() {
-    const backDate = (numOfDays) => {
-      const tday = new Date();
-      return new Date(tday.setDate(tday.getDate() - numOfDays));
-    };
-
-    const today = new Date();
-    const yesterday = backDate(1);
-    const minus7 = backDate(7);
-    const minus30 = backDate(30);
-
-    this.drpPresets = [
-      {presetLabel: 'Last 24 hours', range: {fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()}},
-      {presetLabel: 'Last 7 Days', range: {fromDate: minus7, toDate: today}},
-      {presetLabel: 'Last 30 Days', range: {fromDate: minus30, toDate: today}}
-    ];
-  }
-
-  public initDateFilterOptions() {
-    const today = new Date();
-    // const fromMin = new Date(today.getFullYear(), today.getMonth() - 2, 1);
-    const fromMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const toMin = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-    const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-    this.setupPresets();
-    this.drpOptions = this.drpOptions || {
-      presets: this.drpPresets,
-      format: 'mediumDate',
-      range: {fromDate: new Date(this.currentFilter.from) , toDate: new Date(this.currentFilter.to)},
-      applyLabel: 'Submit',
-      calendarOverlayConfig: {
-        shouldCloseOnBackdropClick: true
-      },
-      cancelLabel: 'Cancel',
-      excludeWeekends: false,
-      fromMinMax: {fromDate: null, toDate: fromMax},
-      toMinMax: {fromDate: null, toDate: toMax}
-    };
-  }
 
   async init() {
     try {
@@ -231,14 +172,11 @@ export class DetailComponent implements OnInit {
     const interval = options.interval ?  options.interval : this.currentFilter.interval;
     const from = options.from ?  options.from : this.currentFilter.from;
     const to = options.to ?  options.to : this.currentFilter.to;
-    const duration = moment.duration(moment(to).diff(from));
-    const durationInHours =  +duration.asHours().toFixed(0);
 
     this.currentFilter = {
       interval,
       from,
       to,
-      durationInHours
     };
 
     const chartDataFilters = [];
@@ -252,7 +190,7 @@ export class DetailComponent implements OnInit {
         to,
         interval,
       };
-      if (durationInHours > 24) {
+      if (interval !== 'ALL') {
         sdFilters.push(filter);
       }
       chartDataFilters.push(filter);
@@ -261,7 +199,7 @@ export class DetailComponent implements OnInit {
     if (chartDataFilters.length) {
       this.chartData$.next({
         filters: chartDataFilters,
-        durationInHours
+        interval,
       });
     }
 
@@ -279,8 +217,8 @@ export class DetailComponent implements OnInit {
       switchMap(data => {
         this.chartIsLoading = true;
         const observables: Observable<any>[] = [];
-        const {filters, durationInHours} = data;
-        if (durationInHours <= 24) {
+        const {filters, interval} = data;
+        if (interval === 'ALL') {
           for (const filter of filters) {
             observables.push(
               this.logsService.getSensorReadingsV2(filter)
@@ -355,7 +293,7 @@ export class DetailComponent implements OnInit {
       const measurePeriodTranslation = await this.getTranslation('PDF.MEASURE_PERIOD');
       const toTranslation = await this.getTranslation('PDF.TO');
 
-      const dateRange = this.myChart.range || this.drpOptions.range;
+      const dateRange = this.myChart.range || {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)};
       const timePeriod: string = measurePeriodTranslation + ' ' + formatDate(dateRange.fromDate, 'dd/MM/yyyy HH:mm', 'en-US')
         + ' ' + toTranslation + ' ' + formatDate(dateRange.toDate, 'dd/MM/yyyy HH:mm', 'en-US');
       pdf.text(timePeriod, 10, 55);

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -11,8 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ManageLocationsComponent implements OnInit {
 
-  public rootLocation: INewLocation;
-  public selectedLocation: INewLocation;
+  public rootLocation: ILocation;
+  public selectedLocation: ILocation;
 
   constructor(
     private newLocationService: NewLocationService,

@@ -1,4 +1,4 @@
-import { INewAsset } from 'src/app/models/new-asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 import { divIcon } from 'leaflet';
 
 
@@ -27,7 +27,7 @@ const assetIconTankMonitoringEmptyFuel = divIcon({
 });
 
 
-export function generateAssetIcon(mode: string = null, asset: INewAsset = null) {
+export function generateAssetIcon(mode: string = null, asset: IAsset = null) {
     console.log('generateAssetIcon', mode);
     switch (mode) {
         case 'TANK_MONITORING':

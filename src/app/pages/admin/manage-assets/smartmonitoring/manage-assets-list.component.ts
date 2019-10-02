@@ -1,10 +1,9 @@
 import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import {Asset} from '../../../../models/asset.model';
 import { MatPaginator } from '@angular/material';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { INewAsset } from 'src/app/models/new-asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -17,14 +16,14 @@ export class ManageAssetsListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public assets: INewAsset[] = [];
+  public assets: IAsset[] = [];
   public page = 0;
   public totalItems = 0;
   public pagesize = 10;
   public pageSizeOptions = [5, 10, 25, 100, 500, 1000];
   public isLoading = false;
 
-  public dataSource: MatTableDataSource<INewAsset>;
+  public dataSource: MatTableDataSource<IAsset>;
   public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'actions'];
   public filter = {
     name: null,

@@ -5,9 +5,8 @@ import {AssetService} from '../../../services/asset.service';
 import {FilterService} from '../../../services/filter.service';
 import {SharedService} from '../../../services/shared.service';
 import {LocationsService} from '../../../services/locations.service';
-import { ILocation, ISublocation } from 'src/app/models/locations.model';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { GlobaleSearchService } from 'src/app/services/global-search.service';
@@ -27,7 +26,7 @@ export class InventoryComponent implements OnInit {
     thresholdTemplates: [],
     locationType: null,
     locations: [],
-    sublocations: []
+    children: []
   };
 
   public listStyleValue = 'icons';
@@ -51,8 +50,8 @@ export class InventoryComponent implements OnInit {
   public totalItems = 0;
   public pagesize = 10;
 
-  public rootLocation: INewLocation;
-  public selectedLocation: INewLocation;
+  public rootLocation: ILocation;
+  public selectedLocation: ILocation;
 
   // Search autocomplete for location
   public searchTextLocation: string;
@@ -99,24 +98,20 @@ export class InventoryComponent implements OnInit {
     }
 
 
-    this.newLocationService.getLocationsTree().then((locations: INewLocation[]) => {
+    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,
-        locationType: null,
         geolocation: null,
-        floorPlan: null,
+        image: null,
         name: 'Locations',
         description: null,
-        sublocationsId: null,
-        sublocations: locations,
+        children: locations,
       };
       if (locations.length === 1) {
-        this.selectedLocation = this.rootLocation.sublocations[0];
+        this.selectedLocation = this.rootLocation.children[0];
       }
     });
-
-
   }
 
   public async onLocationTypeChange() {
@@ -126,7 +121,7 @@ export class InventoryComponent implements OnInit {
       this.filterOptions.locationsOptions = await this.locationsService.getLocations();
     }
     this.filter.locations = [];
-    this.filter.sublocations = [];
+    this.filter.children = [];
     this.getPagedAssets();
   }
 
@@ -141,7 +136,7 @@ export class InventoryComponent implements OnInit {
       thresholdTemplates: [],
       locationType: null,
       locations: [],
-      sublocations: [],
+      children: [],
       statuses: []
     };
   }
@@ -194,19 +189,19 @@ export class InventoryComponent implements OnInit {
     // TODO: request to update asset according to the location
   }
 
-  public updateLocation(location: ILocation|ISublocation) {
+  public updateLocation(location: ILocation) {
     switch (location.constructor.name) {
       case 'Sublocation':
-        this.filter.sublocations = [location.id];
+        this.filter.children = [location.id];
         this.filter.locations = [];
         break;
       case 'Location':
         this.filter.locations = [location.id];
-        this.filter.sublocations = [];
+        this.filter.children = [];
         break;
       default :
         this.filter.locations = [];
-        this.filter.sublocations = [];
+        this.filter.children = [];
     }
     this.getPagedAssets();
   }

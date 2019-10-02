@@ -4,7 +4,7 @@ import {Asset, IAsset, IGeolocation} from 'src/app/models/asset.model';
 import {Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, icon, LatLngBounds, geoJSON, MarkerCluster, Point} from 'leaflet';
 import {MapAssetPopupComponent} from '../map-asset-popup/map-asset-popup.component';
 import { GeoJsonObject } from 'geojson';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 
 @Component({
   selector: 'pxs-map-asset',
@@ -15,11 +15,11 @@ export class MapAssetComponent implements OnInit {
 
   @Input() height = 300;
   @Input() assets: IAsset[];
-  @Input() location: INewLocation;
-  @Input() parentLocation: INewLocation;
+  @Input() location: ILocation;
+  @Input() parentLocation: ILocation;
   @Input() imageUrl: string;
 
-  @Output() change: EventEmitter<{location: INewLocation, parent: INewLocation}> = new EventEmitter<{location: INewLocation, parent: INewLocation}>();
+  @Output() change: EventEmitter<{location: ILocation, parent: ILocation}> = new EventEmitter<{location: ILocation, parent: ILocation}>();
 
   currentMap: Map;
   center: IGeolocation;
@@ -84,16 +84,16 @@ export class MapAssetComponent implements OnInit {
     });
 
     if (this.location) {
-      const sublocations = this.location.sublocations;
-      if (sublocations && sublocations.length) {
-        for (const sublocation of sublocations) {
-          sublocation.parent = this.location;
+      const children = this.location.children;
+      if (children && children.length) {
+        for (const child of children) {
+          child.parent = this.location;
           const newMarker = marker(
-            [sublocation.geolocation.lat, sublocation.geolocation.lng],
+            [child.geolocation.lat, child.geolocation.lng],
             {
               icon: locationIcon
             }
-          ).bindPopup(fl => this.createLocationPopup(sublocation)).openPopup();
+          ).bindPopup(fl => this.createLocationPopup(child)).openPopup();
 
           /*.on('click', (e) => {
             const parent = this.location;
@@ -108,7 +108,7 @@ export class MapAssetComponent implements OnInit {
       }
     }
 
-    this.imageUrl = (this.imageUrl) ? (this.imageUrl) : (this.location) ? this.location.floorPlan : null;
+    this.imageUrl = (this.imageUrl) ? (this.imageUrl) : (this.location) ? this.location.image : null;
 
     if (this.imageUrl) {
       const image: HTMLImageElement = new Image();
@@ -158,10 +158,10 @@ export class MapAssetComponent implements OnInit {
     }
 
     if (this.location) {
-      const sublocations = this.location.sublocations;
-      if (sublocations && sublocations.length){
-        sublocations.forEach(sublocation => {
-          const {lng, lat} = sublocation.geolocation;
+      const children = this.location.children;
+      if (children && children.length){
+        children.forEach(child => {
+          const {lng, lat} = child.geolocation;
           geoJsonData.geometry.coordinates[0].push([lng, lat]);
         });
       }
@@ -179,7 +179,7 @@ export class MapAssetComponent implements OnInit {
     return popupEl;
   }
 
-  public createLocationPopup(location: INewLocation) {
+  public createLocationPopup(location: ILocation) {
     const popupEl: NgElement & WithProperties<MapAssetPopupComponent> = document.createElement('popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.eventEmitter = this.change;

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { IThreshold } from 'src/app/models/g-threshold.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail-item-boolean',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ThresholdTemplatesDetailItemBooleanComponent implements OnInit {
 
-  @Input() sensor: any;
+  @Input() threshold: IThreshold;
 
   constructor() { }
 

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { IThing, Thing } from 'src/app/models/thing.model';
-import { debounceTime, distinctUntilChanged, switchMap, tap, catchError } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, tap, catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
-import { INewThresholdTemplate } from '../models/new-threshold-template.model';
-import { IPagedThresholdTemplates } from '../models/threshold.model';
+
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+import { IThresholdTemplate } from '../models/g-threshold-template.model';
 
 @Injectable({
     providedIn: 'root'
@@ -22,23 +23,128 @@ export class NewThresholdTemplateService {
         return throwError(error);
     }
 
-    constructor(public http: HttpClient) { }
+    constructor(
+        public http: HttpClient,
+        private apollo: Apollo,
+    ) { }
 
 
-    getThresholdTemplates(filter: any = null): Observable<INewThresholdTemplate[]> {
+    // START APOLLO
+
+    public a_createThresholdTemplate(thresholdTemplate: IThresholdTemplate): Observable<IThresholdTemplate> {
+        const CREATE_THRESHOLD_TEMPLATE = gql`
+            mutation CreateThresholdTemplate($thresholdTemplate: ThresholdTemplateInput!) {
+                thresholdTemplate: CreateThresholdTemplate(thresholdTemplate: $thresholdTemplate) {
+                    id,
+                    name,
+                }
+            }
+        `;
+
+        interface CreateThresholdTemplateResponse {
+            thresholdTemplate: IThresholdTemplate;
+        }
+
+        return this.apollo.mutate<CreateThresholdTemplateResponse>({
+            mutation: CREATE_THRESHOLD_TEMPLATE,
+            variables: {
+                thresholdTemplate: {
+                    name: thresholdTemplate.name
+                }
+            }
+        }).pipe(
+            tap(data => {
+                console.log(data);
+            }),
+            map(({data}) => data.thresholdTemplate)
+        );
+    }
+
+    public a_getThresholdTemplates(): Observable<IThresholdTemplate[]> {
+        const GET_THRESHOLD_TEMPLATES = gql`
+            query findAllThresholdTemplates {
+                thresholdTemplates: findAllThresholdTemplates {
+                    id,
+                    name,
+                }
+            }
+        `;
+
+        interface GetThresholdTemplatesQuery {
+            thresholdTemplates: IThresholdTemplate[];
+        }
+
+        return this.apollo.watchQuery<GetThresholdTemplatesQuery>({
+            query: GET_THRESHOLD_TEMPLATES
+        }).valueChanges.pipe(map(({data}) => {
+            return data.thresholdTemplates;
+        }));
+    }
+
+    public a_getThresholdTemplateById(id: string): Observable<IThresholdTemplate> {
+        const GET_THRESHOLD_TEMPLATE_BY_ID = gql`
+            query findThresholdTemplateById($id: Long!) {
+                thresholdTemplate: findThresholdTemplateById(id: $id) {
+                    id,
+                    name,
+                }
+            }
+        `;
+
+        interface GetThresholdTemplateByIdQuery {
+            thresholdTemplate: IThresholdTemplate;
+        }
+
+        return this.apollo.query<GetThresholdTemplateByIdQuery>({
+            query: GET_THRESHOLD_TEMPLATE_BY_ID,
+            variables: {
+                id,
+            }
+        }).pipe(map(({data}) => data.thresholdTemplate));
+    }
+
+    public a_updateThresholdTemplate(thresholdTemplate: IThresholdTemplate): Observable<IThresholdTemplate> {
+        const UPDATE_THRESHOLD_TEMPLATE = gql`
+            mutation updateThresholdTemplate($input: ThresholdTemplateInput!) {
+                thresholdTemplate: updateThresholdTemplate(id: $id) {
+                    id,
+                    name,
+                }
+            }
+        `;
+
+        interface UpdateThresholdTemplateQuery {
+            thresholdTemplate: IThresholdTemplate;
+        }
+
+        return this.apollo.mutate<UpdateThresholdTemplateQuery>({
+            mutation: UPDATE_THRESHOLD_TEMPLATE,
+            variables: {
+                input: {
+                    ...thresholdTemplate
+                }
+            }
+        }).pipe(map(({data}) => data.thresholdTemplate));
+    }
+
+
+    // END APOLLO
+
+
+    getThresholdTemplates(filter: any = null): Observable<IThresholdTemplate[]> {
         let request = this.thresholdTemplatesUrl;
         if (filter) {
             if (filter.name) {
                 request += `?name=${filter.name}`;
             }
         }
-        return this.http.get<INewThresholdTemplate[]>(request);
+        return this.http.get<IThresholdTemplate[]>(request);
     }
 
 
-    getPagedThresholdTemplates(filter: any = null): Promise<IPagedThresholdTemplates> {
+    getPagedThresholdTemplates(filter: any = null): Promise<any> {
         return new Promise(async (resolve, reject) => {
-            this.getThresholdTemplates(filter).subscribe((response: INewThresholdTemplate[]) => {
+            this.getThresholdTemplates(filter).subscribe((response: IThresholdTemplate[]) => {
                     resolve ({
                         number: 0,
                         data: response,
@@ -58,10 +164,10 @@ export class NewThresholdTemplateService {
         });
     }
 
-    getThresholdTemplateById(id: number): Promise<INewThresholdTemplate> {
+    getThresholdTemplateById(id: string): Promise<IThresholdTemplate> {
         return new Promise(async (resolve, reject) => {
-            return this.http.get<INewThresholdTemplate[]>(`${this.thresholdTemplatesUrl}/?id=${id}`)
-                .subscribe((response: INewThresholdTemplate[]) => {
+            return this.http.get<IThresholdTemplate[]>(`${this.thresholdTemplatesUrl}/?id=${id}`)
+                .subscribe((response: IThresholdTemplate[]) => {
                     if (response.length) {
                         resolve(response[0]);
                     } else {
@@ -73,18 +179,18 @@ export class NewThresholdTemplateService {
         });
     }
 
-    public updateThresholdTemplate(thresholdTemplate: INewThresholdTemplate) {
+    public updateThresholdTemplate(thresholdTemplate: IThresholdTemplate) {
         return this.http.put(`${this.thresholdTemplatesUrl}/${thresholdTemplate.id}`, thresholdTemplate, this.httpOptions);
     }
 
-    public createThresholdTemplate(thresholdTemplate: INewThresholdTemplate) {
-        return this.http.post<INewThresholdTemplate>(`${this.thresholdTemplatesUrl}`, thresholdTemplate, this.httpOptions).pipe(
+    public createThresholdTemplate(thresholdTemplate: IThresholdTemplate) {
+        return this.http.post<IThresholdTemplate>(`${this.thresholdTemplatesUrl}`, thresholdTemplate, this.httpOptions).pipe(
             tap(data => console.log(data)),
             catchError(this.handleError)
         );
     }
 
-    public deleteThresholdTemplate(thresholdTemplateId: number) {
+    public deleteThresholdTemplate(thresholdTemplateId: string) {
         return this.http.delete(`${this.thresholdTemplatesUrl}/${thresholdTemplateId}`, this.httpOptions).pipe(
             catchError(this.handleError)
         );

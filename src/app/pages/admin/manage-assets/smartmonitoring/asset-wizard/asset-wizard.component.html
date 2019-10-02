@@ -17,7 +17,7 @@
               <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="asset.description"></textarea>
             </mat-form-field>
             <mat-form-field>
-              <mat-select placeholder="Type" matInput formControlName="TypeCtrl">
+              <mat-select placeholder="Type" [(ngModel)]="asset.type" matInput formControlName="TypeCtrl">
                 <mat-option value="type1">Type 1</mat-option>
                 <mat-option value="type2">Type 2</mat-option>
               </mat-select>
@@ -36,7 +36,7 @@
         <p>Form status: {{ descriptionFormGroup.status | json }}</p>
         
         <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
-        
+
       </form>
     </mat-step>
     <mat-step [completed]="asset.location">
@@ -45,9 +45,16 @@
         <div class="row">
           <div class="col-xs-12 col-md-6 mx-auto">
             <pxs-location-explorer 
+              *ngIf="displayLocationExplorer"
               (changeLocation)="updateLocation($event)"
               [selectedLocation]="asset.location"
             ></pxs-location-explorer>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+              <hr>
+              <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
           </div>
         </div>
         <pxs-stepper-next [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
@@ -84,8 +91,18 @@
           <div class="container">
               <div class="row">
                   <div class="col-md-12 mx-auto">
-                      <pxs-list-threshold-templates [selectedThresholdTemplate]="asset.thresholdTemplate" (selectChange)="asset.thresholdTemplate = $event"></pxs-list-threshold-templates>
+                      <pxs-list-threshold-templates
+                        *ngIf="displayThresholdTemplateList"
+                        [selectedThresholdTemplate]="asset.thresholdTemplate"
+                        (selectChange)="asset.thresholdTemplate = $event"
+                      ></pxs-list-threshold-templates>
                   </div>
+              </div>
+               <div class="row">
+                <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+                    <hr>
+                    <button mat-button color="primary" (click)="openAddThresholdTemplate()">Create a new threshold template</button>
+                </div>
               </div>
               <pxs-stepper-next text="Save" [completed]="asset.things.length" (next)="wantToSaveAsset()"></pxs-stepper-next>
           </div>

@@ -1,7 +1,7 @@
 import { AlertsService } from './../../../../../src/app/services/alerts.service';
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
 import { IAsset } from 'src/app/models/asset.model';
-import { INewLocation } from 'src/app/models/new-location';
+import { ILocation } from 'src/app/models/g-location.model';
 import { IAlert } from 'src/app/models/alert.model';
 
 @Component({
@@ -11,8 +11,8 @@ import { IAlert } from 'src/app/models/alert.model';
 })
 export class MapAssetPopupComponent implements OnInit {
   @Input() asset: IAsset;
-  @Input() location: INewLocation;
-  @Input() eventEmitter: EventEmitter<{location: INewLocation, parent: INewLocation}> = new EventEmitter<{location: INewLocation, parent: INewLocation}>();
+  @Input() location: ILocation;
+  @Input() eventEmitter: EventEmitter<{location: ILocation, parent: ILocation}> = new EventEmitter<{location: ILocation, parent: ILocation}>();
 
 
   public lastAlert: IAlert;

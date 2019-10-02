@@ -5,6 +5,7 @@ import {Thing} from '../models/thing.model';
 import {SharedService} from './shared.service';
 import {environment} from '../../environments/environment';
 import {isNullOrUndefined} from 'util';
+import { IThing } from '../models/g-thing.model';
 
 @Injectable({
   providedIn: 'root'
@@ -42,17 +43,17 @@ export class ThingService {
     });
   }
 
-  public updateName(device: Thing) {
+  public updateName(device: IThing) {
     return new Promise(async (resolve, reject) => {
       this.http.patch(`${environment.baseUrl}things/${device.id}`, {name: device.name})
-        .subscribe((response: any) => {
+        .subscribe((thing: IThing) => {
           const snackBarRef = this.snackBar.open(
             'Successfully updated device name.',
             null, {
               duration: 3000,
               panelClass: 'success-snackbar'
             });
-          resolve(new Thing(response));
+          resolve(thing);
         }, () => {
           this.sharedService.rejectPromise('Error! Failed to update device name. Please reload.', reject);
         });

@@ -1,25 +1,25 @@
 <div class="title">
     <h6>
-      <img [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name.toLowerCase() + '.svg'">
-      {{sensor.sensorType.name}}
+      <img [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name.toLowerCase() + '.svg'">
+      {{threshold.sensorType.name}}
     </h6>
     <div>
-      <span>{{sensor.sensorType.min}} {{sensor.sensorType.postfix}}</span> - <span>{{sensor.sensorType.max}} {{sensor.sensorType.postfix}}</span> 
+      <span>{{threshold.sensorType.min}} {{threshold.sensorType.postfix}}</span> - <span>{{threshold.sensorType.max}} {{threshold.sensorType.postfix}}</span> 
     </div>
 </div>
 <div class="threshold-bar-container">
   <div 
     class="threshold-bar"
-    matTooltip="{{threshold.severity}}, from {{threshold.range.from}} to {{threshold.range.to}}"
-    *ngFor="let threshold of sensor.thresholds"
-    [ngClass]="{'low': threshold.severity=='LOW', 'medium': threshold.severity=='MEDIUM', 'critical': threshold.severity=='CRITICAL'}"
-    [ngStyle]="{'left.%': threshold.range.fromPercent, 'width.%': threshold.range.widthPercent}"
+    *ngFor="let thresholdItem of threshold.thresholdItems"
+    matTooltip="{{thresholdItem.severity}}, from {{thresholdItem.range.from}} to {{thresholdItem.range.to}}"
+    [ngClass]="{'low': thresholdItem.severity=='LOW', 'medium': thresholdItem.severity=='MEDIUM', 'critical': thresholdItem.severity=='CRITICAL'}"
+    [ngStyle]="{'left.%': thresholdItem.range.fromPercent, 'width.%': thresholdItem.range.widthPercent}"
   ></div>
 </div>
 <div class="threshold-indicator-container">
   <div
     class="threshold-indicator"
-    *ngFor="let indicator of sensor.indicators | keyvalue"
+    *ngFor="let indicator of threshold.indicators | keyvalue"
     [style.left.%]="indicator.value"
   >
     <div class="bar">

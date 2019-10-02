@@ -2,6 +2,11 @@ import {Routes} from '@angular/router';
 
 export const TankMonitoringRoutes: Routes = [
   {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
     path: 'dashboard',
     children: [{
       path: '',
@@ -9,7 +14,7 @@ export const TankMonitoringRoutes: Routes = [
     }]
   },
   {
-    path: 'consumptions',
+    path: 'consumptions/:id',
     children: [{
       path: '',
       loadChildren: './consumptions/consumptions.module#ConsumptionsModule'
