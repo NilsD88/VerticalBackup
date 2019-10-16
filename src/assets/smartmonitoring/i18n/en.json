@@ -303,7 +303,7 @@
     "BODY": "Body",
     "PLACEHOLDERS": "Placeholders",
     "RECIPIENT": "Recipient",
-    "ASSET": "asset",
+    "ASSET": "Asset",
     "LOG": "Log",
     "THRESHOLD_TEMPLATE": "Threshold template",
     "CATEGORY": "Category",
@@ -319,7 +319,13 @@
       "VALUE": "Value",
       "MATERIAL_NAME": "Threshold template name",
       "THRESHOLD_MIN": "Threshold Min",
-      "THRESHOLD_MAX": "Threshold Max"
+      "THRESHOLD_MAX": "Threshold Max",
+      "THING_NAME": "Thing name",
+      "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
+      "SENSOR_TYPE_NAME": "Sensor type name",
+      "THRESHOLD_ITEM_LABEL": "Threshold item label",
+      "THRESHOLD_ITEM_MIN": "Threshold item min",
+      "THRESHOLD_ITEM_MAX": "Threshold item max"
     }
   },
   "ASSET_MODAL": {

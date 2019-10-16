@@ -1,0 +1,18 @@
+<div class="last-alerts">
+  <div *ngFor="let lastAlert of lastAlerts" class="last-alert">
+    <div class="title">
+      <h6>
+        <img [src]="'assets/smartmonitoring/images/icons/icon-'+ lastAlert.thresholdItem.threshold.sensorType.name.toLowerCase() + '.svg'">
+        {{lastAlert.thresholdItem.threshold.sensorType.name}}
+      </h6>
+    </div>
+    <div class="alert">
+      <p>
+        <span *ngIf="lastAlert.thresholdItem.label">{{lastAlert.thresholdItem.label}}</span>
+        <span *ngIf="!lastAlert.thresholdItem.label">{{lastAlert.thresholdItem.severity}}</span>
+        : {{lastAlert.sensorReading.value}}
+      </p>
+      <p><span>Date</span>: {{lastAlert.sensorReading.timestamp | date: 'short'}}</p>
+    </div>
+  </div>
+</div>

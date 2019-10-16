@@ -42,6 +42,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
     ) {}
 
   async ngOnInit() {
+    console.log('ngOnInit list threshold template');
     if (this.admin) {
       //this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
       this.displayedColumns = ['name', 'thresholds', 'actions'];
@@ -60,6 +61,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
       this.getThresholdTemplateByFilter();
     });
 
+    //TODO: replace with the new back-end
+    /*
     this.newThresholdTemplateService.searchThresholdTemplatesWithFilter(this.searchFilter$).subscribe(
       (pagedThresholdTemplate: IThresholdTemplatePaged) => {
         this.thresholdTemplates = pagedThresholdTemplate.thresholdTemplates;
@@ -68,6 +71,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
         this.updateDataSource();
       }
     );
+    */
   }
 
 
@@ -82,10 +86,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
   private async getThresholdTemplateByFilter() {
     this.isLoading = true;
     this.thresholdTemplates = [];
-
-    const pagedThresholdTemplate = await this.newThresholdTemplateService.getPagedThresholdTemplates();
-    this.thresholdTemplates = pagedThresholdTemplate.data;
-    this.totalItems = pagedThresholdTemplate.totalElements;
+    this.thresholdTemplates = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
+    this.totalItems = this.thresholdTemplates.length;
     this.isLoading = false;
     this.updateDataSource();
   }
@@ -120,14 +122,17 @@ export class ListThresholdTemplatesComponent implements OnInit {
 
 
   public async deleteThresholdTemplate(thresholdTemplateId: string) {
-    this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe((result) => {
-      this.thresholdTemplates = null;
-      this.changeDetectorRef.detectChanges();
-      this.getThresholdTemplateByFilter();
-    });
+    this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
+      (result) => {
+        this.thresholdTemplates = null;
+        this.changeDetectorRef.detectChanges();
+        this.getThresholdTemplateByFilter();
+      }
+    );
   }
 
-  openDetailDialog(thresholdTemplate: IThresholdTemplate): void {
+  public async openDetailDialog(thresholdTemplateId: string) {
+    const thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
     const dialogRef = this.dialog.open(ThresholdTemplatesDetailComponent, {
       minWidth: '320px',
       maxWidth: '600px',

@@ -36,3 +36,9 @@ main {
   font-size: 1.1em;
   font-weight: bold;
 }
+
+.mat-table {
+  .mat-radio-button, .mat-checkbox {
+    display: block;
+  }
+}

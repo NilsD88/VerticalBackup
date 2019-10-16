@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
 import {isNullOrUndefined} from 'util';
 import {Asset} from '../../../models/asset.model';
 import {AssetService} from '../../../services/asset.service';
@@ -60,6 +60,7 @@ export class InventoryComponent implements OnInit {
   public searchTermLocation$ = new Subject<string>();
 
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     public assetService: AssetService,
     public filterService: FilterService,
     public sharedService: SharedService,
@@ -143,6 +144,11 @@ export class InventoryComponent implements OnInit {
 
   public async submitFilter(): Promise<void> {
     this.getPagedAssets();
+  }
+
+  public changeLocation(location: ILocation) {
+    this.selectedLocation = location;
+    this.changeDetectorRef.detectChanges();
   }
 
   public pageChanged(evt) {

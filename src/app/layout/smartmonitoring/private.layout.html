@@ -24,7 +24,7 @@
         </div>
       </mat-menu>
     </pxs-menu-item>
-    <pxs-menu-item [mat-menu-trigger-for]="admin" *ngIf="sharedService.user.roles.includes('pxs:iot:localadmin')">
+    <pxs-menu-item [mat-menu-trigger-for]="admin" *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
       <pxs-icon icon="cog"></pxs-icon>
       <span class="visible-md-inline visible-lg-inline" [translate]="'LAYOUT.ADMIN'"></span>
 
@@ -71,17 +71,17 @@
   <pxs-menu-item
     [label]="'Tank monitoring'" 
     [url]="'/private/tankmonitoring'"
-    *ngIf="sharedLayoutService.user.hasModule('TANK_MONITORING')" 
+    *ngIf="sharedLayoutService.user?.hasModule('TANK_MONITORING')" 
     [mat-menu-trigger-for]="tankMonitoring"
   ></pxs-menu-item>
   <pxs-menu-item 
     [label]="'Visitor counting'"
-    *ngIf="sharedLayoutService.user.hasModule('PEOPLE_COUNTING')"
+    *ngIf="sharedLayoutService.user?.hasModule('PEOPLE_COUNTING')"
     [mat-menu-trigger-for]="visitorCounting"
   ></pxs-menu-item>
   <pxs-menu-item
     [label]="'Asset tracking'"
-    *ngIf="sharedLayoutService.user.hasModule('PEOPLE_TRACKIN')"
+    *ngIf="sharedLayoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"
   ></pxs-menu-item>
 </pxs-main-menu>

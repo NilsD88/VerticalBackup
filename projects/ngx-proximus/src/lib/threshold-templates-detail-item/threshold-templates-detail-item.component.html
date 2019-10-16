@@ -9,7 +9,12 @@
     <pxs-threshold-templates-detail-item-boolean *ngIf="threshold.thresholdItems && threshold.thresholdItems.length" [threshold]="threshold" ></pxs-threshold-templates-detail-item-boolean>
   </div>
   <!-- LAST VALUES -->
-  <div *ngFor="let lastValue of threshold.lastValues">
-    <span matTooltip="{{lastValue.name}}: {{lastValue.value}}"><i class="material-icons">arrow_drop_down</i></span>
+  <div *ngFor="let lastValue of threshold.lastValues" class="last-alert">
+    <span 
+      matTooltip="{{lastValue.name}}: {{lastValue.value}}"
+      [ngStyle]="{'left': 'calc(' + lastValue.percent + '% - 18px)'}"
+    >
+      <i class="material-icons">arrow_drop_down</i>
+    </span>
   </div>
 </div>

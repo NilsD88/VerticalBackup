@@ -5,3 +5,17 @@
     padding: 0 20px;
     margin-bottom: 15px;
 }
+
+.last-alert {
+    position: relative;
+    z-index: 999;
+    span {
+        position: absolute;
+        top: -63px;
+        i {
+            font-size: 36px;
+            color: white;
+            text-shadow: 0 0 6px rgba(0,0,0,0.4);
+        }
+    }
+}

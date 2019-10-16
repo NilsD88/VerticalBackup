@@ -1,10 +1,10 @@
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
@@ -15,7 +15,7 @@ import { isNullOrUndefined } from 'util';
   templateUrl: './location-explorer.component.html',
   styleUrls: ['./location-explorer.component.scss']
 })
-export class LocationExplorerComponent implements OnInit {
+export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
@@ -41,6 +41,8 @@ export class LocationExplorerComponent implements OnInit {
 
   private assetsRequestSource = new Subject();
 
+  private subscriptions: Subscription[] = [];
+
   constructor(
     private newAssetService: NewAssetService,
     private newLocationService: NewLocationService,
@@ -49,18 +51,24 @@ export class LocationExplorerComponent implements OnInit {
 
   ngOnInit() {
 
-    this.assetsRequestSource.pipe(
-      switchMap(req => this.newAssetService.getAssetsByLocationId(+this.currentLocation.id))
-    ).subscribe((data: IAsset[]) => {
-      this.loadingAsset = false;
-      this.currentLocation.assets = data;
-    });
+    const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
+      switchMap(() => this.newAssetService.getAssetsByLocationId(this.currentLocation.id))
+    );
+
+    this.subscriptions.push(
+      assetsRequestSourcePipe.subscribe((data: IAsset[]) => {
+        this.loadingAsset = false;
+        this.currentLocation.assets = data;
+      })
+    );
 
     this.initLocationTree();
 
-    this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: ILocation[]) => {
-      this.searchResults = locations;
-    });
+    this.subscriptions.push(
+      this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: ILocation[]) => {
+        this.searchResults = locations;
+      })
+    );
   }
 
   private initLocationTree() {
@@ -78,22 +86,24 @@ export class LocationExplorerComponent implements OnInit {
 
   getLocations() {
     this.isDownloading = true;
-    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-      this.rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children: locations,
-      };
-      this.tabs = [{
-        name: this.rootLocation.name,
-        children: locations,
-      }];
-      this.checkIfSelectedLocation();
-    });
+    this.subscriptions.push(
+      this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+        this.rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children: locations,
+        };
+        this.tabs = [{
+          name: this.rootLocation.name,
+          children: locations,
+        }];
+        this.checkIfSelectedLocation();
+      })
+    );
   }
 
   deleteLocation(locationId: string) {
@@ -108,18 +118,12 @@ export class LocationExplorerComponent implements OnInit {
   private checkIfSelectedLocation() {
     this.currentLocation = this.rootLocation;
     this.isDownloading = true;
-    console.log('checkIfSelectedLocation');
-    console.log(this.selectedLocation);
     if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
-      console.log('checkIfSelectedLocation if');
-      console.log(this.selectedLocation.id);
-      console.log(this.rootLocation);
       const { path } = findLocationById(this.rootLocation, this.selectedLocation.id);
       for (const location of path) {
         this.goToChild(location);
       }
     } else {
-      console.log('checkIfSelectedLocation else');
       this.changeLocation.emit(this.rootLocation);
     }
     this.isDownloading = false;
@@ -172,6 +176,7 @@ export class LocationExplorerComponent implements OnInit {
     if (!this.currentLocation.assets) {
       this.currentLocation.assets = [];
       this.loadingAsset = true;
+      console.log('before assetsRequestSource');
       this.assetsRequestSource.next();
     }
   }
@@ -192,9 +197,7 @@ export class LocationExplorerComponent implements OnInit {
       leftId,
     };
 
-    this.newLocationService.reorderLocation(location).subscribe((location: ILocation) => {
-      console.log(location);
-    });
+    this.newLocationService.reorderLocation(location).subscribe();
   }
 
   public onFilterChange() {
@@ -208,6 +211,10 @@ export class LocationExplorerComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
     this.isDownloading = false;
     this.initLocationTree();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

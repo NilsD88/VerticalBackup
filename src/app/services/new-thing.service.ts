@@ -9,7 +9,7 @@ import gql from 'graphql-tag';
 @Injectable({
     providedIn: 'root'
 })
-export class NewThingsService {
+export class NewThingService {
     public thingsUrl = 'fakeapi/things';
 
     private headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
@@ -32,10 +32,16 @@ export class NewThingsService {
 
     public a_getThings(): Observable<IThing[]> {
         const GET_THINGS = gql`
-            query findAllThings {
+            things: query findAllThings {
                 things: findAllThings {
                     id,
                     name,
+                    sensors {
+                        sensorType {
+                            id,
+                            name
+                        }
+                    }
                 }
             }
         `;
@@ -44,9 +50,38 @@ export class NewThingsService {
             things: IThing[];
         }
 
-        return this.apollo.watchQuery<GetThingsQuery>({
-            query: GET_THINGS
-        }).valueChanges.pipe(map(({data}) => {
+        return this.apollo.query<GetThingsQuery>({
+            query: GET_THINGS,
+            fetchPolicy: 'network-only'
+        }).pipe(map(({data}) => {
+            return data.things;
+        }));
+    }
+
+    public a_getThingsByAssetId(assetId: string): Observable<IThing[]> {
+        const GET_THINGS_BY_ASSET_ID = gql`
+            things: query findAllThingsByAsset($locationId: Long!) {
+                things: findAllThingsByAsset(locationId: $locationId) {
+                    id,
+                    name,
+                    sensors {
+                        sensorType {
+                            id,
+                            name
+                        }
+                    }
+                }
+            }
+        `;
+
+        interface GetThingsByAssetIdResponse {
+            things: IThing[];
+        }
+
+        return this.apollo.query<GetThingsByAssetIdResponse>({
+            query: GET_THINGS_BY_ASSET_ID,
+            fetchPolicy: 'network-only'
+        }).pipe(map(({data}) => {
             return data.things;
         }));
     }
@@ -67,6 +102,7 @@ export class NewThingsService {
 
         return this.apollo.query<GetThingByIdQuery>({
             query: GET_THING_BY_ID,
+            fetchPolicy: 'network-only',
             variables: {
                 input: {
                     id
@@ -75,10 +111,10 @@ export class NewThingsService {
         }).pipe(map(({data}) => data.thing));
     }
 
-    public a_updateThing(thing: IThing): Observable<IThing> {
+    public a_updateThing(thing: IThing): Observable<boolean> {
         const UPDATE_THING = gql`
-            mutation updateThresholdTemplate($input: ThingInput!) {
-                thresholdTemplate: updateThresholdTemplate(id: $id) {
+            mutation updateThing($input: ThingInput!) {
+                thresholdTemplate: updateThing(id: $id) {
                     id,
                     name,
                 }
@@ -86,7 +122,7 @@ export class NewThingsService {
         `;
 
         interface UpdateThingQuery {
-            thing: IThing | null;
+            updateThing: boolean;
         }
 
         return this.apollo.mutate<UpdateThingQuery>({
@@ -97,7 +133,7 @@ export class NewThingsService {
                     name: thing.name
                 }
             }
-        }).pipe(map(({data}) => data.thing));
+        }).pipe(map(({data}) => data.updateThing));
     }
 
 

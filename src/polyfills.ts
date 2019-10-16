@@ -64,6 +64,9 @@ import '@webcomponents/custom-elements/custom-elements.min';
 /** Required for custom elements for apps building to es5. */
 import '@webcomponents/custom-elements/src/native-shim';
 
+// TODO: remove this line, it's only for Angury chrome extension (dev)
+//import 'core-js/es7/reflect';
+
 (window as any).global = window;
 /***************************************************************************************************
  * APPLICATION IMPORTS

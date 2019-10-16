@@ -51,9 +51,9 @@
             <td mat-cell *matCellDef="let element" class="sensors-container">
               <div class="sensor" *ngIf="element.thresholds.length">
                   <img 
-                    *ngFor="let sensor of element.sensors"
-                    [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name.toLowerCase() + '.svg'"
-                    [matTooltip]="sensor.sensorType.name"
+                    *ngFor="let threshold of element.thresholds"
+                    [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name.toLowerCase() + '.svg'"
+                    [matTooltip]="threshold.sensorType.name"
                     [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
                   >
               </div>
@@ -82,7 +82,7 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
-                <button mat-icon-button matTooltip="Detail" color="primary" (click)="openDetailDialog(element)">
+                <button mat-icon-button matTooltip="Detail" color="primary" (click)="openDetailDialog(element.id)">
                   <pxs-icon icon="params"></pxs-icon>
                 </button>
                 <button *ngIf="admin" mat-icon-button matTooltip="Edit threshold template" color="accent" routerLink="/private/admin/manage-threshold-templates/{{element.id}}">

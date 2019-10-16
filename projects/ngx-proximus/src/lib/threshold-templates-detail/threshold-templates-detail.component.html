@@ -1,8 +1,3 @@
 <h3>{{thresholdTemplate.name}}</h3>
 
-<div class="threshold-container" *ngFor="let sensor of thresholdTemplate.sensors">
-    <div *ngIf="sensor.sensorType.type === 'NUMBER'"></div>
-</div>
-
-
-<pxs-threshold-templates-detail-item [thresholdTemplate]="thresholdTemplate"></pxs-threshold-templates-detail-item>
+<pxs-threshold-templates-detail-item [thresholdTemplate]="thresholdTemplate" [lastValues]="lastValues"></pxs-threshold-templates-detail-item>

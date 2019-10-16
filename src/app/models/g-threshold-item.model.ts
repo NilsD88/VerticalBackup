@@ -1,5 +1,6 @@
 import { ISensorType } from './g-sensor-type.model';
 import { isNullOrUndefined } from 'util';
+import { IThreshold } from './g-threshold.model';
 
 export interface IThresholdItem {
     id?: string;
@@ -8,6 +9,8 @@ export interface IThresholdItem {
     severity?: SeverityLevel;
     notification?: INotification;
     sensorType?: ISensorType;
+
+    threshold?: IThreshold;
 }
 
 export class ThresholdItem {
@@ -17,6 +20,8 @@ export class ThresholdItem {
     severity: SeverityLevel;
     notification: INotification;
     sensorType: ISensorType;
+
+    threshold: IThreshold;
 
     constructor(thresholdItem: IThresholdItem = null) {
         if (thresholdItem) {
@@ -29,12 +34,19 @@ export class ThresholdItem {
     }
 }
 
-
-
-
 export interface IRange {
     from: number;
     to: number;
+}
+
+export class IThresholdItemWithPercentRange {
+    range: IRangeWithPercent;
+}
+
+export interface IRangeWithPercent extends IRange {
+    fromPercent: number;
+    toPercent: number;
+    widthPercent: number;
 }
 
 export interface INotification {
@@ -43,4 +55,8 @@ export interface INotification {
     sms: boolean;
 }
 
-export type SeverityLevel = 'LOW' | 'MEDIUM' | 'CRITICAL';
+export enum SeverityLevel {
+    LOW = 'LOW',
+    MEDIUM = 'MEDIUM',
+    CRITICAL = 'CRITICAL'
+}

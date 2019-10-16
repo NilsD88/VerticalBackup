@@ -73,7 +73,6 @@ export class LocationWizardComponent implements OnInit {
       this.editMode = true;
       this.location = await this.newLocationService.getLocationById(locationId).toPromise();
       this.originalLocation = cloneDeep(this.location);
-      console.log(this.originalLocation);
     } else {
       this.location = {
         id: null,
@@ -135,7 +134,7 @@ export class LocationWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe((result: ILocation) => {
+      this.newLocationService.updateLocation(location).subscribe((location: ILocation) => {
         this.goToManageLocation();
       });
 
@@ -145,19 +144,13 @@ export class LocationWizardComponent implements OnInit {
       });
       */
     } else {
-      /*
-      this.newLocationService.createLocation(this.location).subscribe((result) => {
+     this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
+       if (location) {
         if (this.fromPopup) {
-          this.dialogRef.close(result);
+          this.dialogRef.close(location);
         } else {
           this.goToManageLocation();
         }
-      });
-      */
-
-     this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
-       if (location) {
-        this.goToManageLocation();
        }
      });
     }

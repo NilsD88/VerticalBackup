@@ -23,7 +23,7 @@ export class PublicAuthGuard implements CanActivate {
         }
         return true;
       } catch (err) {
-        console.info('UserAuthGuard: ', err);
+        console.log('UserAuthGuard: ', err);
         return true;
       }
     }
@@ -155,12 +155,15 @@ export const AppRoutes: Routes = [
       canActivate: [PublicAuthGuard],
       children: [{
         path: '',
-        //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-        //loadChildren: './pages/smart-monitoring/detail2/detail2.module#Detail2Module'
-        //loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-        //loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
-        //loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
-        loadChildren: './pages/admin/manage-locations/manage-locations.module#ManageLocationsModule'
+        loadChildren: './pages/admin/manage-assets/smartmonitoring/manage-assets.module#ManageAssetsModule'
+        // loadChildren: './pages/smart-monitoring/detail2/detail2.module#Detail2Module'
+        // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
+        // loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
+        // loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
+        // loadChildren: './pages/admin/manage-locations/manage-locations.module#ManageLocationsModule'
+        // loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
+        // loadChildren: './pages/admin/manage-things/smartmonitoring/manage-things.module#ManageThingsModule'
+        // loadChildren: './pages/tank-monitoring/consumptions/consumptions.module#ConsumptionsModule'
       }]
   },
   {

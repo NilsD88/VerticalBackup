@@ -18,16 +18,18 @@ export class ManageAssetsListComponent implements OnInit {
 
   public assets: IAsset[] = [];
   public page = 0;
-  public totalItems = 0;
-  public pagesize = 10;
+  public totalElements = 0;
+  public pageSize = 10;
   public pageSizeOptions = [5, 10, 25, 100, 500, 1000];
   public isLoading = false;
 
   public dataSource: MatTableDataSource<IAsset>;
   public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'actions'];
   public filter = {
-    name: null,
+    name: '',
   };
+
+  public easterEgg = false;
 
   public searchFilter$ = new Subject<any>();
 
@@ -40,12 +42,15 @@ export class ManageAssetsListComponent implements OnInit {
   public async ngOnInit() {
     await this.getAssetsByFilter();
 
+    // TODO: search filter for asset with new backend
+    /*
     this.newAssetService.searchPagedAssetsWithFilter(this.searchFilter$).subscribe(pagedAssets => {
       this.assets = pagedAssets.data;
       this.totalItems = pagedAssets.totalElements;
       this.isLoading = false;
       this.updateDataSource();
     });
+    */
 
     this.sort.sortChange.subscribe(() => {
       this.getAssetsByFilter();
@@ -55,16 +60,19 @@ export class ManageAssetsListComponent implements OnInit {
 
   public async pageChanged(evt) {
     this.page = evt.pageIndex;
-    this.pagesize = evt.pageSize;
+    this.pageSize = evt.pageSize;
     await this.getAssetsByFilter();
   }
 
   private async getAssetsByFilter() {
     this.isLoading = true;
     this.assets = [];
-    const pagedAssets = await this.newAssetService.getPagedAssets(this.filter);
-    this.assets = pagedAssets.data;
-    this.totalItems = pagedAssets.totalElements;
+    // const pagedAssets = await this.newAssetService.getPagedAssets(this.filter);
+    // TODO: get pagedAssets when backend will be updated
+    const pagedAssets = await this.newAssetService.getPagedAssets(this.page, this.pageSize).toPromise();
+    console.log(pagedAssets);
+    this.assets = await pagedAssets.assets;
+    this.totalElements = pagedAssets.totalElements;
     this.isLoading = false;
     this.updateDataSource();
   }
@@ -86,8 +94,8 @@ export class ManageAssetsListComponent implements OnInit {
     this.getAssetsByFilter();
   }
 
-  public async deleteAsset(assetId: number) {
-    this.newAssetService.deleteAsset(assetId).subscribe((result) => {
+  public async deleteAsset(id: string) {
+    this.newAssetService.deleteAsset(id).subscribe((result) => {
       this.assets = null;
       this.changeDetectorRef.detectChanges();
       this.getAssetsByFilter();
@@ -95,6 +103,9 @@ export class ManageAssetsListComponent implements OnInit {
   }
 
   public onFilterChange() {
+    if (this.filter.name.toUpperCase() === 'PROXIMUS') {
+      this.easterEgg = true;
+    }
     this.isLoading = true;
     this.searchFilter$.next({...this.filter});
   }

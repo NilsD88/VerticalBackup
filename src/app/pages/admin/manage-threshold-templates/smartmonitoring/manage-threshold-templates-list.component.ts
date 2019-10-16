@@ -8,6 +8,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 export class ManageThresholdTemplatesListComponent implements OnInit {
 
   async ngOnInit() {
+    console.log('ngOnInit ManageThresholdTemplatesListComponent');
   }
 
 }

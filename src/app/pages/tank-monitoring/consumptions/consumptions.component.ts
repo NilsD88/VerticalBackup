@@ -1,14 +1,16 @@
-import { AssetService } from 'src/app/services/asset.service';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { IFilterChartData } from '../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component'
 import { LogsService } from 'src/app/services/logs.service';
 import { ActivatedRoute } from '@angular/router';
-import { IAsset } from 'src/app/models/asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 import { ISensorReadingFilter } from 'src/app/models/sensor.model';
 import { isNullOrUndefined } from 'util';
 import { forkJoin, Observable, Subject} from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { NewAssetService } from 'src/app/services/new-asset.service';
+import { NewLocationService } from 'src/app/services/new-location.service';
+import { MOCK_THRESHOLD_TEMPLATES } from 'src/app/mocks/threshold-templates';
 
 @Component({
   selector: 'pvf-consumptions',
@@ -18,10 +20,12 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 export class ConsumptionsComponent implements OnInit {
 
   public TANK_DATA = {"label":"tank fill level","sensorTypeId":null,"series":[{"label":"1560819600000","avg":96.0,"min":96.0,"max":96.0,"sum":96.0},{"label":"1560837600000","avg":96.0,"min":96.0,"max":96.0,"sum":96.0},{"label":"1560859200000","avg":94.0,"min":94.0,"max":94.0,"sum":94.0},{"label":"1560880800000","avg":23.0,"min":23.0,"max":23.0,"sum":23.0},{"label":"1560902400000","avg":23.0,"min":23.0,"max":23.0,"sum":23.0},{"label":"1560924000000","avg":23.0,"min":23.0,"max":23.0,"sum":23.0},{"label":"1560949200000","avg":23.0,"min":23.0,"max":23.0,"sum":23.0},{"label":"1560967200000","avg":23.0,"min":23.0,"max":23.0,"sum":23.0}]};
+  public MOCK_THRESHOLD_TEMPLATE = MOCK_THRESHOLD_TEMPLATES[0];
 
   public asset: IAsset;
   public chartSensorOptions = [];
   public chartData = [];
+  public lastAlert = null;
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
@@ -36,7 +40,8 @@ export class ConsumptionsComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private assetService: AssetService,
+    private newAssetService: NewAssetService,
+    private newLocationService: NewLocationService,
     private logsService: LogsService
   ) {}
 
@@ -51,13 +56,18 @@ export class ConsumptionsComponent implements OnInit {
   async init() {
     try {
       const id = await this.getRouteId();
-      this.asset = await this.assetService.getAssetById(id);
+      this.asset = await this.newAssetService.getAssetById(id).toPromise();
+      console.log({...this.asset});
+      this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
+      console.log({...this.asset});
+      /*
       this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
         return {
           deveui: val.devEui,
           sensorTypeId: val.sensorType.id
         };
       }) : [];
+      */
       this.updateChartData(null);
 
     } catch (err) {
@@ -132,7 +142,7 @@ export class ConsumptionsComponent implements OnInit {
     );
   }
 
-  private getRouteId(): Promise<string | number> {
+  private getRouteId(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.activeRoute.params.subscribe((params) => {
         if (!isNullOrUndefined(params.id)) {

@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>
+  {{data.thingName}} : {{data.sensor.sensorType.name}} <img
+    [src]="'assets/smartmonitoring/images/icons/icon-'+ data.sensor.sensorType.name + '.svg'"
+    [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
+</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="Rename to" type="text">
+  </mat-form-field>
+  <div class="row">
+    <div class="col col-xs-6">
+      <mat-checkbox [(ngModel)]="sensorDefinition.useOnChart">Use on chart</mat-checkbox>
+      <mat-form-field *ngIf="sensorDefinition.useOnChart">
+        <mat-label>Chart type</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let chartType of chartTypes" [value]="sensorDefinition.chartType">
+            {{chartType}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col col-xs-6">
+      <mat-checkbox [(ngModel)]="sensorDefinition.useOnThresholdTemplate">Use on threshold template</mat-checkbox>
+    </div>
+  </div>
+
+  <hr>
+
+  <div *ngFor="let aggregatedValue of aggregatedValues">
+    <mat-checkbox [(ngModel)]="sensorDefinition.aggregatedValues[aggregatedValue]">{{aggregatedValue}}</mat-checkbox>
+  </div>
+  <br><br>
+
+  <button mat-raised-button color="primary" (click)="submit()">
+    Submit
+  </button>
+  <button mat-raised-button (click)="cancel()">
+    Cancel
+  </button>
+</div>

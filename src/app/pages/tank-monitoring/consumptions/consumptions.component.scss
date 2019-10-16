@@ -1,0 +1,13 @@
+@import "~/../src/variables.scss";
+
+.detail-main-content {
+    background-color : $page-background;
+    
+    #asset-image {
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 400px;
+    }
+}

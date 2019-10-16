@@ -4,5 +4,7 @@ export interface ISensorType {
     postfix?: string;
     min?: number;
     max?: number;
-    type?: string;
+    type?: Type;
 }
+
+export type Type = 'BOOLEAN' | 'COUNTER' | 'NUMBER';

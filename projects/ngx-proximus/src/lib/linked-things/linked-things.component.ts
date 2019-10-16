@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IThing } from 'src/app/models/thing.model';
+import { IThing } from 'src/app/models/g-thing.model';
 
 @Component({
   selector: 'pxs-linked-things',

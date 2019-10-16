@@ -1,3 +1,4 @@
+import { EasterEggModule } from './../../../../../../projects/ngx-proximus/src/lib/easter-egg/easter-egg.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {ManageAssetsComponent} from './manage-assets.component';
@@ -49,6 +50,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
     BadgeModule,
     ThingsListModule,
     IconModule,
+    EasterEggModule,
     TranslateModule
   ],
   providers: [

@@ -14,7 +14,7 @@ export const TankMonitoringRoutes: Routes = [
     }]
   },
   {
-    path: 'consumptions/:id',
+    path: 'consumptions',
     children: [{
       path: '',
       loadChildren: './consumptions/consumptions.module#ConsumptionsModule'

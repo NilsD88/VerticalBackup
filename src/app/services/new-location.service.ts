@@ -51,7 +51,7 @@ export class NewLocationService {
             mutation: CREATE_LOCATION,
             variables: {
                 input: {
-                    //TODO: REMOVE ORG_ID
+                    // TODO: REMOVE ORG_ID
                     organizationId: 1,
                     parentId: location.parentId,
                     name: location.name,
@@ -84,7 +84,8 @@ export class NewLocationService {
         }
 
         return this.apollo.query<GetLocationsQuery>({
-            query: GET_LOCATIONS
+            query: GET_LOCATIONS,
+            fetchPolicy: 'network-only'
         }).pipe(map(({data}) => {
             return data.locations;
         }));
@@ -120,6 +121,7 @@ export class NewLocationService {
 
         return this.apollo.query<GetLocationByIdQuery>({
             query: GET_LOCATION_BY_ID,
+            fetchPolicy: 'network-only',
             variables: {
                 id,
             }
@@ -236,7 +238,7 @@ export class NewLocationService {
           debounceTime(500),
           distinctUntilChanged(),
           switchMap(filter => {
-            //return this.getLocations(filter);
+            // return this.getLocations(filter);
             return this.getLocations();
           })
         );

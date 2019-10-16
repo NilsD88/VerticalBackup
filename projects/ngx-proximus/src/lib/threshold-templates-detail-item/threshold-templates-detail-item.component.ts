@@ -1,3 +1,4 @@
+import { IThresholdWithLastValuesAndIndicators } from './../../../../../src/app/models/g-threshold.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 
@@ -33,24 +34,8 @@ export class ThresholdTemplatesDetailItemComponent implements OnInit {
       }
     ];
 
-    this.thresholdTemplate.thresholds.forEach(threshold => {
+    this.thresholdTemplate.thresholds.forEach((threshold: IThresholdWithLastValuesAndIndicators) => {
       const coef = 100 / (threshold.sensorType.max - threshold.sensorType.min);
-      const indicators = new Map <number, number> ();
-      const min = threshold.sensorType.min;
-      indicators.set(min, 0);
-      indicators.set(threshold.sensorType.max, 100);
-      threshold.thresholdItems.forEach(thresholdItem => {
-        const fromPercent = (thresholdItem.range.from - min) * coef;
-        const toPercent = (thresholdItem.range.to - min) * coef;
-        thresholdItem.range['fromPercent'] = fromPercent;
-        thresholdItem.range['toPercent'] = toPercent;
-        thresholdItem.range['widthPercent'] = toPercent - fromPercent;
-        indicators.set(thresholdItem.range.from, fromPercent);
-        indicators.set(thresholdItem.range.to, toPercent);
-      });
-      threshold['indicators'] = indicators;
-
-      // last values
       if (this.lastValues) {
         const lastSensorValues = [];
         this.lastValues.forEach(lastValue => {
@@ -58,11 +43,11 @@ export class ThresholdTemplatesDetailItemComponent implements OnInit {
             lastSensorValues.push({
               name: lastValue.thingName,
               value: lastValue.value,
-              percent: lastValue.value * coef
+              percent: (lastValue.value - threshold.sensorType.min) * coef
             });
           }
         });
-        threshold['lastValues'] = lastSensorValues;
+        threshold.lastValues = lastSensorValues;
       }
     });
   }

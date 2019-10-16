@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output, Input, ViewChild} from '@angular/core';
 import * as moment from 'moment';
 import {NgxDrpOptions, PresetItem} from 'ngx-mat-daterange-picker';
+import { toDate } from '@angular/common/src/i18n/format_date';
 
 @Component({
   selector: 'pxs-date-range-selection',
@@ -83,6 +84,8 @@ export class DateRangeSelectionComponent implements OnInit {
   }
 
   updateDrp(dateRange: {fromDate: Date, toDate: Date}) {
+    // Make toDate inclusive
+    dateRange.toDate = new Date(moment(dateRange.toDate).add(1, 'day').valueOf());
     this.dateChange.emit(dateRange);
   }
 }

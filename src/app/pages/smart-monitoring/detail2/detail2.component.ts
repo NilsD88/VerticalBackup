@@ -107,7 +107,7 @@ export class Detail2Component implements OnInit {
   async init() {
     try {
       const id = await this.getRouteId();
-      this.asset = await this.newAssetService.getAssetById(+id).toPromise();
+      this.asset = await this.newAssetService.getAssetById(id).toPromise();
       this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
       // TODO: remove these lines
       this.asset.things = MOCK_THINGS;
@@ -161,10 +161,10 @@ export class Detail2Component implements OnInit {
     }
   }
 
-  private getRouteId(): Promise<string | number> {
+  private getRouteId(): Promise<string> {
     // TODO: remove these lines
     return new Promise((resolve, reject) => {
-      resolve(1);
+      resolve('1');
     });
 
     return new Promise((resolve, reject) => {

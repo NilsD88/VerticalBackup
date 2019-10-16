@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IThreshold } from 'src/app/models/g-threshold.model';
+import { IThresholdWithLastValuesAndIndicators } from 'src/app/models/g-threshold.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail-item-counter',
@@ -8,7 +8,7 @@ import { IThreshold } from 'src/app/models/g-threshold.model';
 })
 export class ThresholdTemplatesDetailItemCounterComponent implements OnInit {
 
-  @Input() threshold: IThreshold;
+  @Input() threshold: IThresholdWithLastValuesAndIndicators;
 
   constructor() { }
 
@@ -45,13 +45,16 @@ export class ThresholdTemplatesDetailItemCounterComponent implements OnInit {
     this.threshold.thresholdItems.forEach(thresholdItem => {
       const fromPercent = (thresholdItem.range.from - min) * coef;
       const toPercent = (thresholdItem.range.to - min) * coef;
-      thresholdItem.range['fromPercent'] = fromPercent;
-      thresholdItem.range['toPercent'] = toPercent;
-      thresholdItem.range['widthPercent'] = toPercent - fromPercent;
+      thresholdItem.range = {
+        ...thresholdItem.range,
+        fromPercent,
+        toPercent,
+        widthPercent: toPercent - fromPercent
+      };
       indicators.set(thresholdItem.range.from, fromPercent);
       indicators.set(thresholdItem.range.to, toPercent);
     });
-    this.threshold['indicators'] = indicators;
+    this.threshold.indicators = indicators;
   }
 
 }

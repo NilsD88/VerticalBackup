@@ -84,17 +84,19 @@ export class AlertDefinitionComponent implements OnInit {
     asset: [
       {label: 'ALERT_DEF.BUTTON_LABELS.ASSET_NAME', value: '%assetName%'},
       {label: 'ALERT_DEF.BUTTON_LABELS.LOCATION_NAME', value: '%locationName%'},
-      {label: 'ALERT_DEF.BUTTON_LABELS.SUBLOCATION_NAME', value: '%sublocationName%'}
     ],
     log: [
+      {label: 'ALERT_DEF.BUTTON_LABELS.THING_NAME', value: '%thingName%'},
       {label: 'ALERT_DEF.BUTTON_LABELS.DEVICE_ID', value: '%devEui%'},
       {label: 'ALERT_DEF.BUTTON_LABELS.TIMESTAMP', value: '%timestamp%'},
       {label: 'ALERT_DEF.BUTTON_LABELS.VALUE', value: '%value%'}
     ],
     threshold: [
-      {label: 'ALERT_DEF.BUTTON_LABELS.MATERIAL_NAME', value: '%thresholdName%'},
-      {label: 'ALERT_DEF.BUTTON_LABELS.THRESHOLD_MIN', value: '%thresholdMin%'},
-      {label: 'ALERT_DEF.BUTTON_LABELS.THRESHOLD_MAX', value: '%thresholdMax%'}
+      {label: 'ALERT_DEF.BUTTON_LABELS.THRESHOLD_TEMPLATE_NAME', value: '%thresholdTemplateName%'},
+      {label: 'ALERT_DEF.BUTTON_LABELS.SENSOR_TYPE_NAME', value: '%sensorTypeName%'},
+      {label: 'ALERT_DEF.BUTTON_LABELS.THRESHOLD_ITEM_LABEL', value: '%thresholdItemLabel%'}, // SEVERITY IF NO LABEL
+      {label: 'ALERT_DEF.BUTTON_LABELS.THRESHOLD_ITEM_MIN', value: '%thresholdItemMin%'},
+      {label: 'ALERT_DEF.BUTTON_LABELS.THRESHOLD_ITEM_MAX', value: '%thresholdItemMax%'},
     ]
   };
 

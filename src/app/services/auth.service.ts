@@ -34,7 +34,7 @@ export class AuthService {
     this.document.location.href = environment.authUrl + 'logout';
   }
 
-  public login(fidp: string) {
-    this.document.location.href = environment.loginUrl + '?fidp=' + fidp.toLowerCase();
+  public login() {
+    this.document.location.href = environment.loginUrl;
   }
 }

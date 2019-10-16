@@ -3,7 +3,7 @@ import { ConsumptionsComponent } from './consumptions.component';
 
 export const ConsumptionsRoutes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: ConsumptionsComponent
   }
 ];

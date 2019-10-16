@@ -58,7 +58,9 @@
               <th mat-header-cell *matHeaderCellDef> Sensors </th>
               <td mat-cell *matCellDef="let element" class="things-container">
                 <div class="thing">
-                    <img *ngFor="let sensor of element.sensors"
+                    <img 
+                      *ngFor="let sensor of element.sensors"
+                      (click)="openDialogSensorDefinition(sensor, element.name)"
                       [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
                       [matTooltip]="sensor.sensorType.name + ' ' + sensor.low + sensor.sensorType.postfix + ' - '+ sensor.high + sensor.sensorType.postfix"
                       [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"

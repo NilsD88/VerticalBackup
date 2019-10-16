@@ -104,7 +104,7 @@
 
 </div>
 <div *ngIf="listStyleValue === 'list'">
-  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event" [displayAssets]="true"></pxs-location-explorer>
+  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="changeLocation($event)" [displayAssets]="true"></pxs-location-explorer>
 </div>
 <div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 190px);">
   <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event"></pxs-map>

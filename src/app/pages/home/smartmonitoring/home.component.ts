@@ -1,4 +1,7 @@
+import { Apollo } from 'apollo-angular';
 import {Component, OnInit} from '@angular/core';
+import gql from 'graphql-tag';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'pvf-home',
@@ -20,11 +23,34 @@ export class HomeComponent implements OnInit {
     {translationPostfix: '3', image: 'assets/smartmonitoring/images/home/smart-care.jpg'},
   ];
 
-  constructor() {
-  }
+  constructor(
+    private apollo: Apollo
+  ) {}
 
   ngOnInit() {
-    
+    console.log('[HOME] ngOnInt');
+    const TEST = gql`
+      {
+        someFiled: someField @client {
+          test
+        }
+      }
+    `;
+
+    interface TestQuery {
+      someFiled: {
+        test: string
+      };
+    }
+
+    this.apollo.query<TestQuery>({
+      query: TEST
+    }).pipe(map(({data}) => {
+      return data.someFiled;
+    })).subscribe((data) => {
+      console.log(data);
+    });
+
   }
 
 }

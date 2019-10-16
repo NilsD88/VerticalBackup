@@ -21,7 +21,6 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { LocationWizardComponent } from '../../../manage-locations/location-wizard/location-wizard.component';
 import { ManageThresholdTemplatesComponent } from '../../../manage-threshold-templates/smartmonitoring/manage-threshold-templates.component';
-import { AddSensorComponent } from '../../../manage-threshold-templates/smartmonitoring/add-sensor/add-sensor.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +56,6 @@ import { AddSensorComponent } from '../../../manage-threshold-templates/smartmon
   entryComponents: [
     LocationWizardComponent,
     ManageThresholdTemplatesComponent,
-    AddSensorComponent
   ]
 })
 export class AssetWizardModule { }

@@ -49,7 +49,8 @@ export class Asset {
 }
 
 export interface IPagedAssets {
-    data: IAsset[];
-    pageNumber: number;
-    totalElements: number;
+    assets?: IAsset[];
+    pageNumber?: number;
+    totalElements?: number;
+    totalPages?: number;
 }

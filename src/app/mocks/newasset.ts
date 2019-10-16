@@ -60,7 +60,7 @@ MOCK_ASSETS = [
   {
     id: '7',
     name: "Super asset with very very very long title",
-    locationId: '1',
+    locationId: '0',
     things: [],
     thresholdTemplate: null,
     image: assetImage1,

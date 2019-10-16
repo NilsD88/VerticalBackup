@@ -1,11 +1,14 @@
+import { EditSensorPopupComponent } from './edit-sensor-popup/edit-sensor-popup.component';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { IThing } from 'src/app/models/g-thing.model';
-import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar } from '@angular/material';
+import { ISensor } from 'src/app/models/g-sensor.model';
+import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar, MatDialog } from '@angular/material';
 import { ThingService } from 'src/app/services/thing.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { NewThingsService } from 'src/app/services/new-things.service';
+import { NewThingService } from 'src/app/services/new-thing.service';
 import { Subject } from 'rxjs';
 import { isNullOrUndefined } from 'util';
+
 
 
 interface IThingEditing extends IThing {
@@ -45,8 +48,9 @@ export class ListThingsComponent implements OnInit {
   constructor(
     private thingService: ThingService,
     private sharedService: SharedService,
-    private newThingsService: NewThingsService,
-    public snackBar: MatSnackBar
+    private newThingService: NewThingService,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   public async ngOnInit() {
@@ -61,7 +65,7 @@ export class ListThingsComponent implements OnInit {
 
     await this.getThings();
 
-    this.newThingsService.searchTerm(this.searchTerm$)
+    this.newThingService.searchTerm(this.searchTerm$)
       .subscribe(things => {
         const results = [];
         for (const array of things) {
@@ -82,7 +86,7 @@ export class ListThingsComponent implements OnInit {
     // REAL
     //this.things = await this.thingService.getByFilter(this.filter);
     // MOCK
-    this.things = await this.newThingsService.getThings();
+    this.things = await this.newThingService.getThings();
     this.updateDataSource();
     this.isLoading = false;
   }
@@ -106,6 +110,18 @@ export class ListThingsComponent implements OnInit {
         }
     };
     this.dataSource.sort = this.sort;
+  }
+
+  public openDialogSensorDefinition(sensor: ISensor, thingName: string) {
+    const dialogRef = this.dialog.open(EditSensorPopupComponent, {
+      minWidth: '320px',
+      maxWidth: '600px',
+      width: '100vw',
+      data: {
+        sensor,
+        thingName
+      }
+    });
   }
 
   public editThingName(index: number): void {
@@ -135,7 +151,7 @@ export class ListThingsComponent implements OnInit {
     delete thing.editing;
     delete thing.tempName;
 
-    this.newThingsService.updateThing(thing).subscribe(
+    this.newThingService.updateThing(thing).subscribe(
       res => {
         console.log('HTTP response', res);
       },

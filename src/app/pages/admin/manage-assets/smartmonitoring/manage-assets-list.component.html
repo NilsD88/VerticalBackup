@@ -45,14 +45,14 @@
         <!-- LocationType Column -->
         <ng-container matColumnDef="location.name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Location name </th>
-          <td mat-cell *matCellDef="let element">{{element.location.name}}</td>
+          <td mat-cell *matCellDef="let element">{{element.location?.name}}</td>
         </ng-container>
 
         <!-- Threshold template -->
         <ng-container matColumnDef="thresholdTemplate.name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Threshold template </th>
             <td mat-cell *matCellDef="let element">
-              <pxs-badge *ngIf="element.thresholdTemplate">{{element.thresholdTemplate.name}}</pxs-badge>
+              <pxs-badge *ngIf="element.thresholdTemplate">{{element.thresholdTemplate?.name}}</pxs-badge>
             </td>
         </ng-container>
 
@@ -84,10 +84,12 @@
           mode="indeterminate">
         </mat-progress-spinner>
       </mat-card>
-      <mat-paginator [length]="totalItems"
-        [pageSize]="pagesize"
+      <mat-paginator [length]="totalElements"
+        [pageSize]="pageSize"
         [pageSizeOptions]="pageSizeOptions"
         (page)="pageChanged($event)">
       </mat-paginator> 
   </div>
 </div>
+
+<pxs-easter-egg *ngIf="easterEgg" (click)="easterEgg = false"></pxs-easter-egg>

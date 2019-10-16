@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {IThing, Thing} from '../../../../../src/app/models/thing.model';
+import {IThing} from '../../../../../src/app/models/g-thing.model';
 
 interface IItem extends IThing {
   selected: boolean;
@@ -11,8 +11,8 @@ interface IItem extends IThing {
   styleUrls: ['./things-list.component.css']
 })
 export class ThingsListComponent implements OnInit, OnChanges {
-  @Input() things: Thing[] = [];
-  @Input() list: Thing[] = [];
+  @Input() things: IThing[] = [];
+  @Input() list: IThing[] = [];
   @Input() editable: boolean;
 
   @Output() change: EventEmitter<IThing[]> = new EventEmitter();

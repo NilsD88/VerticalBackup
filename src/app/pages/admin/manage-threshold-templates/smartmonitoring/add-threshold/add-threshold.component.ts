@@ -4,15 +4,14 @@ import {SensorType} from '../../../../../models/sensor.model';
 import {FilterService} from '../../../../../services/filter.service';
 
 @Component({
-  selector: 'pvf-add-sensor',
-  templateUrl: './add-sensor.component.html',
-  styleUrls: ['./add-sensor.component.scss']
+  selector: 'pvf-add-threshold',
+  templateUrl: './add-threshold.component.html',
 })
-export class AddSensorComponent implements OnInit {
+export class AddThresholdComponent implements OnInit {
   items: SensorType[] = [];
   item: SensorType = null;
 
-  constructor(public dialogRef: MatDialogRef<AddSensorComponent>, public filterService: FilterService) {
+  constructor(public dialogRef: MatDialogRef<AddThresholdComponent>, public filterService: FilterService) {
   }
 
   async ngOnInit() {

@@ -25,8 +25,7 @@ import { RouterModule } from '@angular/router';
     MatInputModule,
     RangeSliderModule,
     MatProgressSpinnerModule,
-    MatCardModule,
-    MatPaginatorModule
+    MatCardModule
   ],
   providers: [
     NewAssetService,

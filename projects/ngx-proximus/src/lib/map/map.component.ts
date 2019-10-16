@@ -1,14 +1,14 @@
 import { MapDialogComponent } from './map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewLocationService } from './../../../../../src/app/services/new-location.service';
-import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { NgElement, WithProperties } from '@angular/elements';
 import { IGeolocation } from 'src/app/models/asset.model';
 import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point} from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { Subject, of } from 'rxjs';
+import { Subject, of, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { findLocationById } from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
@@ -22,7 +22,7 @@ import { IAsset } from 'src/app/models/g-asset.model';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit, OnChanges{
+export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() height;
   @Input() rootLocation: ILocation;
@@ -32,6 +32,7 @@ export class MapComponent implements OnInit, OnChanges{
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
+  private subscriptions: Subscription[] = [];
 
   currentMap: Map;
   center: IGeolocation;
@@ -63,7 +64,8 @@ export class MapComponent implements OnInit, OnChanges{
   }
 
   ngOnInit() {
-    this.assetsRequestSource.pipe(
+
+    const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
         if (req === 'STOP') {
           return of(this.assets);
@@ -72,14 +74,19 @@ export class MapComponent implements OnInit, OnChanges{
           return of([]);
         } else {
           // TODO: reach only asset with the filter?
-          return this.newAssetService.getAssetsByLocationId(+this.selectedLocation.id, this.assetFilter);
+          // return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id, this.assetFilter);
+          return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
         }
       })
-    ).subscribe((data: IAsset[]) => {
-      this.markers = [];
-      this.assets = data;
-      this.populateMarkersWithAssets();
-    });
+    );
+
+    this.subscriptions.push(assetsRequestSourcePipe.subscribe(
+      (data: IAsset[]) => {
+        this.markers = [];
+        this.assets = data;
+        this.populateMarkersWithAssets();
+      })
+    );
 
     // By default, center with Proximus location
     this.center = {
@@ -108,18 +115,20 @@ export class MapComponent implements OnInit, OnChanges{
     if (this.rootLocation) {
       this.checkIfSelectedLocation();
     } else {
-      this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-        this.rootLocation = {
-          id: null,
-          parentId: null,
-          geolocation: null,
-          image: null,
-          name: 'Locations',
-          description: null,
-          children: locations,
-        };
-        this.checkIfSelectedLocation();
-      });
+      this.subscriptions.push(
+        this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+          this.rootLocation = {
+            id: null,
+            parentId: null,
+            geolocation: null,
+            image: null,
+            name: 'Locations',
+            description: null,
+            children: locations,
+          };
+          this.checkIfSelectedLocation();
+        })
+      );
     }
   }
 
@@ -131,7 +140,7 @@ export class MapComponent implements OnInit, OnChanges{
       for (const location of path) {
         this.goToChild(location);
       }
-      //this.getAssetsBySelectedLocation();
+      // this.getAssetsBySelectedLocation();
     } else {
       this.initMap();
     }
@@ -381,5 +390,9 @@ export class MapComponent implements OnInit, OnChanges{
         }
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

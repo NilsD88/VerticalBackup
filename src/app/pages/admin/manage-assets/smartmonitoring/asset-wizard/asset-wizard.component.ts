@@ -62,6 +62,7 @@ export class AssetWizardComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', null],
@@ -72,15 +73,10 @@ export class AssetWizardComponent implements OnInit {
       this.descriptionFormGroup.addControl(kv.label, new FormControl());
     }
 
-    this.checkIfEdtitingOrCreating();
-  }
-
-  public async checkIfEdtitingOrCreating() {
-    const assetId = await this.getRouteId();
-    if (assetId) {
-      console.log('[ASSET] UPDATE ASSET_ID', assetId);
-      this.asset = await this.newAssetService.getAssetById(+assetId).toPromise();
+    const assetId = this.activatedRoute.snapshot.params.id;
+    if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       this.editMode = true;
+      this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
       this.originalAsset = cloneDeep(this.asset);
       if (!isNullOrUndefined(this.asset.locationId)) {
         this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
@@ -89,7 +85,6 @@ export class AssetWizardComponent implements OnInit {
         this.asset.things = [];
       }
     } else {
-      console.log('[ASSET] NEW', assetId);
       this.asset = {
         id: null,
         name: null,
@@ -106,8 +101,10 @@ export class AssetWizardComponent implements OnInit {
       this.asset.geolocation = null;
       this.asset.location = null;
       this.changeDetectorRef.detectChanges();
-      this.asset.location = location;
-      this.asset.locationId = location.id;
+      if (location.id) {
+        this.asset.location = location;
+        this.asset.locationId = location.id;
+      }
     }
   }
 
@@ -128,7 +125,7 @@ export class AssetWizardComponent implements OnInit {
         let hasAtLeastOneCompatibleSensor = false;
         const things = this.asset.things;
         for (const thing of things) {
-          hasAtLeastOneCompatibleSensor = thing.sensors.some((thingSensor) => +thingSensor.sensorType.id === +sensorTypeId);
+          hasAtLeastOneCompatibleSensor = thing.sensors.some((thingSensor) => thingSensor.sensorType.id === sensorTypeId);
           if (hasAtLeastOneCompatibleSensor) {
             break;
           }
@@ -184,18 +181,6 @@ export class AssetWizardComponent implements OnInit {
     }
   }
 
-  private getRouteId(): Promise<string | number> {
-    return new Promise((resolve, reject) => {
-      this.activatedRoute.params.subscribe((params) => {
-        if (!isNullOrUndefined(params.id)) {
-          resolve(params.id);
-        } else {
-          resolve();
-        }
-      }, reject);
-    });
-  }
-
   private submit() {
     if (this.editMode) {
 
@@ -219,7 +204,7 @@ export class AssetWizardComponent implements OnInit {
         }
       }
 
-      this.newAssetService.a_updateAsset(asset).subscribe((result) => {
+      this.newAssetService.updateAsset(asset).subscribe((result) => {
         this.goToManageAssets();
       });
     } else {

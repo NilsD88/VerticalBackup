@@ -1,14 +1,16 @@
-import {Component, OnInit, Optional, Inject} from '@angular/core';
+import {Component, OnInit, Optional, Inject, ChangeDetectorRef} from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 import {MatDialog} from '@angular/material';
-import {AddSensorComponent} from './add-sensor/add-sensor.component';
+import {AddThresholdComponent} from './add-threshold/add-threshold.component';
 import { ISensorType } from 'src/app/models/g-sensor-type.model';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { IThresholdTemplate, ThresholdTemplate } from 'src/app/models/g-threshold-template.model';
-import { IThresholdItem, ThresholdItem } from 'src/app/models/g-threshold-item.model';
+import { IThresholdItem, ThresholdItem, SeverityLevel } from 'src/app/models/g-threshold-item.model';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { GraphQLError } from 'graphql';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 @Component({
   selector: 'pvf-manage-threshold-templates',
@@ -19,7 +21,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   public thresholdTemplateFormGroup: FormGroup;
   public thresholdTemplate: IThresholdTemplate;
-  public severities = ['LOW', 'MEDIUM', 'CRITICAL'];
+  public severities = Object.keys(SeverityLevel);
   public editMode = false;
   public fromPopup = false;
 
@@ -27,11 +29,13 @@ export class ManageThresholdTemplatesComponent implements OnInit {
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     @Optional() private dialogRef: MatDialogRef<ManageThresholdTemplatesComponent>,
+    private changeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private newThresholdTemplateService: NewThresholdTemplateService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private dialog: MatDialog) {}
+    private dialog: MatDialog
+  ) {}
 
   async ngOnInit() {
     const thresholdTemplateId = await this.getRouteId();
@@ -44,9 +48,9 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
     if (!isNullOrUndefined(thresholdTemplateId)) {
       this.editMode = true;
-      this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId);
+      this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
       this.thresholdTemplateFormGroup = this.formBuilder.group({
-        name: ['', Validators.required],
+        name: ['', Validators.compose([Validators.required, Validators.pattern('[A-zÀ-ú0-9 ]*')])],
       });
       for (const threshold of this.thresholdTemplate.thresholds) {
         const sensorId = threshold.sensorType.id;
@@ -70,10 +74,10 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     } else {
       this.thresholdTemplate = new ThresholdTemplate();
       this.thresholdTemplateFormGroup = this.formBuilder.group({
-        name: ['', Validators.required],
+        name: ['', Validators.compose([Validators.required, Validators.pattern('[A-zÀ-ú0-9 ]*')])],
       });
-      console.log(this.thresholdTemplate);
     }
+    this.changeDetectorRef.detectChanges();
   }
 
   private createFormControlForItem(thresholdId: number) {
@@ -148,7 +152,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     const thresholdItem = new ThresholdItem({
       id: new Date().getTime().toString(),
       range: {from: threshold.sensorType.min, to: threshold.sensorType.max},
-      severity: 'LOW',
+      severity: SeverityLevel.LOW,
       notification: {
         web: false,
         sms: false,
@@ -194,7 +198,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
   }
 
   public addThreshold() {
-    const ref = this.dialog.open(AddSensorComponent, {
+    const ref = this.dialog.open(AddThresholdComponent, {
       width: '90vw'
     });
     ref.afterClosed().subscribe((result: ISensorType) => {
@@ -204,7 +208,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
         if (!this.thresholdTemplate.thresholds.find((threshold) => {
           console.log({...threshold});
           console.log({...result});
-          return threshold.sensorType.name === result.name;
+          return threshold.sensorType.id === result.id;
         })) {
           this.thresholdTemplate.thresholds.push({
             sensorType: result,
@@ -233,27 +237,53 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
     console.log('SAVE THRESHOLDS');
     console.log({...this.thresholdTemplate});
-    /*
+
     if (this.editMode) {
-      this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe((result) => {
-        this.goToManageThresholdTemplate();
-      });
-    } else {
-      this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe((result) => {
-        if (this.fromPopup) {
-          this.dialogRef.close(result);
-        } else {
+      this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
+        (data) => {
           this.goToManageThresholdTemplate();
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
         }
-      });
+      );
+    } else {
+      this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
+        (result) => {
+          if (this.fromPopup) {
+            this.dialogRef.close(result);
+          } else {
+            this.goToManageThresholdTemplate();
+          }
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
     }
-    */
   }
 
   private goToManageThresholdTemplate() {
     this.router.navigateByUrl(`/private/admin/manage-threshold-templates`);
   }
 
-}
+  private checkIfNameAlreadyExistAndDisplayDialog(error) {
+    const graphQLErrors: GraphQLError = error.graphQLErrors;
+    const errorExtensions = graphQLErrors[0].extensions;
+    if (errorExtensions) {
+      const nameAlreadyUsed = errorExtensions.thresholdTemplateNameNotUnique;
+      if (nameAlreadyUsed) {
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: `${nameAlreadyUsed} already exist`,
+            message: 'Please choose an other threshold template name to be able to save it'
+          }
+        });
+      }
+    }
+  }
 
+}
 

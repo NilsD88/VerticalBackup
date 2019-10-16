@@ -7,4 +7,10 @@ export interface ISensor {
     sensorType?: ISensorType;
     organization?: IOrganization;
     thing?: IThing;
+    // TODO: get data?
+}
+
+export interface ISensorReading extends ISensor {
+    value: string | number;
+    timestamp: number;
 }

@@ -2,8 +2,6 @@ import _ from 'lodash';
 import { ILocation } from 'src/app/models/g-location.model';
 
 function findLocationById(location: ILocation, id: string, path: ILocation[] = []): {location: ILocation, path: ILocation []} {
-    console.log(`find this id ${id} in this location:`);
-    console.log(location);
     if (location && location.id === id) {
         return {location, path};
     } else {

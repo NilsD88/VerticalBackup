@@ -1,3 +1,4 @@
+import { DialogModule } from './../../../../../../projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { ListThresholdTemplatesModule } from './../../../../../../projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -20,12 +21,12 @@ import {IconModule} from '../../../../../../projects/ngx-proximus/src/lib/icon/i
 import {ManageThresholdTemplatesListComponent} from './manage-threshold-templates-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
-import {AddSensorComponent} from './add-sensor/add-sensor.component';
+import {AddThresholdComponent} from './add-threshold/add-threshold.component';
 import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 
 @NgModule({
-  declarations: [ManageThresholdTemplatesComponent, ManageThresholdTemplatesListComponent, AddSensorComponent],
+  declarations: [ManageThresholdTemplatesComponent, ManageThresholdTemplatesListComponent, AddThresholdComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(ManageThresholdTemplatesRoutes),
@@ -44,12 +45,13 @@ import { NewThresholdTemplateService } from 'src/app/services/new-threshold-temp
     MatSlideToggleModule,
     ListThresholdTemplatesModule,
     LoaderModule,
-    RangeSliderModule
+    RangeSliderModule,
+    DialogModule
   ],
   providers: [
     NewThresholdTemplateService,
   ],
-  entryComponents: [AddSensorComponent],
+  entryComponents: [AddThresholdComponent],
 })
 export class ManageThresholdTemplatesModule {
 }
