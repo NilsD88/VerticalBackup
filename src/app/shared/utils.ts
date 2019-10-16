@@ -33,8 +33,14 @@ function compareTwoObjectOnSpecificProperties(object1: object, object2: object, 
     }, []);
 }
 
+function findItemsWithTermOnKey(term: string, collection: any[], key: string) {
+    const TERM = term.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+    return collection.filter((item) => item[key].toLocaleUpperCase().includes(TERM));
+}
+
 export {
     findLocationById,
-    compareTwoObjectOnSpecificProperties
+    compareTwoObjectOnSpecificProperties,
+    findItemsWithTermOnKey
 };
 

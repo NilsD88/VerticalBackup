@@ -43,7 +43,6 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
     ImageEditorModule,
     MatButtonModule,
     EditableImageModule,
-    MatPaginatorModule,
     MatChipsModule,
     MatIconModule,
     MatTooltipModule,

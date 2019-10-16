@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {MatSort, Sort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NewAssetService } from 'src/app/services/new-asset.service';
+import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 
 const statuses = ['EMPTY', 'LOW', 'OK'];
 
@@ -131,8 +132,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public filterByName() {
-    const term = this.filter.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
-    const assetsFiltered  = this.assets.filter((asset) => asset.name.toLocaleUpperCase().includes(term));
+    const assetsFiltered = findItemsWithTermOnKey(this.filter.name, this.assets, 'name');
     this.updateDataSourceWithFilteredAssets(assetsFiltered);
   }
 

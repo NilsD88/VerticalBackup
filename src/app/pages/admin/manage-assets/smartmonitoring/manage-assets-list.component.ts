@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { MatPaginator } from '@angular/material';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { Subject } from 'rxjs';
+import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 
 @Component({
   selector: 'pvf-manage-assets-list',
@@ -14,13 +14,8 @@ import { Subject } from 'rxjs';
 export class ManageAssetsListComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public assets: IAsset[] = [];
-  public page = 0;
-  public totalElements = 0;
-  public pageSize = 10;
-  public pageSizeOptions = [5, 10, 25, 100, 500, 1000];
   public isLoading = false;
 
   public dataSource: MatTableDataSource<IAsset>;
@@ -31,55 +26,25 @@ export class ManageAssetsListComponent implements OnInit {
 
   public easterEgg = false;
 
-  public searchFilter$ = new Subject<any>();
-
-
   constructor(
     public newAssetService: NewAssetService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   public async ngOnInit() {
-    await this.getAssetsByFilter();
-
-    // TODO: search filter for asset with new backend
-    /*
-    this.newAssetService.searchPagedAssetsWithFilter(this.searchFilter$).subscribe(pagedAssets => {
-      this.assets = pagedAssets.data;
-      this.totalItems = pagedAssets.totalElements;
-      this.isLoading = false;
-      this.updateDataSource();
-    });
-    */
-
-    this.sort.sortChange.subscribe(() => {
-      this.getAssetsByFilter();
-    });
-
+    this.getAssets();
   }
 
-  public async pageChanged(evt) {
-    this.page = evt.pageIndex;
-    this.pageSize = evt.pageSize;
-    await this.getAssetsByFilter();
-  }
 
-  private async getAssetsByFilter() {
+  private async getAssets() {
     this.isLoading = true;
-    this.assets = [];
-    // const pagedAssets = await this.newAssetService.getPagedAssets(this.filter);
-    // TODO: get pagedAssets when backend will be updated
-    const pagedAssets = await this.newAssetService.getPagedAssets(this.page, this.pageSize).toPromise();
-    console.log(pagedAssets);
-    this.assets = await pagedAssets.assets;
-    this.totalElements = pagedAssets.totalElements;
+    this.assets = await this.newAssetService.getAssets().toPromise();
     this.isLoading = false;
-    this.updateDataSource();
+    this.updateDataSourceWithFilteredAssets(this.assets);
   }
 
-  private updateDataSource() {
-    this.dataSource = new MatTableDataSource(this.assets);
-    this.dataSource.paginator = this.paginator;
+  private updateDataSourceWithFilteredAssets(assets: IAsset[]) {
+    this.dataSource = new MatTableDataSource(assets);
     this.dataSource.sortingDataAccessor = (asset, property) => {
         if (property.includes('.')) {
           return property.split('.')
@@ -90,24 +55,20 @@ export class ManageAssetsListComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  public filterNameChange(evt) {
-    this.getAssetsByFilter();
+  public filterByName() {
+    if (this.filter.name.toUpperCase() === 'PROXIMUS') {
+      this.easterEgg = true;
+    } else {
+      const assetsFiltered = findItemsWithTermOnKey(this.filter.name, this.assets, 'name');
+      this.updateDataSourceWithFilteredAssets(assetsFiltered);
+    }
   }
 
   public async deleteAsset(id: string) {
     this.newAssetService.deleteAsset(id).subscribe((result) => {
       this.assets = null;
       this.changeDetectorRef.detectChanges();
-      this.getAssetsByFilter();
+      this.getAssets();
     });
   }
-
-  public onFilterChange() {
-    if (this.filter.name.toUpperCase() === 'PROXIMUS') {
-      this.easterEgg = true;
-    }
-    this.isLoading = true;
-    this.searchFilter$.next({...this.filter});
-  }
-
 }

@@ -20,7 +20,7 @@
                 type="text" 
                 placeholder="Asset name"
                 [(ngModel)]="filter.name"
-                (ngModelChange)="onFilterChange()"
+                (ngModelChange)="filterByName()"
               >
             </mat-form-field>          
         </div>
@@ -84,11 +84,6 @@
           mode="indeterminate">
         </mat-progress-spinner>
       </mat-card>
-      <mat-paginator [length]="totalElements"
-        [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions"
-        (page)="pageChanged($event)">
-      </mat-paginator> 
   </div>
 </div>
 
