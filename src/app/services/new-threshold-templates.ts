@@ -32,7 +32,7 @@ export class NewThresholdTemplateService {
 
     // START APOLLO
 
-    public createThresholdTemplate(thresholdTemplate: IThresholdTemplate): Observable<boolean> {
+    public createThresholdTemplate(thresholdTemplate: IThresholdTemplate): Observable<IThresholdTemplate> {
 
         const CREATE_THRESHOLD_TEMPLATE = gql`
             mutation createThresholdTemplate($input: ThresholdTemplateCreateInput!) {
@@ -41,7 +41,7 @@ export class NewThresholdTemplateService {
         `;
 
         interface CreateThresholdTemplateResponse {
-            createThresholdTemplate: boolean;
+            createThresholdTemplate: IThresholdTemplate;
         }
 
         return this.apollo.mutate<CreateThresholdTemplateResponse>({

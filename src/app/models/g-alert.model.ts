@@ -12,7 +12,7 @@ export interface IAlert {
     range?: IRange;
     severity?: string;
     label?: string;
-    sensorType: ISensorType;
+    sensorType?: ISensorType;
     value?: number;
     thing?: IThing;
 }

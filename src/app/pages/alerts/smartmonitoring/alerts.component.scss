@@ -1,3 +1,61 @@
+@import "~/../src/variables.scss";
+
+::ng-deep {
+
+  .cdk-column-select {
+    width: 65px
+  }
+
+  .cdk-column-read {
+    width: 20px
+  }
+
+  .alerts-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    > div > span {
+      color: $sub;
+      margin-right: 10px;
+    }
+    button {
+      margin: 0 5px;
+    }
+  }
+  .alerts-list {
+    width: 100%;
+    &.loading {
+      tbody[role="rowgroup"]{
+          display: none;
+      }
+    }
+    tbody[role="rowgroup"]{
+        td:first-of-type{
+            font-weight: 500;
+            color: $primary;
+        }
+    }
+
+    .mat-sort-header-button {
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .alert-read {
+      display: block;
+      width: 8px;
+      height: 8px;
+      border-radius: 8px;
+      background: $primary;
+    }
+  }
+}
+
+
+.alert-checkbox {
+  margin-right: 10px;
+}
 
 .alerts-table-asset-name {
   font-size : 1rem;

@@ -131,7 +131,6 @@ export class ThresholdTemplate implements ThresholdTemplate {
   public thresholds: Threshold[];
 
   constructor(private _thresholdTemplate: IThresholdTemplate) {
-    console.log(_thresholdTemplate);
     if (!isNullOrUndefined(_thresholdTemplate)) {
       this.id = _thresholdTemplate.id;
       this.name = _thresholdTemplate.name;

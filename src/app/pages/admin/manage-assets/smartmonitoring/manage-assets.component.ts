@@ -12,6 +12,7 @@ import {ThingService} from '../../../../services/thing.service';
   styleUrls: ['./manage-assets.component.scss']
 })
 export class ManageAssetsComponent implements OnInit {
+
   public asset: Asset;
   public thingsList: Thing[] = [];
 

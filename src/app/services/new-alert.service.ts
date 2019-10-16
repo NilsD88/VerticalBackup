@@ -17,7 +17,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class NewAssetService {
+export class NewAlertService {
 
   constructor(
     public http: HttpClient,
@@ -29,8 +29,8 @@ export class NewAssetService {
 
   public getPagedAlerts(pageNumber: number = 0, pageSize: number = 10): Observable < IPagedAlerts > {
     const GET_PAGED_ALERTS = gql `
-      query findAllAlertsPaged($input: PagedAlertsInput!) {
-        findAllAlertsPaged(input: $input) {
+      query findPagedAlerts($input: PagedAlertInput!) {
+        findPagedAlerts(input: $input) {
           totalElements,
           totalPages,
           alerts {
@@ -40,7 +40,7 @@ export class NewAssetService {
       }`;
 
     interface GetPagedAlertsResponse {
-        findAllAlertsPaged: IPagedAlerts;
+      findPagedAlerts: IPagedAlerts;
     }
 
     return this.apollo.query < GetPagedAlertsResponse > ({
@@ -55,7 +55,7 @@ export class NewAssetService {
     }).pipe(map(({
       data
     }) => {
-      return data.findAllAlertsPaged;
+      return data.findPagedAlerts;
     }));
   }
 

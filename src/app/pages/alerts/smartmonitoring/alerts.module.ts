@@ -14,7 +14,12 @@ import {
   MatIconModule,
   MatInputModule, MatPaginatorModule,
   MatSelectModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatTableModule,
+  MatSortModule,
+  MatProgressSpinnerModule,
+  MatCardModule,
+  MatButtonToggleModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {NgxMatDrpModule} from 'ngx-mat-daterange-picker';
@@ -22,6 +27,7 @@ import {DateRangeSelectionModule} from '../../../../../projects/ngx-proximus/src
 import {NgSelectModule} from '@ng-select/ng-select';
 import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/loader.module';
 import { SharedService } from 'src/app/services/shared.service';
+import { NewAlertService } from 'src/app/services/new-alert.service';
 
 @NgModule({
   declarations: [AlertsComponent],
@@ -42,11 +48,17 @@ import { SharedService } from 'src/app/services/shared.service';
     NgxMatDrpModule,
     DateRangeSelectionModule,
     NgSelectModule,
+    MatTableModule,
+    MatSortModule,
     MatPaginatorModule,
-    LoaderModule
+    LoaderModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatButtonToggleModule
   ],
   providers: [
     AlertsService,
+    NewAlertService,
     SharedService
   ]
 })

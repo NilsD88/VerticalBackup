@@ -35,7 +35,6 @@ export class ThresholdTemplateService {
     }
 
     const url = `${environment.baseUrl}thresholdtemplates/${query ? query : ''}${query ? '&' : '?'}page=${pageIndex}&size=${pageSize}`;
-  
 
     return new Promise(async (resolve, reject) => {
       this.http.get(url)

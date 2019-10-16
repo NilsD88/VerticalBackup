@@ -29,6 +29,9 @@ export class User implements IUser {
       this.roles = (user.roles && user.roles.length) ? user.roles : [];
       this.modules = user.modules ? user.modules : [];
       this.orgName = user.orgName ? user.orgName : '';
+
+      // TODO: remove this line!
+      this.roles = ["openid", "pxs:iot:localadmin"];
     } catch (err) {
       console.error('UserModel: Invalid user model, cannot create user from passed object');
     }

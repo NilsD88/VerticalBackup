@@ -5,6 +5,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { Subject } from 'rxjs';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
+import { MatPaginator } from '@angular/material';
 
 @Component({
   selector: 'pvf-manage-assets-list',
@@ -14,6 +15,7 @@ import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 export class ManageAssetsListComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public assets: IAsset[] = [];
   public isLoading = false;
@@ -45,6 +47,7 @@ export class ManageAssetsListComponent implements OnInit {
 
   private updateDataSourceWithAssets(assets: IAsset[]) {
     this.dataSource = new MatTableDataSource(assets);
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
         if (property.includes('.')) {
           return property.split('.')

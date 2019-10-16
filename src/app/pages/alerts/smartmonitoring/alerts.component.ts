@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import { IPagedAlerts } from './../../../models/g-alert.model';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AlertsService} from '../../../services/alerts.service';
 import {Range} from 'ngx-mat-daterange-picker';
-import {PageEvent} from '@angular/material';
+import {PageEvent, MatSort, MatPaginator, MatTableDataSource} from '@angular/material';
 import {FilterService} from '../../../services/filter.service';
 import * as moment from 'moment';
 import { SharedService } from 'src/app/services/shared.service';
+import { IAlert } from 'src/app/models/g-alert.model';
+import { NewAlertService } from 'src/app/services/new-alert.service';
 
 @Component({
   selector: 'pvf-alerts',
@@ -12,6 +15,20 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./alerts.component.scss']
 })
 export class AlertsComponent implements OnInit {
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
+
+  public alerts: IAlert[];
+  public selectedAlerts: string[] = [];
+
+  public dataSource;
+  public isLoading = false;
+  public displayedColumns: string[] = ['select', 'read', 'timestamp'];
+
+  // Paginator options
+  public totalElements: number;
 
   public filter = {
     dateRange: {fromDate: new Date(), toDate: new Date()},
@@ -49,7 +66,9 @@ export class AlertsComponent implements OnInit {
   constructor(
     public alertsService: AlertsService,
     private filterService: FilterService,
-    private sharedService: SharedService) {
+    private sharedService: SharedService,
+    private newAlertService: NewAlertService,
+    ) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -57,6 +76,95 @@ export class AlertsComponent implements OnInit {
     this.getThresholdTemplateOptions();
     //this.alertsFilterChange('unread', null);
     //this.alertsFilterChange('read', null);
+
+
+    this.isLoading = true;
+    this.alerts = [
+      {
+        id: '0',
+        timestamp: new Date(),
+        read: false,
+      },
+      {
+        id: '1',
+        timestamp: new Date(),
+        read: false,
+      },
+      {
+        id: '2',
+        timestamp: new Date(),
+        read: true
+      },
+    ];
+    this.isLoading = false;
+    this.updateDataSourceWithAlerts(this.alerts);
+
+    this.getPagedAlerts();
+
+  }
+
+  public updateDataSourceWithAlerts(alerts: IAlert[]) {
+    this.dataSource = new MatTableDataSource(alerts);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sortingDataAccessor = (alert, property) => {
+        if (property.includes('.')) {
+          return property.split('.')
+            .reduce((object, key) => object[key], alert);
+        }
+        return alert[property].toLocaleLowerCase();
+    };
+    this.dataSource.sort = this.sort;
+  }
+
+  public checkOneAlert(id: string) {
+    return this.selectedAlerts.some((alertId) => alertId === id);
+  }
+
+  public checkAllAlerts() {
+    return this.selectedAlerts.join() === this.alerts.map((alert) => alert.id).join();
+  }
+
+  public selectAllAlerts() {
+    if (this.checkAllAlerts()) {
+      this.selectedAlerts = [];
+    } else {
+      this.selectedAlerts = this.alerts.map((alert) => alert.id);
+    }
+  }
+
+  public selectOneAlert(alert: IAlert) {
+    const alertIndex = this.selectedAlerts.findIndex((alertId) => alertId === alert.id);
+    if (alertIndex > -1) {
+      this.selectedAlerts.splice(alertIndex, 1);
+    } else {
+      this.selectedAlerts.push(alert.id);
+    }
+  }
+
+  public markAsRead() {
+    this.selectedAlerts.map((alertId) => {
+      const index = this.alerts.findIndex((alert) => alert.id === alertId);
+      this.alerts[index].read = true;
+    });
+  }
+
+  public markAsUnread() {
+    this.selectedAlerts.map((alertId) => {
+      const index = this.alerts.findIndex((alert) => alert.id === alertId);
+      this.alerts[index].read = false;
+    });
+  }
+
+  public pageChange(event) {
+    this.getPagedAlerts();
+  }
+
+  public async getPagedAlerts() {
+    this.selectedAlerts = [];
+    const pagedAlerts: IPagedAlerts = await this.newAlertService.getPagedAlerts(
+      this.paginator.pageIndex,
+      this.paginator.pageSize
+    ).toPromise();
   }
 
   public async getSensorTypesOptions(): Promise<void> {

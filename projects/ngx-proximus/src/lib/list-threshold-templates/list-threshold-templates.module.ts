@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListThresholdTemplatesComponent } from './list-threshold-templates.component';
 import { FormsModule } from '@angular/forms';
-import { MatProgressSpinnerModule, MatInputModule, MatFormFieldModule, MatTableModule, MatSortModule, MatTooltipModule, MatButtonModule, MatCardModule, MatIconModule, MatRadioModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatInputModule, MatFormFieldModule, MatTableModule, MatSortModule, MatTooltipModule, MatButtonModule, MatCardModule, MatIconModule, MatRadioModule, MatPaginatorModule } from '@angular/material';
 import { ImgFallbackModule } from 'ngx-img-fallback';
 import { RouterModule } from '@angular/router';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
@@ -28,7 +28,8 @@ import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail
     MatTableModule,
     MatSortModule,
     MatRadioModule,
-    ThresholdTemplatesDetailModule
+    ThresholdTemplatesDetailModule,
+    MatPaginatorModule,
   ],
   entryComponents: [
     ThresholdTemplatesDetailComponent

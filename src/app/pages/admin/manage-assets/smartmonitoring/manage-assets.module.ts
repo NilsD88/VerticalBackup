@@ -50,7 +50,8 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
     ThingsListModule,
     IconModule,
     EasterEggModule,
-    TranslateModule
+    TranslateModule,
+    MatPaginatorModule
   ],
   providers: [
     NewAssetService

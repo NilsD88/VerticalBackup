@@ -5,6 +5,7 @@ import {MatSort, Sort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
+import { MatPaginator } from '@angular/material';
 
 const statuses = ['EMPTY', 'LOW', 'OK'];
 
@@ -16,6 +17,7 @@ const statuses = ['EMPTY', 'LOW', 'OK'];
 export class DashboardComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   public assets: IAsset[] = [];
 
@@ -75,6 +77,7 @@ export class DashboardComponent implements OnInit {
 
   public updateDataSourceWithFilteredAssets(assets: IAsset[]) {
     this.dataSource = new MatTableDataSource(assets);
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
         if (property.includes('.')) {
           return property.split('.')
