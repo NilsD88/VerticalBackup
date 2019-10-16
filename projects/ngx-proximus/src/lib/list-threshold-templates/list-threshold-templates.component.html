@@ -6,7 +6,7 @@
               type="text" 
               placeholder="Threshold template name" 
               [(ngModel)]="filter.name"
-              (ngModelChange)="onFilterChange()"
+              (ngModelChange)="filterByName()"
               >
           </mat-form-field>
     </div>
@@ -105,9 +105,4 @@
           mode="indeterminate">
         </mat-progress-spinner>
       </mat-card>
-      <mat-paginator [length]="totalItems"
-        [pageSize]="pagesize"
-        [pageSizeOptions]="pageSizeOptions"
-        (page)="pageChanged($event)">
-      </mat-paginator> 
 </div>

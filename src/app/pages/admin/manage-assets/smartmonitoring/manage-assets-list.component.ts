@@ -40,10 +40,10 @@ export class ManageAssetsListComponent implements OnInit {
     this.isLoading = true;
     this.assets = await this.newAssetService.getAssets().toPromise();
     this.isLoading = false;
-    this.updateDataSourceWithFilteredAssets(this.assets);
+    this.updateDataSourceWithAssets(this.assets);
   }
 
-  private updateDataSourceWithFilteredAssets(assets: IAsset[]) {
+  private updateDataSourceWithAssets(assets: IAsset[]) {
     this.dataSource = new MatTableDataSource(assets);
     this.dataSource.sortingDataAccessor = (asset, property) => {
         if (property.includes('.')) {
@@ -60,7 +60,7 @@ export class ManageAssetsListComponent implements OnInit {
       this.easterEgg = true;
     } else {
       const assetsFiltered = findItemsWithTermOnKey(this.filter.name, this.assets, 'name');
-      this.updateDataSourceWithFilteredAssets(assetsFiltered);
+      this.updateDataSourceWithAssets(assetsFiltered);
     }
   }
 

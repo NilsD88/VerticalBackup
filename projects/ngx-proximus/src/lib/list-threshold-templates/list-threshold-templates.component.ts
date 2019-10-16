@@ -6,6 +6,7 @@ import { ThresholdTemplateService } from 'src/app/services/threshold-template.se
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { Subject } from 'rxjs';
 import { isUndefined } from 'util';
+import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 
 @Component({
   selector: 'pxs-list-threshold-templates',
@@ -24,11 +25,6 @@ export class ListThresholdTemplatesComponent implements OnInit {
 
   public thresholdTemplates: IThresholdTemplate[];
   public filter: { name: string } = {name: ''};
-  public page = 0;
-  public totalItems = 0;
-  public pagesize = 10;
-  public pageSizeOptions = [5, 10, 25, 100, 500, 1000];
-  public searchFilter$ = new Subject<any>();
 
   public isLoading = false;
   public dataSource: MatTableDataSource<IThresholdTemplate>;
@@ -55,45 +51,24 @@ export class ListThresholdTemplatesComponent implements OnInit {
       this.displayedColumns.unshift('select');
     }
 
-    await this.getThresholdTemplateByFilter();
-
-    this.sort.sortChange.subscribe(() => {
-      this.getThresholdTemplateByFilter();
-    });
-
-    //TODO: replace with the new back-end
-    /*
-    this.newThresholdTemplateService.searchThresholdTemplatesWithFilter(this.searchFilter$).subscribe(
-      (pagedThresholdTemplate: IThresholdTemplatePaged) => {
-        this.thresholdTemplates = pagedThresholdTemplate.thresholdTemplates;
-        this.totalItems = pagedThresholdTemplate.totalElements;
-        this.isLoading = false;
-        this.updateDataSource();
-      }
-    );
-    */
+    await this.getThresholdTemplates();
   }
 
 
-  public onFilterChange() {
-    this.searchFilter$.next({...this.filter});
+  public filterByName() {
+    const thresholdsFiltered = findItemsWithTermOnKey(this.filter.name, this.thresholdTemplates, 'name');
+    this.updateDataSourceWithThresholdTemplates(thresholdsFiltered);
   }
 
-  public filterNameChange(evt) {
-    this.getThresholdTemplateByFilter();
-  }
-
-  private async getThresholdTemplateByFilter() {
+  private async getThresholdTemplates() {
     this.isLoading = true;
-    this.thresholdTemplates = [];
     this.thresholdTemplates = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
-    this.totalItems = this.thresholdTemplates.length;
     this.isLoading = false;
-    this.updateDataSource();
+    this.updateDataSourceWithThresholdTemplates(this.thresholdTemplates);
   }
 
-  private updateDataSource() {
-    this.dataSource = new MatTableDataSource(this.thresholdTemplates);
+  private updateDataSourceWithThresholdTemplates(thresholdTemplates: IThresholdTemplate[]) {
+    this.dataSource = new MatTableDataSource(thresholdTemplates);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (thresholdTemplate, property) => {
         if (property.includes('.')) {
@@ -105,11 +80,6 @@ export class ListThresholdTemplatesComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  public async pageChanged(evt) {
-    this.page = evt.pageIndex;
-    this.pagesize = evt.pageSize;
-    await this.getThresholdTemplateByFilter();
-  }
 
   public onSelectedThresholdTemplateChange(thresholdTemplate: IThresholdTemplate) {
     if (this.selectedThresholdTemplate && this.selectedThresholdTemplate.id === thresholdTemplate.id) {
@@ -123,17 +93,17 @@ export class ListThresholdTemplatesComponent implements OnInit {
 
   public async deleteThresholdTemplate(thresholdTemplateId: string) {
     this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
-      (result) => {
+      () => {
         this.thresholdTemplates = null;
         this.changeDetectorRef.detectChanges();
-        this.getThresholdTemplateByFilter();
+        this.getThresholdTemplates();
       }
     );
   }
 
   public async openDetailDialog(thresholdTemplateId: string) {
     const thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
-    const dialogRef = this.dialog.open(ThresholdTemplatesDetailComponent, {
+    this.dialog.open(ThresholdTemplatesDetailComponent, {
       minWidth: '320px',
       maxWidth: '600px',
       width: '100vw',
