@@ -9,4 +9,7 @@ export const environment = {
   loginUrl: 'https://www.proximus.be/smartapps/smartmonitoring/auth/login',
   authUrl: 'https://www.proximus.be/smartapps/smartmonitoring/auth/',
   assetPrefix: 'smartmonitoring',
+  paths: {
+    home: './pages/devtest/devtest.module#DevtestModule'
+  }
 };
