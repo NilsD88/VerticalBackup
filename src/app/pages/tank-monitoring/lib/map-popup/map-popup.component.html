@@ -1,0 +1,35 @@
+<div class="container" *ngIf="asset">
+  <div class="title">
+    <a routerLink="/private/smartmonitoring/detail/{{asset.id}}">
+      <h6>{{asset.name}}</h6>
+    </a>
+  </div>
+  <div class="subtitle" *ngIf="asset.location">
+    <b>{{asset.location?.name}}</b>
+  </div>
+  <div class="column">
+      <div *ngIf="asset.image" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.image + ')'}"></div>
+      <ul *ngIf="asset.things">
+          <li *ngFor="let thing of asset.things" class="thing">
+            <strong>{{thing.name}}</strong>
+            <ul>
+              <li>
+                <b>Battery:</b>
+                <span [ngClass]="{'empty': thing?.batteryPercentage < 10, 'low': thing?.batteryPercentage >= 10 && thing?.batteryPercentage < 20, 'ok': thing?.batteryPercentage >= 20}">
+                  {{(thing.batteryPercentage) ? (thing.batteryPercentage+'%') : 'null'}}
+                </span>
+              </li>
+              <li>
+                <b>Fuel:</b>
+                <span [ngClass]="{'empty': thing?.sensors[0]?.value < 10, 'low': thing?.sensors[0]?.value >= 10 && thing?.sensors[0]?.value < 20, 'ok': thing?.sensors[0]?.value >= 20}">
+                  {{(thing?.sensors[0]?.value) ? (thing?.sensors[0]?.value+'%') : 'null'}}
+                </span>
+              </li>
+              <li>
+                  <b>Description:</b> opzja opekaz eopazke opaz jufinueri fiuer fjoeijf eriojf eiorjf eiorjf eoirj fsljkfs lkjfsk ljfisoueorsdlhv s hiuh
+              </li>
+            </ul>
+          </li>
+        </ul>
+  </div>
+</div>

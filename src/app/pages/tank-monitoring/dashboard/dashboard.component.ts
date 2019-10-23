@@ -1,4 +1,5 @@
-import { IAsset } from 'src/app/models/g-asset.model';
+import { cloneDeep } from 'lodash';
+import { IAssetTM } from 'src/app/models/g-asset.model';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {MatSort, Sort} from '@angular/material/sort';
@@ -6,8 +7,20 @@ import {MatTableDataSource} from '@angular/material/table';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import { MatPaginator } from '@angular/material';
+import { Subject, Observable } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
-const statuses = ['EMPTY', 'LOW', 'OK'];
+interface IRange {
+  min: number;
+  max: number;
+}
+
+interface IFilterFE {
+  name: string;
+  statuses: string[];
+  fuelLevel: IRange;
+  batteryLevel: IRange;
+}
 
 @Component({
   selector: 'pvf-dashboard',
@@ -19,11 +32,25 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public assets: IAsset[] = [];
+  public assets: IAssetTM[] = [];
+  public selectedAssets: IAssetTM[];
 
   public dataSource;
   public chartData: any[];
   public isLoading = false;
+
+  public filterFE: IFilterFE = {
+    fuelLevel: {
+      min: 0,
+      max: 100
+    },
+    batteryLevel: {
+      min: 0,
+      max: 100
+    },
+    statuses: ['EMPTY', 'LOW', 'OK'],
+    name: '',
+  };
 
   public filter = {
     name: '',
@@ -44,8 +71,8 @@ export class DashboardComponent implements OnInit {
     'rgba(102, 204, 0, 0.7)',
   ];
 
-
-  displayedColumns: string[] = ['name', 'location.name', 'status'];
+  displayedColumns: string[] = ['name', 'thing', 'location.name', 'fuel', 'battery', 'actions'];
+  public filterFE$ = new Subject<IFilterFE>();
 
   constructor(
     private translateService: TranslateService,
@@ -53,96 +80,162 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.filter.status = statuses;
     this.isLoading = true;
-    this.assets = await this.newAssetService.getAssets().toPromise();
-    this.updateDataSource();
-    this.createChartData();
-    this.isLoading = false;
-    /*
-    this.newAssetService.searchAssetsWithFilter(this.searchFilter$).subscribe((assets: IAsset[]) => {
-      this.page = 0;
-      this.totalItems = assets.length;
-      this.assets = assets;
-      this.isLoading = false;
-      this.updateDataSource();
-      this.createChartData();
-      console.log({...this.assets});
+    this.assets = await this.newAssetService.getAssets_TankMonitoring_Dashboard().toPromise();
+    this.assets.forEach((asset) => {
+      const VALUE = asset.things[0].sensors[0].value;
+      if (VALUE < 10) {
+        asset.status = 'EMPTY';
+      } else if (VALUE < 20) {
+        asset.status = 'LOW';
+      } else {
+        asset.status = 'OK';
+      }
     });
-    */
-
-    this.onFilterChange();
+    console.log(this.assets);
+    this.updateDataSourceWithFilteredAssets(this.assets);
+    this.isLoading = false;
+    filteredAssetsObs(this.filterFE$).subscribe(() => { this.updateFilterdAssets(); });
+    this.changeFilterFE();
   }
 
+  private updateFilterdAssets() {
+    const filteredAssets = cloneDeep(this.assets).filter((asset: IAssetTM) => {
+      let result = true;
+      if (this.filterFE.name && result) {
+        if (asset.name) {
+          const TERM = this.filterFE.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+          result = asset.name.toLocaleUpperCase().includes(TERM);
+        } else {
+          result = false;
+        }
+      }
 
-  public updateDataSourceWithFilteredAssets(assets: IAsset[]) {
+      if (this.filterFE.statuses.length && result) {
+        result = this.filterFE.statuses.includes(asset.status);
+      }
+
+      if (this.filterFE.batteryLevel && result) {
+        const {min, max} = this.filterFE.batteryLevel;
+        const batteryLevel = asset.things[0].batteryPercentage;
+        if (min === 0 && max === 100) {
+          result = true;
+        } else {
+          if (batteryLevel >= min && batteryLevel <= max) {
+            result = true;
+          } else {
+            result = false;
+          }
+        }
+      }
+
+      if (this.filterFE.fuelLevel && result) {
+        const {min, max} = this.filterFE.fuelLevel;
+        const fuelLevel = asset.things[0].sensors[0].value;
+        if (min === 0 && max === 100) {
+          result = true;
+        } else {
+          if (fuelLevel >= min && fuelLevel <= max) {
+            result = true;
+          } else {
+            result = false;
+          }
+        }
+      }
+
+      return result;
+    });
+    this.updateDataSourceWithFilteredAssets(filteredAssets);
+  }
+
+  public updateDataSourceWithFilteredAssets(assets: IAssetTM[]) {
+    this.selectedAssets = assets;
     this.dataSource = new MatTableDataSource(assets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
+        const regex = new RegExp('\[[0-9]+\]');
         if (property.includes('.')) {
-          return property.split('.')
-            .reduce((object, key) => object[key], asset);
+          return property.split('.').reduce(
+            (object, key) => {
+              return object[key], asset;
+            }
+          );
         }
-        return asset[property].toLocaleLowerCase();
+        switch (property) {
+          case 'fuel':
+            return ((asset.things[0] || {}).sensors[0] || {}).value;
+          case 'battery':
+              return (asset.things[0] || {}).batteryPercentage;
+          default:
+            return asset[property].toLocaleLowerCase();
+        }
     };
     this.dataSource.sort = this.sort;
+    this.createChartData(assets);
   }
 
 
-  public updateDataSource() {
-    const assets: IAsset[] = [];
-    for (const asset of this.assets) {
-      assets.push(asset);
-      // TODO: filter on fuel and battery level
-      /* if (this.filter.status.some((value) => value === asset.test)) {
-        assets.push(asset);
-      } */
-    }
-    this.updateDataSourceWithFilteredAssets(assets);
-  }
-
-
-  public async createChartData() {
-    console.log('CREATE CHART DATA');
+  public async createChartData(assets: IAssetTM[]) {
     const chartData = [];
-    for (const status of statuses) {
-      chartData.push({
-        name: await this.translateService.get('DASHBOARD.TANK_MONITORING.STATUS.' + status).toPromise(),
-        keyName: status,
-        y: this.assets.filter((asset: IAsset) => {
-          console.log(asset);
-          return asset.test === status;
-        }).length
-      });
-      this.chartData = chartData;
+    const STATUS_ASSETS = {
+      EMPTY: [],
+      LOW: [],
+      OK: [],
+    };
+
+    assets.forEach((asset) => {
+      STATUS_ASSETS[asset.status].push(asset);
+    });
+
+    for (const status in STATUS_ASSETS) {
+      if (status) {
+        chartData.push({
+          name: status,
+          keyName: status,
+          y: STATUS_ASSETS[status].length
+        });
+      }
     }
+    this.chartData = chartData;
   }
 
-  public updateBatteryLevelFilter(event: [number, number]): void {
-    this.filter.batteryLevel.min = event[0];
-    this.filter.batteryLevel.max = event[1];
-    this.onFilterChange();
-  }
-
-  public updateFuelLevelFilter(event: [number, number]): void {
-    this.filter.fuelLevel.min = event[0];
-    this.filter.fuelLevel.max = event[1];
-    this.onFilterChange();
-  }
-
-  public onFilterChange() {
-    // SORT
-  }
-
-  public filterByName() {
-    const assetsFiltered = findItemsWithTermOnKey(this.filter.name, this.assets, 'name');
-    this.updateDataSourceWithFilteredAssets(assetsFiltered);
-  }
 
   public pieClicked(keyNames: string[]) {
-    this.filter.status = keyNames;
-    this.updateDataSource();
-    this.createChartData();
+    this.filterFE.statuses = keyNames;
+    this.changeFilterFE();
   }
 
+  public changeFilterFE() {
+    this.filterFE$.next(this.filterFE);
+  }
+
+  public updateFuelLevelFilter(event) {
+    this.filterFE.fuelLevel = {
+      min: event[0],
+      max: event[1]
+    };
+    this.changeFilterFE();
+  }
+
+  public updateBatteryLevelFilter(event) {
+    this.filterFE.batteryLevel = {
+      min: event[0],
+      max: event[1]
+    };
+    this.changeFilterFE();
+  }
+
+}
+
+function filteredAssetsObs(obs: Observable<IFilterFE>) {
+  return obs.pipe(
+      debounceTime(500),
+      switchMap(() => {
+        return new Promise(
+          (resolve) => {
+            resolve();
+          }
+        );
+      })
+  );
 }

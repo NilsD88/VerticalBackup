@@ -27,7 +27,6 @@ import {LoaderModule} from '../../../../../projects/ngx-proximus/src/lib/loader/
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
-import { GlobaleSearchService } from 'src/app/services/global-search.service';
 
 @NgModule({
   imports: [
@@ -54,7 +53,7 @@ import { GlobaleSearchService } from 'src/app/services/global-search.service';
     MapModule
   ],
   declarations: [InventoryComponent],
-  providers: [AssetService, FilterService, LocationsService, SharedService, NewLocationService, GlobaleSearchService]
+  providers: [AssetService, FilterService, LocationsService, SharedService, NewLocationService]
 })
 export class InventoryModule {
 }

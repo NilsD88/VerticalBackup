@@ -38,7 +38,12 @@ export class NewLocationService {
             mutation CreateLocation($input: LocationCreateInput!) {
                 location: createLocation(input: $input) {
                     id,
-                    name
+                    name,
+                    image,
+                    geolocation {
+                        lat,
+                        lng
+                    }
                 }
             }
         `;

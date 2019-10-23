@@ -10,17 +10,6 @@ import gql from 'graphql-tag';
     providedIn: 'root'
 })
 export class NewThingService {
-    public thingsUrl = 'fakeapi/things';
-
-    private headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
-    private perfop = { headers: this.headers };
-    private httpOptions = { headers: this.headers };
-
-    private handleError(error: any) {
-        console.error(error);
-        return throwError(error);
-    }
-
 
     constructor(
         public http: HttpClient,
@@ -30,16 +19,20 @@ export class NewThingService {
 
      // START APOLLO
 
-    public a_getThings(): Observable<IThing[]> {
+    public getThings(): Observable<IThing[]> {
         const GET_THINGS = gql`
-            things: query findAllThings {
+            query findAllThings {
                 things: findAllThings {
                     id,
+                    devEui,
                     name,
                     sensors {
                         sensorType {
                             id,
-                            name
+                            name,
+                            postfix,
+                            min,
+                            max
                         }
                     }
                 }
@@ -58,9 +51,9 @@ export class NewThingService {
         }));
     }
 
-    public a_getThingsByAssetId(assetId: string): Observable<IThing[]> {
+    public getThingsByAssetId(assetId: string): Observable<IThing[]> {
         const GET_THINGS_BY_ASSET_ID = gql`
-            things: query findAllThingsByAsset($locationId: Long!) {
+            query findAllThingsByAsset($locationId: Long!) {
                 things: findAllThingsByAsset(locationId: $locationId) {
                     id,
                     name,
@@ -86,7 +79,7 @@ export class NewThingService {
         }));
     }
 
-    public a_getThingById(id: string): Observable<IThing> {
+    public getThingById(id: string): Observable<IThing> {
         const GET_THING_BY_ID = gql`
             query findThingById($input: ThingByIdInput!) {
                 thing: findThingById(input: $input) {
@@ -111,13 +104,10 @@ export class NewThingService {
         }).pipe(map(({data}) => data.thing));
     }
 
-    public a_updateThing(thing: IThing): Observable<boolean> {
+    public updateThing(thing: IThing): Observable<boolean> {
         const UPDATE_THING = gql`
-            mutation updateThing($input: ThingInput!) {
-                thresholdTemplate: updateThing(id: $id) {
-                    id,
-                    name,
-                }
+            mutation updateThing($input: ThingUpdateInput!) {
+                updateThing(input: $input)
             }
         `;
 
@@ -138,17 +128,7 @@ export class NewThingService {
 
 
     // END APOLLO
-
-    getThings(): Promise<IThing[]> {
-        return new Promise(async (resolve, reject) => {
-            return this.http.get<IThing[]>(this.thingsUrl)
-                .subscribe((things: IThing[]) => {
-                    resolve(things);
-                }, () => {
-                    reject(console.error('Error! Failed to fetch things. Please reload.'));
-                });
-        });
-    }
+    /*
 
     getThingsByName(name: string): Promise<IThing[]> {
         return new Promise(async (resolve, reject) => {
@@ -171,21 +151,6 @@ export class NewThingService {
                 });
         });
     }
-
-    updateThing(thing: IThing) {
-        return this.http.put(`${this.thingsUrl}/${thing.id}`, thing, this.httpOptions);
-    }
-
-    public searchTerm(terms: Observable<string>) {
-        return terms.pipe(
-            debounceTime(500),
-            distinctUntilChanged(),
-            switchMap(term => {
-                const thingsMatchWithName = this.getThingsByName(term);
-                const thingsMatchWithDevEui = this.getThingsByDevEui(term);
-                return Promise.all([thingsMatchWithName, thingsMatchWithDevEui]);
-            })
-        );
-    }
+    */
 
 }

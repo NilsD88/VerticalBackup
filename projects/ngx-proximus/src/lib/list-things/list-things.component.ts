@@ -8,6 +8,8 @@ import { SharedService } from 'src/app/services/shared.service';
 import { NewThingService } from 'src/app/services/new-thing.service';
 import { Subject } from 'rxjs';
 import { isNullOrUndefined } from 'util';
+import { findItemsWithTermOnKey } from 'src/app/shared/utils';
+import {uniqBy} from 'lodash';
 
 
 
@@ -31,9 +33,7 @@ export class ListThingsComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public things: IThing[];
-  public searchTerm$ = new Subject<string>();
-
+  public things: IThing[] = [];
   public activeInput: number = null;
   public filter = {
     devEui: '',
@@ -62,32 +62,13 @@ export class ListThingsComponent implements OnInit {
     if (this.admin) {
       this.displayedColumns.push('actions');
     }
-
     await this.getThings();
-
-    this.newThingService.searchTerm(this.searchTerm$)
-      .subscribe(things => {
-        const results = [];
-        for (const array of things) {
-          if (array.length > 0) {
-            for (const item of array) {
-              results.push(item);
-            }
-          }
-        }
-        this.things = results;
-        this.updateDataSource();
-        this.isLoading = false;
-      });
   }
 
   public async getThings(): Promise<void> {
     this.isLoading = true;
-    // REAL
-    //this.things = await this.thingService.getByFilter(this.filter);
-    // MOCK
-    this.things = await this.newThingService.getThings();
-    this.updateDataSource();
+    this.things = await this.newThingService.getThings().toPromise();
+    this.updateDataSource(this.things);
     this.isLoading = false;
   }
 
@@ -95,8 +76,8 @@ export class ListThingsComponent implements OnInit {
     return this.selectedThings.some((thing) => thing.id === id);
   }
 
-  private updateDataSource() {
-    this.dataSource = new MatTableDataSource(this.things);
+  private updateDataSource(things: IThing[]) {
+    this.dataSource = new MatTableDataSource(things);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (thing, property) => {
         if (property.includes('.')) {
@@ -113,7 +94,7 @@ export class ListThingsComponent implements OnInit {
   }
 
   public openDialogSensorDefinition(sensor: ISensor, thingName: string) {
-    const dialogRef = this.dialog.open(EditSensorPopupComponent, {
+    this.dialog.open(EditSensorPopupComponent, {
       minWidth: '320px',
       maxWidth: '600px',
       width: '100vw',
@@ -165,8 +146,15 @@ export class ListThingsComponent implements OnInit {
     );
   }
 
-  public searchChanged(event) {
-    this.searchTerm$.next(event);
-    this.isLoading = true;
+  public filterByName() {
+    const filteredThingsByName = findItemsWithTermOnKey(this.filter.name, this.things, 'name');
+    const filteredThingsByDevEui = findItemsWithTermOnKey(this.filter.name, this.things, 'devEui');
+
+    const filterThings = [
+      ...filteredThingsByName,
+      ...filteredThingsByDevEui
+    ];
+
+    this.updateDataSource(uniqBy(filterThings, 'id'));
   }
 }

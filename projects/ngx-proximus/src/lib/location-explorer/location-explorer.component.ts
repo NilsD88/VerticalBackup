@@ -4,7 +4,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { Subject, Subscription } from 'rxjs';
+import { Subject, Subscription, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
@@ -51,8 +51,18 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
+
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
-      switchMap(() => this.newAssetService.getAssetsByLocationId(this.currentLocation.id))
+      switchMap(req => {
+        if (req === 'STOP') {
+          return of(this.currentLocation.assets);
+        }
+        if (isNullOrUndefined(this.currentLocation.id)) {
+          return of([]);
+        } else {
+          return this.newAssetService.getAssetsByLocationId(this.currentLocation.id);
+        }
+      })
     );
 
     this.subscriptions.push(
@@ -173,13 +183,15 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   }
 
   getAssetsBySelectedLocation() {
-    if (!this.currentLocation.assets) {
+    if (!this.currentLocation.assets || !(this.currentLocation.assets || []).length) {
       this.currentLocation.assets = [];
       this.loadingAsset = true;
-      console.log('before assetsRequestSource');
       this.assetsRequestSource.next();
+    } else {
+      this.assetsRequestSource.next('STOP');
     }
   }
+
 
   drop(event: CdkDragDrop<string[]>) {
     const children = this.currentLocation.children;

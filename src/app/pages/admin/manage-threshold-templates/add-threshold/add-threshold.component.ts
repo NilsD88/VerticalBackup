@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
-import {SensorType} from '../../../../../models/sensor.model';
-import {FilterService} from '../../../../../services/filter.service';
+import {SensorType} from 'src/app/models/sensor.model';
+import {FilterService} from 'src/app/services/filter.service';
 
 @Component({
   selector: 'pvf-add-threshold',

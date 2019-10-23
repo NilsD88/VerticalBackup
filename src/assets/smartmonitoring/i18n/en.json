@@ -100,7 +100,7 @@
     "SHOW": "Show"
   },
   "LAYOUT": {
-    "SEARCH": "Search assets",
+    "SEARCH": "Search assets or locations",
     "FULL_SCREEN": "Full screen",
     "EXIT_FULL_SCREEN": "Exit full screen",
     "ADMINISTRATION": "Administration",
@@ -155,6 +155,7 @@
   "ALERTS": {
     "MARK_AS_READ": "Mark as read",
     "MARK_AS_UNREAD": "Mark as unread",
+    "DOWNLOAD": "Download",
     "TITLE": "Alerts",
     "ASSET": "Asset",
     "LOCATION_TYPE": "Location type",
@@ -165,9 +166,13 @@
     "MARK_SELECTED_UNREAD": "Mark selected as unread",
     "UNREAD_ALERTS": "Unread alerts",
     "READ_ALERTS": "Read alerts",
+    "READ": "Read",
+    "UNREAD": "Unread",
+    "ALL": "All",
     "FILTER": {
       "NAME": "Asset name",
       "SENSORS": "Sensors",
+      "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
       "THRESHOLD_TEMPLATES": "Threshold templates"
     }
   },

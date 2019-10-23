@@ -14,7 +14,7 @@
               </mat-error>
             </mat-form-field>
             <mat-form-field>
-              <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="asset.description"></textarea>
+              <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="asset.description" maxlength="255"></textarea>
             </mat-form-field>
             <mat-form-field>
               <mat-select placeholder="Type" [(ngModel)]="asset.type" matInput formControlName="TypeCtrl">

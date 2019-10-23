@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AlertDefinitionService} from '../../../../services/alert-definition.service';
+import {AlertDefinitionService} from 'src/app/services/alert-definition.service';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({

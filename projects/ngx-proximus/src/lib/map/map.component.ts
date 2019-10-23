@@ -14,7 +14,6 @@ import { findLocationById } from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from '../map-popup/map-popup.component';
-import { generateAssetIcon } from './assetIcon';
 import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({
@@ -27,8 +26,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() height;
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
-  @Input() mode: string;
-  @Input() assetFilter: {property: string; values: string[]};
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
@@ -43,19 +40,19 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   bounds: LatLngBounds;
   markerClusterOptions: any;
 
-  private assetsRequestSource = new Subject();
+  public assetsRequestSource = new Subject();
   public assets: IAsset[];
 
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private newAssetService: NewAssetService,
-    private newLocationService: NewLocationService,
-    private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    public changeDetectorRef: ChangeDetectorRef,
+    public newAssetService: NewAssetService,
+    public newLocationService: NewLocationService,
+    public snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.assetFilter) {
       if (changes.assetFilter.currentValue !== changes.assetFilter.previousValue) {
         this.populateMarkersWithAssets();
@@ -63,7 +60,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  public ngOnInit() {
 
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
@@ -75,7 +72,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         } else {
           // TODO: reach only asset with the filter?
           // return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id, this.assetFilter);
-          return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
+          return this.getAssetsByLocation();
         }
       })
     );
@@ -132,6 +129,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  public getAssetsByLocation() {
+    console.log('getAssetByLocation()');
+    return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
+  }
+
   private checkIfSelectedLocation() {
     if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
       const selectedLocation = {...this.selectedLocation};
@@ -146,31 +148,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private populateMarkersWithAssets() {
-    const mode = this.mode;
+  public populateMarkersWithAssets() {
     this.markers = [];
     const assetWithoutPosition: IAsset[] = [];
 
     if (this.assets && this.assets.length) {
       for (const asset of this.assets) {
-        if (this.assetFilter) {
-          const properties: string[] = this.assetFilter.property.split('.');
-          let valueOfProperty = asset;
-          for (const property of properties) {
-            if (valueOfProperty[property]) {
-              valueOfProperty = valueOfProperty[property];
-            } else {
-              valueOfProperty = null;
-              break;
-            }
-          }
-          // @ts-ignore: Unreachable code error
-          if (valueOfProperty && !this.assetFilter.values.some((value) => valueOfProperty === value)) {
-            continue;
-          }
-        }
         if (asset.geolocation) {
-          const assetIcon = generateAssetIcon(mode, asset);
+          const assetIcon = this.generateAssetMarker(asset);
           const newMarker = marker(
             [asset.geolocation.lat, asset.geolocation.lng],
             {
@@ -201,6 +186,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       this.setBounds();
       this.fitBoundsAndZoom();
     }
+  }
+
+  public generateAssetMarker(asset: IAsset = {}) {
+    return divIcon({
+        className: 'map-marker-asset',
+        iconSize: null,
+        html: '<div><span class="pxi-map-marker"></span></div>'
+    });
   }
 
   private populateMarkersWithchildren() {
@@ -261,7 +254,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-
   private setBounds(assets = this.assets, location = this.selectedLocation) {
     const geoJsonData = {
       type: 'Feature',
@@ -283,8 +275,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     const geoJsonLayer = geoJSON(geoJsonData as GeoJsonObject);
     this.bounds = geoJsonLayer.getBounds();
   }
-
-
 
   private addAssetBounds(geoJsonData, assets) {
     if (assets && assets.length) {
@@ -326,7 +316,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     return popupEl;
   }
 
-  goToChild(location: ILocation) {
+  public goToChild(location: ILocation) {
     const parent = {...this.selectedLocation};
     location.parent = parent;
     this.options = null;
@@ -336,7 +326,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.initMap();
   }
 
-  goToParentLocation(location: ILocation) {
+  public goToParentLocation(location: ILocation) {
     this.options = null;
     this.changeDetectorRef.detectChanges();
     this.selectedLocation = location;
@@ -344,7 +334,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.initMap();
   }
 
-  getAssetsBySelectedLocation() {
+  public getAssetsBySelectedLocation() {
     if (this.selectedLocation.assets && this.selectedLocation.assets.length) {
       this.assets = this.selectedLocation.assets;
       this.assetsRequestSource.next('STOP');
@@ -356,7 +346,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  fitBoundsAndZoom() {
+  public fitBoundsAndZoom() {
     this.currentMap.fitBounds(this.bounds);
     setTimeout(() => {
       const currentZoom = this.currentMap.getZoom();
@@ -364,7 +354,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }, 0);
   }
 
-  onMapReady(map: Map) {
+  public onMapReady(map: Map) {
     this.currentMap = map;
     this.getAssetsBySelectedLocation();
 
@@ -392,7 +382,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

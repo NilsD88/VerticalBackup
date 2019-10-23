@@ -11,17 +11,25 @@ const routes: Routes = [
     path: 'inventory',
     children: [{
       path: '',
-      loadChildren: './inventory/inventory.module#InventoryModule'
+      loadChildren: 'src/app/pages/smart-monitoring/inventory/inventory.module#InventoryModule'
     }]
   },
   {
     path: 'detail/:id',
-    loadChildren: './detail/detail.module#DetailModule'
+    loadChildren: 'src/app/pages/smart-monitoring/detail/detail.module#DetailModule'
   },
   {
     path: 'detail2/:id',
-    loadChildren: './detail2/detail2.module#Detail2Module'
+    loadChildren: 'src/app/pages/smart-monitoring/detail2/detail2.module#Detail2Module'
   },
+  {
+    path: 'assets/new',
+    loadChildren: 'src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module#SmartMonitoringAssetWizardModule'
+  },
+  {
+    path: 'assets/:id',
+    loadChildren: 'src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module#SmartMonitoringAssetWizardModule'
+  }
 ];
 
 @NgModule({

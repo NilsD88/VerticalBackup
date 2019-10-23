@@ -7,7 +7,7 @@
               type="text"
               placeholder="Thing name or devEui"
               [(ngModel)]="filter.name"
-              (ngModelChange)="searchChanged($event)"
+              (ngModelChange)="filterByName()"
             >
           </mat-form-field>
       </div>
@@ -62,7 +62,7 @@
                       *ngFor="let sensor of element.sensors"
                       (click)="openDialogSensorDefinition(sensor, element.name)"
                       [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
-                      [matTooltip]="sensor.sensorType.name + ' ' + sensor.low + sensor.sensorType.postfix + ' - '+ sensor.high + sensor.sensorType.postfix"
+                      [matTooltip]="sensor.sensorType.name + ' ' + sensor.sensorType.min + sensor.sensorType.postfix + ' - '+ sensor.sensorType.max + sensor.sensorType.postfix"
                       [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
                     >
                 </div>

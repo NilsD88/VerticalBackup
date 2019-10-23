@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    /*
     console.log('[HOME] ngOnInt');
     const TEST = gql`
       {
@@ -50,6 +51,7 @@ export class HomeComponent implements OnInit {
     })).subscribe((data) => {
       console.log(data);
     });
+    */
 
   }
 

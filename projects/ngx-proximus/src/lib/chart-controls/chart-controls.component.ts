@@ -41,10 +41,10 @@ export class ChartControlsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.initDateFilterOptions();
+    this.initDateFilterOptions(new Date(this.filter.from), new Date(this.filter.to));
   }
 
-  public initDateFilterOptions() {
+  public initDateFilterOptions(fromDate: Date, toDate: Date) {
     const today = new Date();
     const fromMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -66,7 +66,7 @@ export class ChartControlsComponent implements OnInit {
     this.drpOptions = this.drpOptions || {
       presets: drpPresets,
       format: 'mediumDate',
-      range: {fromDate: new Date(this.filter.from) , toDate: new Date(this.filter.to)},
+      range: {fromDate, toDate},
       applyLabel: 'Submit',
       calendarOverlayConfig: {
         shouldCloseOnBackdropClick: true

@@ -3,30 +3,19 @@
     <div class="col col-md-3" style="padding-right:0;">
       <div class="filters">
         <span>Battery level</span>
-        <pxs-range-slider
-          [min]="0"
-          [max]="100"
-          [startFrom]="0"
-          [startTo]="100"
-          [postfix]="'%'"
-          (rangeChange)="updateBatteryLevelFilter($event)"
-        ></pxs-range-slider>
+        <pxs-range-slider [min]="0" [max]="100" [startFrom]="0" [startTo]="100" [postfix]="'%'"
+          (rangeChange)="updateBatteryLevelFilter($event)"></pxs-range-slider>
       </div>
       <div class="filters">
         <span>Fuel level</span>
-        <pxs-range-slider
-        [min]="0"
-        [max]="100"
-        [startFrom]="0"
-        [startTo]="100"
-        [postfix]="'%'"
-        (rangeChange)="updateFuelLevelFilter($event)"
-        ></pxs-range-slider>
+        <pxs-range-slider [min]="0" [max]="100" [startFrom]="0" [startTo]="100" [postfix]="'%'"
+          (rangeChange)="updateFuelLevelFilter($event)"></pxs-range-slider>
       </div>
-      <pxs-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="300" [colors]="chartColors"></pxs-pie-chart>
+      <pxs-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="300"
+        [colors]="chartColors"></pxs-pie-chart>
     </div>
     <div class="col col-md-9" style="padding-left:0;">
-      <pxs-map [mode]="'TANK_MONITORING'" [assetFilter]="{property:'test', values: filter.status}"></pxs-map>
+      <pvf-tankmonitoring-map [tanks]="selectedAssets"></pvf-tankmonitoring-map>
     </div>
   </div>
 </div>
@@ -34,53 +23,63 @@
   <div class="row" style="margin-top:25px;">
     <div class="col-xs-12 col-md-6 mx-auto">
       <mat-form-field>
-        <input
-        matInput
-        type="text" 
-        placeholder="Asset name"
-        [(ngModel)]="filter.name"
-        (ngModelChange)="filterByName()"
-        >
+        <input matInput type="text" placeholder="Asset name" [(ngModel)]="filterFE.name" (ngModelChange)="changeFilterFE()">
       </mat-form-field>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12" style="overflow-x: scroll">
-      <table 
-      mat-table
-      [dataSource]="dataSource"
-      matSort
-      style="width: 100%;"
-      class="assets-list" 
-      [ngClass]="{'loading': isLoading }"
-      matSortDisableClear
-      >
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
-      <ng-container matColumnDef="location.name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-        <td mat-cell *matCellDef="let element"> {{element.location?.name}} </td>
-      </ng-container>
-      <ng-container matColumnDef="status">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-        <td mat-cell *matCellDef="let element">{{'DASHBOARD.TANK_MONITORING.STATUS.' + element.test | translate}} </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+      <table mat-table [dataSource]="dataSource" matSort style="width: 100%;" class="assets-list"
+        [ngClass]="{'loading': isLoading }" matSortDisableClear>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="thing">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Thing ID </th>
+          <td mat-cell *matCellDef="let element">
+            {{element.things[0]?.devEui}}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="fuel">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fuel level </th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              [ngClass]="{'empty': element.things[0]?.sensors[0]?.value < 10, 'low': element.things[0]?.sensors[0]?.value >= 10 && element.things[0]?.sensors[0]?.value < 20, 'ok': element.things[0]?.sensors[0]?.value >= 20}">
+              {{element.things[0]?.sensors[0]?.value}} %
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="battery">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Battery level </th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              [ngClass]="{'empty': element.things[0]?.batteryPercentage < 10, 'low': element.things[0]?.batteryPercentage >= 10 && element.things[0]?.batteryPercentage < 20, 'ok': element.things[0]?.batteryPercentage >= 20}">
+              {{element.things[0]?.batteryPercentage}} %
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="location.name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+          <td mat-cell *matCellDef="let element"> {{element.location?.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <a color="primary" [routerLink]="['/private/tankmonitoring/consumptions/'+element?.id]" >
+                Show details <pxs-icon icon="chevron-right"></pxs-icon>
+            </a>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
   </div>
-</div>
-<mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; border-radius: 0;">
-  <mat-progress-spinner 
-    color="primary" 
-    mode="indeterminate">
-  </mat-progress-spinner>
-</mat-card>
-<mat-paginator 
-  [length]="assets?.length"
-  [pageSize]="10"
-  [pageSizeOptions]="[5, 10, 25, 100]">
-</mat-paginator>
+  <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; border-radius: 0;">
+    <mat-progress-spinner color="primary" mode="indeterminate">
+    </mat-progress-spinner>
+  </mat-card>
+  <mat-paginator [length]="assets?.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
 </div>

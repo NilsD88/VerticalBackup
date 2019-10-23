@@ -35,13 +35,13 @@
         top: -5px;
         margin-left: -10px;
         &.low {
-            background-color: #ffcc33;
+            background-color: $severity-low;
         }
         &.medium {
-            background-color: #ff6600;
+            background-color: $severity-medium;
         }
         &.critical {
-            background-color: #cc0000;
+            background-color: $severity-critical;
         }
     }
 }

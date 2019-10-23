@@ -1,15 +1,17 @@
-import {Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef} from '@angular/core';
-import {isNullOrUndefined} from 'util';
-import {Asset} from '../../../models/asset.model';
-import {AssetService} from '../../../services/asset.service';
-import {FilterService} from '../../../services/filter.service';
-import {SharedService} from '../../../services/shared.service';
-import {LocationsService} from '../../../services/locations.service';
+import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
-import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { GlobaleSearchService } from 'src/app/services/global-search.service';
+import { NewAssetService } from 'src/app/services/new-asset.service';
+import { IAsset } from 'src/app/models/g-asset.model';
+
+
+export interface IInventoryFilterBE {
+  name: string;
+  locationName: string;
+  thresholdTemplateIds: string[];
+}
 
 @Component({
   selector: 'pvf-inventory',
@@ -18,86 +20,41 @@ import { GlobaleSearchService } from 'src/app/services/global-search.service';
 })
 export class InventoryComponent implements OnInit {
 
-  @ViewChild('inputSearch') set content(content: ElementRef) { this.inputSearch = content;}
-  inputSearch: ElementRef;
-
-  public filter = {
+  public filterBE$ = new Subject<IInventoryFilterBE>();
+  public filterBE: IInventoryFilterBE = {
     name: '',
-    thresholdTemplates: [],
-    locationType: null,
-    locations: [],
-    children: []
+    locationName: '',
+    thresholdTemplateIds: []
   };
-
-  public listStyleValue = 'icons';
-  public showFilter = false;
-
-  public thresholdTemplatesLoading = false;
-  public locationsLoading = false;
-  public locationTypesLoading = false;
-  public assetsLoading = false;
-  public statusesLoading = false;
 
   public filterOptions = {
     thresholdTemplateOptions: [],
-    locationTypesOptions: [],
-    locationsOptions: [],
-    statuses: []
   };
 
-  public assets: Asset[] = [];
-  public page = 0;
+  public listStyleValue = 'icons';
+
+  public thresholdTemplatesLoading = false;
+  public assetsLoading = false;
+
+  public assets: IAsset[] = [];
+
+  public pageNumber = 0;
+  public pageSize = 10;
   public totalItems = 0;
-  public pagesize = 10;
 
   public rootLocation: ILocation;
   public selectedLocation: ILocation;
 
-  // Search autocomplete for location
-  public searchTextLocation: string;
-  public myControl = new FormControl();
-  public searchResultsLocation: any[];
-  public searchTermLocation$ = new Subject<string>();
-
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    public assetService: AssetService,
-    public filterService: FilterService,
-    public sharedService: SharedService,
-    public locationsService: LocationsService,
-    public newLocationService: NewLocationService,
-    public globaleSearchService: GlobaleSearchService) {
-  }
+    private newAssetService: NewAssetService,
+    private newThresholdTemplateService: NewThresholdTemplateService,
+    private newLocationService: NewLocationService
+  ) {}
 
   async ngOnInit() {
-
-    this.globaleSearchService.searchLocationTerm(this.searchTermLocation$)
-      .subscribe(locations => {
-        this.searchResultsLocation = locations;
-      });
-
-    this.assetsLoading = true;
-    const defaultFilter: any = this.sharedService.getDefaultFilter('INVENTORYFILTER');
-    this.filter = defaultFilter ? defaultFilter : this.filter;
-    if (!isNullOrUndefined(defaultFilter) && !isNullOrUndefined(defaultFilter.locationType)) {
-      this.onLocationTypeChange();
-      this.filter.locations = defaultFilter.locations;
-    }
-    try {
-      const thresholdTemplatePromise = this.filterService.getThresholdTemplates();
-      const locationTypesPromise = this.locationsService.getLocationTypes();
-      const locationsPromise = this.locationsService.getLocations();
-
-      this.filterOptions.thresholdTemplateOptions = await thresholdTemplatePromise;
-      this.filterOptions.locationTypesOptions = await locationTypesPromise;
-      this.filterOptions.locationsOptions = await locationsPromise;
-
-      this.submitFilter();
-    } catch (err) {
-      this.assetsLoading = false;
-      console.error(err);
-    }
-
+    this.getPagedAssets();
+    this.filterOptions.thresholdTemplateOptions = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
 
     this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
       this.rootLocation = {
@@ -113,37 +70,12 @@ export class InventoryComponent implements OnInit {
         this.selectedLocation = this.rootLocation.children[0];
       }
     });
+
+    // TODO get findAssetsPagedByFilter(filterBE$)
   }
 
-  public async onLocationTypeChange() {
-    if (this.filter.locationType) {
-      this.filterOptions.locationsOptions = await this.locationsService.getLocations(this.filter.locationType);
-    } else {
-      this.filterOptions.locationsOptions = await this.locationsService.getLocations();
-    }
-    this.filter.locations = [];
-    this.filter.children = [];
-    this.getPagedAssets();
-  }
-
-  public setDefaultFilter() {
-    this.sharedService.setDefaultFilter('INVENTORYFILTER', this.filter);
-  }
-
-  public revertDefaultFilter() {
-    const defaultFilter = this.sharedService.getDefaultFilter('INVENTORYFILTER');
-    this.filter = defaultFilter ? defaultFilter : {
-      name: '',
-      thresholdTemplates: [],
-      locationType: null,
-      locations: [],
-      children: [],
-      statuses: []
-    };
-  }
-
-  public async submitFilter(): Promise<void> {
-    this.getPagedAssets();
+  public changeFilterBE() {
+    this.filterBE$.next(this.filterBE);
   }
 
   public changeLocation(location: ILocation) {
@@ -152,23 +84,17 @@ export class InventoryComponent implements OnInit {
   }
 
   public pageChanged(evt) {
-    this.page = evt.pageIndex;
-    this.pagesize = evt.pageSize;
+    this.pageNumber = evt.pageIndex;
+    this.pageSize = evt.pageSize;
     this.getPagedAssets();
-  }
-
-  public toggleFilter() {
-    this.showFilter = !this.showFilter;
   }
 
   public async getPagedAssets() {
     try {
       this.assetsLoading = true;
-      const assetsResult = await this.assetService.getPagedAssets(this.filter, this.page, this.pagesize);
-      this.assets = assetsResult.data;
+      const assetsResult = await this.newAssetService.getPagedAssets(this.filterBE, this.pageNumber, this.pageSize).toPromise();
+      this.assets = assetsResult.assets;
       this.totalItems = assetsResult.totalElements;
-      this.page = assetsResult.pageNumber;
-
       this.assetsLoading = false;
       return assetsResult;
     } catch (err) {
@@ -179,36 +105,5 @@ export class InventoryComponent implements OnInit {
   public listStyleOnChange(event) {
     const { value } = event;
     this.listStyleValue = value;
-  }
-
-  public searchLocationChanged(event) {
-    if (event) {
-      if (event.length > 2) {
-        this.searchTermLocation$.next(event);
-      }
-    }
-  }
-
-  public selectAnAutocompletedOption(option: ILocation) {
-    this.searchTextLocation = option.name;
-    this.updateLocation(option);
-    // TODO: request to update asset according to the location
-  }
-
-  public updateLocation(location: ILocation) {
-    switch (location.constructor.name) {
-      case 'Sublocation':
-        this.filter.children = [location.id];
-        this.filter.locations = [];
-        break;
-      case 'Location':
-        this.filter.locations = [location.id];
-        this.filter.children = [];
-        break;
-      default :
-        this.filter.locations = [];
-        this.filter.children = [];
-    }
-    this.getPagedAssets();
   }
 }

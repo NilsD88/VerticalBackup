@@ -77,12 +77,14 @@ export class DetailComponent implements OnInit {
     mode: 'indeterminate',
   };
 
+  /*
   public filter = {
     dateRange: {fromDate: new Date(), toDate: new Date()},
     sensorTypes: [],
     thresholdTemplates: [],
     name: '',
   };
+  */
 
   public MOCK_THRESHOLD_TEMPLATE = MOCK_THRESHOLD_TEMPLATES[0];
 
@@ -131,11 +133,14 @@ export class DetailComponent implements OnInit {
       this.lastAlert = await lastAlertPromise;
       console.log('-----alert');
       this.asset.lastAlert = this.lastAlert;
+
+      /*
       const alertsOfTheDay = this.alertsService.getPagedAlerts({
         ...this.filter,
         assetId: this.asset.id
       }, 0, 1);
       this.numberOfAlertsOfTheDay = (await alertsOfTheDay).totalElements;
+      */
       this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
         return {
           deveui: val.devEui,
@@ -358,6 +363,8 @@ export class DetailComponent implements OnInit {
 
   public async exportAlerts() {
     this.btnOptsExportAlerts.active = true;
+
+    /*
     const result = await this.alertsService.getPagedAlerts(
       {
         ...this.filter,
@@ -368,6 +375,12 @@ export class DetailComponent implements OnInit {
       10,
       // TODO: Too long request, need to remove picture/asset from the request
     );
+    */
+
+    // TODO GET ALERTS
+    const result = {
+      alerts: []
+    };
 
     let csv = 'Asset, Location type, Date, Message, Threshold template, read\n';
     for (const alert of result.alerts) {

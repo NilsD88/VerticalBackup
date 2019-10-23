@@ -7,7 +7,7 @@ import { SmartMonitoringRoutingModule } from './smart-monitoring-routing.module'
   declarations: [],
   imports: [
     CommonModule,
-    SmartMonitoringRoutingModule
+    SmartMonitoringRoutingModule,
   ]
 })
 export class SmartMonitoringModule { }

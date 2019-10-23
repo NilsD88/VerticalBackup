@@ -1,0 +1,15 @@
+@import '~/../src/variables.scss';
+
+:host {
+    background: white;
+    display: block;
+    height: 100%;
+    > div {
+        color: $sub;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+}
+

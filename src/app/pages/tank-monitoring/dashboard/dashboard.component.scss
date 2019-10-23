@@ -1,39 +1,64 @@
 @import "~/../src/variables.scss";
 
 .container-fluid {
-    .row {
-        .col {
-            padding: 0;
-            .filters {
-                &:first-of-type {
-                    padding-top: 20px;
-                }
-                padding: 0 20px 0 7px;
-                background-color: $grey-light;
-            }
+  .row {
+    .col {
+      padding: 0;
+
+      .filters {
+        &:first-of-type {
+          padding-top: 20px;
         }
+
+        padding: 0 20px 0 7px;
+        background-color: $grey-light;
+      }
     }
+  }
 }
 
 
 ::ng-deep {
-    .assets-list {
-        width: 100%;
-        &.loading {
-            tbody[role="rowgroup"]{
-                display: none;
-            }
-        }
-        tbody[role="rowgroup"]{
-            td:first-of-type{
-                font-weight: 500;
-                color: $primary;
-            }
-        }
+  .assets-list {
+    width: 100%;
 
-        .mat-sort-header-button {
-            overflow: hidden;
-            white-space: nowrap;
+    &.loading {
+      tbody[role="rowgroup"] {
+        display: none;
+      }
+    }
+
+    tbody[role="rowgroup"] {
+      td:first-of-type {
+        font-weight: 500;
+        color: $primary;
+      }
+    }
+
+    .mat-sort-header-button {
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .cdk-column-battery,
+    .cdk-column-fuel {
+      span {
+        &.empty {
+            color: $severity-critical;
         }
-    }       
+        &.low {
+            color: $severity-medium;
+        }
+        &.ok {
+            color: $severity-ok;            
+        }
+      }
+    }
+
+    .cdk-column-actions {
+      a {
+        color: $primary;
+      }
+    }
+  }
 }

@@ -33,6 +33,7 @@ import { GlobaleSearchService } from './services/global-search.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './services/in-memory-data.service';
 import { GraphQLModule } from './graphql.module';
+import { TankMonitoringMapPopupComponent } from './pages/tank-monitoring/lib/map-popup/map-popup.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -92,7 +93,7 @@ export function createTranslateLoader(http: HttpClient) {
     GlobaleSearchService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MapAssetPopupComponent, MapPopupComponent],
+  entryComponents: [MapAssetPopupComponent, MapPopupComponent, TankMonitoringMapPopupComponent],
 })
 export class AppModule {
   constructor(private injector: Injector) {
@@ -101,5 +102,8 @@ export class AppModule {
 
     const MapPopupElement = createCustomElement(MapPopupComponent, {injector});
     customElements.define('map-popup-element', MapPopupElement);
+
+    const TankMonitoringMapPopupElement = createCustomElement(TankMonitoringMapPopupComponent, {injector});
+    customElements.define('tankmonitoring-map-popup-element', TankMonitoringMapPopupElement);
   }
 }

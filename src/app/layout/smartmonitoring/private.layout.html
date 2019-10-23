@@ -63,7 +63,11 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item [label]="'Monitoring'" [url]="'/private/home'"></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Smart monitoring'" 
+    [url]="'/private/smartmonitoring'"
+    [mat-menu-trigger-for]="smartMonitoring"
+  ></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
     label: numberOfUnreadAlerts,
     class: 'red-badge'
@@ -89,6 +93,21 @@
 <main>
   <router-outlet></router-outlet>
 </main>
+
+<mat-menu #smartMonitoring="matMenu" class="main-menu-dropdown">
+    <div mat-menu-item>
+      <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'inventory'])">
+        Inventory
+      </button>
+    </div>
+    <div mat-menu-item>
+      <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'assets', 'new'])">
+        <pxs-icon icon="plus"></pxs-icon>
+        <span style="margin-left: 10px;">New asset</span>
+      </button>
+    </div>
+</mat-menu>
+
 <mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
     <button mat-menu-item (click)="navigateTo(['/private','tankmonitoring', 'dashboard'])">
@@ -96,17 +115,13 @@
     </button>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','tankmonitoring', 'consumptions'])">
-      Consumptions
-    </button>
-  </div>
-  <div mat-menu-item>
     <button mat-menu-item>
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">New Tank</span>
+      <span style="margin-left: 10px;">New tank</span>
     </button>
   </div>
 </mat-menu>
+
 <mat-menu #visitorCounting="matMenu" style="margin-top: 80px;">
   <div mat-menu-item>
     <button mat-menu-item>

@@ -1,6 +1,6 @@
-import { LocationWizardComponent } from './../../../manage-locations/location-wizard/location-wizard.component';
-import { NewLocationService } from './../../../../../services/new-location.service';
-import { NewAssetService } from './../../../../../services/new-asset.service';
+import { LocationWizardComponent } from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
+import { NewLocationService } from 'src/app/services/new-location.service';
+import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -11,7 +11,7 @@ import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { ManageThresholdTemplatesComponent } from '../../../manage-threshold-templates/smartmonitoring/manage-threshold-templates.component';
+import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
 import { NewThresholdTemplate } from 'src/app/models/new-threshold-template.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 
@@ -19,11 +19,11 @@ import { cloneDeep } from 'lodash';
 
 
 @Component({
-  selector: 'pvf-asset-wizard',
+  selector: 'pvf-tankmonitoring-asset-wizard',
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })
-export class AssetWizardComponent implements OnInit {
+export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 
@@ -77,13 +77,13 @@ export class AssetWizardComponent implements OnInit {
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       this.editMode = true;
       this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
-      this.originalAsset = cloneDeep(this.asset);
       if (!isNullOrUndefined(this.asset.locationId)) {
         this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
       }
       if (isNullOrUndefined(this.asset.things)) {
         this.asset.things = [];
       }
+      this.originalAsset = cloneDeep(this.asset);
     } else {
       this.asset = {
         id: null,
@@ -119,13 +119,13 @@ export class AssetWizardComponent implements OnInit {
 
   public thresholdTemplateIsCompatibleWithThings() {
     const thresholdTemplate = this.asset.thresholdTemplate;
-    if (thresholdTemplate) {
+    if (thresholdTemplate && thresholdTemplate.thresholds) {
       for (const threshold of thresholdTemplate.thresholds) {
         const sensorTypeId = threshold.sensorType.id;
         let hasAtLeastOneCompatibleSensor = false;
         const things = this.asset.things;
         for (const thing of things) {
-          hasAtLeastOneCompatibleSensor = thing.sensors.some((thingSensor) => thingSensor.sensorType.id === sensorTypeId);
+          hasAtLeastOneCompatibleSensor = (thing.sensors || []).some((thingSensor) => thingSensor.sensorType.id === sensorTypeId);
           if (hasAtLeastOneCompatibleSensor) {
             break;
           }
@@ -194,7 +194,7 @@ export class AssetWizardComponent implements OnInit {
       for (const difference of differences) {
         switch (difference) {
           case 'thresholdTemplate':
-            asset.thresholdTemplateId = this.asset.thresholdTemplate.id;
+            asset.thresholdTemplateId = (this.asset.thresholdTemplate || {}).id || null;
             break;
           case 'things':
             asset.thingsId = this.asset.things.map(thing => thing.id);

@@ -851,6 +851,10 @@ input.mat-input-element {
   color       : $primary;
 }
 
+input.mat-input-element {
+  color       : $primary;
+}
+
 .alerts-section {
   margin-top    : -30px;
   margin-bottom : 70px;
@@ -1048,7 +1052,7 @@ pxs-loader {
 }
 
 .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-  background-color : $primary;
+  background-color : $sub;
   border-radius    : 0 0 8px 0;
 }
 

@@ -16,9 +16,12 @@ export interface IAsset {
     thresholdTemplateId?: string;
     things?: IThing[];
     thingsId?: string[];
-
     test?: any;
     lastAlert?: any;
+}
+
+export interface IAssetTM extends IAsset{
+    status?: string;
 }
 
 export class Asset {

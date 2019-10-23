@@ -3,7 +3,7 @@ import { MOCK_THRESHOLD_TEMPLATES } from 'src/app/mocks/threshold-templates';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { MatProgressButtonOptions } from 'mat-progress-buttons';
 import { SharedService } from 'src/app/services/shared.service';
-import {Component, OnInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, OnInit, OnChanges, SimpleChanges, ViewChild, ChangeDetectorRef} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {Asset} from 'src/app/models/asset.model';
@@ -87,14 +87,13 @@ export class Detail2Component implements OnInit {
 
   constructor(
     public activeRoute: ActivatedRoute,
-    private assetService: AssetService,
-    private router: Router,
     private translateService: TranslateService,
     private logsService: LogsService,
     private sharedService: SharedService,
     private newLocationService: NewLocationService,
     public alertsService: AlertsService,
-    public newAssetService: NewAssetService
+    public newAssetService: NewAssetService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -106,11 +105,8 @@ export class Detail2Component implements OnInit {
 
   async init() {
     try {
-      const id = await this.getRouteId();
-      this.asset = await this.newAssetService.getAssetById(id).toPromise();
-      this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
-      // TODO: remove these lines
-      this.asset.things = MOCK_THINGS;
+      const assetId = this.activeRoute.snapshot.params.id;
+      this.asset = await this.newAssetService.getAssetDetailById(assetId).toPromise();
       console.log({...this.asset});
 
       this.lastAlert = await this.alertsService.getLastAlertByAssetId(309);
@@ -161,24 +157,6 @@ export class Detail2Component implements OnInit {
     }
   }
 
-  private getRouteId(): Promise<string> {
-    // TODO: remove these lines
-    return new Promise((resolve, reject) => {
-      resolve('1');
-    });
-
-    return new Promise((resolve, reject) => {
-      this.activeRoute.params.subscribe((params) => {
-        if (!isNullOrUndefined(params.id)) {
-          resolve(params.id);
-        } else {
-          reject('DetailComponent: No \'id\' parameter in route.');
-        }
-      }, reject);
-    });
-  }
-
-
   public async getChartData(options: { interval?: string; from?: number; to?: number; }) {
 
     if (!options) {
@@ -200,6 +178,7 @@ export class Detail2Component implements OnInit {
 
     // TODO: remove these lines
     this.chartData = MOCK_CHART_DATA;
+    this.changeDetectorRef.detectChanges();
     return;
 
 
@@ -237,7 +216,6 @@ export class Detail2Component implements OnInit {
     console.log(this.chartData);
     this.chartLoading = false;
   }
-
 
   public async downloadPdfDetail() {
     const pdf = new jspdf('p', 'mm', 'a4', 1); // A4 size page of PDF (210 x 297)

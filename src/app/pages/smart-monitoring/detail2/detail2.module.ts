@@ -1,3 +1,4 @@
+import { NoDataModule } from './../../../../../projects/ngx-proximus/src/lib/no-data/no-data.module';
 import { ThresholdTemplatesDetailModule } from '../../../../../projects/ngx-proximus/src/lib/threshold-templates-detail/threshold-templates-detail.module';
 import { MatProgressButtonsModule } from 'mat-progress-buttons';
 import { AlertsService } from 'src/app/services/alerts.service';
@@ -19,7 +20,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {ImgFallbackModule} from 'ngx-img-fallback';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { Detail2HeaderModule } from 'projects/ngx-proximus/src/lib/detail2-header/detail2-header.module';
+import { DetailHeaderModule } from 'src/app/pages/smart-monitoring/lib/detail-header/detail-header.module';
 import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/linked-things.module';
 
 
@@ -40,10 +41,11 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     IconModule,
     FlexLayoutModule,
     ImgFallbackModule,
-    Detail2HeaderModule,
+    DetailHeaderModule,
     RangeSliderModule,
     ThresholdTemplatesDetailModule,
-    LinkedThingsModule
+    LinkedThingsModule,
+    NoDataModule,
   ],
   providers: [
     AlertsService,

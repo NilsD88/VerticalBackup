@@ -85,7 +85,8 @@ export class LocationWizardComponent implements OnInit {
       };
       if (!isNullOrUndefined(parentId)) {
         this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
-        this.location.parentId = this.location.parent.id;
+        this.location.parentId = this.location.parent.id || null;
+        console.log(this.location.parentId);
       }
     }
     this.canLoadLocationExplorer = true;
@@ -108,9 +109,10 @@ export class LocationWizardComponent implements OnInit {
     }
 
     this.location.parent = null;
+    this.location.parentId = null;
     this.changeDetectorRef.detectChanges();
     this.location.parent = location;
-    this.location.parentId = location.id;
+    this.location.parentId = location.id || null;
 
     if (oldParentId !== this.location.parent.id) {
       this.location.geolocation = null;
@@ -127,22 +129,13 @@ export class LocationWizardComponent implements OnInit {
         id: this.location.id,
       };
 
-      console.log({...this.originalLocation});
-      console.log({...this.location});
-
       for (const difference of differences) {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe((location: ILocation) => {
+      this.newLocationService.updateLocation(location).subscribe(() => {
         this.goToManageLocation();
       });
-
-      /*
-      this.newLocationService.updateLocation(this.location).subscribe((result) => {
-        this.goToManageLocation();
-      });
-      */
     } else {
      this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
        if (location) {

@@ -22,7 +22,7 @@
 .threshold-bar-container {
     width: 100%;
     height: 10px;
-    background: #66cc00;
+    background: $severity-ok;
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
@@ -31,13 +31,13 @@
         position: absolute;
         height: 15px;
         &.low {
-            background-color: #ffcc33;
+            background-color: $severity-low;
         }
         &.medium {
-            background-color: #ff6600;
+            background-color: $severity-medium;
         }
         &.critical {
-            background-color: #cc0000;
+            background-color: $severity-critical;
         }
     }
 }

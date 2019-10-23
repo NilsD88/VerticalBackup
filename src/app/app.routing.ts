@@ -155,7 +155,7 @@ export const AppRoutes: Routes = [
       canActivate: [PublicAuthGuard],
       children: [{
         path: '',
-        loadChildren: './pages/admin/manage-assets/smartmonitoring/manage-assets.module#ManageAssetsModule'
+        loadChildren: './pages/admin/manage-assets/manage-assets.module#ManageAssetsModule'
         // loadChildren: './pages/smart-monitoring/detail2/detail2.module#Detail2Module'
         // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
         // loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
@@ -205,19 +205,19 @@ export const AppRoutes: Routes = [
           },
           {
             path: 'manage-assets',
-            loadChildren: './pages/admin/manage-assets/smartmonitoring/manage-assets.module#ManageAssetsModule'
+            loadChildren: './pages/admin/manage-assets/manage-assets.module#ManageAssetsModule'
           },
           {
             path: 'manage-things',
-            loadChildren: './pages/admin/manage-things/smartmonitoring/manage-things.module#ManageThingsModule'
+            loadChildren: './pages/admin/manage-things/manage-things.module#ManageThingsModule'
           },
           {
             path: 'manage-threshold-templates',
-            loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
+            loadChildren: './pages/admin/manage-threshold-templates/manage-threshold-templates.module#ManageThresholdTemplatesModule'
           },
           {
             path: 'manage-alert-definition',
-            loadChildren: './pages/admin/alert-definition/smartmonitoring/alert-definition.module#AlertDefinitionModule'
+            loadChildren: './pages/admin/alert-definition/alert-definition.module#AlertDefinitionModule'
           },
           {
             path: '**',

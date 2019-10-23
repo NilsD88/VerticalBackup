@@ -6,9 +6,10 @@ import {SharedLayoutService} from '../shared-layout.service';
 import {IFooterConfig} from '../../../../projects/ngx-proximus/src/lib/footer/footer.component';
 import {TranslateService} from '@ngx-translate/core';
 import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/top-menu.component';
-import { Asset } from 'src/app/models/asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
+import { ILocation } from './../../models/g-location.model';
 import { Subject } from 'rxjs';
-import { AlertsService } from 'src/app/services/alerts.service';
+import { NewAlertService } from 'src/app/services/new-alert.service';
 
 @Component({
   selector: 'pvf-layout',
@@ -35,7 +36,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     public sharedLayoutService: SharedLayoutService,
     private globaleSearchService: GlobaleSearchService,
     public sharedService: SharedService,
-    public alertsService: AlertsService) {
+    public newAlertService: NewAlertService) {
       this.globaleSearchService.searchTerm(this.searchTerm$)
       .subscribe(result => {
         const results = [];
@@ -66,28 +67,11 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     };
     this.footerConfig = await this.sharedLayoutService.getFooterTranslations();
 
-    this.getNumberOfUnreadAlerts();
+    this.newAlertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
+      this.numberOfUnreadAlerts = (numberOfUnreadAlerts > 0) ? ((numberOfUnreadAlerts > 99) ? '99+' : numberOfUnreadAlerts ) : null;
+    });
 
   }
-
-
-  async getNumberOfUnreadAlerts() {
-    const result = await this.alertsService.getPagedAlerts(
-      {
-        dateRange: {
-          fromDate: new Date(0),
-          toDate: new Date()
-        },
-        sensorTypes: [],
-        thresholdTemplates: [],
-        name: '',
-        read: false
-      },
-      0, 1
-    );
-    this.numberOfUnreadAlerts = (result.totalElements > 0) ? ((result.totalElements > 99) ? '99+' : result.totalElements ) : null;
-  }
-
 
   ngOnDestroy(): void {
     // this.router.unsubscribe();
@@ -106,7 +90,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     window.open('https://mythings.proximus.be/', '_blank');
   }
 
-  autocompleteClick(event: Asset) {
+  autocompleteClick(event: IAsset | ILocation) {
     this.router.navigateByUrl(`/private/smartmonitoring/detail/${event.id}`);
     this.searchResults = null;
   }

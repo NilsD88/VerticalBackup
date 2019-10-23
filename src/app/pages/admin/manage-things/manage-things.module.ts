@@ -1,4 +1,4 @@
-import { ListThingsModule } from './../../../../../../projects/ngx-proximus/src/lib/list-things/list-things.module';
+import { ListThingsModule } from 'projects/ngx-proximus/src/lib/list-things/list-things.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';

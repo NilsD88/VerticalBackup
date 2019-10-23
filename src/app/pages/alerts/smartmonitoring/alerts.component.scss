@@ -10,6 +10,79 @@
     width: 20px
   }
 
+  .cdk-column-timestamp {
+    span.name {
+      display: block;
+      font-weight: 500;
+      color: $primary;
+    }
+
+    span.date {
+      display: block;
+      font-weight: 200;
+      color: $sub;
+    }
+  }
+
+  .cdk-column-sensorType-name {
+    > div {
+      display: flex;
+      align-items: center;
+      img {
+        margin     : 5px;
+        max-width  : 20px;
+        max-height : 20px;
+        width: 20px;
+      }
+    }
+  }
+
+  .cdk-column-severity {
+    .severity{
+      border-radius: 2px;
+      padding: 4px 8px;
+      display: inline-block;
+      color: white;
+      font-weight: 800;
+      font-size: 0.8em;
+      text-shadow: 0px 0px 4px rgba(0,0,0,0.33);
+      &.low {
+          background-color: $severity-low;
+      }
+      &.medium {
+          background-color: $severity-medium;
+      }
+      &.critical {
+          background-color: $severity-critical;
+      }
+    }
+  }
+
+  .cdk-column-thresholdTemplateName {
+    > span {
+      display       : inline-flex;
+      align-self    : center;
+      padding       : .2em .5em;
+      border-radius : 0 0 10px 0;
+      font-size     : .6rem;
+    }
+  }
+
+  .cdk-column-thing-devEui {
+    > div.thing {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      > span {
+        &.devEui {
+          font-size: 0.8em;
+          color: $sub;
+        }
+        display: block;
+      }
+    }
+  }
+
   .alerts-action {
     display: flex;
     justify-content: space-between;
@@ -42,7 +115,7 @@
         white-space: nowrap;
     }
 
-    .alert-read {
+    .alert-unread {
       display: block;
       width: 8px;
       height: 8px;
