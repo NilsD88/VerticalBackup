@@ -6,6 +6,7 @@
 export const environment = {
   production: true,
   baseUrl: 'https://www-uat.proximus.be/smartapps/smartmonitoring/api/',
+  api: 'https://www-uat.proximus.be/smartapps/smartmonitoring/api/',
   loginUrl: 'https://www.proximus.be/smartapps/smartmonitoring/auth/login',
   authUrl: 'https://www.proximus.be/smartapps/smartmonitoring/auth/',
   assetPrefix: 'smartmonitoring',
