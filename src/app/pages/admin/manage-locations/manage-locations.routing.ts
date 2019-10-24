@@ -9,11 +9,11 @@ export const ManageLocationsRoutes: Routes = [
   },
   {
     path: 'new',
-    loadChildren: () => import('./location-wizard/location-wizard.module').then(m => m.LocationWizardModule)
+    loadChildren: './location-wizard/location-wizard.module#LocationWizardModule'
   },
   {
     path: 'location/:id',
-    loadChildren: () => import('./location-wizard/location-wizard.module').then(m => m.LocationWizardModule)
+    loadChildren: './location-wizard/location-wizard.module#LocationWizardModule'
   },
   {
     path: ':selectedLocationId',

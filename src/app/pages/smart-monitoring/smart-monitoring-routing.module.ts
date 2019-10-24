@@ -11,24 +11,24 @@ const routes: Routes = [
     path: 'inventory',
     children: [{
       path: '',
-      loadChildren: import('src/app/pages/smart-monitoring/inventory/inventory.module').then(m => m.InventoryModule)
+      loadChildren: 'src/app/pages/smart-monitoring/inventory/inventory.module#InventoryModule'
     }]
   },
   {
     path: 'detail/:id',
-    loadChildren: import('src/app/pages/smart-monitoring/detail/detail.module').then(m => m.DetailModule)
+    loadChildren: 'src/app/pages/smart-monitoring/detail/detail.module#DetailModule'
   },
   {
     path: 'detail2/:id',
-    loadChildren: import('src/app/pages/smart-monitoring/detail2/detail2.module').then(m => m.Detail2Module)
+    loadChildren: 'src/app/pages/smart-monitoring/detail2/detail2.module#Detail2Module'
   },
   {
     path: 'assets/new',
-    loadChildren: import('src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module').then(m => m.SmartMonitoringAssetWizardModule)
+    loadChildren: 'src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module#SmartMonitoringAssetWizardModule'
   },
   {
     path: 'assets/:id',
-    loadChildren: import('src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module').then(m => m.SmartMonitoringAssetWizardModule)
+    loadChildren: 'src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module#SmartMonitoringAssetWizardModule'
   }
 ];
 

@@ -8,10 +8,10 @@ export const ManageAssetsRoutes: Routes = [
   },
   {
     path: 'new',
-    loadChildren: () => import('src/app/pages/admin/manage-assets/asset-wizard/asset-wizard.module').then(m => m.AssetWizardModule)
+    loadChildren: 'src/app/pages/admin/manage-assets/asset-wizard/asset-wizard.module#AssetWizardModule'
   },
   {
     path: ':id',
-    loadChildren: () => import('src/app/pages/admin/manage-assets/asset-wizard/asset-wizard.module').then(m => m.AssetWizardModule)
+    loadChildren: 'src/app/pages/admin/manage-assets/asset-wizard/asset-wizard.module#AssetWizardModule'
   }
 ];
