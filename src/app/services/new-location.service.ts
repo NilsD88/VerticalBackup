@@ -1,9 +1,8 @@
 import { ILocation } from './../models/g-location.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, debounceTime, distinctUntilChanged, switchMap, map, tap} from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { debounceTime, distinctUntilChanged, switchMap, map} from 'rxjs/operators';
 
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -17,16 +16,6 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root'
 })
 export class NewLocationService {
-
-    public locationsUrl = 'fakeapi/locations';  // URL to web api
-    private headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
-    private perfop = { headers: this.headers };
-    private httpOptions = { headers: this.headers };
-
-    private handleError(error: any) {
-        console.error(error);
-        return throwError(error);
-    }
 
     constructor(public http: HttpClient, private apollo: Apollo) { }
 

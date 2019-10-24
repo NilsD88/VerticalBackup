@@ -1,7 +1,6 @@
 import { IThing } from 'src/app/models/g-thing.model';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -12,7 +11,6 @@ import gql from 'graphql-tag';
 export class NewThingService {
 
     constructor(
-        public http: HttpClient,
         private apollo: Apollo,
     ) { }
 

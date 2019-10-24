@@ -1,7 +1,4 @@
 import {
-  SensorType
-} from './../models/sensor.model';
-import {
   Injectable
 } from '@angular/core';
 import {
@@ -9,14 +6,7 @@ import {
 } from 'rxjs/internal/Observable';
 import {
   HttpClient,
-  HttpHeaders
 } from '@angular/common/http';
-import {
-  ILocation
-} from '../models/g-location.model';
-import {
-  throwError
-} from 'rxjs';
 import {
   Apollo
 } from 'apollo-angular';
@@ -26,11 +16,6 @@ import {
   IPagedAssets
 } from '../models/g-asset.model';
 import {
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  catchError,
-  tap,
   map
 } from 'rxjs/operators';
 
@@ -38,24 +23,8 @@ import {
   providedIn: 'root'
 })
 export class NewAssetService {
-  public assetUrl = 'fakeapi/assets'; // URL to web api
-  public locationUrl = 'fakeapi/locations'; // URL to web api
-
-  private headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
-  private perfop = {
-    headers: this.headers
-  };
-  private httpOptions = {
-    headers: this.headers
-  };
-
-  private handleError(error: any) {
-    console.error(error);
-    return throwError(error);
-  }
 
   constructor(
-    public http: HttpClient,
     private apollo: Apollo,
   ) {}
 

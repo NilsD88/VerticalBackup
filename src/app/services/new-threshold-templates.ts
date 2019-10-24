@@ -1,8 +1,6 @@
-import { Threshold } from './../models/threshold.model';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { debounceTime, distinctUntilChanged, switchMap, tap, catchError, map } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -13,19 +11,7 @@ import { IThresholdTemplate } from '../models/g-threshold-template.model';
 })
 export class NewThresholdTemplateService {
 
-    public thresholdTemplatesUrl = 'fakeapi/thresholdTemplates';
-
-    private headers = new HttpHeaders().set('Content-Type', 'application/json').set('Accept', 'application/json');
-    private perfop = { headers: this.headers };
-    private httpOptions = { headers: this.headers };
-
-    private handleError(error: any) {
-        console.error(error);
-        return throwError(error);
-    }
-
     constructor(
-        public http: HttpClient,
         private apollo: Apollo,
     ) { }
 
