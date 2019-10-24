@@ -11,7 +11,6 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     TankMonitoringMapComponent,
-    TankMonitoringMapPopupComponent
   ],
   imports: [
     CommonModule,

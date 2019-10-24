@@ -102,6 +102,7 @@ export class PublicAuthGuard implements CanActivate {
 
 
 export const AppRoutes: Routes = [
+    /*
     {
       path: 'dev',
       component: PublicLayoutComponent,
@@ -110,6 +111,7 @@ export const AppRoutes: Routes = [
         loadChildren: environment.paths.home
       }]
     },
+    */
     {
       path: 'contact',
       component: PublicLayoutComponent,
