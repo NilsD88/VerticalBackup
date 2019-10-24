@@ -1,6 +1,6 @@
+import { Asset } from 'src/app/models/g-asset.model';
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Location } from '../../../../../src/app/models/locations.model';
 
 export interface TopMenuConfig {
   languages?: { label: string; value: string }[];
@@ -67,10 +67,6 @@ export class TopMenuComponent implements OnInit {
   }
 
 
-  emitSearch(event) {
-    this.search.emit(event);
-  }
-
   emitContact() {
     this.contactClick.emit();
   }
@@ -84,18 +80,15 @@ export class TopMenuComponent implements OnInit {
 
   toggleSearchBar() {
     this.searchbarVisible = !this.searchbarVisible;
-    setTimeout(()=>{
-      if(this.inputSearch)
-      this.inputSearch.nativeElement.focus();
-    },200);
+    setTimeout(() => {
+      if (this.inputSearch) {
+        this.inputSearch.nativeElement.focus();
+      }
+    }, 200);
   }
 
   searchChanged(event) {
-    if(event){
-      if(event.length>2) {
-        this.emitSearch(event);
-      }
-    }
+    this.search.emit(event);
   }
 
   searchFocusOut() {
@@ -105,17 +98,14 @@ export class TopMenuComponent implements OnInit {
   }
 
   selectAnAutocompletedOption(option) {
-    this.searchbarVisible = false;
     this.searchText = '';
+    this.searchbarVisible = false;
     this.autocompleteClick.emit(option);
   }
 
-  getTypeOf(option: object) {
-    if (option instanceof Location) {
-      return 'location';
-    } else {
-      return 'asset';
-    }
+  public displayNull()
+  {
+      return null;
   }
 
 }

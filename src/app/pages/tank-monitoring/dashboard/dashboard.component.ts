@@ -1,11 +1,10 @@
 import { cloneDeep } from 'lodash';
-import { IAssetTM } from 'src/app/models/g-asset.model';
+import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {MatSort, Sort} from '@angular/material/sort';
+import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import { MatPaginator } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
@@ -32,8 +31,8 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  public assets: IAssetTM[] = [];
-  public selectedAssets: IAssetTM[];
+  public assets: ITankMonitoringAsset[] = [];
+  public selectedAssets: ITankMonitoringAsset[];
 
   public dataSource;
   public chartData: any[];
@@ -100,7 +99,7 @@ export class DashboardComponent implements OnInit {
   }
 
   private updateFilterdAssets() {
-    const filteredAssets = cloneDeep(this.assets).filter((asset: IAssetTM) => {
+    const filteredAssets = cloneDeep(this.assets).filter((asset: ITankMonitoringAsset) => {
       let result = true;
       if (this.filterFE.name && result) {
         if (asset.name) {
@@ -148,18 +147,19 @@ export class DashboardComponent implements OnInit {
     this.updateDataSourceWithFilteredAssets(filteredAssets);
   }
 
-  public updateDataSourceWithFilteredAssets(assets: IAssetTM[]) {
+  public updateDataSourceWithFilteredAssets(assets: ITankMonitoringAsset[]) {
     this.selectedAssets = assets;
     this.dataSource = new MatTableDataSource(assets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
-        const regex = new RegExp('\[[0-9]+\]');
         if (property.includes('.')) {
-          return property.split('.').reduce(
-            (object, key) => {
-              return object[key], asset;
+          return property.split('.').reduce((object, key) => {
+            if (object && object[key]) {
+              return object[key];
+            } else {
+              return null;
             }
-          );
+          }, asset);
         }
         switch (property) {
           case 'fuel':
@@ -175,7 +175,7 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  public async createChartData(assets: IAssetTM[]) {
+  public async createChartData(assets: ITankMonitoringAsset[]) {
     const chartData = [];
     const STATUS_ASSETS = {
       EMPTY: [],

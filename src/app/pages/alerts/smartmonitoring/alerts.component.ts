@@ -137,7 +137,13 @@ export class AlertsComponent implements OnInit {
     this.dataSource.sortingDataAccessor = (alert, property) => {
         if (property.includes('.')) {
           return property.split('.')
-            .reduce((object, key) => object[key], alert);
+            .reduce((object, key) => {
+              if (object && object[key]) {
+                return object[key];
+              } else {
+                return null;
+              }
+            }, alert);
         }
         switch (property) {
           case 'severity':

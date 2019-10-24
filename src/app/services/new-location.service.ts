@@ -133,6 +133,31 @@ export class NewLocationService {
         }).pipe(map(({data}) => data.location));
     }
 
+    public getLocationsByName(name: string): Observable<ILocation[]> {
+        const GET_LOCATION_BY_NAME = gql`
+            query findLocationsByName($input: LocationFindByNameInput!) {
+                locations: findLocationsByName(input: $input) {
+                    id,
+                    name,
+                }
+            }
+        `;
+
+        interface GetLocationByNameResponse {
+            locations: ILocation[] | null;
+        }
+
+        return this.apollo.query<GetLocationByNameResponse>({
+            query: GET_LOCATION_BY_NAME,
+            fetchPolicy: 'network-only',
+            variables: {
+                input: {
+                    name: name || ''
+                }
+            }
+        }).pipe(map(({data}) => data.locations));
+    }
+
     public updateLocation(location: ILocation): Observable<ILocation> {
 
         const UPDATE_LOCATION = gql`
@@ -244,7 +269,7 @@ export class NewLocationService {
           distinctUntilChanged(),
           switchMap(filter => {
             // return this.getLocations(filter);
-            return this.getLocations();
+            return this.getLocationsByName(filter.name);
           })
         );
     }

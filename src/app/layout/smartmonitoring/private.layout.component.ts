@@ -40,13 +40,14 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
       this.globaleSearchService.searchTerm(this.searchTerm$)
       .subscribe(result => {
         const results = [];
-        for (const array of result) {
+        result.forEach((array, index) => {
+          const type = (index === 0) ? 'asset' : 'location';
           if (array.length > 0) {
             for (const item of array) {
-              results.push(item);
+              results.push({...item, type});
             }
           }
-        }
+        });
         this.searchResults = results;
       });
   }
@@ -90,8 +91,12 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     window.open('https://mythings.proximus.be/', '_blank');
   }
 
-  autocompleteClick(event: IAsset | ILocation) {
-    this.router.navigateByUrl(`/private/smartmonitoring/detail/${event.id}`);
+  autocompleteClick(event: {name: string; id: string; type: string}) {
+    if (event.type === 'asset') {
+      this.router.navigateByUrl(`/private/smartmonitoring/detail2/${event.id}`);
+    } else if (event.type === 'location') {
+      this.router.navigateByUrl(`/private/smartmonitoring/inventory/locations/${event.id}`);
+    }
     this.searchResults = null;
   }
 

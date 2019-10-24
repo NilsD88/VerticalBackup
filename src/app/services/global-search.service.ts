@@ -1,23 +1,29 @@
-import { LocationsService } from './locations.service';
+import { NewLocationService } from './new-location.service';
 import { Injectable } from '@angular/core';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { NewAssetService } from './new-asset.service';
+import { IAsset } from '../models/g-asset.model';
+import { ILocation } from '../models/g-location.model';
 
 @Injectable()
 export class GlobaleSearchService {
 
-    constructor(private newAssetService: NewAssetService, private locationsService: LocationsService) { }
+    constructor(
+      private newAssetService: NewAssetService,
+      private newLocationsService: NewLocationService
+    ) { }
 
     public searchTerm(terms: Observable<string>) {
       return terms.pipe(
         debounceTime(500),
-        distinctUntilChanged(),
         switchMap(term => {
-          const assetsResultPromise = this.newAssetService.getAssetsByName(term).toPromise();
-          //const locationsResultPromise = this.locationsService.getLocationsByName(term);
-          //return Promise.all([assetsResultPromise, locationsResultPromise]);
-          return Promise.all([assetsResultPromise]);
+          if (!term || term.length === 0) {
+            return of([]);
+          }
+          const assetsPromise: Promise<IAsset[]> = this.newAssetService.getAssetsByName(term).toPromise();
+          const locationsPromise: Promise<ILocation[]> = this.newLocationsService.getLocationsByName(term).toPromise();
+          return Promise.all([assetsPromise, locationsPromise]);
         })
       );
     }
@@ -25,9 +31,8 @@ export class GlobaleSearchService {
     public searchLocationTerm(terms: Observable<string>) {
       return terms.pipe(
         debounceTime(500),
-        distinctUntilChanged(),
         switchMap(term => {
-          return this.locationsService.getLocationsByName(term);
+          return this.newLocationsService.getLocationsByName(term);
         })
       );
     }

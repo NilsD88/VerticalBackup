@@ -20,10 +20,6 @@ export interface IAsset {
     lastAlert?: any;
 }
 
-export interface IAssetTM extends IAsset{
-    status?: string;
-}
-
 export class Asset {
     id: string;
     name: string;

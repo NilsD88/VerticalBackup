@@ -82,7 +82,13 @@ export class ListThingsComponent implements OnInit {
     this.dataSource.sortingDataAccessor = (thing, property) => {
         if (property.includes('.')) {
           return property.split('.')
-            .reduce((object, key) => object[key], thing);
+            .reduce((object, key) => {
+              if (object && object[key]) {
+                return object[key];
+              } else {
+                return null;
+              }
+            }, thing);
         }
         if (typeof thing[property] === 'string') {
           return thing[property].toLocaleLowerCase();

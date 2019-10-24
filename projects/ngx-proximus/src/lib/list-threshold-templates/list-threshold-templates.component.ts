@@ -73,7 +73,13 @@ export class ListThresholdTemplatesComponent implements OnInit {
     this.dataSource.sortingDataAccessor = (thresholdTemplate, property) => {
         if (property.includes('.')) {
           return property.split('.')
-            .reduce((object, key) => object[key], thresholdTemplate);
+            .reduce((object, key) => {
+              if (object && object[key]) {
+                return object[key];
+              } else {
+                return null;
+              }
+            }, thresholdTemplate);
         }
         return thresholdTemplate[property].toLocaleLowerCase();
     };

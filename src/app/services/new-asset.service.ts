@@ -126,50 +126,6 @@ export class NewAssetService {
     }));
   }
 
-  public getPagedAssets(filter = {}, pageNumber: number = 0, pageSize: number = 10): Observable < IPagedAssets > {
-    const GET_PAGED_ASSETS = gql `
-      query findAllAssetsPaged($input: PagedAssetInput!) {
-        findAllAssetsPaged(input: $input) {
-          totalElements,
-          totalPages,
-          assets {
-              id,
-              name,
-              image,
-              description,
-              location {
-                id,
-                name
-              }
-              thresholdTemplate {
-                  id,
-                  name
-              }
-          }
-        }
-      }`;
-
-    interface GetPagedAssetsResponse {
-      findAllAssetsPaged: IPagedAssets;
-    }
-
-    return this.apollo.query < GetPagedAssetsResponse > ({
-      query: GET_PAGED_ASSETS,
-      variables: {
-        input: {
-          pageNumber,
-          pageSize,
-        }
-      },
-      fetchPolicy: 'network-only'
-    }).pipe(map(({
-      data
-    }) => {
-      return data.findAllAssetsPaged;
-    }));
-
-  }
-
   public getAssetById(id: string): Observable < IAsset > {
 
     const GET_ASSET_BY_ID = gql `
@@ -331,20 +287,10 @@ export class NewAssetService {
 
   public getAssetsByName(name: string): Observable < IAsset [] > {
     const GET_ASSETS_BY_NAME = gql `
-      query findAssetsByName($input: AssetFindInput!) {
+      query findAssetsByName($input: AssetFindByNameInput!) {
         assets: findAssetsByName(input: $input) {
             id,
             name,
-            description,
-            location {
-              id,
-             name
-            }
-            image,
-            geolocation {
-                lat,
-                lng
-            }
         }
       }
     `;
@@ -360,7 +306,7 @@ export class NewAssetService {
         input: {
           // TODO remove orgid
           organizationId: 1,
-          name
+          name: name || ''
         }
       }
     }).pipe(map(({
@@ -375,8 +321,8 @@ export class NewAssetService {
           id: '0',
           name: 'test',
           location: {
-            id: '0',
-            name: 'Location 1'
+            id: '102',
+            name: '2tc'
           },
           things: [{
             devEui: 'OKAZEAZEAZ',
@@ -490,6 +436,52 @@ export class NewAssetService {
     }).pipe(map(({
       data
     }) => data.asset));
+  }
+
+  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedAssets > {
+    const GET_PAGED_ASSETS = gql `
+      query findAssetsByFilterPaged($input: PagedAssetFindByFilterInput!) {
+        pagedAssets: findAssetsByFilterPaged(input: $input) {
+          totalElements,
+          totalPages,
+          assets {
+              id,
+              name,
+              image,
+              description,
+              location {
+                id,
+                name
+              }
+              thresholdTemplate {
+                  id,
+                  name
+              }
+          }
+        }
+      }`;
+
+    interface GetPagedAssetsResponse {
+      pagedAssets: IPagedAssets;
+    }
+
+    return this.apollo.query < GetPagedAssetsResponse > ({
+      query: GET_PAGED_ASSETS,
+      variables: {
+        input: {
+          organizationId: 1,
+          pageNumber,
+          pageSize,
+          ...filter
+        }
+      },
+      fetchPolicy: 'network-only'
+    }).pipe(map(({
+      data
+    }) => {
+      return data.pagedAssets;
+    }));
+
   }
 
   public updateAsset(asset: IAsset): Observable < boolean > {

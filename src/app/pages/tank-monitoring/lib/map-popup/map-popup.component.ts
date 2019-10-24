@@ -1,6 +1,6 @@
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, Input, OnInit} from '@angular/core';
-import { IAssetTM } from 'src/app/models/g-asset.model';
+import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
+import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 
 @Component({
   selector: 'pvf-tankmonitoring-map-popup',
@@ -8,14 +8,14 @@ import { IAssetTM } from 'src/app/models/g-asset.model';
   styleUrls: ['./map-popup.component.scss']
 })
 export class TankMonitoringMapPopupComponent implements OnInit {
-  @Input() asset: IAssetTM;
+  @Input() asset: ITankMonitoringAsset;
 
   constructor(
-    private newAssetService: NewAssetService
+    private tankMonitoringAssetService: TankMonitoringAssetService
   ) {}
 
   ngOnInit() {
-    this.newAssetService.getAssetPopupDetail_TankMonitoring(this.asset.id).subscribe((asset: IAssetTM) => {
+    this.tankMonitoringAssetService.getAssetPopupDetail_TankMonitoring(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
       this.asset = {
         ...this.asset,
         ...asset

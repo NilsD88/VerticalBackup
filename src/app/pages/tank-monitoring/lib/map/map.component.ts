@@ -1,13 +1,11 @@
-import { IAssetTM } from './../../../../models/g-asset.model';
+import { ITankMonitoringAsset } from './../../../../models/tankmonitoring/asset.model';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, OnDestroy, Input, SimpleChanges } from '@angular/core';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
-import { ILocation } from 'src/app/models/g-location.model';
 import { NgElement, WithProperties } from '@angular/elements';
 import { TankMonitoringMapPopupComponent } from '../map-popup/map-popup.component';
-import { IAsset } from 'src/app/models/g-asset.model';
 import { divIcon } from 'leaflet';
 import { of } from 'rxjs';
 
@@ -37,7 +35,7 @@ const assetIconTankMonitoringEmptyFuel = divIcon({
 })
 export class TankMonitoringMapComponent extends MapComponent implements OnInit, OnChanges {
 
-  @Input() tanks: IAssetTM[] = [];
+  @Input() tanks: ITankMonitoringAsset[] = [];
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
@@ -72,7 +70,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     return of(this.tanks.filter(tank => tank.location.id === locationId));
   }
 
-  createAssetPopup(asset: IAsset): any {
+  createAssetPopup(asset: ITankMonitoringAsset): any {
     const popupEl: NgElement & WithProperties<TankMonitoringMapPopupComponent> =
     document.createElement('tankmonitoring-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
@@ -81,7 +79,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     return popupEl;
   }
 
-  generateAssetMarker(asset: IAssetTM) {
+  generateAssetMarker(asset: ITankMonitoringAsset) {
     const status = asset.status;
     if (status === 'EMPTY') {
       return assetIconTankMonitoringEmptyFuel;
