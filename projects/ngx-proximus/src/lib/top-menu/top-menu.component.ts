@@ -1,4 +1,3 @@
-import { Asset } from 'src/app/models/g-asset.model';
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef} from '@angular/core';
 import { FormControl } from '@angular/forms';
 
@@ -38,7 +37,7 @@ export class TopMenuComponent implements OnInit {
 
   @Input() searchResults: any[];
 
-  @ViewChild('inputSearch') set content(content: ElementRef) {
+  @ViewChild('inputSearch', {static: false}) set content(content: ElementRef) {
     this.inputSearch = content;
   }
 

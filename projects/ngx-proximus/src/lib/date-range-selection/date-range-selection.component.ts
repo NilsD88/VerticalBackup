@@ -13,7 +13,7 @@ export interface DateRange {
   styleUrls: ['./date-range-selection.component.scss']
 })
 export class DateRangeSelectionComponent implements OnInit {
-  @ViewChild('dateRangePicker') dateRangePicker;
+  @ViewChild('dateRangePicker', {static: false}) dateRangePicker;
 
   @Input() drpOptions: NgxDrpOptions;
   @Input() fromDate: Date;

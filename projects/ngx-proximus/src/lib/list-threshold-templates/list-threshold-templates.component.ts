@@ -20,8 +20,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
 
   @Output() selectChange: EventEmitter<IThresholdTemplate> = new EventEmitter<IThresholdTemplate>();
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   public thresholdTemplates: IThresholdTemplate[];
   public filter: { name: string } = {name: ''};

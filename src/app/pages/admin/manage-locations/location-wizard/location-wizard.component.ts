@@ -19,7 +19,7 @@ import { cloneDeep } from 'lodash';
 })
 export class LocationWizardComponent implements OnInit {
 
-  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   private originalLocation: ILocation;
 

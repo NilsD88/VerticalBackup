@@ -28,8 +28,8 @@ interface IFilterFE {
 })
 export class DashboardComponent implements OnInit {
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   public assets: ITankMonitoringAsset[] = [];
   public selectedAssets: ITankMonitoringAsset[];

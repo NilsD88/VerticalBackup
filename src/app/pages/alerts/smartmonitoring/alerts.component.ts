@@ -38,8 +38,8 @@ enum SeverityLevel {
 })
 export class AlertsComponent implements OnInit {
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   public alerts: IAlert[] = [];
   public filteredAlerts: IAlert[] = [];
