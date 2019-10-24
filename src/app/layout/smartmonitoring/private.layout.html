@@ -68,10 +68,6 @@
     [url]="'/private/smartmonitoring'"
     [mat-menu-trigger-for]="smartMonitoring"
   ></pxs-menu-item>
-  <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
-    label: numberOfUnreadAlerts,
-    class: 'red-badge'
-  }"></pxs-menu-item>
   <pxs-menu-item
     [label]="'Tank monitoring'" 
     [url]="'/private/tankmonitoring'"
@@ -88,6 +84,10 @@
     *ngIf="sharedLayoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"
   ></pxs-menu-item>
+  <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
+    label: numberOfUnreadAlerts,
+    class: 'red-badge'
+  }"></pxs-menu-item>
 </pxs-main-menu>
 
 <main>

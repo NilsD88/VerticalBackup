@@ -105,52 +105,13 @@ export class Detail2Component implements OnInit {
 
   async init() {
     try {
-      const assetId = this.activeRoute.snapshot.params.id;
-      this.asset = await this.newAssetService.getAssetDetailById(assetId).toPromise();
-      console.log({...this.asset});
-
-      this.lastAlert = await this.alertsService.getLastAlertByAssetId(309);
-      const alertsOfTheDay = this.alertsService.getPagedAlerts({
-        ...this.filter,
-        assetId: 309
-      }, 0, 1);
-      this.numberOfAlertsOfTheDay = (await alertsOfTheDay).totalElements;
-
-      //TODO: get the things of the asset and get all their sensors
-      /*
-      this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
-        return {
-          deveui: val.devEui,
-          sensorTypeId: val.sensorType.id
-        };
-      }) : [];
-      */
-      this.getChartData(null);
-
-
-      /*
-      console.log('-----id');
-      const assetPromise = this.assetService.getAssetById(id);
-      const lastAlertPromise = this.alertsService.getLastAlertByAssetId(id);
-      this.asset = await assetPromise;
-      console.log('-----asset');
-      this.lastAlert = await lastAlertPromise;
-      console.log('-----alert');
-      this.asset.lastAlert = this.lastAlert;
-      const alertsOfTheDay = this.alertsService.getPagedAlerts({
-        ...this.filter,
-        assetId: this.asset.id
-      }, 0, 1);
-      this.numberOfAlertsOfTheDay = (await alertsOfTheDay).totalElements;
-      this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
-        return {
-          deveui: val.devEui,
-          sensorTypeId: val.sensorType.id
-        };
-      }) : [];
-      this.getChartData(null);
-      */
-
+      this.activeRoute.params.subscribe(async (params) => {
+        if (params.id) {
+          this.asset = await this.newAssetService.getAssetDetailById(params.id).toPromise();
+          this.lastAlert = await this.alertsService.getLastAlertByAssetId(309);
+          this.getChartData(null);
+        }
+      });
     } catch (err) {
       console.log(err);
       //this.router.navigate(['/error/404']);

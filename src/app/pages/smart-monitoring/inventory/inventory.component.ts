@@ -2,9 +2,12 @@ import { NewThresholdTemplateService } from 'src/app/services/new-threshold-temp
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IAsset } from 'src/app/models/g-asset.model';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { isNullOrUndefined } from 'util';
 
 
 export interface IInventoryFilterBE {
@@ -49,7 +52,8 @@ export class InventoryComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private newAssetService: NewAssetService,
     private newThresholdTemplateService: NewThresholdTemplateService,
-    private newLocationService: NewLocationService
+    private newLocationService: NewLocationService,
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
@@ -71,10 +75,22 @@ export class InventoryComponent implements OnInit {
       }
     });
 
-    // TODO get findAssetsPagedByFilter(filterBE$)
+    this.searchAssetsByFilter(this.filterBE$).subscribe(pagedAssets => {
+      this.assets = pagedAssets.assets;
+      this.totalItems = pagedAssets.totalElements;
+      this.assetsLoading = false;
+    });
+
+    this.activatedRoute.params.subscribe(async (params) => {
+      if (params.id) {
+        this.listStyleValue = 'map';
+        this.selectedLocation = {id: params.id};
+      }
+    });
   }
 
   public changeFilterBE() {
+    this.assetsLoading = true;
     this.filterBE$.next(this.filterBE);
   }
 
@@ -92,7 +108,7 @@ export class InventoryComponent implements OnInit {
   public async getPagedAssets() {
     try {
       this.assetsLoading = true;
-      const assetsResult = await this.newAssetService.getPagedAssets(this.filterBE, this.pageNumber, this.pageSize).toPromise();
+      const assetsResult = await this.newAssetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE).toPromise();
       this.assets = assetsResult.assets;
       this.totalItems = assetsResult.totalElements;
       this.assetsLoading = false;
@@ -105,5 +121,14 @@ export class InventoryComponent implements OnInit {
   public listStyleOnChange(event) {
     const { value } = event;
     this.listStyleValue = value;
+  }
+
+  private searchAssetsByFilter(filters: Observable<IInventoryFilterBE>) {
+    return filters.pipe(
+      debounceTime(500),
+      switchMap(term => {
+        return this.newAssetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE);
+      })
+    );
   }
 }

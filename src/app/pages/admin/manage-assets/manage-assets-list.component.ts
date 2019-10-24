@@ -50,8 +50,13 @@ export class ManageAssetsListComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
         if (property.includes('.')) {
-          return property.split('.')
-            .reduce((object, key) => object[key], asset);
+          return property.split('.').reduce((object, key) => {
+            if (object && object[key]) {
+              return object[key];
+            } else {
+              return null;
+            }
+          }, asset);
         }
         return asset[property].toLocaleLowerCase();
     };

@@ -45,7 +45,8 @@ export function createTranslateLoader(http: HttpClient) {
     PrivateLayoutComponent,
     PublicLayoutComponent,
     MapAssetPopupComponent,
-    MapPopupComponent
+    MapPopupComponent,
+    TankMonitoringMapPopupComponent,
   ],
   imports: [
     BrowserModule,

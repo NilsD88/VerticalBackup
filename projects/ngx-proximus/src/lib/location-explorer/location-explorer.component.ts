@@ -35,7 +35,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   isDownloading = false;
   isNullOrUndefined = isNullOrUndefined;
 
-  public filter = {name: null };
+  public filter = {name: '' };
   public searchFilter$ = new Subject<any>();
   public searchResults: ILocation[];
 
@@ -217,7 +217,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   }
 
   public selectAutocompletedOption(location: ILocation) {
-    this.filter = { name: null };
+    this.filter = { name: '' };
     this.selectedLocation = location;
     this.isDownloading = true;
     this.changeDetectorRef.detectChanges();

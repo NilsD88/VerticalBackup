@@ -36,12 +36,21 @@ export class NewThresholdTemplateService {
 
         const CREATE_THRESHOLD_TEMPLATE = gql`
             mutation createThresholdTemplate($input: ThresholdTemplateCreateInput!) {
-                createThresholdTemplate(input: $input)
+                thresholdTemplate: createThresholdTemplate(input: $input) {
+                    id,
+                    name,
+                    thresholds {
+                        sensorType {
+                            id,
+                            name
+                        }
+                    }
+                }
             }
         `;
 
         interface CreateThresholdTemplateResponse {
-            createThresholdTemplate: IThresholdTemplate;
+            thresholdTemplate: IThresholdTemplate;
         }
 
         return this.apollo.mutate<CreateThresholdTemplateResponse>({
@@ -54,7 +63,7 @@ export class NewThresholdTemplateService {
                 }
             }
         }).pipe(
-            map(({data}) => data.createThresholdTemplate)
+            map(({data}) => data.thresholdTemplate)
         );
     }
 
