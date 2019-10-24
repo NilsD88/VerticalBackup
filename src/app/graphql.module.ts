@@ -1,12 +1,13 @@
 import {NgModule} from '@angular/core';
-import {ApolloModule, APOLLO_OPTIONS} from 'apollo-angular';
-import {HttpLinkModule, HttpLink} from 'apollo-angular-link-http';
+import {APOLLO_OPTIONS, ApolloModule} from 'apollo-angular';
+import {HttpLink, HttpLinkModule} from 'apollo-angular-link-http';
 import {InMemoryCache} from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-client/ApolloClient';
+import {SharedService} from './services/shared.service';
 
-const uri = 'https://www-uat.proximus.be/smartapps/smartmonitoring/graphql';
+export function createApollo(httpLink: HttpLink, sharedService: SharedService) {
 
-export function createApollo(httpLink: HttpLink) {
+  const uri = sharedService.baseUrl + 'graphql'
 
   const cache = new InMemoryCache({
     addTypename: false
@@ -35,8 +36,9 @@ export function createApollo(httpLink: HttpLink) {
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HttpLink],
+      deps: [HttpLink, SharedService],
     },
   ],
 })
-export class GraphQLModule {}
+export class GraphQLModule {
+}
