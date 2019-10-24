@@ -25,7 +25,7 @@ import { cloneDeep } from 'lodash';
 })
 export class AssetWizardComponent implements OnInit {
 
-  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   private originalAsset: IAsset;
 

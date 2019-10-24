@@ -69,10 +69,10 @@ export class ImageEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   public ratios: NgxAspectRatio[];
   public previewImageURL: any;
 
-  @ViewChild('previewimg')
+  @ViewChild('previewimg', {static: false})
   public previewImage: any;
 
-  @ViewChild('croppedImg')
+  @ViewChild('croppedImg', {static: false})
   public croppedImg: any;
 
   @Input()

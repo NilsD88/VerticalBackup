@@ -30,8 +30,6 @@ import { createCustomElement } from '@angular/elements';
 import { AssetService } from './services/asset.service';
 import { SharedModule } from './shared/shared.module';
 import { GlobaleSearchService } from './services/global-search.service';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './services/in-memory-data.service';
 import { GraphQLModule } from './graphql.module';
 import { TankMonitoringMapPopupComponent } from './pages/tank-monitoring/lib/map-popup/map-popup.component';
 
@@ -59,12 +57,6 @@ export function createTranslateLoader(http: HttpClient) {
     FooterModule,
     MatSnackBarModule,
     HttpClientModule,
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false, passThruUnknownUrl: true, delay: 500, apiBase: 'fakeapi/'}
-    ),
     TopMenuActionsModule,
     MatMenuModule,
     MatSnackBarModule,

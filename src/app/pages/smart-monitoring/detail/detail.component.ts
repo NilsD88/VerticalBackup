@@ -41,8 +41,8 @@ interface IFilterChartData {
 })
 export class DetailComponent implements OnInit {
 
-  @ViewChild('myChart') myChart;
-  @ViewChild('myAggregatedValues') myAggregatedValues;
+  @ViewChild('myChart', {static: false}) myChart;
+  @ViewChild('myAggregatedValues', {static: false}) myAggregatedValues;
 
   public asset: Asset;
   public locations: ILocation[];

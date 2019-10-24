@@ -3,12 +3,9 @@ import { MOCK_THRESHOLD_TEMPLATES } from 'src/app/mocks/threshold-templates';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { MatProgressButtonOptions } from 'mat-progress-buttons';
 import { SharedService } from 'src/app/services/shared.service';
-import {Component, OnInit, OnChanges, SimpleChanges, ViewChild, ChangeDetectorRef} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {formatDate} from '@angular/common';
-import {Asset} from 'src/app/models/asset.model';
-import {AssetService} from 'src/app/services/asset.service';
-import {isNullOrUndefined} from 'util';
 import {Alert} from 'src/app/models/alert.model';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
@@ -41,8 +38,8 @@ interface IFilterChartData {
 })
 export class Detail2Component implements OnInit {
 
-  @ViewChild('myChart') myChart;
-  @ViewChild('myAggregatedValues') myAggregatedValues;
+  @ViewChild('myChart', {static: false}) myChart;
+  @ViewChild('myAggregatedValues', {static: false}) myAggregatedValues;
 
   public asset: IAsset;
   public locations: ILocation[];

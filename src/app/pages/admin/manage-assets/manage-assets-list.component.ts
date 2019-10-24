@@ -14,8 +14,8 @@ import { MatPaginator } from '@angular/material';
 })
 export class ManageAssetsListComponent implements OnInit {
 
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
   public assets: IAsset[] = [];
   public isLoading = false;

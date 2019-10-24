@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IGeolocation } from 'src/app/models/asset.model';
 import { FormGroup } from '@angular/forms';
 import { ILocation } from 'src/app/models/g-location.model';

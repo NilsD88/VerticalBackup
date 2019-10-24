@@ -87,7 +87,7 @@ export class ChartComponent implements OnInit, OnChanges {
   @Output() updateChartData = new EventEmitter<IFilterChartData>();
   @Output() download = new EventEmitter();
 
-  @ViewChild('dataRangeSelection') dataRangeSelection;
+  @ViewChild('dataRangeSelection', {static: false}) dataRangeSelection;
 
   public options: any;
   public chart: any;

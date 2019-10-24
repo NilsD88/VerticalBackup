@@ -5,9 +5,6 @@ import {
   Observable
 } from 'rxjs/internal/Observable';
 import {
-  HttpClient
-} from '@angular/common/http';
-import {
   IPagedAlerts,
   IAlert
 } from '../models/g-alert.model';
@@ -18,10 +15,7 @@ import gql from 'graphql-tag';
 
 import {
   debounceTime,
-  distinctUntilChanged,
   switchMap,
-  catchError,
-  tap,
   map
 } from 'rxjs/operators';
 import {
@@ -37,7 +31,6 @@ import {
 export class NewAlertService {
 
   constructor(
-    public http: HttpClient,
     private apollo: Apollo,
   ) {}
 
