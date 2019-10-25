@@ -17,7 +17,7 @@ export const TankMonitoringRoutes: Routes = [
     path: 'inventory',
     children: [{
       path: '',
-      loadChildren: () => import('./inventory/inventory.module').then(m => m.TankMonitoringInventoryModule)
+      loadChildren: () => import('./lib/inventory/inventory.module').then(m => m.TankMonitoringInventoryModule)
     }]
   },
   {

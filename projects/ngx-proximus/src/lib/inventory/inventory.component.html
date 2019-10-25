@@ -1,0 +1,123 @@
+<div class="filter-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <mat-button-toggle-group  (change)="listStyleOnChange($event)" [value]="listStyleValue">
+            <mat-button-toggle value="icons"><mat-icon>view_comfy</mat-icon></mat-button-toggle>
+            <mat-button-toggle value="list"><mat-icon>list</mat-icon></mat-button-toggle>
+            <mat-button-toggle value="map"><mat-icon>map</mat-icon></mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+    <div class="container" *ngIf="listStyleValue === 'icons'">
+      <div class="row">
+        <div class="col-sm-4 col-md-4 col-xs-12">
+          <mat-form-field>
+            <input 
+              type="text"
+              matInput 
+              [(ngModel)]="filterBE.name"
+              (ngModelChange)="changeFilterBE()"
+              [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.ASSET_NAME' | translate"
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-md-4 col-xs-12">
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.LOCATION_NAME' | translate"
+              [(ngModel)]="filterBE.locationName"
+              (ngModelChange)="changeFilterBE()"
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-md-4 col-xs-12">
+          <ng-select [multiple]="true"
+            [clearable]="true"
+            [items]="filterOptions.thresholdTemplateOptions"
+            [loading]="thresholdTemplatesLoading"
+            [(ngModel)]="filterBE.thresholdTemplateIds"
+            [hideSelected]="true"
+            (ngModelChange)="changeFilterBE()"
+            bindValue="id" bindLabel="name"
+            [notFoundText]="'FILTER.THRESHOLD_TEMPLATES.NOT_FOUND' | translate"
+            [loadingText]="'FILTER.THRESHOLD_TEMPLATES.LOADING_TEXT' | translate"
+            [placeholder]="'FILTER.THRESHOLD_TEMPLATES.PLACEHOLDER' | translate">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid" *ngIf="listStyleValue === 'icons'">
+    <div class="row assets-list">
+      <!--No Assets Found-->
+      <div *ngIf="!assets.length && !assetsLoading" class="text-center col-12">
+        {{'INVENTORY.NONE_FOUND' | translate}}
+      </div>
+      
+      <!--Assets Loading--> 
+      <div *ngIf="assetsLoading" class="col-12">
+        <div class="assets-loading-container">
+          <pxs-loader></pxs-loader>
+        </div>
+      </div>
+      
+      <!-- Asset Results -->
+      <div
+        class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2"
+        *ngFor="let asset of assets"
+      >
+        <div
+          class="wrapper"
+          style="background: url('') center / cover no-repeat;"
+          [ngStyle]="{ 'background-image': asset.image ? 'url(' + asset.image + ')' : none }"
+          *ngIf="!assetsLoading"
+          [routerLink]="[assetUrl, asset.id]"
+        >
+          <div class="header">
+            <div *ngIf="asset?.location?.name" class="locations">
+              <span class="location">{{asset?.location?.name}}</span>
+            </div>
+          </div>
+          <div class="data">
+            <div class="content">
+              <span *ngIf="asset?.thresholdTemplate?.name" class="thresholdTemplate author">{{asset.thresholdTemplate?.name}}</span>
+              <h5 class="title">{{asset.name}}</h5>
+              <p class="text">{{asset?.description?.trunc(120)}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!--Paginator -->
+    <mat-paginator [(length)]="totalItems"
+    [(pageIndex)]="page"
+    (page)="pageChanged($event)"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 50, 100]">
+    </mat-paginator>
+  
+  </div>
+  <div *ngIf="listStyleValue === 'list'">
+    <pxs-location-explorer 
+      *ngIf="rootLocation"
+      [rootLocation]="rootLocation"
+      [selectedLocation]="selectedLocation"
+      (changeLocation)="changeLocation($event)"
+      [customAssetService]="assetService"
+      [assetUrl]="assetUrl"
+      [displayAssets]="true"></pxs-location-explorer>
+  </div>
+  <div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 190px);">
+    <pxs-map
+      *ngIf="rootLocation"
+      [rootLocation]="rootLocation"
+      [selectedLocation]="selectedLocation"
+      [customAssetService]="assetService"
+      [assetUrl]="assetUrl"
+      (changeLocation)="selectedLocation=$event"></pxs-map>
+  </div>

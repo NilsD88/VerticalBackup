@@ -17,6 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/stylings"
+              ]
+            },
             "outputPath": "dist/vertical-foundations",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -203,6 +208,11 @@
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/stylings"
+              ]
+            },
             "tsConfig": "projects/ngx-proximus/tsconfig.lib.json",
             "project": "projects/ngx-proximus/ng-package.json"
           }

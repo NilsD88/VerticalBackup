@@ -11,7 +11,7 @@ const routes: Routes = [
     path: 'inventory',
     children: [{
       path: '',
-      loadChildren: () => import('src/app/pages/smart-monitoring/inventory/inventory.module').then(m => m.InventoryModule)
+      loadChildren: () => import('projects/ngx-proximus/src/lib/inventory/inventory.module').then(m => m.InventoryModule)
     }]
   },
   {

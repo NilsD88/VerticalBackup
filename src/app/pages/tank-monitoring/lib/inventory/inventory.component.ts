@@ -1,16 +1,17 @@
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
-import { InventoryComponent } from '../../smart-monitoring/inventory/inventory.component';
+import { InventoryComponent } from 'projects/ngx-proximus/src/lib/inventory/inventory.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { NewLocationService } from 'src/app/services/new-location.service';
 
+
 @Component({
-  selector: 'pvf-tankmonitotring-inventory',
-  templateUrl: './../../smart-monitoring/inventory/inventory.component.html',
-  styleUrls: ['./../../smart-monitoring/inventory/inventory.component.scss']
+  templateUrl: '/projects/ngx-proximus/src/lib/inventory/inventory.component.html',
+  styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/inventory/inventory.component.scss']
 })
+
 export class TankMonitoringInventoryComponent extends InventoryComponent implements OnInit {
 
   constructor(
@@ -28,5 +29,9 @@ export class TankMonitoringInventoryComponent extends InventoryComponent impleme
       activatedRoute,
     );
     this.assetUrl = '/private/tankmonitoring/consumptions/';
+  }
+
+  async ngOnInit() {
+    super.ngOnInit();
   }
 }
