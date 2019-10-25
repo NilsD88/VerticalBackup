@@ -1,14 +1,11 @@
 import { ILocation } from 'src/app/models/g-location.model';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IGeolocation } from 'src/app/models/asset.model';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatStepper } from '@angular/material/stepper';
-import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material';
-
-import * as _ from 'lodash';
+import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 
