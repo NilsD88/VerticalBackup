@@ -19,7 +19,7 @@ export class TankMonitoringAssetService {
   // START APOLLO
 
 
-  public getAssets_TankMonitoring_Dashboard(): Observable < ITankMonitoringAsset[] > {
+  public getAssets(): Observable < ITankMonitoringAsset[] > {
 
     const result: Observable < ITankMonitoringAsset[] > = Observable.create((observer) => {
       observer.next([{
@@ -116,7 +116,7 @@ export class TankMonitoringAssetService {
 
   }
 
-  public getAssetPopupDetail_TankMonitoring(id: string): Observable < ITankMonitoringAsset > {
+  public getAssetPopupDetail(id: string): Observable < ITankMonitoringAsset > {
     const GET_ASSET_POPUP_DETAIL_BY_ID = gql `
         query findAssetById($id: Long!) {
           asset: findAssetById(id: $id) {

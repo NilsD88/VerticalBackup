@@ -1,14 +1,13 @@
+import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
 import { Subject, Observable } from 'rxjs';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset, IPagedAssets } from 'src/app/models/g-asset.model';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { isNullOrUndefined } from 'util';
-
 
 export interface IInventoryFilterBE {
   name: string;
@@ -40,6 +39,7 @@ export class InventoryComponent implements OnInit {
   public assetsLoading = false;
 
   public assets: IAsset[] = [];
+  public assetUrl = '/private/smartmonitoring/detail2/';
 
   public pageNumber = 0;
   public pageSize = 10;
@@ -49,17 +49,16 @@ export class InventoryComponent implements OnInit {
   public selectedLocation: ILocation;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
-    private newAssetService: NewAssetService,
-    private newThresholdTemplateService: NewThresholdTemplateService,
-    private newLocationService: NewLocationService,
-    private activatedRoute: ActivatedRoute,
+    public changeDetectorRef: ChangeDetectorRef,
+    public assetService: NewAssetService, // | TankMonitoringAssetService,
+    public newThresholdTemplateService: NewThresholdTemplateService,
+    public newLocationService: NewLocationService,
+    public activatedRoute: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
     this.getPagedAssets();
     this.filterOptions.thresholdTemplateOptions = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
-
     this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
       this.rootLocation = {
         id: null,
@@ -75,7 +74,7 @@ export class InventoryComponent implements OnInit {
       }
     });
 
-    this.searchAssetsByFilter(this.filterBE$).subscribe(pagedAssets => {
+    this.searchAssetsByFilter(this.filterBE$).subscribe((pagedAssets: IPagedAssets) => {
       this.assets = pagedAssets.assets;
       this.totalItems = pagedAssets.totalElements;
       this.assetsLoading = false;
@@ -108,7 +107,7 @@ export class InventoryComponent implements OnInit {
   public async getPagedAssets() {
     try {
       this.assetsLoading = true;
-      const assetsResult = await this.newAssetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE).toPromise();
+      const assetsResult = await this.assetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE).toPromise();
       this.assets = assetsResult.assets;
       this.totalItems = assetsResult.totalElements;
       this.assetsLoading = false;
@@ -127,7 +126,7 @@ export class InventoryComponent implements OnInit {
     return filters.pipe(
       debounceTime(500),
       switchMap(term => {
-        return this.newAssetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE);
+        return this.assetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE);
       })
     );
   }

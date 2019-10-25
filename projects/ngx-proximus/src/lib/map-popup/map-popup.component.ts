@@ -11,6 +11,7 @@ import { IAsset } from 'src/app/models/g-asset.model';
 })
 export class MapPopupComponent implements OnInit {
   @Input() asset: IAsset;
+  @Input() assetUrl: string;
   @Input() location: ILocation;
   @Input() goToChild;
 

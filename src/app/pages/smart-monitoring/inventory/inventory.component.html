@@ -73,9 +73,9 @@
       <div
         class="wrapper"
         style="background: url('') center / cover no-repeat;"
-        [ngStyle]="{ 'background-image': 'url(' + asset.image + ')'}"
+        [ngStyle]="{ 'background-image': asset.image ? 'url(' + asset.image + ')' : none }"
         *ngIf="!assetsLoading"
-        routerLink="/private/smartmonitoring/detail2/{{asset.id}}"
+        [routerLink]="[assetUrl, asset.id]"
       >
         <div class="header">
           <div *ngIf="asset?.location?.name" class="locations">
@@ -103,8 +103,21 @@
 
 </div>
 <div *ngIf="listStyleValue === 'list'">
-  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="changeLocation($event)" [displayAssets]="true"></pxs-location-explorer>
+  <pxs-location-explorer 
+    *ngIf="rootLocation"
+    [rootLocation]="rootLocation"
+    [selectedLocation]="selectedLocation"
+    (changeLocation)="changeLocation($event)"
+    [customAssetService]="assetService"
+    [assetUrl]="assetUrl"
+    [displayAssets]="true"></pxs-location-explorer>
 </div>
 <div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 190px);">
-  <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event"></pxs-map>
+  <pxs-map
+    *ngIf="rootLocation"
+    [rootLocation]="rootLocation"
+    [selectedLocation]="selectedLocation"
+    [customAssetService]="assetService"
+    [assetUrl]="assetUrl"
+    (changeLocation)="selectedLocation=$event"></pxs-map>
 </div>

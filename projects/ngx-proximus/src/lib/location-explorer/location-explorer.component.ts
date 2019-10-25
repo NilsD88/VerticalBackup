@@ -8,6 +8,7 @@ import { Subject, Subscription, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
+import { Observable } from 'apollo-link';
 
 
 @Component({
@@ -23,6 +24,9 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() admin = false;
   @Input() displayAssets = false;
   @Input() ghostLocationId: string;
+  @Input() customAssetService;
+  @Input() assetUrl = '/private/smartmonitoring/detail2/';
+
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
@@ -60,7 +64,12 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
         if (isNullOrUndefined(this.currentLocation.id)) {
           return of([]);
         } else {
-          return this.newAssetService.getAssetsByLocationId(this.currentLocation.id);
+          if (this.customAssetService) {
+            console.log('use costum asset service');
+            return this.customAssetService.getAssetsByLocationId(this.currentLocation.id);
+          } else {
+            return this.newAssetService.getAssetsByLocationId(this.currentLocation.id);
+          }
         }
       })
     );

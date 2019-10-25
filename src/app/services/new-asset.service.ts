@@ -5,9 +5,6 @@ import {
   Observable
 } from 'rxjs/internal/Observable';
 import {
-  HttpClient,
-} from '@angular/common/http';
-import {
   Apollo
 } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -27,9 +24,6 @@ export class NewAssetService {
   constructor(
     private apollo: Apollo,
   ) {}
-
-
-  // START APOLLO
 
   public createAsset(asset: IAsset): Observable < boolean > {
     const CREATE_ASSET = gql `
@@ -64,22 +58,22 @@ export class NewAssetService {
 
   public getAssets(): Observable < IAsset[] > {
     const GET_ASSETS = gql `
-            query findAllAssets {
-                assets: findAllAssets {
-                    id,
-                    name,
-                    description,
-                    location {
-                      id,
-                      name
-                    }
-                    thresholdTemplate {
-                        id,
-                        name
-                    }
-                }
-            }
-        `;
+      query findAllAssets {
+        assets: findAllAssets {
+          id,
+          name,
+          description,
+          location {
+            id,
+            name
+          },
+          thresholdTemplate {
+              id,
+              name
+          }
+        }
+      }
+    `;
 
     interface GetAssetsResponse {
       assets: IAsset[];
@@ -126,7 +120,6 @@ export class NewAssetService {
                        }
                      }
                     },
-                    ,
                     thresholdTemplate {
                       id,
                       name
@@ -176,7 +169,6 @@ export class NewAssetService {
                      id,
                      name
                     },
-                    ,
                     thresholdTemplate {
                       id,
                       name,
@@ -228,7 +220,7 @@ export class NewAssetService {
             description,
             location {
               id,
-             name
+              name
             }
             image,
             geolocation {
@@ -254,7 +246,7 @@ export class NewAssetService {
     }) => data.assets));
   }
 
-  public getAssetsByName(name: string): Observable < IAsset [] > {
+  public getAssetsByName(name: string): Observable < IAsset[] > {
     const GET_ASSETS_BY_NAME = gql `
       query findAssetsByName($input: AssetFindByNameInput!) {
         assets: findAssetsByName(input: $input) {

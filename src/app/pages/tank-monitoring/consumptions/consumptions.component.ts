@@ -57,9 +57,6 @@ export class ConsumptionsComponent implements OnInit {
     try {
       const id = await this.getRouteId();
       this.asset = await this.newAssetService.getAssetById(id).toPromise();
-      console.log({...this.asset});
-      this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
-      console.log({...this.asset});
       /*
       this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
         return {

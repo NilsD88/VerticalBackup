@@ -8,7 +8,7 @@ import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatStepper } from '@angular/material/stepper';
 import {MAT_DIALOG_DATA, MatDialogRef, MatDialog} from '@angular/material';
 
-import _ from 'lodash';
+import * as _ from 'lodash';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 
@@ -36,7 +36,7 @@ export class LocationWizardComponent implements OnInit {
     @Optional() private dialogRef: MatDialogRef<LocationWizardComponent>,
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
-    private activedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private newLocationService: NewLocationService,
     private router: Router,
   ) {}
@@ -49,9 +49,8 @@ export class LocationWizardComponent implements OnInit {
       console.log(locations);
     });
 
-    const params = await this.getRouteParams();
-    const locationId = params.id;
-    let parentId = params.parentId;
+    const locationId = this.activatedRoute.snapshot.params.id;
+    let parentId =  this.activatedRoute.snapshot.params.parentId;
 
     if (this.data) {
       if (this.data.fromPopup) {
@@ -68,36 +67,34 @@ export class LocationWizardComponent implements OnInit {
       TypeCtrl: ['', null],
     });
 
-
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
-      this.editMode = true;
-      this.location = await this.newLocationService.getLocationById(locationId).toPromise();
-      this.originalLocation = cloneDeep(this.location);
-    } else {
-      this.location = {
-        id: null,
-        parentId: null,
-        parent: null,
-        description: null,
-        name: null,
-        image: null,
-        geolocation: null
-      };
-      if (!isNullOrUndefined(parentId)) {
-        this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
-        this.location.parentId = this.location.parent.id || null;
-        console.log(this.location.parentId);
+      try {
+        this.location = await this.newLocationService.getLocationById(locationId).toPromise();
+        this.editMode = true;
+        this.originalLocation = cloneDeep(this.location);
+      } catch (err) {
+        await this.resetLocation(parentId);
       }
+    } else {
+      await this.resetLocation(parentId);
     }
     this.canLoadLocationExplorer = true;
   }
 
-  private getRouteParams(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.activedRoute.params.subscribe((params) => {
-        resolve(params);
-      }, reject);
-    });
+  private async resetLocation(parentId) {
+    this.location = {
+      id: null,
+      parentId: null,
+      parent: null,
+      description: null,
+      name: null,
+      image: null,
+      geolocation: null
+    };
+    if (!isNullOrUndefined(parentId)) {
+      this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
+      this.location.parentId = this.location.parent.id || null;
+    }
   }
 
   updateLocation(location: ILocation) {

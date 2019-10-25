@@ -1,5 +1,4 @@
 import { LocationWizardComponent } from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
-import { NewLocationService } from 'src/app/services/new-location.service';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -27,9 +26,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  private originalAsset: IAsset;
-
   public asset: IAsset;
+  private originalAsset: IAsset;
   public editMode = false;
 
   public displayLocationExplorer = true;
@@ -56,7 +54,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
     private newAssetService: NewAssetService,
-    private newLocationService: NewLocationService,
     private router: Router,
     public activatedRoute: ActivatedRoute
   ) {}
@@ -75,24 +72,26 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
-      this.editMode = true;
-      this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
-      if (!isNullOrUndefined(this.asset.locationId)) {
-        this.asset.location = await this.newLocationService.getLocationById(this.asset.locationId).toPromise();
+      try {
+        this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
+        this.editMode = true;
+        this.originalAsset = cloneDeep(this.asset);
+      } catch (err) {
+        this.asset = this.emptyAsset();
       }
-      if (isNullOrUndefined(this.asset.things)) {
-        this.asset.things = [];
-      }
-      this.originalAsset = cloneDeep(this.asset);
     } else {
-      this.asset = {
-        id: null,
-        name: null,
-        locationId: null,
-        things: [],
-        thresholdTemplate: null
-      };
+      this.asset = this.emptyAsset();
     }
+  }
+
+  private emptyAsset(): IAsset {
+    return {
+      id: null,
+      name: null,
+      locationId: null,
+      things: [],
+      thresholdTemplate: null
+    };
   }
 
   public updateLocation(location: ILocation) {
@@ -184,6 +183,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   private submit() {
     if (this.editMode) {
 
+      console.log(this.asset);
+      console.log(this.originalAsset);
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
@@ -205,17 +206,17 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       }
 
       this.newAssetService.updateAsset(asset).subscribe((result) => {
-        this.goToManageAssets();
+        this.goToInventory();
       });
     } else {
       this.newAssetService.createAsset(this.asset).subscribe((result) => {
-        this.goToManageAssets();
+        this.goToInventory();
       });
     }
   }
 
-  private goToManageAssets() {
-    this.router.navigateByUrl('/private/admin/manage-assets');
+  private goToInventory() {
+    this.router.navigateByUrl('/private/smartmonitoring/inventory');
   }
 
 

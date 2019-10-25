@@ -16,7 +16,7 @@ export interface IAsset {
     thresholdTemplateId?: string;
     things?: IThing[];
     thingsId?: string[];
-    test?: any;
+
     lastAlert?: any;
 }
 
@@ -33,7 +33,6 @@ export class Asset {
     things: IThing[] = [];
     thingsId: string[];
 
-    test: any;
     lastAlert: any;
 
     constructor(asset: IAsset = null) {
