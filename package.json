@@ -6,7 +6,7 @@
     "dev": "ng serve --port=5151 --aot",
     "angury": "ng serve --port=5151",
     "start": "DEBUG=express:* node ./server.js",
-    "prebuild": "npm i -g @angular/cli",
+    "prebuild": "npm config set strict-ssl false; npm i -g @angular/cli;",
     "build": "ng build",
     "postinstall": "node builder",
     "test": "ng test",
