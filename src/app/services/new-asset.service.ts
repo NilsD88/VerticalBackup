@@ -1,3 +1,4 @@
+import { MOCK_NEW_CHART_DATA } from 'src/app/mocks/chart';
 import {
   Injectable
 } from '@angular/core';
@@ -15,6 +16,8 @@ import {
 import {
   map
 } from 'rxjs/operators';
+import { from, observable } from 'rxjs';
+import { IThing } from '../models/g-thing.model';
 
 @Injectable({
   providedIn: 'root'
@@ -167,7 +170,14 @@ export class NewAssetService {
                     },
                     things {
                      id,
-                     name
+                     name,
+                     sensors {
+                       id,
+                       sensorType {
+                        id,
+                        name
+                       }
+                     }
                     },
                     thresholdTemplate {
                       id,
@@ -209,6 +219,13 @@ export class NewAssetService {
     }).pipe(map(({
       data
     }) => data.asset));
+  }
+
+  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+    return Observable.create((observer) => {
+      observer.next(MOCK_NEW_CHART_DATA);
+      observer.complete();
+    });
   }
 
   public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {

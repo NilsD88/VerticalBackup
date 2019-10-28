@@ -1,6 +1,6 @@
+import { LastAlertsModule } from './../../../../../projects/ngx-proximus/src/lib/last-alerts/last-alerts.module';
 import { NoDataModule } from './../../../../../projects/ngx-proximus/src/lib/no-data/no-data.module';
 import { ThresholdTemplatesDetailModule } from '../../../../../projects/ngx-proximus/src/lib/threshold-templates-detail/threshold-templates-detail.module';
-import { MatProgressButtonsModule } from 'mat-progress-buttons';
 import { AlertsService } from 'src/app/services/alerts.service';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -17,7 +17,6 @@ import {AggregatedValuesModule} from '../../../../../projects/ngx-proximus/src/l
 import {MapAsset2Module} from '../../../../../projects/ngx-proximus/src/lib/map-asset2/map-asset2.module';
 import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {ImgFallbackModule} from 'ngx-img-fallback';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { DetailHeaderModule } from 'src/app/pages/smart-monitoring/lib/detail-header/detail-header.module';
@@ -30,7 +29,6 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     CommonModule,
     RouterModule.forChild(Detail2Routes),
     TranslateModule,
-    MatProgressButtonsModule,
     MatDividerModule,
     MatExpansionModule,
     MatTooltipModule,
@@ -40,11 +38,11 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     MapAsset2Module,
     IconModule,
     FlexLayoutModule,
-    ImgFallbackModule,
     DetailHeaderModule,
     RangeSliderModule,
     ThresholdTemplatesDetailModule,
     LinkedThingsModule,
+    LastAlertsModule,
     NoDataModule,
   ],
   providers: [

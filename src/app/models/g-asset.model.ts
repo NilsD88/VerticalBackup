@@ -3,6 +3,7 @@ import { IGeolocation } from './geolocation.model';
 import { IThresholdTemplate } from './g-threshold-template.model';
 import { IThing } from './g-thing.model';
 import { isNullOrUndefined } from 'util';
+import { IAlert } from './g-alert.model';
 
 export interface IAsset {
     id?: string;
@@ -16,6 +17,7 @@ export interface IAsset {
     thresholdTemplateId?: string;
     things?: IThing[];
     thingsId?: string[];
+    alerts?: IAlert[];
 
     lastAlert?: any;
 }

@@ -21,6 +21,18 @@
         <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
         <br>
      </div>
+     <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">
+        <div *ngFor="let thing of asset?.things" class="last-measurement-thing">
+           <div *ngFor="let sensor of thing.sensors" class="last-measurement-sensor">
+             <img
+               [matTooltip]="sensor.sensorType?.name"
+               [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
+               src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" 
+               alt=""
+             >
+           </div>
+         </div>
+      </div>
       <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">
         <span *ngFor="let measurement of asset?.lastMeasurements" class="last-measurement">
           <img

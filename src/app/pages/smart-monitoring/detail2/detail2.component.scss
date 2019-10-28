@@ -21,66 +21,10 @@
 }
 
 .last-alert-container {
-  width            : 100%;
   background-color : $dark-primary;
-  padding          : 1rem;
-
-  .last-alert-title {
-    color       : $white;
-    font-size   : 1.6rem;
-    line-height : 1.6rem;
-    font-family : ProximusRegular, sans-serif;
-  }
-
-  .last-alert-wrapper {
-    display : flex;
-
-    img {
-      height     : 5rem;
-      align-self : center;
-      padding    : 1rem;
-    }
-
-    .last-alert-content {
-      flex    : 1;
-      padding : 1rem;
-    }
-
-    .last-alert-description {
-      color       : $white;
-      font-size   : 1.1rem;
-      font-family : ProximusBold, sans-serif;
-
-      .last-alert-date {
-        display       : inline-block;
-        font-family   : ProximusLight, sans-serif;
-        font-size     : .7rem;
-        padding       : .2em .8em;
-        border-radius : 0 0 10px 0;
-        margin-top    : .4rem;
-        color         : $white;
-        background    : $promo;
-      }
-    }
-  }
-
-  .last-alert-values {
-    display     : flex;
-    width       : 100%;
-    padding     : 1rem;
-    padding-top : .6rem;
-    overflow-x: scroll;
-
-    .last-alert-value {
-      background-color : $accent;
-      color            : $white;
-      margin-right     : 1rem;
-      padding          : .4rem;
-      border-radius    : 0 0 10px 0;
-      flex             : 1;
-      display          : inline-flex;
-      flex-direction   : column;
-    }
-
+  color: white;
+  h4 {
+    color: white;
+    padding: 10px;
   }
 }

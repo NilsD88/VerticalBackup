@@ -1,6 +1,6 @@
 <div class="chart-controls">
     <div>
-        <mat-button-toggle-group (change)="intervalChanged.emit($event)" [value]="filter.interval">
+        <mat-button-toggle-group (change)="intervalChanged.emit($event)" [value]="filter?.interval">
             <mat-button-toggle *ngFor="let interval of intervals" [value]="interval">
             {{interval}}
             </mat-button-toggle>
