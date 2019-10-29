@@ -3,8 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {Thing} from '../models/thing.model';
 import {SharedService} from './shared.service';
-import {environment} from '../../environments/environment';
-import {isNullOrUndefined} from 'util';
+import {environment} from 'src/environments/environment';
 import { IThing } from '../models/g-thing.model';
 
 @Injectable({

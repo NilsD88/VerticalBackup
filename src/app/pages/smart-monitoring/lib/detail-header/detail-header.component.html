@@ -22,16 +22,35 @@
         <br>
      </div>
      <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">
-        <div *ngFor="let thing of asset?.things" class="last-measurement-thing">
-           <div *ngFor="let sensor of thing.sensors" class="last-measurement-sensor">
-             <img
-               [matTooltip]="sensor.sensorType?.name"
-               [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
-               src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" 
-               alt=""
-             >
-           </div>
-         </div>
+       <div>
+          <div *ngFor="let thing of asset?.things" class="last-measurement-thing">
+          <div class="last-measurement-title">
+            <span>{{thing.devEui}}</span>
+            <span *ngIf="thing.name">: {{thing.name}}</span>
+            <div class="border"></div>
+          </div>
+          <div class="last-measurement-sensors">
+            <div *ngFor="let sensor of thing.sensors" class="last-measurement-sensor">
+              <img
+                [matTooltip]="sensor.sensorType?.name"
+                [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
+                src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" 
+                alt=""
+              >
+              <span class="last-measurement-value">26 °C</span>
+              <small class="last-measurement-date">01/01/10</small>
+              <small class="last-measurement-time">10:20</small>
+              <!--
+              <span class="last-measurement-value">{{sensor.value}} {{sensor.sensorType.postfix}}</span>
+              <small class="last-measurement-date">{{sensor.timestamp | date : 'd/M/yy'}}</small>
+              <small class="last-measurement-time">{{sensor.timestamp | date : 'H:mm'}}</small>
+              -->
+            </div>
+          </div>
+           
+           
+          </div>
+        </div>
       </div>
       <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">
         <span *ngFor="let measurement of asset?.lastMeasurements" class="last-measurement">

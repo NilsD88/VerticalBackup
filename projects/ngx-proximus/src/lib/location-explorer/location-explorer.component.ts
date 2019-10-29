@@ -25,7 +25,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() displayAssets = false;
   @Input() ghostLocationId: string;
   @Input() customAssetService;
-  @Input() assetUrl = '/private/smartmonitoring/detail2/';
+  @Input() assetUrl = '/private/smartmonitoring/detail/';
 
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();

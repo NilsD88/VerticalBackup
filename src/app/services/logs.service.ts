@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {SharedService} from './shared.service';
-import {environment} from '../../environments/environment';
-import {isNullOrUndefined} from 'util';
+import {environment} from 'src/environments/environment';
 import { ISensorReadingFilter } from '../models/sensor.model';
 
 

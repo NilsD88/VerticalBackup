@@ -1,264 +1,115 @@
-import { MOCK_THRESHOLD_TEMPLATES } from 'src/app/mocks/threshold-templates';
-import { MatProgressButtonOptions } from 'mat-progress-buttons';
+import { cloneDeep } from 'lodash';
+import { NewAssetService } from 'src/app/services/new-asset.service';
 import { SharedService } from 'src/app/services/shared.service';
-import {Component, OnInit, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {formatDate} from '@angular/common';
-import {Asset} from 'src/app/models/asset.model';
-import {AssetService} from 'src/app/services/asset.service';
-import {isNullOrUndefined} from 'util';
-import {AlertsService} from 'src/app/services/alerts.service';
-import {Alert} from 'src/app/models/alert.model';
 import {TranslateService} from '@ngx-translate/core';
+import { IAsset } from 'src/app/models/g-asset.model';
+import { NewAlertService } from 'src/app/services/new-alert.service';
+import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import { Subject, Observable } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs/operators';
 import * as moment from 'moment';
-import { ISensorReadingFilter } from 'src/app/models/sensor.model';
-import { LogsService } from 'src/app/services/logs.service';
-import jspdf from 'jspdf';
-import { ILocation } from 'src/app/models/g-location.model';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { debounceTime, distinctUntilChanged, switchMap, concatAll } from 'rxjs/operators';
-import { Subject } from 'rxjs/internal/Subject';
-import { Observable } from 'rxjs/internal/Observable';
-import { forkJoin } from 'rxjs';
+import * as jspdf from 'jspdf';
+import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 declare var require: any;
-
 const canvg = require('canvg');
-
-interface IFilterChartData {
-  interval: string;
-  from: number;
-  to: number;
-  durationInHours?: number;
-}
-
-
 
 @Component({
   selector: 'pvf-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
+
 export class DetailComponent implements OnInit {
 
   @ViewChild('myChart', {static: false}) myChart;
   @ViewChild('myAggregatedValues', {static: false}) myAggregatedValues;
 
-  public asset: Asset;
-  public locations: ILocation[];
-  public lastAlert: Alert;
-  public numberOfAlertsOfTheDay: number;
-  public chartSensorOptions = [];
+  public asset: IAsset;
+
+  public chartLoading = false;
+  public chartData$ = new Subject<any>();
   public chartData = [];
-  public standardDeviations = [];
-  public isDownloading = false;
-  public chartIsLoading = false;
-  public sdIsLoading = false;
+
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
     from: moment().subtract(1, 'week').toDate().getTime(),
     to: moment().toDate().getTime(),
   };
-  public mapLayers = [];
-  public mapConfig;
-
-
-  public btnOptsExportAlerts: MatProgressButtonOptions = {
-    active: false,
-    text: 'Download alerts of the day',
-    buttonColor: 'primary',
-    spinnerSize: 19,
-    raised: false,
-    stroked: true,
-    flat: false,
-    fab: false,
-    fullWidth: false,
-    disabled: false,
-    mode: 'indeterminate',
-  };
-
-  /*
-  public filter = {
-    dateRange: {fromDate: new Date(), toDate: new Date()},
-    sensorTypes: [],
-    thresholdTemplates: [],
-    name: '',
-  };
-  */
-
-  public MOCK_THRESHOLD_TEMPLATE = MOCK_THRESHOLD_TEMPLATES[0];
-
-  public chartData$ = new Subject<any>();
-  public standardDeviation$ = new Subject<any>();
 
   constructor(
     public activeRoute: ActivatedRoute,
-    private assetService: AssetService,
-    private router: Router,
     private translateService: TranslateService,
-    private logsService: LogsService,
     private sharedService: SharedService,
-    private newLocationService: NewLocationService,
-    public alertsService: AlertsService
+    public newAlertService: NewAlertService,
+    public newAssetService: NewAssetService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit() {
-    this.init();
-    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-      this.locations = locations;
+    this.activeRoute.params.subscribe(async (params) => {
+      if (params.id) {
+        this.newAssetService.getAssetDetailById(params.id).subscribe(
+          (asset) => {
+          this.asset = asset;
+          this.init();
+          },
+          (error) => {
+            console.log(error);
+            this.router.navigate(['/error/404']);
+          }
+        );
+      }
     });
-
-
-    this.getChartData(this.chartData$).subscribe((result: any[]) => {
-        this.chartIsLoading = false;
-        this.chartData = result;
-    });
-
-    this.getStandardDeviation(this.standardDeviation$).subscribe((result) => {
-      this.sdIsLoading = false;
-      this.standardDeviations = result;
-    });
-
   }
 
-
-  async init() {
-    try {
-      const id = await this.getRouteId();
-      console.log('-----id');
-      const assetPromise = this.assetService.getAssetById(id);
-      const lastAlertPromise = this.alertsService.getLastAlertByAssetId(id);
-      this.asset = await assetPromise;
-      console.log('-----asset');
-      this.lastAlert = await lastAlertPromise;
-      console.log('-----alert');
-      this.asset.lastAlert = this.lastAlert;
-
-      /*
-      const alertsOfTheDay = this.alertsService.getPagedAlerts({
-        ...this.filter,
-        assetId: this.asset.id
-      }, 0, 1);
-      this.numberOfAlertsOfTheDay = (await alertsOfTheDay).totalElements;
-      */
-      this.chartSensorOptions = this.asset.sensors ? this.asset.sensors.map((val) => {
-        return {
-          deveui: val.devEui,
-          sensorTypeId: val.sensorType.id
-        };
-      }) : [];
-      this.updateChartData(null);
-
-    } catch (err) {
-      console.log(err);
-      //this.router.navigate(['/error/404']);
-    }
-  }
-
-  private getRouteId(): Promise<string | number> {
-    return new Promise((resolve, reject) => {
-      this.activeRoute.params.subscribe((params) => {
-        if (!isNullOrUndefined(params.id)) {
-          resolve(params.id);
-        } else {
-          reject('DetailComponent: No \'id\' parameter in route.');
+  private init() {
+    this.getLastAlerts();
+    this.getChartData(this.chartData$).subscribe(async things => {
+      const chartData = [];
+      // Get the translation of each label
+      for (const thing of things) {
+        for (const sensor of thing.sensors) {
+          chartData.push({
+            label: await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise(),
+            series: sensor.series
+          });
         }
-      }, reject);
+      }
+      this.chartData = chartData;
+      this.chartLoading = false;
+      this.changeDetectorRef.detectChanges();
     });
   }
 
 
-  public async updateChartData(options: { interval?: string; from?: number; to?: number; }) {
-
-    if (!options) {
-      options = this.currentFilter;
-    }
-
+  public updateChartData(options: { interval?: string; from?: number; to?: number; }) {
     const interval = options.interval ?  options.interval : this.currentFilter.interval;
     const from = options.from ?  options.from : this.currentFilter.from;
     const to = options.to ?  options.to : this.currentFilter.to;
+    const duration = moment.duration(moment(to).diff(from));
+    const durationInHours =  +duration.asHours().toFixed(0);
+    const originalFilter = cloneDeep(this.currentFilter);
 
     this.currentFilter = {
       interval,
       from,
       to,
+      durationInHours
     };
 
-    const chartDataFilters = [];
-    const sdFilters = [];
+    const differences = compareTwoObjectOnSpecificProperties(
+      originalFilter, this.currentFilter, ['interval', 'from', 'to', 'durationInHours']);
 
-    for (const sensorType of this.chartSensorOptions) {
-      const filter: ISensorReadingFilter = {
-        deveui: sensorType.deveui,
-        sensortypeid: sensorType.sensorTypeId,
-        from,
-        to,
-        interval,
-      };
-      if (interval !== 'ALL') {
-        sdFilters.push(filter);
-      }
-      chartDataFilters.push(filter);
+    if (differences && differences.length > 0) {
+      this.changeDetectorRef.detectChanges();
+      this.chartData$.next(this.currentFilter);
     }
-
-    if (chartDataFilters.length) {
-      this.chartData$.next({
-        filters: chartDataFilters,
-        interval,
-      });
-    }
-
-    if (sdFilters.length) {
-      this.standardDeviation$.next(sdFilters);
-    }
-
-
   }
-
-  private getChartData(request: Observable<any>) {
-    return request.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(data => {
-        this.chartIsLoading = true;
-        const observables: Observable<any>[] = [];
-        const {filters, interval} = data;
-        if (interval === 'ALL') {
-          for (const filter of filters) {
-            observables.push(
-              this.logsService.getSensorReadingsV2(filter)
-            );
-          }
-        } else {
-          for (const filter of filters) {
-            observables.push(
-              this.logsService.getSensorReadings(filter)
-            );
-          }
-        }
-        return forkJoin(observables);
-      })
-    );
-  }
-
-  private getStandardDeviation(request: Observable<any>) {
-    return request.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(filters => {
-        this.sdIsLoading = true;
-        const observables = [];
-        for (const filter of filters) {
-          observables.push(
-            this.logsService.getStandardDeviation(filter)
-          );
-        }
-        return forkJoin(observables).toPromise();
-      })
-    );
-  }
-
-
 
   public async downloadPdfDetail() {
     const pdf = new jspdf('p', 'mm', 'a4', 1); // A4 size page of PDF (210 x 297)
@@ -277,18 +128,18 @@ export class DetailComponent implements OnInit {
       }
     }
 
-    pdf.addImage(this.asset.pictureBase64, 'JPEG', 10 , 10, 30, 30);
-    const assetNameTranslation: string = await this.getTranslation('PDF.ASSET_NAME');
-    pdf.text(assetNameTranslation + ' : ' + this.asset.name, 45, 15);
+    if (this.asset.image) {
+      pdf.addImage(this.asset.image, 'JPEG', 10 , 10, 30, 30);
+    }
+
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
-    pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 45, 20);
+    pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 45, 15);
+    const assetNameTranslation: string = await this.getTranslation('PDF.ASSET_NAME');
+    pdf.text(assetNameTranslation + ' : ' + this.asset.name, 45, 20);
+    const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
+    pdf.text(locationNameTranslation + ' : ' + this.asset.location.name, 45, 25);
 
     const options = this.myChart.options;
-    const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
-    const sublocationNameTranslation: string = await this.getTranslation('PDF.SUBLOCATION_NAME');
-    pdf.text(locationNameTranslation + ' : ' + this.asset.sublocation.location.name + '\n'
-      + sublocationNameTranslation + ' : ' + this.asset.sublocation.name, 45, 30);
-
     if ( options.series.length > 0) {
       setStyle('title');
       const chartTitle = await this.getTranslation('PDF.CHART');
@@ -358,45 +209,23 @@ export class DetailComponent implements OnInit {
     }
 
     pdf.save(this.asset.name + '.pdf');
-    this.isDownloading = false;
   }
 
-  public async exportAlerts() {
-    this.btnOptsExportAlerts.active = true;
+  private getLastAlerts() {
+    this.newAlertService.getAlertsByAssetIdAndDateRange(this.asset.id, 0, new Date().getTime()).subscribe((alerts) => {
+      this.asset.alerts = alerts;
+    });
+  }
 
-    /*
-    const result = await this.alertsService.getPagedAlerts(
-      {
-        ...this.filter,
-        assetId: this.asset.id,
-        //dateRange: {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)},
-      },
-      0,
-      10,
-      // TODO: Too long request, need to remove picture/asset from the request
+  private getChartData(request: Observable<any>) {
+    return request.pipe(
+      debounceTime(500),
+      switchMap(filter => {
+        this.chartLoading = true;
+        this.changeDetectorRef.detectChanges();
+        return this.newAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to);
+      })
     );
-    */
-
-    // TODO GET ALERTS
-    const result = {
-      alerts: []
-    };
-
-    let csv = 'Asset, Location type, Date, Message, Threshold template, read\n';
-    for (const alert of result.alerts) {
-      csv += alert.asset.name + ', ';
-      csv += alert.sublocation.location.locationType.name + ', ';
-      csv += moment(alert.sensorReading.timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
-      csv += alert.thresholdAlert.sensorType.name + ' ' +
-        this.alertsService.getAlertType(alert.sensorReading.value, alert.thresholdAlert.high, alert.thresholdAlert.low) +
-        ', ';
-      csv += alert.asset.thresholdTemplate.name + ', ';
-      csv += alert.read;
-      csv += '\n';
-    }
-    this.btnOptsExportAlerts.active = false;
-    console.log(csv);
-    this.sharedService.downloadCSV('csv export ' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
   }
 
   private async getTranslation(label: string) {

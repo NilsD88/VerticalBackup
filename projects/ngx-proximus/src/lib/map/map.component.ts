@@ -1,6 +1,6 @@
 import { MapDialogComponent } from './map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NewLocationService } from './../../../../../src/app/services/new-location.service';
+import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { NgElement, WithProperties } from '@angular/elements';
 import { IGeolocation } from 'src/app/models/asset.model';
@@ -27,7 +27,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
   @Input() customAssetService;
-  @Input() assetUrl = '/private/smartmonitoring/detail2/';
+  @Input() assetUrl = '/private/smartmonitoring/detail/';
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 

@@ -1,9 +1,8 @@
-import { PeriodicDuration } from '../../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { PeriodicDuration } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 import { IAsset } from 'src/app/models/asset.model';
 
 
@@ -22,7 +21,6 @@ const More = require('highcharts/highcharts-more');
 const exporting = require('highcharts/modules/exporting');
 const exportData = require('highcharts/modules/export-data');
 const Highcharts = require('highcharts/highstock');
-const randomColor = require('randomcolor');
 
 Boost(Highcharts);
 noData(Highcharts);
@@ -45,7 +43,7 @@ interface IChartData {
 }
 
 interface IChartSerie {
-  label: string;
+  timestamp: number;
   avg?: number;
   min?: number;
   max?: number;
@@ -65,14 +63,6 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() title = '';
   @Input() numeralValueFormatter = '';
   @Input() asset: IAsset;
-  @Input() colors = [
-    '#5C2D91', '#866C9D',
-    '#B22E87', '#C386A9',
-    '#EA4D71', '#F3A7B1',
-    '#FF835B', '#9E6450',
-    '#F9F871', '#C0BC84',
-    '#9BDE7E', '#7FA06F'
-  ];
 
   @Output() updateChartData = new EventEmitter<IFilterChartData>();
   @Output() download = new EventEmitter();
@@ -83,11 +73,15 @@ export class ChartComponent implements OnInit, OnChanges {
   public chart: any;
   public range: {fromDate: number; toDate: number};
   public Highcharts = Highcharts;
+  public rangeTranslation = 'range';
 
   constructor(public translateService: TranslateService) {
   }
 
   public ngOnInit() {
+    this.translateService.get('SENSORTYPES.range').subscribe((result: string) => {
+      this.rangeTranslation = result;
+    });
   }
 
   public async ngOnChanges() {
@@ -116,7 +110,6 @@ export class ChartComponent implements OnInit, OnChanges {
       credits: {
         enabled: false
       },
-      colors: this.colors,
       tooltip: {
         crosshairs: true,
         shared: true,
@@ -141,37 +134,13 @@ export class ChartComponent implements OnInit, OnChanges {
       series: []
     };
 
-    const chartDataPromises = [];
-    const rangeTranslation: string = await new Promise((resolve) => {
-      this.translateService.get('SENSORTYPES.range').subscribe((result) => {
-        resolve(result);
-      });
-    });
+    for (const data of this.chartData) {
+      const serieLength = data.series.length;
+      const {consumptions, average} = this.getConsumptionsAndAverage(data.series, serieLength);
+      this.addYAxisOption(serieLength, data.label, average);
+      this.addYAxisValues(data, data.label, this.rangeTranslation, serieLength, consumptions);
+    }
 
-
-    this.chartData.forEach(async (item: IChartData) => {
-      console.log(item.label);
-      if (item.label !== 'tank fill level') {
-        return;
-      }
-      chartDataPromises.push(new Promise(async (resolveChartDataPromise) => {
-        const labelTranslation: string = await new Promise((resolve) => {
-          this.translateService.get('SENSORTYPES.' + item.label).subscribe((result: string) => {
-            resolve(result);
-          });
-        });
-
-        const serieLength = item.series.length;
-
-        const {consumptions, average} = this.getConsumptionsAndAverage(item.series, serieLength);
-        console.log([...consumptions], average);
-        this.addYAxisOption(serieLength, labelTranslation, average);
-        this.addYAxisValues(item, labelTranslation, rangeTranslation, serieLength, consumptions);
-        resolveChartDataPromise();
-      }));
-    });
-
-    await Promise.all(chartDataPromises);
     try {
       this.chart = Highcharts.chart('chart-container', this.options);
     } catch (error) {
@@ -211,7 +180,7 @@ export class ChartComponent implements OnInit, OnChanges {
           text: labelTranslation
         },
         plotLines: [{
-            color: 'red',
+            color: '#3745AE',
             value: average,
             width: '1',
             zIndex: 2 // To not get stuck below the regular plot lines
@@ -221,86 +190,57 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData, labelTranslation: string, rangeTranslation: string, serieLength: number, consumptions: number[]) {
-    const color = randomColor();
-
     if (this.filter.durationInHours > 24) {
-      // AVERAGE
+      // AVERAGES
       this.options.series.push({
         name: labelTranslation,
-        color,
+        color: '#7A81E4',
         yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie) => {
-          let label = this.filterInt(serie.label);
-          if (isNaN(label)) {
-            console.warn('Unable to perse timestamp for chart, using default value of 0');
-            label = 0;
-          }
-          return [label, parseFloat(serie.avg.toFixed(2))];
+          return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
         })
       });
 
+      // CONSUMPTIONS
       this.options.series.push({
         name: labelTranslation + ' consumption',
-        color,
+        color: '#3745AE',
         yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'column',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie, index) => {
-          let label = this.filterInt(serie.label);
-          if (isNaN(label)) {
-            console.warn('Unable to perse timestamp for chart, using default value of 0');
-            label = 0;
-          }
-          return [label, consumptions[index]];
+          return [serie.timestamp, consumptions[index]];
         })
       });
-      // MIN AND MAX
-      /*
-      this.options.series.push({
-        name: labelTranslation + ' ' + rangeTranslation,
-        color,
-        type: 'arearange',
-        yAxis: this.getYAxisByLabel(item.label),
-        showInLegend: (item.series.length) ? true : false,
-        lineWidth: 0,
-        linkedTo: ':previous',
-        fillOpacity: 0.3,
-        zIndex: 0,
-        marker: {
-          enabled: false
-        },
-        data: item.series.map((serie) => {
-          let label = this.filterInt(serie.label);
-          if (isNaN(label)) {
-            console.warn('Unable to perse timestamp for chart, using default value of 0');
-            label = 0;
-          }
-          return [label, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-        })
-      });
-      */
+
     } else {
       // REAL VALUES
-      console.log('more than 24 hours');
       this.options.series.push({
         name: labelTranslation,
-        color,
+        color: '#7A81E4',
         yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie) => {
-          let label = this.filterInt(serie.label);
-          if (isNaN(label)) {
-            console.warn('Unable to perse timestamp for chart, using default value of 0');
-            label = 0;
-          }
-          console.log({...serie});
-          return [label, parseFloat(serie.value.toFixed(2))];
+          return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+        })
+      });
+
+      // CONSUMPTIONS
+      this.options.series.push({
+        name: labelTranslation + ' consumption',
+        color: '#3745AE',
+        yAxis: this.getYAxisByLabel(item.label),
+        zIndex: 1,
+        type: 'column',
+        showInLegend: (item.series.length) ? true : false,
+        data: item.series.map((serie, index) => {
+          return [serie.timestamp, consumptions[index]];
         })
       });
     }
@@ -333,17 +273,31 @@ export class ChartComponent implements OnInit, OnChanges {
 
   getConsumptionsAndAverage(series: IChartSerie[], serieLength: number): {consumptions: number[]; average: number} {
     const consumptions = [];
-    series.forEach((serie: IChartSerie, index: number) => {
-      if (index + 1 < serieLength) {
-        const avgNext = parseFloat(series[index + 1].avg.toFixed(2));
-        const consumption = avgNext - parseFloat(serie.avg.toFixed(2));
-        if (consumption < 0) {
-          consumptions.push(Math.abs(consumption));
-        } else {
-          consumptions.push(0);
+    if (this.filter.durationInHours > 24) {
+      series.forEach((serie: IChartSerie, index: number) => {
+        if (index + 1 < serieLength) {
+          const avgNext = parseFloat(series[index + 1].avg.toFixed(2));
+          const consumption = avgNext - parseFloat(serie.avg.toFixed(2));
+          if (consumption < 0) {
+            consumptions.push(Math.abs(consumption));
+          } else {
+            consumptions.push(0);
+          }
         }
-      }
-    });
+      });
+    } else {
+      series.forEach((serie: IChartSerie, index: number) => {
+        if (index + 1 < serieLength) {
+          const next = parseFloat(series[index + 1].value.toFixed(2));
+          const consumption = next - parseFloat(serie.value.toFixed(2));
+          if (consumption < 0) {
+            consumptions.push(Math.abs(consumption));
+          } else {
+            consumptions.push(0);
+          }
+        }
+      });
+    }
     return {
       consumptions,
       average: consumptions.reduce( ( p, c ) => p + c, 0 ) / consumptions.length
@@ -353,6 +307,6 @@ export class ChartComponent implements OnInit, OnChanges {
   downloadCSV() {
     this.chart.downloadCSV();
   }
-  
+
 
 }

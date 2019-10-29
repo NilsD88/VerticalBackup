@@ -20,7 +20,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { LocationWizardComponent } from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
 import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
-import { AddThresholdComponent } from '../../admin/manage-threshold-templates/add-threshold/add-threshold.component';
+import { AddThresholdComponent } from 'src/app/pages/admin/manage-threshold-templates/add-threshold/add-threshold.component';
 
 @NgModule({
   declarations: [

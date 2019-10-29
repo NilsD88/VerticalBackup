@@ -39,7 +39,7 @@ export class InventoryComponent implements OnInit {
   public assetsLoading = false;
 
   public assets: IAsset[] = [];
-  public assetUrl = '/private/smartmonitoring/detail2/';
+  public assetUrl = '/private/smartmonitoring/detail/';
 
   public pageNumber = 0;
   public pageSize = 10;

@@ -75,28 +75,48 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  
-  .last-measurement-thing {
+
+  >div {
     display: flex;
-    .last-measurement-sensor {
-      margin: .5rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      color: $white;
-
-      img {
-        height: 3rem;
-        padding: .5rem;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    .last-measurement-thing {
+      text-align: right;
+      margin-left: 25px;
+      .last-measurement-title {
+        color: rgba(255,255,255, 0.66);
+        .border {
+          margin-top: 6px;
+          height: 1px;
+          background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));;
+        }
       }
-
-      .last-measurement-date {
-        color: $accent;
+      .last-measurement-sensors {
+        display: flex;;
+        .last-measurement-sensor {
+          margin: .5rem;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          color: $white;
+    
+          img {
+            height: 3rem;
+            padding: .5rem;
+          }
+        
+          .last-measurement-date {
+            color: $accent;
+          }
+          
+          .last-measurement-time {
+            color: $accent;
+          }
+        }
       }
       
-      .last-measurement-time {
-        color: $accent;
-      }
     }
   }
+  
+  
 }

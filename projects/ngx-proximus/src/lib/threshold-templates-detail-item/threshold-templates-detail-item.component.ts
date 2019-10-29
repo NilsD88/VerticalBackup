@@ -1,4 +1,4 @@
-import { IThresholdWithLastValuesAndIndicators } from './../../../../../src/app/models/g-threshold.model';
+import { IThresholdWithLastValuesAndIndicators } from 'src/app/models/g-threshold.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 

@@ -3,8 +3,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {SharedService} from './shared.service';
 import {IPagedThresholdTemplates, IThresholdTemplate, ThresholdTemplate} from '../models/threshold.model';
-import {environment} from '../../environments/environment';
-import {IAssetFilter} from './asset.service';
+import {environment} from 'src/environments/environment';
 import {isNullOrUndefined} from 'util';
 
 @Injectable({

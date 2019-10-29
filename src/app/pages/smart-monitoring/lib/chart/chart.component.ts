@@ -1,9 +1,8 @@
-import { PeriodicDuration } from '../../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { PeriodicDuration } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {Component, Input, OnChanges, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 import { IAsset } from 'src/app/models/asset.model';
 
 
@@ -66,7 +65,6 @@ interface IChartSerie {
 })
 export class ChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
-  @Input() drpOptions: NgxDrpOptions;
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
   @Input() height = 700;
@@ -278,15 +276,12 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   public intervalChanged(event) {
-    console.log('===intervalChanged===');
-
     this.updateChartData.emit({
       interval: event.value
     });
   }
 
   public dateRangeChanged(periodicDuration: PeriodicDuration) {
-    console.log('===dateRangeChanged===');
     const {interval, from, to} = periodicDuration;
     this.updateChartData.emit({
       interval,

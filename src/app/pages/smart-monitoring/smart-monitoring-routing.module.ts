@@ -19,10 +19,6 @@ const routes: Routes = [
     loadChildren: () => import('src/app/pages/smart-monitoring/detail/detail.module').then(m => m.DetailModule)
   },
   {
-    path: 'detail2/:id',
-    loadChildren: () => import('src/app/pages/smart-monitoring/detail2/detail2.module').then(m => m.Detail2Module)
-  },
-  {
     path: 'assets/new',
     loadChildren: () => import('src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module').then(m => m.SmartMonitoringAssetWizardModule)
   },

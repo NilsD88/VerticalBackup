@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {environment} from '../../environments/environment';
+import {environment} from 'src/environments/environment';
 import {isNullOrUndefined} from 'util';
-import {User} from '../models/user.model';
+import {User} from 'src/app/models/user.model';
 import {promise} from 'selenium-webdriver';
 import IRejectedCallback = promise.IRejectedCallback;
 import {MatSnackBar, MatSnackBarRef} from '@angular/material';

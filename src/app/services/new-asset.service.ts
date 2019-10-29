@@ -171,6 +171,7 @@ export class NewAssetService {
                     things {
                      id,
                      name,
+                     devEui,
                      sensors {
                        id,
                        sensorType {

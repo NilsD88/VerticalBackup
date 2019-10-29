@@ -1,6 +1,6 @@
-import { NewSensorService } from './../../../services/new-sensor.service';
+import { NewSensorService } from 'src/app/services/new-sensor.service';
 import { cloneDeep } from 'lodash';
-import { IPagedAlerts } from './../../../models/g-alert.model';
+import { IPagedAlerts } from 'src/app/models/g-alert.model';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';

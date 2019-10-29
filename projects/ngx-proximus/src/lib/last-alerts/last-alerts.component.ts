@@ -1,6 +1,6 @@
-import { SharedService } from './../../../../../src/app/services/shared.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { IAlert } from './../../../../../src/app/models/g-alert.model';
+import { IAlert } from 'src/app/models/g-alert.model';
 import * as moment from 'moment';
 
 @Component({

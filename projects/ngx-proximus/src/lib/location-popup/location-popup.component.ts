@@ -1,4 +1,4 @@
-import { ILocation } from './../../../../../src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/g-location.model';
 import { Component, OnInit, Optional, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import { NewLocationService } from 'src/app/services/new-location.service';
