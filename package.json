@@ -5,7 +5,7 @@
     "ng": "ng",
     "dev": "ng serve --port=5151 --aot",
     "angury": "ng serve --port=5151",
-    "start": "DEBUG=express:* node ./server.js",
+    "start": "node server",
     "prebuild": "npm i -g @angular/cli",
     "build": "ng build",
     "postinstall": "node builder",
