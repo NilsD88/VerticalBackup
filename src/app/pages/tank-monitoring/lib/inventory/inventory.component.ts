@@ -8,7 +8,7 @@ import { NewLocationService } from 'src/app/services/new-location.service';
 
 
 @Component({
-  templateUrl: '/projects/ngx-proximus/src/lib/inventory/inventory.component.html',
+  templateUrl: './../../../../../../projects/ngx-proximus/src/lib/inventory/inventory.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/inventory/inventory.component.scss']
 })
 
