@@ -7,8 +7,7 @@
     "angury": "ng serve --port=5151",
     "start": "node server",
     "prebuild": "npm i -g @angular/cli",
-    "build": "ng build",
-    "postinstall": "node builder",
+    "build": "node builder",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
