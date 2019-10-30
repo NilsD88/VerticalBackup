@@ -5,7 +5,7 @@ import {SharedService} from './shared.service';
 import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {isNullOrUndefined} from 'util';
-import {environment} from '../../environments/environment';
+import {environment} from 'src/environments/environment';
 import { Observable } from 'rxjs';
 
 export interface IAssetFilter {

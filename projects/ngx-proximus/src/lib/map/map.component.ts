@@ -1,6 +1,6 @@
 import { MapDialogComponent } from './map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NewLocationService } from './../../../../../src/app/services/new-location.service';
+import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { NgElement, WithProperties } from '@angular/elements';
 import { IGeolocation } from 'src/app/models/asset.model';
@@ -26,6 +26,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() height;
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
+  @Input() customAssetService;
+  @Input() assetUrl = '/private/smartmonitoring/detail/';
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
@@ -130,8 +132,12 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getAssetsByLocation() {
-    console.log('getAssetByLocation()');
-    return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
+    if (this.customAssetService) {
+      console.log('use custom service');
+      return this.customAssetService.getAssetsByLocationId(this.selectedLocation.id);
+    } else {
+      return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
+    }
   }
 
   private checkIfSelectedLocation() {
@@ -161,7 +167,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
             {
               icon: assetIcon
             }
-          ).bindPopup(() => this.createAssetPopup(asset)).openPopup();
+          ).bindPopup(() => this.createAssetPopup(asset, this.assetUrl)).openPopup();
           this.markers.push(newMarker);
         } else {
           assetWithoutPosition.push(asset);
@@ -299,10 +305,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public createAssetPopup(asset: IAsset) {
+  public createAssetPopup(asset: IAsset, assetUrl: string) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
+    popupEl.assetUrl = assetUrl;
     document.body.appendChild(popupEl);
     return popupEl;
   }
@@ -347,11 +354,13 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public fitBoundsAndZoom() {
-    this.currentMap.fitBounds(this.bounds);
-    setTimeout(() => {
-      const currentZoom = this.currentMap.getZoom();
-      this.currentMap.setZoom(currentZoom - 0.75);
-    }, 0);
+    if (this.bounds.isValid()) {
+      this.currentMap.fitBounds(this.bounds);
+      setTimeout(() => {
+        const currentZoom = this.currentMap.getZoom();
+        this.currentMap.setZoom(currentZoom - 0.75);
+      }, 0);
+    }
   }
 
   public onMapReady(map: Map) {
@@ -359,11 +368,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.getAssetsBySelectedLocation();
 
     if (this.imageBounds) {
-      console.log('imageBounds', this.imageBounds);
       this.currentMap.fitBounds(this.imageBounds);
       this.currentMap.setMaxBounds(this.imageBounds);
     } else if (this.bounds) {
-      console.log('bounds');
       if (this.bounds.getNorthEast() && this.bounds.getSouthWest()) {
         this.fitBoundsAndZoom();
       } else {

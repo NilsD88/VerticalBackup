@@ -9,4 +9,15 @@ export interface ISensor {
     thing?: IThing;
     value?: string | number;
     timestamp?: number;
+    series?: ISensorData[];
+}
+
+
+interface ISensorData {
+    timestamp: number;
+    avg?: number;
+    min?: number;
+    max?: number;
+    sum?: number;
+    value?: number;
 }

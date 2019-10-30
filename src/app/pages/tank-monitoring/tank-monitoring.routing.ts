@@ -10,14 +10,21 @@ export const TankMonitoringRoutes: Routes = [
     path: 'dashboard',
     children: [{
       path: '',
-      loadChildren: './dashboard/dashboard.module#DashboardModule'
+      loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+    }]
+  },
+  {
+    path: 'inventory',
+    children: [{
+      path: '',
+      loadChildren: () => import('./lib/inventory/inventory.module').then(m => m.TankMonitoringInventoryModule)
     }]
   },
   {
     path: 'consumptions',
     children: [{
       path: '',
-      loadChildren: './consumptions/consumptions.module#ConsumptionsModule'
+      loadChildren: () => import('./consumptions/consumptions.module').then(m => m.ConsumptionsModule)
     }]
   }
 ];

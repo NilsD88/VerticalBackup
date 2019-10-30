@@ -12,13 +12,6 @@
           </mat-form-field>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
-          <pxs-date-range-selection 
-            (dateChange)="dateRangeChange($event)"
-            [fromDate]="filterBE.dateRange.fromDate"
-            [toDate]="filterBE.dateRange.toDate"
-          ></pxs-date-range-selection>
-        </div>
-        <div class="col-xl-4 col-lg-6 col-md-6">
           <ng-select [multiple]="true" [clearable]="true" [items]="filterOptions.sensorTypes"
             [(ngModel)]="filterFE.sensorTypeIds" bindValue="id" [loading]="sensorTypesLoading" [hideSelected]="true"
             (change)="changeFilterFE()" [placeholder]="'ALERTS.FILTER.SENSORS' | translate">
@@ -30,27 +23,36 @@
               (ngModelChange)="changeFilterFE()">
           </mat-form-field>
         </div>
+        <div class="col-xl-4 col-lg-6 col-md-6">
+            <pxs-date-range-selection 
+              (dateChange)="dateRangeChange($event)"
+              [fromDate]="filterBE.dateRange.fromDate"
+              [toDate]="filterBE.dateRange.toDate"
+            ></pxs-date-range-selection>
+        </div>
       </div>
     </div>
   </div>
 
 
   <div class="alerts-action">
-    <div>
+    <div class="filters">
       <mat-button-toggle-group (change)="changeReadFilter($event.value)" [value]="filterOptions.readFilter">
         <mat-button-toggle value="ALL">{{'ALERTS.ALL' | translate}}</mat-button-toggle>
         <mat-button-toggle value="UNREAD">{{'ALERTS.UNREAD' | translate}}</mat-button-toggle>
         <mat-button-toggle value="READ">{{'ALERTS.READ' | translate}}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <div>
+    <div class="actions">
       <span>{{selectedAlerts.length}} alert(s) selected</span>
-      <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-        (click)="markAsRead()">{{'ALERTS.MARK_AS_READ' | translate}}</button>
-      <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-        (click)="markAsUnread()">{{'ALERTS.MARK_AS_UNREAD' | translate}}</button>
-      <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-        (click)="downloadSelectedAlerts()">{{'ALERTS.DOWNLOAD' | translate}}</button>
+      <div>
+        <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
+          (click)="markAsRead()">{{'ALERTS.MARK_AS_READ' | translate}}</button>
+        <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
+          (click)="markAsUnread()">{{'ALERTS.MARK_AS_UNREAD' | translate}}</button>
+        <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
+          (click)="downloadSelectedAlerts()">{{'ALERTS.DOWNLOAD' | translate}}</button>
+      </div>
     </div>
   </div>
 

@@ -6,7 +6,7 @@ import {MatSnackBar} from '@angular/material';
 import {isNullOrUndefined} from 'util';
 import {SharedService} from './shared.service';
 import {ILocation, Location, LocationType, Sublocation} from '../models/locations.model';
-import {environment} from '../../environments/environment';
+import {environment} from 'src/environments/environment';
 import {Asset} from '../models/asset.model';
 import {Thing} from '../models/thing.model';
 import {ThresholdTemplate} from '../models/threshold.model';

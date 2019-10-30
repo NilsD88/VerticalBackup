@@ -1,10 +1,9 @@
-import { NewThresholdTemplateService } from './../../../../../src/app/services/new-threshold-templates';
+import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { IThresholdTemplate, IThresholdTemplatePaged } from 'src/app/models/g-threshold-template.model';
+import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { ThresholdTemplateService } from 'src/app/services/threshold-template.service';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
-import { Subject } from 'rxjs';
 import { isUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 
@@ -40,10 +39,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
   async ngOnInit() {
     console.log('ngOnInit list threshold template');
     if (this.admin) {
-      //this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate', 'actions'];
       this.displayedColumns = ['name', 'thresholds', 'actions'];
     } else {
-      //this.displayedColumns = ['name', 'thresholds', 'lastModificationAuthor' , 'lastModificationDate'];
       this.displayedColumns = ['name', 'thresholds'];
     }
 

@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedLayoutService} from '../shared-layout.service';
-import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/top-menu.component';
+import {TopMenuConfig} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.component';
 import {TranslateService} from '@ngx-translate/core';
-import {IFooterConfig} from '../../../../projects/ngx-proximus/src/lib/footer/footer.component';
+import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.component';
 
 @Component({
   selector: 'pvf-layout',

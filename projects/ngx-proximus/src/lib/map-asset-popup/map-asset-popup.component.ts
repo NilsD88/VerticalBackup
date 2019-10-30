@@ -1,4 +1,4 @@
-import { AlertsService } from './../../../../../src/app/services/alerts.service';
+import { AlertsService } from 'src/app/services/alerts.service';
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
 import { IAsset } from 'src/app/models/asset.model';
 import { ILocation } from 'src/app/models/g-location.model';

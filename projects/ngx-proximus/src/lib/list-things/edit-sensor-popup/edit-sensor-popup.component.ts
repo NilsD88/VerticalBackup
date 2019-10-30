@@ -1,9 +1,8 @@
-import { chartTypes, aggregatedValues } from './../../../../../../src/app/models/g-sensor-definition.model';
+import { chartTypes, aggregatedValues } from 'src/app/models/g-sensor-definition.model';
 import {Component, OnInit, Optional, Inject} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
-import { ISensorDefinition } from '../../../../../../src/app/models/g-sensor-definition.model';
+import { ISensorDefinition } from 'src/app/models/g-sensor-definition.model';
 import {MAT_DIALOG_DATA} from '@angular/material';
-import { ISensor } from 'src/app/models/g-sensor.model';
 
 @Component({
     selector: 'pxs-edit-sensor-popup',

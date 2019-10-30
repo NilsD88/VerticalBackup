@@ -1,3 +1,4 @@
+import { MOCK_NEW_CHART_TANK_DATA } from 'src/app/mocks/chart';
 
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
@@ -5,6 +6,7 @@ import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import { map } from 'rxjs/operators';
+import { IThing } from 'src/app/models/g-thing.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +17,7 @@ export class TankMonitoringAssetService {
     private apollo: Apollo,
   ) {}
 
-
-  // START APOLLO
-
-
-  public getAssets_TankMonitoring_Dashboard(): Observable < ITankMonitoringAsset[] > {
+  public getAssets(): Observable < ITankMonitoringAsset[] > {
 
     const result: Observable < ITankMonitoringAsset[] > = Observable.create((observer) => {
       observer.next([{
@@ -116,7 +114,7 @@ export class TankMonitoringAssetService {
 
   }
 
-  public getAssetPopupDetail_TankMonitoring(id: string): Observable < ITankMonitoringAsset > {
+  public getAssetPopupDetail(id: string): Observable < ITankMonitoringAsset > {
     const GET_ASSET_POPUP_DETAIL_BY_ID = gql `
         query findAssetById($id: Long!) {
           asset: findAssetById(id: $id) {
@@ -141,6 +139,13 @@ export class TankMonitoringAssetService {
     }).pipe(map(({
       data
     }) => data.asset));
+  }
+
+  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+    return Observable.create((observer) => {
+      observer.next(MOCK_NEW_CHART_TANK_DATA);
+      observer.complete();
+    });
   }
 
 }

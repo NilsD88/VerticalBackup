@@ -26,7 +26,7 @@ export class DetailHeaderComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(LocationPopupComponent, {
+    this.dialog.open(LocationPopupComponent, {
       minWidth: '320px',
       maxWidth: '600px',
       width: '100vw',

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DevtestComponent } from './devtest.component';
 import {RouterModule} from '@angular/router';
 import {DevtestRoutes} from './devtest.routing';
-import {IconModule} from '../../../../projects/ngx-proximus/src/lib/icon/icon.module';
+import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
 
 @NgModule({
   declarations: [DevtestComponent],

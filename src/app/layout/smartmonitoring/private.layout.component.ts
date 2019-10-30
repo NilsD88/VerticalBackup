@@ -1,13 +1,11 @@
 import { SharedService } from 'src/app/services/shared.service';
-import { GlobaleSearchService } from './../../services/global-search.service';
+import { GlobaleSearchService } from 'src/app/services/global-search.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {SharedLayoutService} from '../shared-layout.service';
-import {IFooterConfig} from '../../../../projects/ngx-proximus/src/lib/footer/footer.component';
+import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.component';
 import {TranslateService} from '@ngx-translate/core';
-import {TopMenuConfig} from '../../../../projects/ngx-proximus/src/lib/top-menu/top-menu.component';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { ILocation } from './../../models/g-location.model';
+import {TopMenuConfig} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.component';
 import { Subject } from 'rxjs';
 import { NewAlertService } from 'src/app/services/new-alert.service';
 
@@ -93,7 +91,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
 
   autocompleteClick(event: {name: string; id: string; type: string}) {
     if (event.type === 'asset') {
-      this.router.navigateByUrl(`/private/smartmonitoring/detail2/${event.id}`);
+      this.router.navigateByUrl(`/private/smartmonitoring/detail/${event.id}`);
     } else if (event.type === 'location') {
       this.router.navigateByUrl(`/private/smartmonitoring/inventory/locations/${event.id}`);
     }

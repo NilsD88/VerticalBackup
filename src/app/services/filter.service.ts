@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {environment} from '../../environments/environment';
-import {SensorType} from '../models/sensor.model';
+import {environment} from 'src/environments/environment';
+import {SensorType} from 'src/app/models/sensor.model';
 import {SharedService} from './shared.service';
-import {ThresholdTemplate} from '../models/threshold.model';
+import {ThresholdTemplate} from 'src/app/models/threshold.model';
 
 @Injectable({
   providedIn: 'root'

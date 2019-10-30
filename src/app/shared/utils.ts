@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { reduce, isEqual } from 'lodash';
 import { ILocation } from 'src/app/models/g-location.model';
 
 function findLocationById(location: ILocation, id: string, path: ILocation[] = []): {location: ILocation, path: ILocation []} {
@@ -23,10 +23,9 @@ function findLocationById(location: ILocation, id: string, path: ILocation[] = [
 function compareTwoObjectOnSpecificProperties(object1: object, object2: object, properties: string[]) {
     // return an empty array if no difference
     // return propertie names on differences
-
-    return _.reduce(object1, (result, value, key) => {
+    return reduce(object1, (result, value, key) => {
         if (properties.indexOf(key) > -1) {
-            return _.isEqual(value, object2[key]) ? result : result.concat(key);
+            return isEqual(value, object2[key]) ? result : result.concat(key);
         } else {
             return result;
         }

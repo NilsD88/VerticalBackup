@@ -15,7 +15,7 @@ export class TankMonitoringMapPopupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.tankMonitoringAssetService.getAssetPopupDetail_TankMonitoring(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
+    this.tankMonitoringAssetService.getAssetPopupDetail(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
       this.asset = {
         ...this.asset,
         ...asset

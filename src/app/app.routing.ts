@@ -69,6 +69,7 @@ export class PublicAuthGuard implements CanActivate {
     }
 
     async canActivate(): Promise<boolean> {
+
       try {
         this.sharedService.user = await this.authService.isLoggedIn();
         if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
@@ -158,7 +159,6 @@ export const AppRoutes: Routes = [
       children: [{
         path: '',
         loadChildren: './pages/admin/manage-assets/manage-assets.module#ManageAssetsModule'
-        // loadChildren: './pages/smart-monitoring/detail2/detail2.module#Detail2Module'
         // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
         // loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
         // loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'

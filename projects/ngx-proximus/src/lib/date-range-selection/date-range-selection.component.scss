@@ -2,10 +2,18 @@
    display: flex;
    align-items: center;
    justify-content: center;
+   max-width: 100%;
 }
 
 .swap-button {
    min-width: auto;
    padding: 0 8px;
-   margin: 0 5px;
+}
+
+::ng-deep {
+   ngx-mat-drp {
+      mat-form-field {
+         min-width: inherit !important;
+      }
+   }
 }

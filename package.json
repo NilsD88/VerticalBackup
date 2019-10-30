@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --port=5151 --aot",
+    "dev-prod": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve --prod=true --port=5151 --sourceMap=false",
     "angury": "ng serve --port=5151",
     "start": "node server",
     "prebuild": "npm i -g @angular/cli",

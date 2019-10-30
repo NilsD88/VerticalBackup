@@ -1,12 +1,12 @@
-import { AlertsService } from './../../../services/alerts.service';
+import { AlertsService } from 'src/app/services/alerts.service';
 import { NgModule } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AlertsComponent} from './alerts.component';
 import {RouterModule} from '@angular/router';
 import {AlertsRoutes} from './alerts.routing';
 import {TranslateModule} from '@ngx-translate/core';
-import {IconModule} from '../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
-import {ButtonModule} from '../../../../../projects/ngx-proximus/src/lib/button/button.module';
+import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
+import {ButtonModule} from 'projects/ngx-proximus/src/lib/button/button.module';
 import {
   MatButtonModule,
   MatCheckboxModule,
@@ -23,7 +23,7 @@ import {
   MatSnackBarModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
-import {DateRangeSelectionModule} from '../../../../../projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.module';
+import {DateRangeSelectionModule} from 'projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.module';
 import {NgSelectModule} from '@ng-select/ng-select';
 import { SharedService } from 'src/app/services/shared.service';
 import { NewAlertService } from 'src/app/services/new-alert.service';

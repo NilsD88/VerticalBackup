@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {IThing} from '../../../../../src/app/models/g-thing.model';
+import {IThing} from 'src/app/models/g-thing.model';
 
 interface IItem extends IThing {
   selected: boolean;

@@ -1,4 +1,4 @@
-import { IThresholdWithLastValuesAndIndicators } from './../../../../../src/app/models/g-threshold.model';
+import { IThresholdWithLastValuesAndIndicators } from 'src/app/models/g-threshold.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 
@@ -21,6 +21,7 @@ export class ThresholdTemplatesDetailItemComponent implements OnInit {
   ngOnInit() {
 
     //TODO: remove these lines
+    /*
     this.lastValues = [
       {
         sensorTypeId: '1',
@@ -33,6 +34,7 @@ export class ThresholdTemplatesDetailItemComponent implements OnInit {
         value: 32
       }
     ];
+    */
 
     this.thresholdTemplate.thresholds.forEach((threshold: IThresholdWithLastValuesAndIndicators) => {
       const coef = 100 / (threshold.sensorType.max - threshold.sensorType.min);

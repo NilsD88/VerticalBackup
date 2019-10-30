@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col col-md-3" style="padding-right:0;">
+    <div class="col-md-3 col-xs-12" style="padding-right:0;">
       <div class="filters">
         <span>Battery level</span>
         <pxs-range-slider [min]="0" [max]="100" [startFrom]="0" [startTo]="100" [postfix]="'%'"
@@ -14,7 +14,7 @@
       <pxs-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="300"
         [colors]="chartColors"></pxs-pie-chart>
     </div>
-    <div class="col col-md-9" style="padding-left:0;">
+    <div class="col-md-9 col-xs-12" style="padding-left:0; min-height: 400px;">
       <pvf-tankmonitoring-map [tanks]="selectedAssets"></pvf-tankmonitoring-map>
     </div>
   </div>

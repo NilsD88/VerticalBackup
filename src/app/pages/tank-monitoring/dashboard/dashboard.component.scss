@@ -2,7 +2,7 @@
 
 .container-fluid {
   .row {
-    .col {
+    [class^="col"] {
       padding: 0;
 
       .filters {

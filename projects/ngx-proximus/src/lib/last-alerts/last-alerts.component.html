@@ -1,18 +1,34 @@
-<div class="last-alerts">
-  <div *ngFor="let lastAlert of lastAlerts" class="last-alert">
-    <div class="title">
-      <h6>
-        <img [src]="'assets/smartmonitoring/images/icons/icon-'+ lastAlert.thresholdItem.threshold.sensorType.name.toLowerCase() + '.svg'">
-        {{lastAlert.thresholdItem.threshold.sensorType.name}}
-      </h6>
-    </div>
-    <div class="alert">
-      <p>
-        <span *ngIf="lastAlert.thresholdItem.label">{{lastAlert.thresholdItem.label}}</span>
-        <span *ngIf="!lastAlert.thresholdItem.label">{{lastAlert.thresholdItem.severity}}</span>
-        : {{lastAlert.sensorReading.value}}
-      </p>
-      <p><span>Date</span>: {{lastAlert.sensorReading.timestamp | date: 'short'}}</p>
-    </div>
-  </div>
-</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title [translate]="'DETAIL.LAST_ALERT.TITLE'"></mat-card-title>
+    <button mat-flat-button (click)="download()">
+      <pxs-icon icon="download"></pxs-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-card *ngFor="let alert of alerts">
+      <mat-card-content>
+        <div class="icon">
+          <img 
+            [src]="'assets/smartmonitoring/images/icons/icon-'+ alert?.sensorType?.name + '-white.svg'"
+            [matTooltip]="alert?.sensorType.name + alert?.value + alert?.sensorType?.postfix"
+            [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
+          >
+        </div>
+        <div class="left">
+          <span class="name">{{alert?.sensorType?.name}}</span>
+          <span class="severity" [ngClass]="{'severity': alert?.severity, 'low': alert?.severity=='LOW', 'medium': alert?.severity=='MEDIUM', 'critical': alert?.severity=='CRITICAL'}">
+            {{alert?.severity}}
+            <span *ngIf="alert?.label">
+                : {{alert?.label}}
+            </span>
+          </span>
+        </div>
+        <div class="right">
+          <span class="value">{{alert?.value}} {{alert?.sensorType?.postfix}}</span>
+          <span class="date">{{alert?.timestamp | date : 'shortDate'}}</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </mat-card-content>
+</mat-card>

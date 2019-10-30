@@ -1317,6 +1317,9 @@ mat-form-field {
 
 .main-menu-dropdown {
   margin-top : 47px;
+  @media (max-width : 767px) {
+    margin-top: 0px;
+  }
 }
 
 

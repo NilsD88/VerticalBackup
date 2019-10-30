@@ -1,7 +1,7 @@
-import { NewSensorService } from './../../../services/new-sensor.service';
+import { NewSensorService } from 'src/app/services/new-sensor.service';
 import { cloneDeep } from 'lodash';
-import { IPagedAlerts } from './../../../models/g-alert.model';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { IPagedAlerts } from 'src/app/models/g-alert.model';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 import { SharedService } from 'src/app/services/shared.service';
@@ -79,6 +79,7 @@ export class AlertsComponent implements OnInit {
     private sharedService: SharedService,
     private snackBar: MatSnackBar,
     private newAlertService: NewAlertService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -330,6 +331,7 @@ export class AlertsComponent implements OnInit {
 
   public dateRangeChange(dateRange: DateRange) {
     this.isLoading = true;
+    this.changeDetectorRef.detectChanges();
     this.filterBE.dateRange = dateRange;
     this.filterBE$.next(this.filterBE);
   }

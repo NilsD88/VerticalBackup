@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import * as moment from 'moment';
 import {MatSnackBar} from '@angular/material';
 import {SharedService} from './shared.service';
-import {environment} from '../../environments/environment';
+import {environment} from 'src/environments/environment';
 import {Alert, IPagedAlerts} from '../models/alert.model';
 import {isNullOrUndefined} from 'util';
 

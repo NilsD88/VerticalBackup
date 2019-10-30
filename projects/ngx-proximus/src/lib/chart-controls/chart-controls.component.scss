@@ -6,12 +6,25 @@
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        div.right {
-            display: flex;
-            align-items: center;
-            button {
-                margin-left: 10px;
+
+        > div {
+            max-width: 100%;
+            &.right {
+                display: flex;
+                align-items: center;
+                button {
+                    padding-left: 10px;
+                }
             }
+        }
+
+        mat-button-toggle-group {
+            max-width: 100%;
+            overflow-x: scroll;
+        }
+
+        @media (max-width : 767px) {
+            justify-content: center;
         }
     }
 
@@ -19,4 +32,7 @@
         background: $primary;
         color: white !important;
     }
+
+
+    
 }

@@ -1,4 +1,3 @@
-import { AlertsService } from './../../../../../src/app/services/alerts.service';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { MapComponent } from './map.component';
@@ -26,7 +25,6 @@ import { MapDialogComponent } from './map-dialog.component';
   ],
   exports: [MapComponent],
   providers: [
-    AlertsService,
     NewAssetService,
     NewLocationService
   ],

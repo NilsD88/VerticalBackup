@@ -116,7 +116,7 @@ export class NewAlertService {
     }));
   }
 
-  public getAlertsByDateRange(dateRange: DateRange) {
+  public getAlertsByDateRange(dateRange: DateRange): Observable < IAlert[] > {
     const GET_ALERTS_BY_DATE_RANGE = gql `
       query findAlertsByDateRange($input: DateRange!) {
         alerts: findAlertsByDateRange(input: $input) {
@@ -177,10 +177,65 @@ export class NewAlertService {
     );
   }
 
-  public getAlertById(id: string): Observable < IAlert > {
+  public getAlertsByAssetIdAndDateRange(assetId: string, from: number, to: number): Observable < IAlert[] > {
+    const GET_ALERTS_BY_ID_AND_DATE_RANGE = gql `
+      query findAlertsByAssetIdAndDateRange($input: AlertsByAssetIdAndDateRangeInput!) {
+        alerts: findAlertsByAssetIdAndDateRange(input: $input) {
+          id,
+          read,
+          sensorType {
+            id,
+            name,
+            postfix
+          },
+          thresholdTemplateName,
+          thing {
+            id,
+            name,
+            devEui
+          },
+          asset {
+            id,
+            name
+            location {
+              id,
+              name
+            },
+          }
+          severity,
+          label,
+          timestamp,
+          value,
+        }
+      }`;
+
+    interface GetAlertsByIdAndDateRangeResponse {
+      alerts: IAlert[];
+    }
+
+    return this.apollo.query < GetAlertsByIdAndDateRangeResponse > ({
+      query: GET_ALERTS_BY_ID_AND_DATE_RANGE,
+      variables: {
+        input: {
+          assetId,
+          dateRange: {
+            from,
+            to
+          }
+        }
+      },
+      fetchPolicy: 'network-only'
+    }).pipe(map(({
+      data
+    }) => {
+      return data.alerts;
+    }));
+  }
+
+  public getAlertById(id: string, ): Observable < IAlert > {
     const GET_ALERT_BY_ID = gql `
       query findAssetById($id: Long!) {
-        asset: findAssetById(id: $id) {
+        asset: findAlertsByAssetIdAndDateRange(id: $id) {
           id,
         }
       }

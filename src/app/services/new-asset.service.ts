@@ -1,12 +1,10 @@
+import { MOCK_NEW_CHART_DATA } from 'src/app/mocks/chart';
 import {
   Injectable
 } from '@angular/core';
 import {
   Observable
 } from 'rxjs/internal/Observable';
-import {
-  HttpClient,
-} from '@angular/common/http';
 import {
   Apollo
 } from 'apollo-angular';
@@ -18,6 +16,8 @@ import {
 import {
   map
 } from 'rxjs/operators';
+import { from, observable } from 'rxjs';
+import { IThing } from '../models/g-thing.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,6 @@ export class NewAssetService {
   constructor(
     private apollo: Apollo,
   ) {}
-
-
-  // START APOLLO
 
   public createAsset(asset: IAsset): Observable < boolean > {
     const CREATE_ASSET = gql `
@@ -64,22 +61,22 @@ export class NewAssetService {
 
   public getAssets(): Observable < IAsset[] > {
     const GET_ASSETS = gql `
-            query findAllAssets {
-                assets: findAllAssets {
-                    id,
-                    name,
-                    description,
-                    location {
-                      id,
-                      name
-                    }
-                    thresholdTemplate {
-                        id,
-                        name
-                    }
-                }
-            }
-        `;
+      query findAllAssets {
+        assets: findAllAssets {
+          id,
+          name,
+          description,
+          location {
+            id,
+            name
+          },
+          thresholdTemplate {
+              id,
+              name
+          }
+        }
+      }
+    `;
 
     interface GetAssetsResponse {
       assets: IAsset[];
@@ -126,7 +123,6 @@ export class NewAssetService {
                        }
                      }
                     },
-                    ,
                     thresholdTemplate {
                       id,
                       name
@@ -174,9 +170,16 @@ export class NewAssetService {
                     },
                     things {
                      id,
-                     name
+                     name,
+                     devEui,
+                     sensors {
+                       id,
+                       sensorType {
+                        id,
+                        name
+                       }
+                     }
                     },
-                    ,
                     thresholdTemplate {
                       id,
                       name,
@@ -219,6 +222,13 @@ export class NewAssetService {
     }) => data.asset));
   }
 
+  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+    return Observable.create((observer) => {
+      observer.next(MOCK_NEW_CHART_DATA);
+      observer.complete();
+    });
+  }
+
   public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {
     const GET_ASSETS_BY_LOCATION_ID = gql `
       query FindAssetsByLocation($locationId: Long!) {
@@ -228,7 +238,7 @@ export class NewAssetService {
             description,
             location {
               id,
-             name
+              name
             }
             image,
             geolocation {
@@ -254,7 +264,7 @@ export class NewAssetService {
     }) => data.assets));
   }
 
-  public getAssetsByName(name: string): Observable < IAsset [] > {
+  public getAssetsByName(name: string): Observable < IAsset[] > {
     const GET_ASSETS_BY_NAME = gql `
       query findAssetsByName($input: AssetFindByNameInput!) {
         assets: findAssetsByName(input: $input) {
