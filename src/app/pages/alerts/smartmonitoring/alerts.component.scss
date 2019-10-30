@@ -2,15 +2,21 @@
 
 ::ng-deep {
 
+  [class*="cdk-column-"] {
+    padding: 0 5px !important;
+  }
+
   .cdk-column-select {
     width: 65px
   }
 
   .cdk-column-read {
-    width: 20px
+    min-width: 20px;
+    width: 20px;
   }
 
   .cdk-column-timestamp {
+    min-width: 130px;
     span.name {
       display: block;
       font-weight: 500;
@@ -23,6 +29,12 @@
       color: $sub;
     }
   }
+
+  .cdk-column-value {
+    white-space: nowrap;
+  }
+
+  
 
   .cdk-column-sensorType-name {
     > div {
@@ -46,6 +58,10 @@
       font-weight: 800;
       font-size: 0.8em;
       text-shadow: 0px 0px 4px rgba(0,0,0,0.33);
+      white-space: nowrap;
+      max-width: 100px;
+      text-overflow: ellipsis;
+      overflow: hidden;
       &.low {
           background-color: $severity-low;
       }
@@ -73,6 +89,7 @@
       display: flex;
       align-items: flex-start;
       flex-direction: column;
+      margin: 0 10px;
       > span {
         &.devEui {
           font-size: 0.8em;
@@ -88,13 +105,41 @@
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    > div > span {
-      color: $sub;
-      margin-right: 10px;
+
+    @media (max-width : 1023px) {
+      flex-direction: column;
+      > div {
+        padding-bottom: 10px;
+      }
     }
-    button {
-      margin: 0 5px;
+    .actions {
+      display: flex;
+      align-items: center;
+      button {
+        margin: 0 5px;
+      }
+      span {
+        color: $sub;
+        margin-right: 10px;
+      }
+      @media (max-width : 767px) {
+        flex-direction: column;
+        > div {
+          padding-top: 10px;
+        }
+      }
+
+      @media (max-width : 540px) {
+        > div {
+          display: flex;
+          flex-direction: column;
+          > button {
+            margin-bottom: 5px;
+          }
+        }
+      }
     }
+    
   }
   .alerts-list {
     width: 100%;
