@@ -46,7 +46,7 @@ import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-th
     ListThingsModule,
     ListThresholdTemplatesModule,
     MatDialogModule,
-    PopupConfirmationModule
+    PopupConfirmationModule,
   ],
   providers: [
     NewAssetService,
