@@ -1,8 +1,7 @@
-import { AlertsService } from 'src/app/services/alerts.service';
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
-import { IAsset } from 'src/app/models/asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 import { ILocation } from 'src/app/models/g-location.model';
-import { IAlert } from 'src/app/models/alert.model';
+import { IAlert } from 'src/app/models/g-alert.model';
 
 @Component({
   selector: 'pxs-map-asset-popup',
@@ -17,7 +16,7 @@ export class MapAssetPopupComponent implements OnInit {
 
   public lastAlert: IAlert;
 
-  constructor(private alertsService: AlertsService) {}
+  constructor() {}
 
   ngOnInit() {
     if (this.asset) {
@@ -30,8 +29,11 @@ export class MapAssetPopupComponent implements OnInit {
   }
 
   async getLastAlert() {
+    //TODO: get last alerts
+    /*
     const lastAlertPromise = this.alertsService.getLastAlertByAssetId(this.asset.id);
     this.lastAlert = await lastAlertPromise;
+    */
   }
 
   openLocation() {

@@ -125,7 +125,7 @@ export class InventoryComponent implements OnInit {
   private searchAssetsByFilter(filters: Observable<IInventoryFilterBE>) {
     return filters.pipe(
       debounceTime(500),
-      switchMap(term => {
+      switchMap(() => {
         return this.assetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE);
       })
     );

@@ -1,11 +1,9 @@
-import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map-popup/map-popup.component';
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, Injector} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';
 import {PublicLayoutComponent} from './layout/smartmonitoring/public.layout.component';
 import {RouterModule} from '@angular/router';
-import { MatProgressButtonsModule } from 'mat-progress-buttons';
 import {AdminAuthGuard, AppRoutes, PublicAuthGuard, UserAuthGuard} from './app.routing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MenuItemModule} from 'projects/ngx-proximus/src/lib/menu-item/menu-item.module';
@@ -19,19 +17,8 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {environment} from '../environments/environment';
 import {FooterModule} from 'projects/ngx-proximus/src/lib/footer/footer.module';
 import {MatMenuModule, MatSnackBarModule, MatTooltipModule} from '@angular/material';
-import {SharedService} from './services/shared.service';
-import {AuthService} from './services/auth.service';
-import {SharedLayoutService} from './layout/shared-layout.service';
-import {NgSelectModule} from '@ng-select/ng-select';
-import {FilterService} from './services/filter.service';
-import {ThresholdTemplateService} from './services/threshold-template.service';
-import { MapAssetPopupComponent } from 'projects/ngx-proximus/src/lib/map-asset-popup/map-asset-popup.component';
-import { createCustomElement } from '@angular/elements';
-import { AssetService } from './services/asset.service';
 import { SharedModule } from './shared/shared.module';
-import { GlobaleSearchService } from './services/global-search.service';
 import { GraphQLModule } from './graphql.module';
-import { TankMonitoringMapPopupComponent } from './pages/tank-monitoring/lib/map-popup/map-popup.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
@@ -42,25 +29,19 @@ export function createTranslateLoader(http: HttpClient) {
     AppComponent,
     PrivateLayoutComponent,
     PublicLayoutComponent,
-    MapAssetPopupComponent,
-    MapPopupComponent,
-    TankMonitoringMapPopupComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(AppRoutes),
-    MatProgressButtonsModule.forRoot(),
     BrowserAnimationsModule,
-    MenuItemModule,
+    HttpClientModule,
+    MatMenuModule,
     MatTooltipModule,
+    MatSnackBarModule,
+    MenuItemModule,
     TopMenuModule,
     FooterModule,
-    MatSnackBarModule,
-    HttpClientModule,
     TopMenuActionsModule,
-    MatMenuModule,
-    MatSnackBarModule,
-    NgSelectModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -77,26 +58,7 @@ export function createTranslateLoader(http: HttpClient) {
     PublicAuthGuard,
     UserAuthGuard,
     AdminAuthGuard,
-    SharedService,
-    AuthService,
-    FilterService,
-    ThresholdTemplateService,
-    SharedLayoutService,
-    AssetService,
-    GlobaleSearchService
   ],
   bootstrap: [AppComponent],
-  entryComponents: [MapAssetPopupComponent, MapPopupComponent, TankMonitoringMapPopupComponent],
 })
-export class AppModule {
-  constructor(private injector: Injector) {
-    const PopupElement = createCustomElement(MapAssetPopupComponent, {injector});
-    customElements.define('popup-element', PopupElement);
-
-    const MapPopupElement = createCustomElement(MapPopupComponent, {injector});
-    customElements.define('map-popup-element', MapPopupElement);
-
-    const TankMonitoringMapPopupElement = createCustomElement(TankMonitoringMapPopupComponent, {injector});
-    customElements.define('tankmonitoring-map-popup-element', TankMonitoringMapPopupElement);
-  }
-}
+export class AppModule {}

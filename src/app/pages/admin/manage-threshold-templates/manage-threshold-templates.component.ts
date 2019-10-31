@@ -49,6 +49,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     if (!isNullOrUndefined(thresholdTemplateId)) {
       this.editMode = true;
       this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
+      console.log(this.thresholdTemplate);
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.compose([Validators.required, Validators.pattern('[A-zÀ-ú0-9 ]*')])],
       });
@@ -80,7 +81,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  private createFormControlForItem(thresholdId: number) {
+  private createFormControlForItem(thresholdId: string) {
     this.thresholdTemplateFormGroup.addControl(`threshold-${thresholdId}`, this.formBuilder.group({
       thresholdItems: this.formBuilder.group({})
     }));
@@ -214,7 +215,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
             sensorType: result,
             thresholdItems: []
           });
-          this.createFormControlForItem(+result.id);
+          this.createFormControlForItem(result.id);
         }
       }
     });

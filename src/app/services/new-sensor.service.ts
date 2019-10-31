@@ -22,7 +22,33 @@ export class NewSensorService {
             query findAllSensorTypes {
                 sensorTypes: findAllSensorTypes {
                     id,
-                    name
+                    name,
+                }
+            }
+        `;
+
+        interface GetSensorTypeNamesResponse {
+            sensorTypes: ISensorType[];
+        }
+
+        return this.apollo.query<GetSensorTypeNamesResponse>({
+            query: GET_SENSOR_TYPE_NAMES,
+            fetchPolicy: 'network-only'
+        }).pipe(map(({data}) => {
+            return data.sensorTypes;
+        }));
+    }
+
+    public getSensorTypes(): Observable<ISensorType[]> {
+        const GET_SENSOR_TYPE_NAMES = gql`
+            query findAllSensorTypes {
+                sensorTypes: findAllSensorTypes {
+                    id,
+                    name,
+                    type,
+                    min,
+                    max,
+                    postfix
                 }
             }
         `;

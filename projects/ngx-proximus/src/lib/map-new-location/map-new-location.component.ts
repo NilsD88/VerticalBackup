@@ -1,6 +1,6 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges} from '@angular/core';
-import { IGeolocation, Geolocation } from 'src/app/models/asset.model';
+import { IGeolocation } from 'src/app/models/geolocation.model';
 import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS } from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -143,7 +143,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
       });
     } else {
       console.log("default location");
-      const defaultValue = new Geolocation(null);
+      const defaultValue = {lat: 0, lng: 0};
       this.options = {
         layers: this.backgroundLayer,
         zoom: 12,

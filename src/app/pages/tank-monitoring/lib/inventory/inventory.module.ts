@@ -1,4 +1,3 @@
-import { NewLocationService } from 'src/app/services/new-location.service';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
@@ -6,12 +5,8 @@ import {NgxMatDrpModule} from 'ngx-mat-daterange-picker';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {InventoryRoutes} from './inventory.routing';
 import {TankMonitoringInventoryComponent} from './inventory.component';
-import {SharedService} from 'src/app/services/shared.service';
-import {FilterService} from 'src/app/services/filter.service';
-import {AssetService} from 'src/app/services/asset.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
-import {LocationsService} from 'src/app/services/locations.service';
 import {
   MatCardModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
@@ -52,7 +47,6 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
     MapModule
   ],
   declarations: [TankMonitoringInventoryComponent],
-  providers: [AssetService, FilterService, LocationsService, SharedService, NewLocationService]
 })
 export class TankMonitoringInventoryModule {
 }

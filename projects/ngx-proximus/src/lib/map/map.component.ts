@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { NgElement, WithProperties } from '@angular/elements';
-import { IGeolocation } from 'src/app/models/asset.model';
+import { IGeolocation } from 'src/app/models/geolocation.model';
 import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point} from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 import { ILocation } from 'src/app/models/g-location.model';

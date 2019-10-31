@@ -6,7 +6,9 @@ import { NewAssetService } from './new-asset.service';
 import { IAsset } from '../models/g-asset.model';
 import { ILocation } from '../models/g-location.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class GlobaleSearchService {
 
     constructor(

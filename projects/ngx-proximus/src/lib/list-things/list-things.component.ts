@@ -3,10 +3,8 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angu
 import { IThing } from 'src/app/models/g-thing.model';
 import { ISensor } from 'src/app/models/g-sensor.model';
 import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar, MatDialog } from '@angular/material';
-import { ThingService } from 'src/app/services/thing.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { NewThingService } from 'src/app/services/new-thing.service';
-import { Subject } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import {uniqBy} from 'lodash';
@@ -46,7 +44,6 @@ export class ListThingsComponent implements OnInit {
   public isLoading = false;
 
   constructor(
-    private thingService: ThingService,
     private sharedService: SharedService,
     private newThingService: NewThingService,
     public snackBar: MatSnackBar,
@@ -120,16 +117,6 @@ export class ListThingsComponent implements OnInit {
     this.activeInput = null;
   }
 
-  public async saveThing(thing: IThing): Promise<void> {
-    try {
-      await this.thingService.updateName(thing as IThing);
-      this.getThings();
-      this.sharedService.showNotification('Successfully saved thing name', 'success');
-      this.activeInput = null;
-    } catch (err) {
-      this.sharedService.showNotification('Error saving thing name', 'error');
-    }
-  }
 
   public async updateThing(thing: IThingEditing) {
     const orignalName = thing.name;

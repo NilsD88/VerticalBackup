@@ -11,10 +11,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
-import { NewThresholdTemplate } from 'src/app/models/new-threshold-template.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 
 import { cloneDeep } from 'lodash';
+import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 
 
 @Component({
@@ -251,7 +251,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
         fromPopup: true,
       }
     });
-    const result: NewThresholdTemplate = (await dialogRef.afterClosed().toPromise()) as NewThresholdTemplate;
+    const result: IThresholdTemplate = (await dialogRef.afterClosed().toPromise()) as IThresholdTemplate;
     if (result) {
       this.displayThresholdTemplateList = false;
       this.changeDetectorRef.detectChanges();
