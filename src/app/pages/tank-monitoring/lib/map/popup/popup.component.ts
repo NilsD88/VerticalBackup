@@ -4,8 +4,8 @@ import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asse
 
 @Component({
   selector: 'pvf-tankmonitoring-map-popup',
-  templateUrl: './map-popup.component.html',
-  styleUrls: ['./map-popup.component.scss']
+  templateUrl: './popup.component.html',
+  styleUrls: ['./popup.component.scss']
 })
 export class TankMonitoringMapPopupComponent implements OnInit {
   @Input() asset: ITankMonitoringAsset;

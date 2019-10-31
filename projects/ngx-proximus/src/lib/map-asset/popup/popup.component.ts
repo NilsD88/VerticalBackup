@@ -1,18 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, EventEmitter} from '@angular/core';
+import { IAsset } from 'src/app/models/g-asset.model';
 import { ILocation } from 'src/app/models/g-location.model';
 import { IAlert } from 'src/app/models/g-alert.model';
-import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({
-  selector: 'pxs-map-popup',
-  templateUrl: './map-popup.component.html',
-  styleUrls: ['./map-popup.component.scss']
+  selector: 'pxs-map-asset-popup',
+  templateUrl: './popup.component.html',
+  styleUrls: ['./popup.component.scss']
 })
-export class MapPopupComponent implements OnInit {
+export class MapAssetPopupComponent implements OnInit {
   @Input() asset: IAsset;
-  @Input() assetUrl: string;
   @Input() location: ILocation;
-  @Input() goToChild;
+  @Input() eventEmitter: EventEmitter<{location: ILocation, parent: ILocation}> = new EventEmitter<{location: ILocation, parent: ILocation}>();
+
 
   public lastAlert: IAlert;
 
@@ -23,7 +23,7 @@ export class MapPopupComponent implements OnInit {
       if (this.asset.lastAlert) {
         this.lastAlert = this.asset.lastAlert;
       } else {
-        //this.getLastAlert();
+        this.getLastAlert();
       }
     }
   }
@@ -37,7 +37,10 @@ export class MapPopupComponent implements OnInit {
   }
 
   openLocation() {
-    this.goToChild(this.location);
+    this.eventEmitter.emit({
+        location: this.location,
+        parent: this.location.parent
+    });
   }
 
 }

@@ -1,11 +1,11 @@
 import { ITankMonitoringAsset } from './../../../../models/tankmonitoring/asset.model';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
-import { Component, OnInit, ChangeDetectorRef, OnChanges, OnDestroy, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
-import { TankMonitoringMapPopupComponent } from '../map-popup/map-popup.component';
+import { TankMonitoringMapPopupComponent } from './popup/popup.component';
 import { divIcon } from 'leaflet';
 import { of } from 'rxjs';
 

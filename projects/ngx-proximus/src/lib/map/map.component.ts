@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 import { findLocationById } from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
-import { MapPopupComponent } from '../map-popup/map-popup.component';
+import { MapPopupComponent } from './popup/popup.component';
 import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({

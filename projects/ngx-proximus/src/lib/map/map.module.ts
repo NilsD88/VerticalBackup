@@ -8,7 +8,7 @@ import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/ma
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MapDialogComponent } from './map-dialog.component';
-import { MapPopupComponent } from '../map-popup/map-popup.component';
+import { MapPopupComponent } from './popup/popup.component';
 import { createCustomElement } from '@angular/elements';
 import { RouterModule } from '@angular/router';
 
