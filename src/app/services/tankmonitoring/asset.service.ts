@@ -1,7 +1,7 @@
 import { MOCK_NEW_CHART_TANK_DATA } from 'src/app/mocks/chart';
 
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
@@ -19,7 +19,7 @@ export class TankMonitoringAssetService {
 
   public getAssets(): Observable < ITankMonitoringAsset[] > {
 
-    const result: Observable < ITankMonitoringAsset[] > = Observable.create((observer) => {
+    return new Observable < ITankMonitoringAsset[] > ((observer) => {
       observer.next([{
           id: '0',
           name: 'test',
@@ -36,7 +36,7 @@ export class TankMonitoringAssetService {
                 name: 'sensorTypeName'
               },
               value: 9,
-              timestamp: new Date()
+              timestamp: new Date().getTime()
             }]
           }],
           geolocation: {
@@ -60,7 +60,7 @@ export class TankMonitoringAssetService {
                 name: 'sensorTypeName'
               },
               value: 33,
-              timestamp: new Date()
+              timestamp: new Date().getTime()
             }]
           }],
           geolocation: {
@@ -71,8 +71,6 @@ export class TankMonitoringAssetService {
       ]);
       observer.complete();
     });
-
-    return result;
 
     const GET_ASSETS_BY_MODULE = gql `
         query FindAssetsByModule($input: AssetFindByModuleInput!) {

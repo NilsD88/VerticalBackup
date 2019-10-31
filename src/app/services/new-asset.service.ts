@@ -3,9 +3,6 @@ import {
   Injectable
 } from '@angular/core';
 import {
-  Observable
-} from 'rxjs/internal/Observable';
-import {
   Apollo
 } from 'apollo-angular';
 import gql from 'graphql-tag';
@@ -16,8 +13,8 @@ import {
 import {
   map
 } from 'rxjs/operators';
-import { from, observable } from 'rxjs';
 import { IThing } from '../models/g-thing.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -172,6 +169,7 @@ export class NewAssetService {
                      id,
                      name,
                      devEui,
+                     batteryPercentage,
                      sensors {
                        id,
                        sensorType {
@@ -223,7 +221,7 @@ export class NewAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    return Observable.create((observer) => {
+    return new Observable < IThing [] > ((observer) => {
       observer.next(MOCK_NEW_CHART_DATA);
       observer.complete();
     });
@@ -295,7 +293,7 @@ export class NewAssetService {
 
   public getAssets_TankMonitoring_Dashboard(): Observable < IAsset[] > {
 
-    const result: Observable < IAsset[] > = Observable.create((observer) => {
+    return new Observable < IAsset[] > ((observer) => {
       observer.next([{
           id: '0',
           name: 'test',
@@ -312,7 +310,7 @@ export class NewAssetService {
                 name: 'sensorTypeName'
               },
               value: 9,
-              timestamp: new Date()
+              timestamp: new Date().getTime()
             }]
           }],
           geolocation: {
@@ -336,7 +334,7 @@ export class NewAssetService {
                 name: 'sensorTypeName'
               },
               value: 33,
-              timestamp: new Date()
+              timestamp: new Date().getTime()
             }]
           }],
           geolocation: {
@@ -348,7 +346,6 @@ export class NewAssetService {
       observer.complete();
     });
 
-    return result;
 
     const GET_ASSETS_BY_MODULE = gql `
       query FindAssetsByModule($input: AssetFindByModuleInput!) {

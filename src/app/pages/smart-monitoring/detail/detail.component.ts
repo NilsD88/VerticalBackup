@@ -70,6 +70,7 @@ export class DetailComponent implements OnInit {
   private init() {
     this.getLastAlerts();
     this.getChartData(this.chartData$).subscribe(async things => {
+      console.log(things);
       const chartData = [];
       // Get the translation of each label
       for (const thing of things) {
