@@ -234,7 +234,7 @@ export class NewLocationService {
     // END APOLLO
 
   public getLocationsTree(): Observable<ILocation[]> {
-    const url = `${environment.api}/locationtrees?org_id=1`;
+    const url = `${environment.baseUrl}/location/locationtrees?org_id=1`;
     return this.http.get<ILocation[]>(url);
   }
 
