@@ -1,8 +1,8 @@
+import { cloneDeep } from 'lodash';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
-import { ThresholdTemplateService } from 'src/app/services/threshold-template.service';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { isUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
@@ -30,7 +30,6 @@ export class ListThresholdTemplatesComponent implements OnInit {
   public displayedColumns: string[];
 
   constructor(
-    public thresholdTemplateService: ThresholdTemplateService,
     public newThresholdTemplateService: NewThresholdTemplateService,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog
@@ -43,11 +42,9 @@ export class ListThresholdTemplatesComponent implements OnInit {
     } else {
       this.displayedColumns = ['name', 'thresholds'];
     }
-
     if (!isUndefined(this.selectedThresholdTemplate)) {
       this.displayedColumns.unshift('select');
     }
-
     await this.getThresholdTemplates();
   }
 
@@ -105,7 +102,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
   }
 
   public async openDetailDialog(thresholdTemplateId: string) {
-    const thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
+    const thresholdTemplate = cloneDeep(await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise());
     this.dialog.open(ThresholdTemplatesDetailComponent, {
       minWidth: '320px',
       maxWidth: '600px',

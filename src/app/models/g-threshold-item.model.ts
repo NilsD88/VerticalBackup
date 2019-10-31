@@ -20,7 +20,6 @@ export class ThresholdItem {
     severity: SeverityLevel;
     notification: INotification;
     sensorType: ISensorType;
-
     threshold: IThreshold;
 
     constructor(thresholdItem: IThresholdItem = null) {
@@ -31,6 +30,7 @@ export class ThresholdItem {
                 }
             }
         }
+        console.log(this);
     }
 }
 

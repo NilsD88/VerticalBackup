@@ -3,7 +3,7 @@ import {Component, Input, OnChanges, OnInit, Output, EventEmitter, ViewChild} fr
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { IAsset } from 'src/app/models/asset.model';
+import { IAsset } from 'src/app/models/g-asset.model';
 
 
 declare global {

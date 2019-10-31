@@ -1,7 +1,6 @@
-import { AlertsService } from 'src/app/services/alerts.service';
 import {Component, Input, OnInit} from '@angular/core';
 import { ILocation } from 'src/app/models/g-location.model';
-import { IAlert } from 'src/app/models/alert.model';
+import { IAlert } from 'src/app/models/g-alert.model';
 import { IAsset } from 'src/app/models/g-asset.model';
 
 @Component({
@@ -17,7 +16,7 @@ export class MapPopupComponent implements OnInit {
 
   public lastAlert: IAlert;
 
-  constructor(private alertsService: AlertsService) {}
+  constructor() {}
 
   ngOnInit() {
     if (this.asset) {
@@ -30,9 +29,11 @@ export class MapPopupComponent implements OnInit {
   }
 
   async getLastAlert() {
-    console.log("has no alert");
+    //TODO: get last alerts
+    /*
     const lastAlertPromise = this.alertsService.getLastAlertByAssetId(this.asset.id);
     this.lastAlert = await lastAlertPromise;
+    */
   }
 
   openLocation() {

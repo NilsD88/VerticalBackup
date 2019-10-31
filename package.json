@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve --port=5151 --aot",
+    "bundle-report": "ng build --prod --stats-json && webpack-bundle-analyzer dist/vertical-foundations/stats.json",
     "dev-prod": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng serve --prod=true --port=5151 --sourceMap=false",
     "angury": "ng serve --port=5151",
     "start": "node server",
@@ -47,6 +48,7 @@
     "apollo-link": "^1.2.11",
     "canvg": "^2.0.0",
     "classlist.js": "^1.1.20150312",
+    "compression": "^1.7.4",
     "core-js": "^2.5.4",
     "cropperjs": "^1.5.1",
     "express": "^4.17.1",
@@ -103,6 +105,7 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "^3.5.3"
+    "typescript": "^3.5.3",
+    "webpack-bundle-analyzer": "^3.6.0"
   }
 }

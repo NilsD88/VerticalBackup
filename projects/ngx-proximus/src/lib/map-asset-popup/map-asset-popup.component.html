@@ -1,10 +1,10 @@
 <div class="container" *ngIf="asset">
   <div class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.pictureBase64 + ')'}"></div>
   <div class="title">
-    <a routerLink="/private/smartmonitoring/detail/{{asset.id}}"><h6>{{asset.name}}</h6></a>
+    <a routerLink="/private/smartmonitoring/detail/{{asset.id}}"><h6>{{asset.image}}</h6></a>
   </div>
   <div class="subtitle">
-    <b>{{asset.sublocation.location.name}}</b>, {{asset.sublocation.name}}
+    <b>{{asset.location.name}}</b>
   </div>
   <div class="last-alert" *ngIf="lastAlert">
     <strong>Last alert: </strong>{{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}

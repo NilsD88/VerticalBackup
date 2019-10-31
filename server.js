@@ -1,9 +1,11 @@
 const express = require('express');
+const compression = require('compression');
 const app = express();
 const path = require('path');
 const frameguard = require('frameguard');
 var helmet = require('helmet');
 app.disable('x-powered-by');
+app.use(compression());
 app.use(helmet());
 app.use(helmet.featurePolicy({
   features: {

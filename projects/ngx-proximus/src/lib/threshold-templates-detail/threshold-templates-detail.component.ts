@@ -1,6 +1,6 @@
 import { Component, OnInit, Optional, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { INewThresholdTemplate } from 'src/app/models/threshold.model';
+import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail',
@@ -9,7 +9,7 @@ import { INewThresholdTemplate } from 'src/app/models/threshold.model';
 })
 export class ThresholdTemplatesDetailComponent implements OnInit {
 
-  @Input() thresholdTemplate: INewThresholdTemplate;
+  @Input() thresholdTemplate: IThresholdTemplate;
   @Input() lastValues;
 
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any) { }

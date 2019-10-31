@@ -1,11 +1,12 @@
 <div class="container" *ngIf="asset">
-  <div *ngIf="asset.pictureBase64" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.pictureBase64 + ')'}"></div>
+  <div *ngIf="asset.image" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.image + ')'}"></div>
   <div class="title">
     <a [routerLink]="assetUrl+''+asset.id"><h6>{{asset.name}}</h6></a>
   </div>
-  <div class="subtitle" *ngIf="asset.sublocation">
-    <b>{{asset.sublocation.location.name}}</b>, {{asset.sublocation.name}}
+  <div class="subtitle" *ngIf="asset.location">
+    <b>{{asset.location.name}}</b>
   </div>
+  <!--
   <div class="last-alert" *ngIf="lastAlert">
     <strong>Last alert: </strong>{{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}
     {{alertsService.getAlertType(lastAlert.sensorReading.value, lastAlert.thresholdAlert.high, lastAlert.thresholdAlert.low) | translate}}
@@ -14,6 +15,7 @@
       {{lastAlert.sensorReading.timestamp | date : 'short'}}
     </span>
   </div>
+  -->
   <ul *ngIf="asset.things">
     <li *ngFor="let thing of asset.things">
       <strong>{{thing.name}}</strong>

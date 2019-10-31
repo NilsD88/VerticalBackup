@@ -1,5 +1,4 @@
 import {isNullOrUndefined} from 'util';
-import {ThresholdAlert} from './threshold.model';
 
 export interface IAlertDefinitionEmail {
   recipients: string;

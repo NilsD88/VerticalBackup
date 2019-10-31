@@ -7,11 +7,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {InventoryRoutes} from './inventory.routing';
 import {InventoryComponent} from './inventory.component';
 import {SharedService} from 'src/app/services/shared.service';
-import {FilterService} from 'src/app/services/filter.service';
-import {AssetService} from 'src/app/services/asset.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
-import {LocationsService} from 'src/app/services/locations.service';
 import {
   MatCardModule, MatFormFieldModule,
   MatIconModule, MatInputModule,
@@ -52,7 +49,6 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
     MapModule
   ],
   declarations: [InventoryComponent],
-  providers: [AssetService, FilterService, LocationsService, SharedService, NewLocationService],
   exports: [InventoryComponent]
 })
 export class InventoryModule {

@@ -131,7 +131,10 @@ export class NewThresholdTemplateService {
                     id,
                 }
             }
-        }).pipe(map(({data}) => data.thresholdTemplate));
+        }).pipe(map(({data}) => {
+            console.log(data);
+            return data.thresholdTemplate;
+        }));
     }
 
     public updateThresholdTemplate(thresholdTemplate: IThresholdTemplate): Observable<boolean> {

@@ -7,7 +7,7 @@ import {SharedService} from './services/shared.service';
 
 export function createApollo(httpLink: HttpLink, sharedService: SharedService) {
 
-  const uri = sharedService.baseUrl + 'graphql'
+  const uri = sharedService.baseUrl + 'graphql';
 
   const cache = new InMemoryCache({
     addTypename: false
