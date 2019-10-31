@@ -5,7 +5,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 import { IconModule } from '../icon/icon.module';
 import { MatButtonModule } from '@angular/material';
-import { MapAssetPopupComponent } from '../map-asset-popup/map-asset-popup.component';
+import { MapAssetPopupComponent } from './popup/popup.component';
 import { createCustomElement } from '@angular/elements';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';

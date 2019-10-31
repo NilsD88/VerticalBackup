@@ -2,7 +2,7 @@ import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef} from 
 import {NgElement, WithProperties} from '@angular/elements';
 import {IAsset} from 'src/app/models/g-asset.model';
 import {Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, icon, LatLngBounds, geoJSON, MarkerCluster, Point} from 'leaflet';
-import {MapAssetPopupComponent} from '../map-asset-popup/map-asset-popup.component';
+import {MapAssetPopupComponent} from './popup/popup.component';
 import { GeoJsonObject } from 'geojson';
 import { ILocation } from 'src/app/models/g-location.model';
 import { IGeolocation } from 'src/app/models/geolocation.model';

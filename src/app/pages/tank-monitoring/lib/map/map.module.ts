@@ -1,4 +1,4 @@
-import { TankMonitoringMapPopupComponent } from './../map-popup/map-popup.component';
+import { TankMonitoringMapPopupComponent } from './popup/popup.component';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TankMonitoringMapComponent } from './map.component';
