@@ -61,7 +61,7 @@
     "highcharts-angular": "^2.4.0",
     "highcharts-more": "^0.1.7",
     "i": "^0.3.6",
-    "jspdf": "^1.5.3",
+    "jspdf": "1.5.2",
     "leaflet": "^1.5.1",
     "leaflet-geosearch": "^2.7.0",
     "leaflet.markercluster": "^1.4.1",
