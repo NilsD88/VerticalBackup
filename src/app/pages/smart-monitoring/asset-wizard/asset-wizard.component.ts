@@ -55,7 +55,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     private newAssetService: NewAssetService,
     private router: Router,
     public activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
 
@@ -194,10 +195,10 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       for (const difference of differences) {
         switch (difference) {
           case 'thresholdTemplate':
-            asset.thresholdTemplateId = (this.asset.thresholdTemplate || {}).id || null;
+            asset.thresholdTemplateId = (this.asset.thresholdTemplate || {}).id || null;
             break;
           case 'things':
-            asset.thingsId = this.asset.things.map(thing => thing.id);
+            asset.thingIds = this.asset.things.map(thing => thing.id);
             break;
           default:
             asset[difference] = this.asset[difference];
