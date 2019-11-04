@@ -1,21 +1,21 @@
-import { LocationWizardComponent } from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ILocation } from 'src/app/models/g-location.model';
-import { IThing } from 'src/app/models/g-thing.model';
-import { MatStepper } from '@angular/material/stepper';
-import { MatDialog } from '@angular/material';
-import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { isNullOrUndefined } from 'util';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
-import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import {LocationWizardComponent} from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
+import {NewLocationService} from 'src/app/services/new-location.service';
+import {NewAssetService} from 'src/app/services/new-asset.service';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ILocation} from 'src/app/models/g-location.model';
+import {IThing} from 'src/app/models/g-thing.model';
+import {MatStepper} from '@angular/material/stepper';
+import {MatDialog} from '@angular/material';
+import {PopupConfirmationComponent} from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {isNullOrUndefined} from 'util';
+import {IAsset} from 'src/app/models/g-asset.model';
+import {ManageThresholdTemplatesComponent} from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
+import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
 
-import { cloneDeep } from 'lodash';
-import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import {cloneDeep} from 'lodash';
+import {IThresholdTemplate} from 'src/app/models/g-threshold-template.model';
 
 
 @Component({
@@ -59,7 +59,8 @@ export class AssetWizardComponent implements OnInit {
     private newLocationService: NewLocationService,
     private router: Router,
     public activatedRoute: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
 
@@ -194,10 +195,10 @@ export class AssetWizardComponent implements OnInit {
       for (const difference of differences) {
         switch (difference) {
           case 'thresholdTemplate':
-            asset.thresholdTemplateId = (this.asset.thresholdTemplate || {}).id || null;
+            asset.thresholdTemplateId = (this.asset.thresholdTemplate || {}).id || null;
             break;
           case 'things':
-            asset.thingsId = this.asset.things.map(thing => thing.id);
+            asset.thingIds = this.asset.things.map(thing => thing.id);
             break;
           default:
             asset[difference] = this.asset[difference];
