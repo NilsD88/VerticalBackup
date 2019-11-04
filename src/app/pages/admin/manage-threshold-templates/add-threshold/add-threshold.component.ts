@@ -11,7 +11,7 @@ export class AddThresholdComponent implements OnInit {
   items: ISensorType[] = [];
   item: ISensorType = null;
 
-  constructor(public dialogRef: MatDialogRef<AddThresholdComponent>, private newSensorService: NewSensorService) {
+  constructor(public dialogRef: MatDialogRef<AddThresholdComponent>, public newSensorService: NewSensorService) {
   }
 
   async ngOnInit() {

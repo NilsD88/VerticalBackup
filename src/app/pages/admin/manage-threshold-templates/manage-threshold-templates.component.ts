@@ -1,11 +1,10 @@
-import {Component, OnInit, Optional, Inject, ChangeDetectorRef} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 import {MatDialog} from '@angular/material';
 import {AddThresholdComponent} from './add-threshold/add-threshold.component';
 import { ISensorType } from 'src/app/models/g-sensor-type.model';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { IThresholdTemplate, ThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { IThresholdItem, ThresholdItem, SeverityLevel } from 'src/app/models/g-threshold-item.model';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
@@ -27,25 +26,16 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
 
   constructor(
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    @Optional() private dialogRef: MatDialogRef<ManageThresholdTemplatesComponent>,
-    private changeDetectorRef: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
-    private newThresholdTemplateService: NewThresholdTemplateService,
-    private router: Router,
-    private activeRoute: ActivatedRoute,
-    private dialog: MatDialog
+    public changeDetectorRef: ChangeDetectorRef,
+    public formBuilder: FormBuilder,
+    public newThresholdTemplateService: NewThresholdTemplateService,
+    public router: Router,
+    public activeRoute: ActivatedRoute,
+    public dialog: MatDialog
   ) {}
 
   async ngOnInit() {
     const thresholdTemplateId = await this.getRouteId();
-
-    if (this.data) {
-      if (this.data.fromPopup) {
-        this.fromPopup = true;
-      }
-    }
-
     if (!isNullOrUndefined(thresholdTemplateId)) {
       this.editMode = true;
       this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
@@ -199,16 +189,10 @@ export class ManageThresholdTemplatesComponent implements OnInit {
   }
 
   public addThreshold() {
-    const ref = this.dialog.open(AddThresholdComponent, {
-      width: '90vw'
-    });
+    const ref = this.addThresholdDialogRef();
     ref.afterClosed().subscribe((result: ISensorType) => {
       if (result) {
-        console.log({...this.thresholdTemplate});
-        console.log({...result});
         if (!this.thresholdTemplate.thresholds.find((threshold) => {
-          console.log({...threshold});
-          console.log({...result});
           return threshold.sensorType.id === result.id;
         })) {
           this.thresholdTemplate.thresholds.push({
@@ -218,6 +202,12 @@ export class ManageThresholdTemplatesComponent implements OnInit {
           this.createFormControlForItem(result.id);
         }
       }
+    });
+  }
+
+  public addThresholdDialogRef() {
+    return this.dialog.open(AddThresholdComponent, {
+      width: '90vw'
     });
   }
 
@@ -252,11 +242,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     } else {
       this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
         (result) => {
-          if (this.fromPopup) {
-            this.dialogRef.close(result);
-          } else {
-            this.goToManageThresholdTemplate();
-          }
+          this.createThresholdTemplateCallback(result);
         },
         (error) => {
           console.error(error);
@@ -265,6 +251,11 @@ export class ManageThresholdTemplatesComponent implements OnInit {
       );
     }
   }
+
+  createThresholdTemplateCallback(result) {
+    this.goToManageThresholdTemplate();
+  }
+
 
   private goToManageThresholdTemplate() {
     this.router.navigateByUrl(`/private/admin/manage-threshold-templates`);

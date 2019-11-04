@@ -2,7 +2,6 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, Routes
 import {Injectable} from '@angular/core';
 import {AuthService} from './services/auth.service';
 import {SharedService} from './services/shared.service';
-import {environment} from '../environments/environment';
 import {User} from './models/user.model';
 import {PublicLayoutComponent} from './layout/smartmonitoring/public.layout.component';
 import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';

@@ -1,4 +1,4 @@
-import { LocationWizardComponent } from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
+import { LocationWizardDialogComponent } from './dialogs/locationWizardDialog.component';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -10,11 +10,10 @@ import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-
 import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import { ManageThresholdTemplatesDialogComponent } from './dialogs/manageThresholdTemplatesDialog.component';
 
 
 @Component({
@@ -222,15 +221,14 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   // POPUPS
 
-  /*
+
   public async openAddLocation() {
-    const dialogRef = this.dialog.open(LocationWizardComponent, {
+    const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
       maxWidth: '1024px',
       width: '100vw',
       data: {
         parentLocation: this.asset.location,
-        fromPopup: true,
       }
     });
     const result: ILocation = await dialogRef.afterClosed().toPromise();
@@ -243,7 +241,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   }
 
   public async openAddThresholdTemplate() {
-    const dialogRef = this.dialog.open(ManageThresholdTemplatesComponent, {
+    const dialogRef = this.dialog.open(ManageThresholdTemplatesDialogComponent, {
       minWidth: '320px',
       maxWidth: '1024px',
       width: '100vw',
@@ -260,6 +258,5 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       this.displayThresholdTemplateList = true;
     }
   }
-  */
 
 }

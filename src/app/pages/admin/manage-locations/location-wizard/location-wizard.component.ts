@@ -23,23 +23,18 @@ export class LocationWizardComponent implements OnInit {
   public descriptionFormGroup: FormGroup;
   public location: ILocation;
   public editMode = false;
-  public fromPopup = false;
-
   public canLoadLocationExplorer = false;
   public keyValues = [];
 
   constructor(
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    @Optional() private dialogRef: MatDialogRef<LocationWizardComponent>,
-    private formBuilder: FormBuilder,
-    private changeDetectorRef: ChangeDetectorRef,
-    private activatedRoute: ActivatedRoute,
-    private newLocationService: NewLocationService,
-    private router: Router,
+    public formBuilder: FormBuilder,
+    public changeDetectorRef: ChangeDetectorRef,
+    public activatedRoute: ActivatedRoute,
+    public newLocationService: NewLocationService,
+    public router: Router,
   ) {}
 
   async ngOnInit() {
-
 
     //TODO: remove next line
     this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
@@ -47,16 +42,7 @@ export class LocationWizardComponent implements OnInit {
     });
 
     const locationId = this.activatedRoute.snapshot.params.id;
-    let parentId =  this.activatedRoute.snapshot.params.parentId;
-
-    if (this.data) {
-      if (this.data.fromPopup) {
-        this.fromPopup = true;
-      }
-      if (this.data.parentLocation) {
-        parentId = this.data.parentLocation.id;
-      }
-    }
+    const parentId =  this.getParentId();
 
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.required],
@@ -78,6 +64,11 @@ export class LocationWizardComponent implements OnInit {
     this.canLoadLocationExplorer = true;
   }
 
+  getParentId() {
+    return this.activatedRoute.snapshot.params.parentId;
+  }
+
+
   private async resetLocation(parentId) {
     this.location = {
       id: null,
@@ -89,6 +80,7 @@ export class LocationWizardComponent implements OnInit {
       geolocation: null
     };
     if (!isNullOrUndefined(parentId)) {
+      console.log(parentId);
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
     }
@@ -131,17 +123,18 @@ export class LocationWizardComponent implements OnInit {
         this.goToManageLocation();
       });
     } else {
-     this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
-       if (location) {
-        if (this.fromPopup) {
-          this.dialogRef.close(location);
-        } else {
-          this.goToManageLocation();
-        }
-       }
-     });
+     this.createLocation();
     }
   }
+
+  public createLocation() {
+    this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
+      if (location) {
+        this.goToManageLocation();
+      }
+    });
+  }
+
 
   private goToManageLocation() {
     if (!isNullOrUndefined(this.location.parentId)) {
