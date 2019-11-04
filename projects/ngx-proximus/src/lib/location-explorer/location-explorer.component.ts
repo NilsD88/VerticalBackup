@@ -8,7 +8,6 @@ import { Subject, Subscription, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
-import { Observable } from 'apollo-link';
 
 
 @Component({
@@ -65,7 +64,6 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
           return of([]);
         } else {
           if (this.customAssetService) {
-            console.log('use costum asset service');
             return this.customAssetService.getAssetsByLocationId(this.currentLocation.id);
           } else {
             return this.newAssetService.getAssetsByLocationId(this.currentLocation.id);

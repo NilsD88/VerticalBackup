@@ -133,7 +133,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   public getAssetsByLocation() {
     if (this.customAssetService) {
-      console.log('use custom service');
       return this.customAssetService.getAssetsByLocationId(this.selectedLocation.id);
     } else {
       return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
@@ -146,12 +145,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       this.selectedLocation = this.rootLocation;
       const { path } = findLocationById(this.rootLocation, selectedLocation.id);
       for (const location of path) {
-        this.goToChild(location);
+        this.goToChild(location, false);
       }
       // this.getAssetsBySelectedLocation();
-    } else {
-      this.initMap();
     }
+    this.initMap();
   }
 
   public populateMarkersWithAssets() {
@@ -317,20 +315,22 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   public createLocationPopup(location: ILocation) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
-    popupEl.goToChild = (location) => { this.goToChild(location); };
+    popupEl.goToChild = (location) => { this.goToChild(location, true); };
     popupEl.location = location;
     document.body.appendChild(popupEl);
     return popupEl;
   }
 
-  public goToChild(location: ILocation) {
+  public goToChild(location: ILocation, initMap = false) {
     const parent = {...this.selectedLocation};
     location.parent = parent;
     this.options = null;
     this.changeDetectorRef.detectChanges();
     this.selectedLocation = location;
     this.changeLocation.emit(location);
-    this.initMap();
+    if (initMap) {
+      this.initMap();
+    }
   }
 
   public goToParentLocation(location: ILocation) {

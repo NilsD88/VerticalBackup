@@ -241,8 +241,7 @@ export class NewAssetService {
             location {
               id,
               name
-            }
-            image,
+            },
             geolocation {
                 lat,
                 lng
@@ -265,6 +264,8 @@ export class NewAssetService {
       data
     }) => data.assets));
   }
+
+
 
   public getAssetsByName(name: string): Observable < IAsset[] > {
     const GET_ASSETS_BY_NAME = gql `

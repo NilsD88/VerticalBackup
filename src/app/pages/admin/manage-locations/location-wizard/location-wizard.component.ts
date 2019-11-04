@@ -80,7 +80,6 @@ export class LocationWizardComponent implements OnInit {
       geolocation: null
     };
     if (!isNullOrUndefined(parentId)) {
-      console.log(parentId);
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
     }

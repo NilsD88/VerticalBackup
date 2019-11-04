@@ -131,26 +131,37 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   createOptionsMapWithUserGeolocation() {
     this.backgroundLayer = tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'); 
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log("geolocation");
-        const { latitude, longitude } = position.coords;
-        this.options = {
-          layers: this.backgroundLayer,
-          zoom: 12,
-          center: latLng(latitude, longitude),
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log('geolocation');
+          const { latitude, longitude } = position.coords;
+          this.options = {
+            layers: this.backgroundLayer,
+            zoom: 12,
+            center: latLng(latitude, longitude),
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          };
+        },
+        (error) => {
+          console.log(error);
+          this.defaultMap();
         }
-      });
+      );
     } else {
-      console.log("default location");
-      const defaultValue = {lat: 0, lng: 0};
-      this.options = {
-        layers: this.backgroundLayer,
-        zoom: 12,
-        center: latLng(defaultValue.lat, defaultValue.lng),
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      }
+      console.log('Your brower has no geolocation');
+      this.defaultMap();
     }
+  }
+
+  private defaultMap() {
+    console.log('use default map');
+    const defaultValue = {lat: 50.85045, lng: 4.34878};
+    this.options = {
+      layers: this.backgroundLayer,
+      zoom: 12,
+      center: latLng(defaultValue.lat, defaultValue.lng),
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    };
   }
 
   addMarker(geolocation: IGeolocation) {

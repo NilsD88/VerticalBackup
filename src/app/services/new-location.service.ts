@@ -96,7 +96,8 @@ export class NewLocationService {
                       geolocation {
                           lat,
                           lng
-                      }
+                      },
+                      image
                   }
                   image,
                   geolocation {
