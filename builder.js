@@ -17,8 +17,8 @@ prebuild.stderr.pipe(process.stdout);
 
 prebuild.on('close', (code) => {
   console.log(`[BUILDER]\tprebuild process exited with code ${code}`);
-  console.log(`ng build --prod ${config}`);
-  const build = spawn(`ng build --prod ${config}`, {
+  console.log(`ng build ${config}`);
+  const build = spawn(`ng build ${config}`, {
     shell: true
   });
   build.stdout.pipe(process.stdout);
