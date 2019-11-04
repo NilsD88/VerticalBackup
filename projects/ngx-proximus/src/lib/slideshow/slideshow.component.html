@@ -10,6 +10,6 @@
 <br>
 
 <!-- The dots/circles -->
-<div style="text-align:center">
+<div style="text-align:center" *ngIf="slides?.length > 0">
   <span *ngFor="let item of slides; let i = $index;" class="dot" (click)="currentSlide(i + 1)"></span>
 </div> 

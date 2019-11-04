@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input} from '@angular/core';
+import { AfterViewInit, Component, Input, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'pxs-slideshow',
@@ -10,11 +10,14 @@ export class SlideshowComponent implements AfterViewInit {
   slides: any = [];
   slideNumbers = [];
 
-  constructor() {
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
   }
 
   ngAfterViewInit() {
     this.slides = document.getElementsByTagName('pxs-slideshow-slide');
+    this.changeDetectorRef.detectChanges();
     this.showSlides(this.slideIndex);
   }
 

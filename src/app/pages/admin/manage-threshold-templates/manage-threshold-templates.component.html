@@ -98,7 +98,7 @@
   </div>
   <p>Form value: {{ thresholdTemplateFormGroup.value | json }}</p>
   <p>Form status: {{ thresholdTemplateFormGroup.status | json }}</p>
-  <pxs-button *ngIf="!thresholdTemplateFormGroup.valid" disabled="true" size="large" color="primary" style="margin: 15px auto;">Save the threshold template</pxs-button>
-  <pxs-button *ngIf="thresholdTemplateFormGroup.valid" size="large" color="primary"  (click)="saveThresholdTemplate()" style="margin: 15px auto;">Save the threshold template</pxs-button>
+  <pxs-button *ngIf="!thresholdTemplateFormGroup?.valid" disabled="true" size="large" color="primary" style="margin: 15px auto;">Save the threshold template</pxs-button>
+  <pxs-button *ngIf="thresholdTemplateFormGroup?.valid" size="large" color="primary"  (click)="saveThresholdTemplate()" style="margin: 15px auto;">Save the threshold template</pxs-button>
 </div>
 </div>
