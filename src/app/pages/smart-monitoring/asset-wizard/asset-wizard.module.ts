@@ -1,3 +1,5 @@
+import { ManageThresholdTemplatesModule } from './../../admin/manage-threshold-templates/manage-threshold-templates.module';
+import { LocationWizardModule } from './../../admin/manage-locations/location-wizard/location-wizard.module';
 import { ListThresholdTemplatesModule } from 'projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import { ListThingsModule } from 'projects/ngx-proximus/src/lib/list-things/list-things.module';
 import { NgModule } from '@angular/core';
@@ -16,11 +18,6 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { LocationWizardComponent } from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
-import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
-import { AddThresholdComponent } from 'src/app/pages/admin/manage-threshold-templates/add-threshold/add-threshold.component';
 
 @NgModule({
   declarations: [
@@ -47,16 +44,19 @@ import { AddThresholdComponent } from 'src/app/pages/admin/manage-threshold-temp
     ListThingsModule,
     ListThresholdTemplatesModule,
     MatDialogModule,
-    PopupConfirmationModule
+    PopupConfirmationModule,
+    /*
+    LocationWizardModule,
+    ManageThresholdTemplatesModule,
+    */
   ],
-  providers: [
-    NewAssetService,
-    NewLocationService
-  ],
+  exports: [SmartMonitoringAssetWizardComponent],
   entryComponents: [
+    /*
     LocationWizardComponent,
     ManageThresholdTemplatesComponent,
     AddThresholdComponent,
+    */
   ]
 })
 export class SmartMonitoringAssetWizardModule { }

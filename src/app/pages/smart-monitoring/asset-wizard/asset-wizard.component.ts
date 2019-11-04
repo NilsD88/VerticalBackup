@@ -222,6 +222,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   // POPUPS
 
+  /*
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardComponent, {
       minWidth: '320px',
@@ -259,5 +260,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       this.displayThresholdTemplateList = true;
     }
   }
+  */
 
 }
