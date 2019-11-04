@@ -1,3 +1,5 @@
+import { environment } from './../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 import { MOCK_NEW_CHART_DATA } from 'src/app/mocks/chart';
 import {
   Injectable
@@ -23,6 +25,7 @@ export class NewAssetService {
 
   constructor(
     private apollo: Apollo,
+    private http: HttpClient,
   ) {}
 
   public createAsset(asset: IAsset): Observable < boolean > {
@@ -221,6 +224,7 @@ export class NewAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+    return this.http.get<IThing[]>(`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
     return new Observable < IThing [] > ((observer) => {
       observer.next(MOCK_NEW_CHART_DATA);
       observer.complete();

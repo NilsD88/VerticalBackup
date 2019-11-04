@@ -17,7 +17,7 @@ export class ContactService {
 
   sendSupportMessage(body) {
     return new Promise((resolve, reject) => {
-      this.http.post(`${environment.baseUrl}contact`, body)
+      this.http.post(`${environment.baseUrl}/contact`, body)
         .subscribe(() => {
           const snackBarRef = this.snackBar.open(
             'Successfully sent your message.',

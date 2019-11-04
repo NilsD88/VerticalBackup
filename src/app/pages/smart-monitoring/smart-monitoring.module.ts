@@ -1,13 +1,14 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SmartMonitoringRoutingModule } from './smart-monitoring-routing.module';
+import { SmartMonitoringRoutes } from './smart-monitoring-routing';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    SmartMonitoringRoutingModule,
+    RouterModule.forChild(SmartMonitoringRoutes),
   ]
 })
 export class SmartMonitoringModule { }

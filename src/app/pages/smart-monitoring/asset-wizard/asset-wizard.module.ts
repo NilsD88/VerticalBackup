@@ -1,5 +1,3 @@
-import { ManageThresholdTemplatesModule } from './../../admin/manage-threshold-templates/manage-threshold-templates.module';
-import { LocationWizardModule } from './../../admin/manage-locations/location-wizard/location-wizard.module';
 import { ListThresholdTemplatesModule } from 'projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import { ListThingsModule } from 'projects/ngx-proximus/src/lib/list-things/list-things.module';
 import { NgModule } from '@angular/core';
@@ -25,7 +23,6 @@ import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-con
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(SmartMonitoringAssetWizardRoutes),
     FormsModule,
     ReactiveFormsModule,
     MatStepperModule,
@@ -45,10 +42,7 @@ import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-con
     ListThresholdTemplatesModule,
     MatDialogModule,
     PopupConfirmationModule,
-    /*
-    LocationWizardModule,
-    ManageThresholdTemplatesModule,
-    */
+    RouterModule.forChild(SmartMonitoringAssetWizardRoutes),
   ],
   exports: [SmartMonitoringAssetWizardComponent],
   entryComponents: [
