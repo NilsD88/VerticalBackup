@@ -4,9 +4,7 @@ import {MatSnackBar} from '@angular/material';
 import {SharedService} from './shared.service';
 import {environment} from 'src/environments/environment';
 import {AlertDefinition} from '../models/alert-definition.model';
-import {isNullOrUndefined} from 'util';
 import {promise} from 'selenium-webdriver';
-import IRejectedCallback = promise.IRejectedCallback;
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +18,9 @@ export class AlertDefinitionService {
     return new Promise(async (resolve, reject) => {
       this.http.get(`${environment.baseUrl}/alertdefinitions/?filter=name=='Default'`)
         .subscribe((response: any) => {
-          if (response && !isNullOrUndefined(response.content)) {
-            const defaultAlertDef = response.content.length ? new AlertDefinition(response.content[0]) : new AlertDefinition(null);
+          console.log(response);
+          if (response) {
+            const defaultAlertDef = response.length ? new AlertDefinition(response[0]) : new AlertDefinition(null);
             resolve(defaultAlertDef);
           } else {
             this.sharedService.rejectPromise('AlertDefinitionsService: Invalid server response', reject);
