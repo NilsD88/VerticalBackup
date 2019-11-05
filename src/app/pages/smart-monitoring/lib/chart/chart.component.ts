@@ -47,6 +47,7 @@ enum ESensorColors {
 
 interface IChartData {
   label: string;
+  sensorTypeId: string;
   series: IChartSerie[];
 }
 
@@ -56,6 +57,7 @@ interface IChartSerie {
   min?: number;
   max?: number;
   value?: number;
+  sum?: number;
 }
 
 @Component({
@@ -169,6 +171,7 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
+      console.log(data);
       this.addYAxisOption(data.series.length, data.label);
       this.addYAxisValues(data);
     }
@@ -217,20 +220,38 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData) {
+    console.log(item);
     const color = randomColor({ hue: ESensorColors[String(item.label).toUpperCase()] });
     if (this.filter.interval !== 'ALL') {
-      // AVERAGE
-      this.options.series.push({
-        name: item.label,
-        color,
-        yAxis: this.getYAxisByLabel(item.label),
-        zIndex: 1,
-        type: 'spline',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-        })
-      });
+      // Check if it is check or presence
+      if (item.sensorTypeId === '6' || item.sensorTypeId === '4') {
+        // SUM
+        this.options.series.push({
+          name: item.label,
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'spline',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+          })
+        });
+      } else {
+        // AVERAGE
+        this.options.series.push({
+          name: item.label,
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'spline',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+          })
+        });
+      }
+
       // MIN AND MAX
       this.options.series.push({
         name: item.label + ' ' + this.rangeTranslation,
@@ -259,6 +280,7 @@ export class ChartComponent implements OnInit, OnChanges {
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie) => {
+          console.log(serie.value);
           return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
         })
       });

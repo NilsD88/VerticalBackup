@@ -50,7 +50,12 @@ export class DateRangeSelectionComponent implements OnInit {
 
   updateDrp(dateRange: DateRange) {
     // Make toDate inclusive
-    dateRange.toDate = new Date(moment(dateRange.toDate).add(1, 'day').valueOf());
+    const {fromDate, toDate } = dateRange;
+    const duration = moment.duration(moment(fromDate).diff(toDate));
+    const durationInHours = +duration.asHours().toFixed(0);
+    if (durationInHours > 24) {
+      dateRange.toDate = new Date(moment(dateRange.toDate).add(1, 'day').valueOf());
+    }
     this.dateChange.emit(dateRange);
   }
 }

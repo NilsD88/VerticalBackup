@@ -82,8 +82,8 @@ export class ChartControlsComponent implements OnInit {
     const {fromDate, toDate} = range;
     const duration = moment.duration(moment(toDate).diff(fromDate));
     const durationHours =  +duration.asHours().toFixed(0);
-    let interval: Intervals = 'ALL';
 
+    let interval: Intervals = 'ALL';
     this.intervals = ['ALL', 'HOURLY', 'DAILY'];
     if (durationHours > 24) {
       this.intervals = ['HOURLY', 'DAILY', 'WEEKLY'];
@@ -103,7 +103,6 @@ export class ChartControlsComponent implements OnInit {
         }
       }
     }
-
 
     this.dateRangeChanged.emit({
       interval,

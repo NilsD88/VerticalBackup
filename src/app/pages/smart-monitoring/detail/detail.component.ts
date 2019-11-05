@@ -84,6 +84,7 @@ export class DetailComponent implements OnInit {
 
           chartData.push({
             label: labelTranslation,
+            sensorTypeId: sensor.sensorType.id,
             series: sensor.series
           });
         }
@@ -92,6 +93,7 @@ export class DetailComponent implements OnInit {
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
     });
+    this.chartData$.next(this.currentFilter);
   }
 
 
@@ -113,8 +115,8 @@ export class DetailComponent implements OnInit {
     const differences = compareTwoObjectOnSpecificProperties(
       originalFilter, this.currentFilter, ['interval', 'from', 'to', 'durationInHours']);
 
-    if (differences && differences.length > 0) {
-      this.changeDetectorRef.detectChanges();
+    if ((differences && differences.length > 0)) {
+      this.chartData = [];
       this.chartData$.next(this.currentFilter);
     }
   }
