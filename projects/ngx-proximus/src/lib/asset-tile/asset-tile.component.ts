@@ -14,6 +14,7 @@ export class AssetTileComponent implements OnInit, OnDestroy {
   @Input() assetUrl: string;
 
   private subscription: Subscription;
+  public imageIsLoading = true;
 
   constructor(
     private assetService: NewAssetService
@@ -22,6 +23,7 @@ export class AssetTileComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.assetService.getImageOfAssetById(this.asset.id).subscribe(image => {
       this.asset.image = image;
+      this.imageIsLoading = false;
     });
   }
 

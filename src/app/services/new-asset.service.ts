@@ -392,7 +392,7 @@ export class NewAssetService {
 
   }
 
-  public getAssetPopupDetail_TankMonitoring(id: string): Observable < IAsset > {
+  public getAssetPopupDetail(id: string): Observable < IAsset > {
     const GET_ASSET_POPUP_DETAIL_BY_ID = gql `
       query findAssetById($id: Long!) {
         asset: findAssetById(id: $id) {

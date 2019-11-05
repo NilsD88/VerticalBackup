@@ -1,5 +1,5 @@
 <div class="wrapper" style="background: url('') center / cover no-repeat;"
-  [ngStyle]="{ 'background-image': asset.image ? 'url(' + asset.image + ')' : 'none' }"
+  [ngStyle]="{ 'background-image': asset.image ? 'url(' + asset.image + ')' : (imageIsLoading ? 'url(assets/images/spinner.gif)' : '') }"
   [routerLink]="[assetUrl, asset.id]">
   <div class="header">
     <div *ngIf="asset?.location?.name" class="locations">

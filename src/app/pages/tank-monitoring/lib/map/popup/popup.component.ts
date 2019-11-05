@@ -1,4 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 
@@ -7,20 +8,30 @@ import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asse
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class TankMonitoringMapPopupComponent implements OnInit {
+export class TankMonitoringMapPopupComponent implements OnInit, OnDestroy {
   @Input() asset: ITankMonitoringAsset;
+
+  private subscription: Subscription;
 
   constructor(
     private tankMonitoringAssetService: TankMonitoringAssetService
   ) {}
 
   ngOnInit() {
-    this.tankMonitoringAssetService.getAssetPopupDetail(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
-      this.asset = {
-        ...this.asset,
-        ...asset
-      };
-    });
+    if (this.asset) {
+      this.subscription = this.tankMonitoringAssetService.getAssetPopupDetail(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
+        this.asset = {
+          ...this.asset,
+          ...asset
+        };
+      });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }
 
