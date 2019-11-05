@@ -57,6 +57,7 @@ export class DetailComponent implements OnInit {
         this.newAssetService.getAssetDetailById(params.id).subscribe(
           (asset) => {
             this.asset = asset;
+            this.changeDetectorRef.detectChanges();
             this.init();
           },
           (error) => {
