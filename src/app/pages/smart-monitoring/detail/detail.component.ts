@@ -77,7 +77,7 @@ export class DetailComponent implements OnInit {
         for (const sensor of thing.sensors) {
 
           let labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
-          if (labelTranslation.contains('SENSORTYPES')) {
+          if (labelTranslation.indexOf('SENSORTYPES') > -1) {
             labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
           }
 
