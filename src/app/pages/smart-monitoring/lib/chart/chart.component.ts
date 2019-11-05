@@ -247,7 +247,7 @@ export class ChartComponent implements OnInit, OnChanges {
           type: 'spline',
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
           })
         });
       }
