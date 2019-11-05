@@ -1,18 +1,18 @@
-import { cloneDeep } from 'lodash';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { SharedService } from 'src/app/services/shared.service';
-import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {cloneDeep} from 'lodash';
+import {NewAssetService} from 'src/app/services/new-asset.service';
+import {SharedService} from 'src/app/services/shared.service';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { NewAlertService } from 'src/app/services/new-alert.service';
-import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-import { Subject, Observable } from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
+import {IAsset} from 'src/app/models/g-asset.model';
+import {NewAlertService} from 'src/app/services/new-alert.service';
+import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
+import {Observable, Subject} from 'rxjs';
+import {debounceTime, switchMap} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
-import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -48,15 +48,16 @@ export class DetailComponent implements OnInit {
     public newAssetService: NewAssetService,
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
         this.newAssetService.getAssetDetailById(params.id).subscribe(
           (asset) => {
-          this.asset = asset;
-          this.init();
+            this.asset = asset;
+            this.init();
           },
           (error) => {
             console.log(error);
@@ -74,8 +75,14 @@ export class DetailComponent implements OnInit {
       // Get the translation of each label
       for (const thing of things) {
         for (const sensor of thing.sensors) {
+
+          let labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
+          if (labelTranslation.contains('SENSORTYPES')) {
+            labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+          }
+
           chartData.push({
-            label: await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise(),
+            label: labelTranslation,
             series: sensor.series
           });
         }
@@ -88,11 +95,11 @@ export class DetailComponent implements OnInit {
 
 
   public updateChartData(options: { interval?: string; from?: number; to?: number; }) {
-    const interval = options.interval ?  options.interval : this.currentFilter.interval;
-    const from = options.from ?  options.from : this.currentFilter.from;
-    const to = options.to ?  options.to : this.currentFilter.to;
+    const interval = options.interval ? options.interval : this.currentFilter.interval;
+    const from = options.from ? options.from : this.currentFilter.from;
+    const to = options.to ? options.to : this.currentFilter.to;
     const duration = moment.duration(moment(to).diff(from));
-    const durationInHours =  +duration.asHours().toFixed(0);
+    const durationInHours = +duration.asHours().toFixed(0);
     const originalFilter = cloneDeep(this.currentFilter);
 
     this.currentFilter = {
@@ -129,7 +136,7 @@ export class DetailComponent implements OnInit {
     }
 
     if (this.asset.image) {
-      pdf.addImage(this.asset.image, 'JPEG', 10 , 10, 30, 30);
+      pdf.addImage(this.asset.image, 'JPEG', 10, 10, 30, 30);
     }
 
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
@@ -140,7 +147,7 @@ export class DetailComponent implements OnInit {
     pdf.text(locationNameTranslation + ' : ' + this.asset.location.name, 45, 25);
 
     const options = this.myChart.options;
-    if ( options.series.length > 0) {
+    if (options.series.length > 0) {
       setStyle('title');
       const chartTitle = await this.getTranslation('PDF.CHART');
       pdf.text(chartTitle, 10, 50);
@@ -149,7 +156,7 @@ export class DetailComponent implements OnInit {
       const measurePeriodTranslation = await this.getTranslation('PDF.MEASURE_PERIOD');
       const toTranslation = await this.getTranslation('PDF.TO');
 
-      const dateRange = this.myChart.range || {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)};
+      const dateRange = this.myChart.range || {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)};
       const timePeriod: string = measurePeriodTranslation + ' ' + formatDate(dateRange.fromDate, 'dd/MM/yyyy HH:mm', 'en-US')
         + ' ' + toTranslation + ' ' + formatDate(dateRange.toDate, 'dd/MM/yyyy HH:mm', 'en-US');
       pdf.text(timePeriod, 10, 55);
@@ -175,28 +182,30 @@ export class DetailComponent implements OnInit {
 
         const aggregatedValues = this.myAggregatedValues.aggregatedValues;
         pdf.setTextColor(120, 120, 120);
-        for ( let i = 0; i < aggregatedValues.length; i++) {
+        for (let i = 0; i < aggregatedValues.length; i++) {
           const aggregatedValue = aggregatedValues[i];
-          pdf.text((aggregatedValue.label) ? aggregatedValue.label.trunc(30) : '-', 10, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.max || '-', 70, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.min || '-', 105, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.average || '-', 140, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.standardDeviation || '-', 175, marginTop + ( i * 10));
+          pdf.text((aggregatedValue.label) ? aggregatedValue.label.trunc(30) : '-', 10, marginTop + (i * 10));
+          pdf.text(aggregatedValue.max || '-', 70, marginTop + (i * 10));
+          pdf.text(aggregatedValue.min || '-', 105, marginTop + (i * 10));
+          pdf.text(aggregatedValue.average || '-', 140, marginTop + (i * 10));
+          pdf.text(aggregatedValue.standardDeviation || '-', 175, marginTop + (i * 10));
           pdf.line(10, marginTop + (i * 10) + 5, 200, marginTop + (i * 10) + 5);
         }
       }
 
       let chart;
       for (const CHART of this.myChart.Highcharts.charts) {
-        if ( typeof CHART !== 'undefined') {
+        if (typeof CHART !== 'undefined') {
           chart = CHART;
         }
       }
 
-      const svgString = chart.getSVG({chart: {
-        width: 1400,
-        height: 600,
-      }});
+      const svgString = chart.getSVG({
+        chart: {
+          width: 1400,
+          height: 600,
+        }
+      });
 
       const canvas = document.createElement('canvas');
       canvas.width = 1400;
@@ -205,7 +214,7 @@ export class DetailComponent implements OnInit {
       canvg(canvas, svgString);
 
       const canvasB64 = canvas.toDataURL();
-      pdf.addImage(canvasB64, 'PNG', 5 , 60, (1400 / 7), (600 / 7));
+      pdf.addImage(canvasB64, 'PNG', 5, 60, (1400 / 7), (600 / 7));
     }
 
     pdf.save(this.asset.name + '.pdf');
@@ -226,6 +235,10 @@ export class DetailComponent implements OnInit {
         return this.newAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to);
       })
     );
+  }
+
+  private upperCaseFirst(input: string) {
+    return input.charAt(0).toUpperCase() + input.slice(1);
   }
 
   private async getTranslation(label: string) {
