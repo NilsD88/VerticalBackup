@@ -1,5 +1,4 @@
 import { MOCK_NEW_CHART_TANK_DATA } from 'src/app/mocks/chart';
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';

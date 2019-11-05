@@ -31,9 +31,10 @@
 
         <!--
         <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
-        -->
+        
         <p>Form value: {{ descriptionFormGroup.value | json }}</p>
         <p>Form status: {{ descriptionFormGroup.status | json }}</p>
+        -->
         
         <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
 

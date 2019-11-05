@@ -1,3 +1,4 @@
+import { AssetTileModule } from './../../../../../../projects/ngx-proximus/src/lib/asset-tile/asset-tile.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
@@ -44,7 +45,8 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
     LocationExplorerModule,
     MatButtonToggleModule,
     MatAutocompleteModule,
-    MapModule
+    MapModule,
+    AssetTileModule,
   ],
   declarations: [TankMonitoringInventoryComponent],
 })

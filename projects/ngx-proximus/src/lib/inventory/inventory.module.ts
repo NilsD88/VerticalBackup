@@ -1,4 +1,4 @@
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { AssetTileModule } from './../asset-tile/asset-tile.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
@@ -6,7 +6,6 @@ import {NgxMatDrpModule} from 'ngx-mat-daterange-picker';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {InventoryRoutes} from './inventory.routing';
 import {InventoryComponent} from './inventory.component';
-import {SharedService} from 'src/app/services/shared.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {
@@ -46,7 +45,8 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
     LocationExplorerModule,
     MatButtonToggleModule,
     MatAutocompleteModule,
-    MapModule
+    MapModule,
+    AssetTileModule,
   ],
   declarations: [InventoryComponent],
   exports: [InventoryComponent]

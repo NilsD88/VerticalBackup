@@ -428,7 +428,6 @@ export class NewAssetService {
           assets {
               id,
               name,
-              image,
               description,
               location {
                 id,
@@ -463,6 +462,30 @@ export class NewAssetService {
       return data.pagedAssets;
     }));
 
+  }
+
+  public getImageOfAssetById(id: string): Observable < string > {
+    const GET_IMAGE_OF_ASSET_BY_ID = gql `
+            query findAssetById($id: Long!) {
+                asset: findAssetById(id: $id) {
+                    image
+                }
+            }
+        `;
+
+    interface GetImageAssetByIdResponse {
+      asset: IAsset;
+    }
+
+    return this.apollo.query < GetImageAssetByIdResponse > ({
+      query: GET_IMAGE_OF_ASSET_BY_ID,
+      fetchPolicy: 'network-only',
+      variables: {
+        id,
+      }
+    }).pipe(map(({
+      data
+    }) => data.asset.image));
   }
 
   public updateAsset(asset: IAsset): Observable < boolean > {

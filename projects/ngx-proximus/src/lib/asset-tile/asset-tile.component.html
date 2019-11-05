@@ -1,0 +1,17 @@
+<div class="wrapper" style="background: url('') center / cover no-repeat;"
+  [ngStyle]="{ 'background-image': asset.image ? 'url(' + asset.image + ')' : 'none' }"
+  [routerLink]="[assetUrl, asset.id]">
+  <div class="header">
+    <div *ngIf="asset?.location?.name" class="locations">
+      <span class="location">{{asset?.location?.name}}</span>
+    </div>
+  </div>
+  <div class="data">
+    <div class="content">
+      <span *ngIf="asset?.thresholdTemplate?.name"
+        class="thresholdTemplate author">{{asset.thresholdTemplate?.name}}</span>
+      <h5 class="title">{{asset.name}}</h5>
+      <p class="text">{{asset?.description?.trunc(120)}}</p>
+    </div>
+  </div>
+</div>
