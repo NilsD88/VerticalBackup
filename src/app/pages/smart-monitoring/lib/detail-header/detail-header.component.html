@@ -37,9 +37,10 @@
                 src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" 
                 alt=""
               >
-              <span class="last-measurement-value">{{sensor?.value}} {{sensor?.sensorType?.postfix}}</span>
-              <small class="last-measurement-date">{{sensor?.timestamp | date : 'd/M/yy'}}</small>
-              <small class="last-measurement-time">{{sensor?.timestamp | date : 'H:mm'}}</small>
+              
+              <span *ngIf="sensor?.value" class="last-measurement-value">{{parseLastValue(sensor?.value)}} {{sensor?.sensorType?.postfix}}</span>
+              <small *ngIf="sensor?.value" class="last-measurement-date">{{sensor?.timestamp | date : 'd/M/yy'}}</small>
+              <small *ngIf="sensor?.value" class="last-measurement-time">{{sensor?.timestamp | date : 'H:mm'}}</small>
             </div>
           </div>
            

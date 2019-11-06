@@ -34,7 +34,7 @@
         </div>
         <div class="col-lg-4 col-md-5">
           <div>
-            <pxs-last-alerts *ngIf="asset?.alerts" [alerts]="asset?.alerts"></pxs-last-alerts>
+            <pxs-last-alerts *ngIf="asset?.alerts" [asset]="asset"></pxs-last-alerts>
           </div>
           <div>
             <pxs-linked-things [things]="asset?.things"></pxs-linked-things>

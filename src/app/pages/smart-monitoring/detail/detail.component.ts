@@ -228,7 +228,7 @@ export class DetailComponent implements OnInit {
   }
 
   private getLastAlerts() {
-    this.newAlertService.getAlertsByAssetIdAndDateRange(this.asset.id, 0, new Date().getTime()).subscribe((alerts) => {
+    this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
       this.asset.alerts = alerts;
     });
   }

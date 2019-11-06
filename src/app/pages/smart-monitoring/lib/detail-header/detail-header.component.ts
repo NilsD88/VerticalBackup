@@ -35,4 +35,8 @@ export class DetailHeaderComponent implements OnInit {
     });
   }
 
+  parseLastValue(value: number) {
+    return parseFloat(value.toFixed(2));
+  }
+
 }

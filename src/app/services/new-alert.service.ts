@@ -232,6 +232,45 @@ export class NewAlertService {
     }));
   }
 
+  public getLastAlertsByAssetId(assetId: string, amount: number = 5): Observable < IAlert[] > {
+    const GET_LAST_ALERTS_BT_ASSET_ID = gql `
+      query findLastAlertsByAssetId($input: LastAlertsInput!) {
+        alerts: findLastAlertsByAssetId(input: $input) {
+          id,
+          read,
+          sensorType {
+            id,
+            name,
+            postfix
+          },
+          thresholdTemplateName,
+          severity,
+          label,
+          timestamp,
+          value,
+        }
+      }`;
+
+    interface GetLastAlertsByAssetIdResponse {
+      alerts: IAlert[];
+    }
+
+    return this.apollo.query < GetLastAlertsByAssetIdResponse > ({
+      query: GET_LAST_ALERTS_BT_ASSET_ID,
+      variables: {
+        input: {
+          assetId,
+          amount
+        }
+      },
+      fetchPolicy: 'network-only'
+    }).pipe(map(({
+      data
+    }) => {
+      return data.alerts;
+    }));
+  }
+
   public getAlertById(id: string, ): Observable < IAlert > {
     const GET_ALERT_BY_ID = gql `
       query findAssetById($id: Long!) {
