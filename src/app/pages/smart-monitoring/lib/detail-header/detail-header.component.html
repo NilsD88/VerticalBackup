@@ -37,14 +37,9 @@
                 src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" 
                 alt=""
               >
-              <span class="last-measurement-value">26 °C</span>
-              <small class="last-measurement-date">01/01/10</small>
-              <small class="last-measurement-time">10:20</small>
-              <!--
-              <span class="last-measurement-value">{{sensor.value}} {{sensor.sensorType.postfix}}</span>
-              <small class="last-measurement-date">{{sensor.timestamp | date : 'd/M/yy'}}</small>
-              <small class="last-measurement-time">{{sensor.timestamp | date : 'H:mm'}}</small>
-              -->
+              <span class="last-measurement-value">{{sensor?.value}} {{sensor?.sensorType?.postfix}}</span>
+              <small class="last-measurement-date">{{sensor?.timestamp | date : 'd/M/yy'}}</small>
+              <small class="last-measurement-time">{{sensor?.timestamp | date : 'H:mm'}}</small>
             </div>
           </div>
            

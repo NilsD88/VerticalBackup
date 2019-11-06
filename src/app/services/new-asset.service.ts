@@ -177,8 +177,11 @@ export class NewAssetService {
                        id,
                        sensorType {
                         id,
-                        name
-                       }
+                        name,
+                        postfix
+                       },
+                       timestamp,
+                       value
                      }
                     },
                     thresholdTemplate {

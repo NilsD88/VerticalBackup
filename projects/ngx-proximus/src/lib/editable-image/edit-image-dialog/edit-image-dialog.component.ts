@@ -20,9 +20,9 @@ export class EditImageDialogComponent implements OnInit {
       {
         ratio: this.data.ratio, // ratio in which image needed to be cropped (by default null, signifies ratio to be free of any restrictions)
         minWidth: 0, // minimum width of image to be exported (by default 0, signifies any width)
-        maxWidth: 0,  // maximum width of image to be exported (by default 0, signifies any width)
+        maxWidth: this.data.maxWidthAndHeight,  // maximum width of image to be exported (by default 0, signifies any width)
         minHeight: 0,  // minimum height of image to be exported (by default 0, signifies any height)
-        maxHeight: 0,  // maximum height of image to be exported (by default 0, signifies any height)
+        maxHeight: this.data.maxWidthAndHeight,  // maximum height of image to be exported (by default 0, signifies any height)
         width: 0,  // width of image to be exported (by default 0, signifies any width)
         height: 0  // height of image to be exported (by default 0, signifies any height)
       }

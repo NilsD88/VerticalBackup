@@ -1,13 +1,35 @@
-import { PeriodicDuration } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import {Component, Input, OnChanges, OnInit, Output, EventEmitter, ViewChild} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
+import {
+  isNullOrUndefined
+} from 'util';
+import {
+  ISensorDefinition
+} from './../../../../models/g-sensor-definition.model';
+import {
+  PeriodicDuration
+} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild
+} from '@angular/core';
+import {
+  TranslateService
+} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { IAsset } from 'src/app/models/g-asset.model';
+import {
+  IAsset
+} from 'src/app/models/g-asset.model';
 
 
 declare global {
-  interface Window { moment: any; }
+  interface Window {
+    moment: any;
+  }
 }
 
 moment.locale('nl-be');
@@ -32,32 +54,33 @@ exportData(Highcharts);
 
 
 interface IFilterChartData {
-  interval?: string;
-  from?: number;
-  to?: number;
-  durationInHours?: number;
+  interval ? : string;
+  from ? : number;
+  to ? : number;
+  durationInHours ? : number;
 }
 
 
 enum ESensorColors {
   TEMPERATURE = 'orange',
-  HUMIDITY = 'blue',
-  BATTERY = 'monochrome'
+    HUMIDITY = 'blue',
+    BATTERY = 'monochrome'
 }
 
 interface IChartData {
   label: string;
   sensorTypeId: string;
+  sensorDefinition: ISensorDefinition;
   series: IChartSerie[];
 }
 
 interface IChartSerie {
   timestamp: number;
-  avg?: number;
-  min?: number;
-  max?: number;
-  value?: number;
-  sum?: number;
+  avg ? : number;
+  min ? : number;
+  max ? : number;
+  value ? : number;
+  sum ? : number;
 }
 
 @Component({
@@ -83,19 +106,22 @@ export class ChartComponent implements OnInit, OnChanges {
 
   @Input() asset: IAsset;
 
-  @Output() updateChartData = new EventEmitter<IFilterChartData>();
+  @Output() updateChartData = new EventEmitter < IFilterChartData > ();
   @Output() download = new EventEmitter();
 
-  @ViewChild('dataRangeSelection', {static: false}) dataRangeSelection;
+  @ViewChild('dataRangeSelection', {
+    static: false
+  }) dataRangeSelection;
 
   public options: any;
   public chart: any;
-  public range: {fromDate: number; toDate: number};
+  public range: {
+    fromDate: number;toDate: number
+  };
   public Highcharts = Highcharts;
   public rangeTranslation = 'range';
 
-  constructor(public translateService: TranslateService) {
-  }
+  constructor(public translateService: TranslateService) {}
 
   public ngOnInit() {
     this.translateService.get('SENSORTYPES.range').subscribe((result: string) => {
@@ -155,9 +181,9 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       plotOptions: {
         spline: {
-            marker: {
-                enabled: false
-            }
+          marker: {
+            enabled: false
+          }
         },
         series: {
           showInNavigator: true,
@@ -171,7 +197,6 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      console.log(data);
       this.addYAxisOption(data.series.length, data.label);
       this.addYAxisValues(data);
     }
@@ -221,76 +246,165 @@ export class ChartComponent implements OnInit, OnChanges {
 
   private addYAxisValues(item: IChartData) {
     console.log(item);
-    const color = randomColor({ hue: ESensorColors[String(item.label).toUpperCase()] });
+    const color = randomColor({
+      hue: ESensorColors[String(item.label).toUpperCase()]
+    });
     if (this.filter.interval !== 'ALL') {
-      // Check if it is check or presence
-      if (item.sensorTypeId === '6' || item.sensorTypeId === '4') {
-        // SUM
-        this.options.series.push({
-          name: item.label,
-          color,
-          yAxis: this.getYAxisByLabel(item.label),
-          zIndex: 1,
-          type: 'spline',
-          showInLegend: (item.series.length) ? true : false,
-          data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
-          })
-        });
+      if (!isNullOrUndefined(item.sensorDefinition)) {
+        const sensorDefinition = item.sensorDefinition;
+        if (sensorDefinition.aggregatedValues.sum) {
+          this.options.series.push({
+            name: item.label,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: sensorDefinition.chartType,
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            })
+          });
+        }
+        if (sensorDefinition.aggregatedValues.avg) {
+          this.options.series.push({
+            name: item.label,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: sensorDefinition.chartType,
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+            })
+          });
+        }
+        if (sensorDefinition.aggregatedValues.max && sensorDefinition.aggregatedValues.min) {
+          this.options.series.push({
+            name: item.label + ' ' + this.rangeTranslation,
+            color,
+            type: 'arearange',
+            yAxis: this.getYAxisByLabel(item.label),
+            showInLegend: (item.series.length) ? true : false,
+            lineWidth: 0,
+            linkedTo: ':previous',
+            fillOpacity: 0.3,
+            zIndex: 0,
+            marker: {
+              enabled: false
+            },
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+            })
+          });
+        } else {
+          if (sensorDefinition.aggregatedValues.max) {
+            this.options.series.push({
+              name: item.label,
+              color,
+              yAxis: this.getYAxisByLabel(item.label),
+              zIndex: 1,
+              type: 'areaspline',
+              showInLegend: (item.series.length) ? true : false,
+              data: item.series.map((serie) => {
+                return [serie.timestamp, parseFloat(serie.max.toFixed(2))];
+              })
+            });
+          } else if (sensorDefinition.aggregatedValues.min) {
+            this.options.series.push({
+              name: item.label,
+              color,
+              yAxis: this.getYAxisByLabel(item.label),
+              zIndex: 1,
+              type: 'areaspline',
+              showInLegend: (item.series.length) ? true : false,
+              data: item.series.map((serie) => {
+                return [serie.timestamp, parseFloat(serie.min.toFixed(2))];
+              })
+            });
+          }
+        }
       } else {
-        // AVERAGE
+        // Check if it is check or presence
+        if (item.sensorTypeId === '6' || item.sensorTypeId === '4') {
+          // SUM
+          this.options.series.push({
+            name: item.label,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'spline',
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            })
+          });
+        } else {
+          // AVERAGE
+          this.options.series.push({
+            name: item.label,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'spline',
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+            })
+          });
+        }
+        // MIN AND MAX
         this.options.series.push({
-          name: item.label,
+          name: item.label + ' ' + this.rangeTranslation,
           color,
+          type: 'arearange',
           yAxis: this.getYAxisByLabel(item.label),
-          zIndex: 1,
-          type: 'spline',
           showInLegend: (item.series.length) ? true : false,
+          lineWidth: 0,
+          linkedTo: ':previous',
+          fillOpacity: 0.3,
+          zIndex: 0,
+          marker: {
+            enabled: false
+          },
           data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+            return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
           })
         });
       }
-
-      // MIN AND MAX
-      this.options.series.push({
-        name: item.label + ' ' + this.rangeTranslation,
-        color,
-        type: 'arearange',
-        yAxis: this.getYAxisByLabel(item.label),
-        showInLegend: (item.series.length) ? true : false,
-        lineWidth: 0,
-        linkedTo: ':previous',
-        fillOpacity: 0.3,
-        zIndex: 0,
-        marker: {
-          enabled: false
-        },
-        data: item.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-        })
-      });
     } else {
       // REAL VALUES
-      this.options.series.push({
-        name: item.label,
-        color,
-        yAxis: this.getYAxisByLabel(item.label),
-        zIndex: 1,
-        type: 'spline',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie) => {
-          console.log(serie.value);
-          return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
-        })
-      });
+      if (!isNullOrUndefined(item.sensorDefinition)) {
+        this.options.series.push({
+          name: item.label,
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: item.sensorDefinition.chartType,
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+          })
+        });
+      } else {
+        this.options.series.push({
+          name: item.label,
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'spline',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+          })
+        });
+      }
     }
   }
 
   getYAxisByLabel(label) {
     let result;
-    for ( let i = 0; i < this.options.yAxis.length; i++) {
-      if ( this.options.yAxis[i].title.text.toUpperCase() === label.toUpperCase()) {
+    for (let i = 0; i < this.options.yAxis.length; i++) {
+      if (this.options.yAxis[i].title.text.toUpperCase() === label.toUpperCase()) {
         result = i;
       }
     }
@@ -304,7 +418,11 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   public dateRangeChanged(periodicDuration: PeriodicDuration) {
-    const {interval, from, to} = periodicDuration;
+    const {
+      interval,
+      from,
+      to
+    } = periodicDuration;
     this.updateChartData.emit({
       interval,
       from,

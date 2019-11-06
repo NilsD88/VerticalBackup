@@ -1,3 +1,4 @@
+import { ISensorDefinition } from './g-sensor-definition.model';
 import { ISensorType } from './g-sensor-type.model';
 import { IThing } from './g-thing.model';
 import { IOrganization } from './g-organization.model';
@@ -10,6 +11,7 @@ export interface ISensor {
     value?: string | number;
     timestamp?: number;
     series?: ISensorData[];
+    sensorDefinition?: ISensorDefinition;
 }
 
 

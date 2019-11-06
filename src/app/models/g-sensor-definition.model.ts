@@ -1,8 +1,10 @@
 export interface ISensorDefinition {
-    useOnChart: boolean;
-    chartType: ChartType;
-    useOnThresholdTemplate: boolean;
-    aggregatedValues: IAggregatedValues;
+    id?: string;
+    name?: string;
+    useOnChart?: boolean;
+    chartType?: ChartType;
+    useOnThresholdTemplate?: boolean;
+    aggregatedValues?: IAggregatedValues;
 }
 
 export interface IAggregatedValues {
@@ -12,7 +14,7 @@ export interface IAggregatedValues {
     sum: boolean;
 }
 
-export type ChartType = 'linear' | 'bar';
+export type ChartType = 'spline' | 'line' | 'column';
 
-export const chartTypes = ['linear', 'bar'];
+export const chartTypes = ['spline', 'line', 'column'];
 export const aggregatedValues = ['min', 'max', 'avg', 'sum'];

@@ -6,7 +6,7 @@
         <div class="col-xs-12 col-md-6 mx-auto">
           <div class="asset-image">
             <pxs-editable-image (change)="asset.image=$event" [image]="asset.image" [dialogTitle]="'Upload an image'"
-              [ratio]="1"></pxs-editable-image>
+              [ratio]="1" [maxWidthAndHeight]="400"></pxs-editable-image>
           </div>
           <mat-form-field>
             <input matInput placeholder="Name" formControlName="NameCtrl" [(ngModel)]="asset.name" required>

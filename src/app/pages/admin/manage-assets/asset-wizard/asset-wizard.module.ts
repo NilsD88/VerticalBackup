@@ -16,8 +16,6 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { NewLocationService } from 'src/app/services/new-location.service';
 
 @NgModule({
   declarations: [

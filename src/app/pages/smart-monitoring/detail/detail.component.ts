@@ -76,15 +76,19 @@ export class DetailComponent implements OnInit {
       // Get the translation of each label
       for (const thing of things) {
         for (const sensor of thing.sensors) {
-
-          let labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
-          if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-            labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+          let labelTranslation;
+          if ((sensor.sensorDefinition || {}).name) {
+            labelTranslation = sensor.sensorDefinition.name;
+          } else {
+            labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
+            if (labelTranslation.indexOf('SENSORTYPES') > -1) {
+              labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+            }
           }
-
           chartData.push({
             label: labelTranslation,
             sensorTypeId: sensor.sensorType.id,
+            sensorDefinition: sensor.sensorDefinition,
             series: sensor.series
           });
         }

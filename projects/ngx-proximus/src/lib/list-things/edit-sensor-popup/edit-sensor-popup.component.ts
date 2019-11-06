@@ -25,8 +25,9 @@ export class EditSensorPopupComponent implements OnInit {
 
         // Default values
         this.sensorDefinition = {
+            name: null,
             useOnChart: true,
-            chartType: 'linear',
+            chartType: 'spline',
             useOnThresholdTemplate: true,
             aggregatedValues: {
                 min: true,
