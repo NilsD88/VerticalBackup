@@ -8,27 +8,29 @@
         <div class="col-xl-12 col-lg-6 col-md-6">
           <mat-form-field class="w-100">
             <input type="text" matInput [placeholder]="'ALERTS.FILTER.NAME' | translate" [(ngModel)]="filterFE.name"
-              (ngModelChange)="changeFilterFE()">
+                   (ngModelChange)="changeFilterFE()">
           </mat-form-field>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
           <ng-select [multiple]="true" [clearable]="true" [items]="filterOptions.sensorTypes"
-            [(ngModel)]="filterFE.sensorTypeIds" bindValue="id" [loading]="sensorTypesLoading" [hideSelected]="true"
-            (change)="changeFilterFE()" [placeholder]="'ALERTS.FILTER.SENSORS' | translate">
+                     [(ngModel)]="filterFE.sensorTypeIds" bindValue="id" [loading]="sensorTypesLoading"
+                     [hideSelected]="true"
+                     (change)="changeFilterFE()" [placeholder]="'ALERTS.FILTER.SENSORS' | translate">
           </ng-select>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
           <mat-form-field class="w-100">
-            <input type="text" matInput [placeholder]="'ALERTS.FILTER.THRESHOLD_TEMPLATE_NAME' | translate" [(ngModel)]="filterFE.thresholdTemplateName"
-              (ngModelChange)="changeFilterFE()">
+            <input type="text" matInput [placeholder]="'ALERTS.FILTER.THRESHOLD_TEMPLATE_NAME' | translate"
+                   [(ngModel)]="filterFE.thresholdTemplateName"
+                   (ngModelChange)="changeFilterFE()">
           </mat-form-field>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
-            <pxs-date-range-selection 
-              (dateChange)="dateRangeChange($event)"
-              [fromDate]="filterBE.dateRange.fromDate"
-              [toDate]="filterBE.dateRange.toDate"
-            ></pxs-date-range-selection>
+          <pxs-date-range-selection
+            (dateChange)="dateRangeChange($event)"
+            [fromDate]="filterBE.dateRange.fromDate"
+            [toDate]="filterBE.dateRange.toDate"
+          ></pxs-date-range-selection>
         </div>
       </div>
     </div>
@@ -47,11 +49,11 @@
       <span>{{selectedAlerts.length}} alert(s) selected</span>
       <div>
         <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-          (click)="markAsRead()">{{'ALERTS.MARK_AS_READ' | translate}}</button>
+                (click)="markAsRead()">{{'ALERTS.MARK_AS_READ' | translate}}</button>
         <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-          (click)="markAsUnread()">{{'ALERTS.MARK_AS_UNREAD' | translate}}</button>
+                (click)="markAsUnread()">{{'ALERTS.MARK_AS_UNREAD' | translate}}</button>
         <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-          (click)="downloadSelectedAlerts()">{{'ALERTS.DOWNLOAD' | translate}}</button>
+                (click)="downloadSelectedAlerts()">{{'ALERTS.DOWNLOAD' | translate}}</button>
       </div>
     </div>
   </div>
@@ -59,7 +61,7 @@
   <div class="alerts">
     <div style="overflow-x: scroll">
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 alerts-list"
-        [ngClass]="{'loading': isLoading }" matSortDisableClear>
+             [ngClass]="{'loading': isLoading }" matSortDisableClear>
 
         <!-- Checkbox Column -->
         <ng-container matColumnDef="select">
@@ -69,7 +71,7 @@
           </th>
           <td mat-cell *matCellDef="let element">
             <mat-checkbox class="alert-checkbox" (click)="$event.stopPropagation()" (change)="selectOneAlert(element)"
-              [checked]="checkOneAlert(element.id)"></mat-checkbox>
+                          [checked]="checkOneAlert(element.id)"></mat-checkbox>
           </td>
         </ng-container>
 
@@ -83,7 +85,7 @@
 
         <!-- Date Column -->
         <ng-container matColumnDef="timestamp">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
           <td mat-cell *matCellDef="let element">
             <span class="name">{{element.asset?.name}}</span>
             <span class="date">{{element.timestamp | date : 'dd/MM/yyyy - HH:mm'}}</span>
@@ -96,8 +98,8 @@
           <td mat-cell *matCellDef="let element">
             <div>
               <img [src]="'assets/smartmonitoring/images/icons/icon-'+ element.sensorType?.name + '.svg'"
-                [matTooltip]="element.sensorType?.postfix"
-                [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
+                   [matTooltip]="element.sensorType?.postfix"
+                   [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
               <span>{{element.sensorType?.name}}</span>
             </div>
           </td>
@@ -107,7 +109,8 @@
         <ng-container matColumnDef="severity">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Severity</th>
           <td mat-cell *matCellDef="let element">
-            <div [ngClass]="{'severity': element.severity, 'low': element.severity=='LOW', 'medium': element.severity=='MEDIUM', 'critical': element.severity=='CRITICAL'}">
+            <div
+              [ngClass]="{'severity': element.severity, 'low': element.severity=='LOW', 'medium': element.severity=='MEDIUM', 'critical': element.severity=='CRITICAL'}">
               <span>{{element.severity}}</span>
               <span *ngIf="element.label"> ({{element.label}})</span>
             </div>
@@ -147,7 +150,7 @@
         <ng-container matColumnDef="value">
           <th mat-header-cell *matHeaderCellDef>Value</th>
           <td mat-cell *matCellDef="let element">
-            {{element.value}} {{element.sensorType?.postfix}}
+            {{element.value.toFixed(2)}} {{element.sensorType?.postfix}}
           </td>
         </ng-container>
 
@@ -161,7 +164,7 @@
       </mat-progress-spinner>
     </mat-card>
     <mat-paginator [length]="alerts?.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
-      (page)="pageChange($event)">
+                   (page)="pageChange($event)">
     </mat-paginator>
   </div>
 
