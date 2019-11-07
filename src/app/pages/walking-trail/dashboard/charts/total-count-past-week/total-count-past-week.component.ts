@@ -46,9 +46,6 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     const options = {
-      navigator: {
-        enabled: true
-      },
       time: {
         timezone: 'Europe/Brussels'
       },
@@ -120,7 +117,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
     }
 
     console.log(options.series);
-
+    console.log(moment().weekday(-7));
 
     try {
       this.chart = Highcharts.chart('chart-container', options);
