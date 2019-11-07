@@ -4,7 +4,8 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <pvf-smartmonitoring-chart *ngIf="asset" style="display: flex; height: 100%;" [loading]="chartLoading"
+          <pvf-smartmonitoring-chart
+            *ngIf="asset" style="display: flex; height: 100%;" [loading]="chartLoading"
             [height]="400" [title]="'Data'" [chartData]="chartData" (updateChartData)="updateChartData($event)"
             [filter]="currentFilter" (download)="downloadPdfDetail()" [asset]="asset" #myChart>
           </pvf-smartmonitoring-chart>

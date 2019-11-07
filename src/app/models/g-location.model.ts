@@ -2,19 +2,21 @@ import { isNullOrUndefined } from 'util';
 import { IGeolocation } from './geolocation.model';
 import { IAsset } from './g-asset.model';
 
-export interface ILocation {
+export interface AbstractLocation <T> {
     id?: string;
     parentId?: string;
-    parent?: ILocation;
+    parent?: T;
     name?: string;
     description?: string;
     geolocation?: IGeolocation;
-    children?: ILocation[];
+    children?: T[];
     image?: string;
     assets?: IAsset[];
     leftId?: string;
     rightId?: string;
 }
+
+export interface ILocation extends AbstractLocation <ILocation> {}
 
 export class Location {
     id: string;

@@ -60,9 +60,10 @@
                 <div class="thing">
                     <img 
                       *ngFor="let sensor of element.sensors"
+                      style="cursor: pointer;"
                       (click)="openDialogSensorDefinition(sensor, element.name)"
                       [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
-                      [matTooltip]="sensor.sensorType.name + ' ' + sensor.sensorType.min + sensor.sensorType.postfix + ' - '+ sensor.sensorType.max + sensor.sensorType.postfix"
+                      [matTooltip]="(sensor.sensorDefinition?.name ? sensor.sensorDefinition?.name : sensor.sensorType.name) + ' ' + sensor.sensorType.min + sensor.sensorType.postfix + ' - '+ sensor.sensorType.max + sensor.sensorType.postfix"
                       [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
                     >
                 </div>

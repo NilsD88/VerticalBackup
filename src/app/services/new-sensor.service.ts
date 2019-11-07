@@ -1,3 +1,4 @@
+import { ISensorDefinition } from './../models/g-sensor-definition.model';
 import { ISensorType } from 'src/app/models/g-sensor-type.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
@@ -64,6 +65,33 @@ export class NewSensorService {
             return data.sensorTypes;
         }));
     }
+
+    public updateSensorDefinition(sensorId: string, sensorDefinition: ISensorDefinition): Observable<boolean> {
+        const UPDATE_SENSOR_DEFINITION = gql `
+              mutation updateSensorDefinition($input: SensorDefinitionUpdateInput!) {
+                updated: updateSensorDefinition(input: $input)
+              }
+          `;
+
+        interface UpdateSensorDefinition {
+          updated: boolean;
+        }
+
+        return this.apollo.mutate < UpdateSensorDefinition > ({
+          mutation: UPDATE_SENSOR_DEFINITION,
+          variables: {
+            input: {
+              sensorId,
+              sensorDefinition,
+            }
+          }
+        }).pipe(
+          map(({
+            data
+          }) => data.updated)
+        );
+    }
+
 
 
 }

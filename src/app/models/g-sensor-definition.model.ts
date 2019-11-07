@@ -3,7 +3,7 @@ export interface ISensorDefinition {
     name?: string;
     useOnChart?: boolean;
     chartType?: ChartType;
-    useOnThresholdTemplate?: boolean;
+    useOnNotification?: boolean;
     aggregatedValues?: IAggregatedValues;
 }
 

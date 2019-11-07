@@ -9,29 +9,30 @@
   </mat-form-field>
   <div class="row">
     <div class="col col-xs-6">
-      <mat-checkbox [(ngModel)]="sensorDefinition.useOnChart">Use on chart</mat-checkbox>
-      <mat-form-field *ngIf="sensorDefinition.useOnChart">
-        <mat-label>Chart type</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let chartType of chartTypes" [value]="sensorDefinition.chartType">
-            {{chartType}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <mat-checkbox [(ngModel)]="sensorDefinition.useOnChart" (change)="useOnChartChange($event)">Use on chart</mat-checkbox>
     </div>
     <div class="col col-xs-6">
-      <mat-checkbox [(ngModel)]="sensorDefinition.useOnThresholdTemplate">Use on threshold template</mat-checkbox>
+      <mat-checkbox [(ngModel)]="sensorDefinition.useOnNotification">Use on notification</mat-checkbox>
     </div>
   </div>
 
   <hr>
-
-  <div *ngFor="let aggregatedValue of aggregatedValues">
-    <mat-checkbox [(ngModel)]="sensorDefinition.aggregatedValues[aggregatedValue]">{{aggregatedValue}}</mat-checkbox>
+  <div *ngIf="sensorDefinition.useOnChart">
+    <mat-form-field *ngIf="sensorDefinition.useOnChart">
+      <mat-select placeholder="Chart type" [(ngModel)]="sensorDefinition.chartType">
+        <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
+          {{chartType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngFor="let aggregatedValue of aggregatedValues">
+      <mat-checkbox [(ngModel)]="sensorDefinition.aggregatedValues[aggregatedValue]">{{aggregatedValue}}</mat-checkbox>
+    </div>
   </div>
+  
   <br><br>
 
-  <button mat-raised-button color="primary" (click)="submit()">
+  <button mat-raised-button color="primary" [class.spinner]="loading" [disabled]="loading" (click)="submit()" >
     Submit
   </button>
   <button mat-raised-button (click)="cancel()">

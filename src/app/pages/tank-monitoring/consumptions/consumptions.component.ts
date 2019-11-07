@@ -35,7 +35,7 @@ export class ConsumptionsComponent implements OnInit {
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
-    from: moment().subtract(1, 'day').toDate().getTime(),
+    from: moment().subtract(1, 'week').toDate().getTime(),
     to: moment().toDate().getTime(),
   };
 
@@ -57,6 +57,7 @@ export class ConsumptionsComponent implements OnInit {
         this.newAssetService.getAssetDetailById(params.id).subscribe(
           (asset) => {
             this.asset = asset;
+            this.changeDetectorRef.detectChanges();
             this.init();
           },
           (error) => {
@@ -86,10 +87,11 @@ export class ConsumptionsComponent implements OnInit {
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
     });
+    this.chartData$.next(this.currentFilter);
   }
 
   private getLastAlerts() {
-    this.newAlertService.getAlertsByAssetIdAndDateRange(this.asset.id, 0, new Date().getTime()).subscribe((alerts) => {
+    this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
       this.asset.alerts = alerts;
     });
   }
@@ -114,8 +116,6 @@ export class ConsumptionsComponent implements OnInit {
       originalFilter, this.currentFilter, ['interval', 'from', 'to', 'durationInHours']);
 
     if (differences && differences.length > 0) {
-      this.changeDetectorRef.detectChanges();
-      console.log('next');
       this.chartData$.next(this.currentFilter);
     }
   }

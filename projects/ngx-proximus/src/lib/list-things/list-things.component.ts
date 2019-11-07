@@ -44,7 +44,6 @@ export class ListThingsComponent implements OnInit {
   public isLoading = false;
 
   constructor(
-    private sharedService: SharedService,
     private newThingService: NewThingService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog
@@ -99,24 +98,18 @@ export class ListThingsComponent implements OnInit {
   public openDialogSensorDefinition(sensor: ISensor, thingName: string) {
     this.dialog.open(EditSensorPopupComponent, {
       minWidth: '320px',
-      maxWidth: '600px',
+      maxWidth: '400px',
       width: '100vw',
       data: {
         sensor,
         thingName
       }
+    }).afterClosed().subscribe((result) => {
+      if (result) {
+        this.getThings();
+      }
     });
   }
-
-  public editThingName(index: number): void {
-    this.activeInput = index;
-  }
-
-  public async cancelEdit(): Promise<void> {
-    await this.getThings();
-    this.activeInput = null;
-  }
-
 
   public async updateThing(thing: IThingEditing) {
     const orignalName = thing.name;
@@ -133,6 +126,7 @@ export class ListThingsComponent implements OnInit {
         thing.name = orignalName;
         this.snackBar.open(`Failed to update the thing's name!`, null, {
           duration: 2000,
+          panelClass: ['error-snackbar']
         });
         console.log('HTTP Error', err);
       }

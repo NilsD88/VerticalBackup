@@ -1,6 +1,6 @@
 <pxs-top-menu
   *ngIf="topMenuConfig"
-  (languageChange)="sharedLayoutService.changeLanguage($event)"
+  (languageChange)="layoutService.changeLanguage($event)"
   (contactClick)="navigateTo(['private', 'contact'])"
   (autocompleteClick)="autocompleteClick($event)"
   [searchResults]="searchResults"
@@ -18,7 +18,7 @@
           Account
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="sharedLayoutService.logout()">
+          <button mat-menu-item (click)="layoutService.logout()">
             Logout
           </button>
         </div>
@@ -71,17 +71,17 @@
   <pxs-menu-item
     [label]="'Tank monitoring'" 
     [url]="'/private/tankmonitoring'"
-    *ngIf="sharedLayoutService.user?.hasModule('TANK_MONITORING')" 
+    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" 
     [mat-menu-trigger-for]="tankMonitoring"
   ></pxs-menu-item>
   <pxs-menu-item 
-    [label]="'Visitor counting'"
-    *ngIf="sharedLayoutService.user?.hasModule('PEOPLE_COUNTING')"
-    [mat-menu-trigger-for]="visitorCounting"
+    [label]="'Walking trail'"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING')"
+    [mat-menu-trigger-for]="walkingtrail"
   ></pxs-menu-item>
   <pxs-menu-item
     [label]="'Asset tracking'"
-    *ngIf="sharedLayoutService.user?.hasModule('PEOPLE_TRACKIN')"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"
   ></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
@@ -127,9 +127,9 @@
   </div>
 </mat-menu>
 
-<mat-menu #visitorCounting="matMenu" style="margin-top: 80px;">
+<mat-menu #walkingtrail="matMenu" style="margin-top: 80px;">
   <div mat-menu-item>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','walkingtrail', 'dashboard'])">
       Dashboard
     </button>
   </div>

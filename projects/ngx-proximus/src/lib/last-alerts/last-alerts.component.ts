@@ -38,4 +38,7 @@ export class LastAlertsComponent implements OnInit {
     this.sharedService.downloadCSV(`${this.asset.name} - Last alerts ${moment().format('DD/MM/YYYY - hh:mm:ss')}`, csv);
   }
 
+  parseLastValue(value: number) {
+    return parseFloat(value.toFixed(2));
+  }
 }

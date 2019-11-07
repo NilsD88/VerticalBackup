@@ -9,7 +9,6 @@ import { DashboardComponent } from './dashboard.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {PieChartModule} from 'projects/ngx-proximus/src/lib/pie-chart/pie-chart.module';
 import { MatTableModule, MatSortModule, MatInputModule, MatProgressSpinnerModule, MatCardModule, MatPaginatorModule, MatButtonModule } from '@angular/material';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -30,9 +29,6 @@ import { RouterModule } from '@angular/router';
     MatPaginatorModule,
     IconModule,
     MatButtonModule
-  ],
-  providers: [
-    NewAssetService,
   ]
 })
 export class DashboardModule { }

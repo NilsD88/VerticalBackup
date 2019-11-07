@@ -245,12 +245,12 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData) {
-    console.log(item);
     const color = randomColor({
       hue: ESensorColors[String(item.label).toUpperCase()]
     });
     if (this.filter.interval !== 'ALL') {
       if (!isNullOrUndefined(item.sensorDefinition)) {
+        console.log('!isNullOrUndefined(item.sensorDefinition)');
         const sensorDefinition = item.sensorDefinition;
         if (sensorDefinition.aggregatedValues.sum) {
           this.options.series.push({

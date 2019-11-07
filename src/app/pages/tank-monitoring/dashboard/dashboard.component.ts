@@ -1,10 +1,9 @@
+import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { cloneDeep } from 'lodash';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {TranslateService} from '@ngx-translate/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import { MatPaginator } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
@@ -74,13 +73,12 @@ export class DashboardComponent implements OnInit {
   public filterFE$ = new Subject<IFilterFE>();
 
   constructor(
-    private translateService: TranslateService,
-    private newAssetService: NewAssetService,
+    private assetService: TankMonitoringAssetService,
   ) {}
 
   async ngOnInit() {
     this.isLoading = true;
-    this.assets = await this.newAssetService.getAssets_TankMonitoring_Dashboard().toPromise();
+    this.assets = await this.assetService.getAssets().toPromise();
     this.assets.forEach((asset) => {
       const VALUE = asset.things[0].sensors[0].value;
       if (VALUE < 10) {

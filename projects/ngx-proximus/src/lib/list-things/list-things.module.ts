@@ -33,9 +33,6 @@ import { NewThingService } from 'src/app/services/new-thing.service';
     MatInputModule,
     MatPaginatorModule,
   ],
-  providers: [
-    NewThingService
-  ],
   exports: [
     ListThingsComponent
   ],

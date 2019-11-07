@@ -2,7 +2,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { GlobaleSearchService } from 'src/app/services/global-search.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {SharedLayoutService} from '../shared-layout.service';
+import {LayoutService} from './layout.service';
 import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.component';
 import {TranslateService} from '@ngx-translate/core';
 import {TopMenuConfig} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.component';
@@ -31,7 +31,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private translateService: TranslateService,
-    public sharedLayoutService: SharedLayoutService,
+    public layoutService: LayoutService,
     private globaleSearchService: GlobaleSearchService,
     public sharedService: SharedService,
     public newAlertService: NewAlertService) {
@@ -52,8 +52,8 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     this.topMenuConfig = {
-      languages: this.sharedLayoutService.languages.map(this.sharedLayoutService.mapLanguage),
-      activeLanguage: this.sharedLayoutService.currentLang,
+      languages: this.layoutService.languages.map(this.layoutService.mapLanguage),
+      activeLanguage: this.layoutService.currentLang,
       languageVisible: true,
       contact: {
         label: await this.translateService.get('LAYOUT.CONTACT').toPromise(),
@@ -64,7 +64,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
         visible: true
       }
     };
-    this.footerConfig = await this.sharedLayoutService.getFooterTranslations();
+    this.footerConfig = await this.layoutService.getFooterTranslations();
 
     this.newAlertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
       this.numberOfUnreadAlerts = (numberOfUnreadAlerts > 0) ? ((numberOfUnreadAlerts > 99) ? '99+' : numberOfUnreadAlerts ) : null;

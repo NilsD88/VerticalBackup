@@ -3,8 +3,8 @@ import {Injectable} from '@angular/core';
 import {AuthService} from './services/auth.service';
 import {SharedService} from './services/shared.service';
 import {User} from './models/user.model';
-import {PublicLayoutComponent} from './layout/smartmonitoring/public.layout.component';
-import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';
+import {PublicLayoutComponent} from './layout/public.layout.component';
+import {PrivateLayoutComponent} from './layout/private.layout.component';
 
 @Injectable()
 export class PublicAuthGuard implements CanActivate {
@@ -117,7 +117,7 @@ export const AppRoutes: Routes = [
       component: PublicLayoutComponent,
       children: [{
         path: '',
-        loadChildren: './pages/contact/contact.module#ContactModule'
+        loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
       }]
     },
     {
@@ -125,7 +125,7 @@ export const AppRoutes: Routes = [
       component: PublicLayoutComponent,
       children: [{
         path: '',
-        loadChildren: './pages/privacy/privacy.module#PrivacyModule'
+        loadChildren: () => import('./pages/privacy/privacy.module').then(m => m.PrivacyModule)
       }]
     },
     {
@@ -139,7 +139,7 @@ export const AppRoutes: Routes = [
       canActivate: [PublicAuthGuard],
       children: [{
         path: 'home',
-        loadChildren: './pages/home/smartmonitoring/home.module#HomeModule'
+        loadChildren: () => import('./pages/home/smartmonitoring/home.module').then(m => m.HomeModule)
       }]
     },
     {
@@ -148,7 +148,7 @@ export const AppRoutes: Routes = [
       canActivate: [PublicAuthGuard],
       children: [{
         path: '',
-        loadChildren: './pages/error/smartmonitoring/error.module#ErrorModule'
+        loadChildren: () => import('./pages/error/smartmonitoring/error.module').then(m => m.ErrorModule)
       }]
     },
     {
@@ -157,14 +157,7 @@ export const AppRoutes: Routes = [
       canActivate: [PublicAuthGuard],
       children: [{
         path: '',
-        loadChildren: './pages/admin/manage-assets/manage-assets.module#ManageAssetsModule'
-        // loadChildren: './pages/admin/manage-assets/smartmonitoring/asset-wizard/asset-wizard.module#AssetWizardModule'
-        // loadChildren: './pages/inventory/smartmonitoring/inventory.module#InventoryModule'
-        // loadChildren: './pages/admin/manage-locations/location-wizard/location-wizard.module#LocationWizardModule'
-        // loadChildren: './pages/admin/manage-locations/manage-locations.module#ManageLocationsModule'
-        // loadChildren: './pages/admin/manage-threshold-templates/smartmonitoring/manage-threshold-templates.module#ManageThresholdTemplatesModule'
-        // loadChildren: './pages/admin/manage-things/smartmonitoring/manage-things.module#ManageThingsModule'
-        // loadChildren: './pages/tank-monitoring/consumptions/consumptions.module#ConsumptionsModule'
+        loadChildren: () => import('./pages/admin/manage-assets/manage-assets.module').then(m => m.ManageAssetsModule)
       }]
   },
   {
@@ -179,22 +172,27 @@ export const AppRoutes: Routes = [
       {
         path: 'contact',
         canActivate: [UserAuthGuard],
-        loadChildren: './pages/contact/contact.module#ContactModule'
+        loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
       },
       {
         path: 'smartmonitoring',
         canActivate: [UserAuthGuard],
-        loadChildren: './pages/smart-monitoring/smart-monitoring.module#SmartMonitoringModule'
+        loadChildren: () => import('./pages/smart-monitoring/smart-monitoring.module').then(m => m.SmartMonitoringModule)
       },
       {
         path: 'alerts',
         canActivate: [UserAuthGuard],
-        loadChildren: './pages/alerts/smartmonitoring/alerts.module#AlertsModule'
+        loadChildren: () => import('./pages/alerts/smartmonitoring/alerts.module').then(m => m.AlertsModule)
       },
       {
         path: 'tankmonitoring',
         canActivate: [UserAuthGuard],
-        loadChildren: './pages/tank-monitoring/tank-monitoring.module#TankMonitoringModule'
+        loadChildren: () => import('./pages/tank-monitoring/tank-monitoring.module').then(m => m.TankMonitoringModule)
+      },
+      {
+        path: 'walkingtrail',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('./pages/walking-trail/walking-trail.module').then(m => m.WalkingTrailModule)
       },
       {
         path: 'admin',

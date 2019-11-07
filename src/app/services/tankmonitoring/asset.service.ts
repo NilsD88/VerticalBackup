@@ -1,3 +1,4 @@
+import { NewAssetService } from 'src/app/services/new-asset.service';
 import { MOCK_NEW_CHART_TANK_DATA } from 'src/app/mocks/chart';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -6,15 +7,22 @@ import gql from 'graphql-tag';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import { map } from 'rxjs/operators';
 import { IThing } from 'src/app/models/g-thing.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TankMonitoringAssetService {
+export class TankMonitoringAssetService extends NewAssetService {
 
   constructor(
-    private apollo: Apollo,
-  ) {}
+    public apollo: Apollo,
+    public http: HttpClient,
+  ) {
+    super(
+      apollo,
+      http
+    );
+  }
 
   public getAssets(): Observable < ITankMonitoringAsset[] > {
 
@@ -139,7 +147,7 @@ export class TankMonitoringAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    return Observable.create((observer) => {
+    return new Observable < IThing [] > ((observer) => {
       observer.next(MOCK_NEW_CHART_TANK_DATA);
       observer.complete();
     });

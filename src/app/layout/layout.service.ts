@@ -7,7 +7,7 @@ import {User} from '../models/user.model';
 @Injectable({
   providedIn: 'root'
 })
-export class SharedLayoutService {
+export class LayoutService {
   public currentLang: { label: string; value: string };
   public languages: string[] = [];
   public user: User = this.sharedService.user;

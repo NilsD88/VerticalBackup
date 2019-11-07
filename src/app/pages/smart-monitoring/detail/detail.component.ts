@@ -76,6 +76,10 @@ export class DetailComponent implements OnInit {
       // Get the translation of each label
       for (const thing of things) {
         for (const sensor of thing.sensors) {
+          console.log(sensor);
+          if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
+            continue;
+          }
           let labelTranslation;
           if ((sensor.sensorDefinition || {}).name) {
             labelTranslation = sensor.sensorDefinition.name;

@@ -24,8 +24,8 @@ import { Observable } from 'rxjs';
 export class NewAssetService {
 
   constructor(
-    private apollo: Apollo,
-    private http: HttpClient,
+    public apollo: Apollo,
+    public http: HttpClient,
   ) {}
 
   public createAsset(asset: IAsset): Observable < boolean > {
@@ -181,7 +181,18 @@ export class NewAssetService {
                         postfix
                        },
                        timestamp,
-                       value
+                       value,
+                       sensorDefinition {
+                         name,
+                         useOnChart,
+                         chartType,
+                         aggregatedValues {
+                          min,
+                          max,
+                          avg,
+                          sum
+                         }
+                       }
                      }
                     },
                     thresholdTemplate {
@@ -227,7 +238,7 @@ export class NewAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    return this.http.get<IThing[]>(`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
+    return this.http.get < IThing [] > (`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
     return new Observable < IThing [] > ((observer) => {
       observer.next(MOCK_NEW_CHART_DATA);
       observer.complete();
@@ -268,8 +279,6 @@ export class NewAssetService {
     }) => data.assets));
   }
 
-
-
   public getAssetsByName(name: string): Observable < IAsset[] > {
     const GET_ASSETS_BY_NAME = gql `
       query findAssetsByName($input: AssetFindByNameInput!) {
@@ -297,102 +306,6 @@ export class NewAssetService {
     }).pipe(map(({
       data
     }) => data.assets));
-  }
-
-  public getAssets_TankMonitoring_Dashboard(): Observable < IAsset[] > {
-
-    return new Observable < IAsset[] > ((observer) => {
-      observer.next([{
-          id: '0',
-          name: 'test',
-          location: {
-            id: '102',
-            name: '2tc'
-          },
-          things: [{
-            devEui: 'OKAZEAZEAZ',
-            batteryPercentage: 15,
-            sensors: [{
-              sensorType: {
-                id: '1',
-                name: 'sensorTypeName'
-              },
-              value: 9,
-              timestamp: new Date().getTime()
-            }]
-          }],
-          geolocation: {
-            lat: 1,
-            lng: 1
-          }
-        },
-        {
-          id: '1',
-          name: 'test 2',
-          location: {
-            id: '0',
-            name: 'location 2'
-          },
-          things: [{
-            devEui: '12321312312',
-            batteryPercentage: 82,
-            sensors: [{
-              sensorType: {
-                id: '1',
-                name: 'sensorTypeName'
-              },
-              value: 33,
-              timestamp: new Date().getTime()
-            }]
-          }],
-          geolocation: {
-            lat: 1.2,
-            lng: 1.2
-          }
-        }
-      ]);
-      observer.complete();
-    });
-
-
-    const GET_ASSETS_BY_MODULE = gql `
-      query FindAssetsByModule($input: AssetFindByModuleInput!) {
-        assets: findAssetsByModule(input: $input) {
-          id,
-          name,
-          things {
-            devEui,
-            batteryPercentage,
-            sensors {
-              sensorType {
-                id,
-                name
-              }
-              value,
-              timestamp
-            }
-          }
-        }
-      }
-    `;
-
-    interface GetAssetsTankMonitoringDashboardResponse {
-      assets: IAsset[];
-    }
-
-    return this.apollo.query < GetAssetsTankMonitoringDashboardResponse > ({
-      query: GET_ASSETS_BY_MODULE,
-      fetchPolicy: 'network-only',
-      variables: {
-        input: {
-          // moduleId: // TODO: module id
-          // onlySensorsNeeded: // TODO: to be able to get only interesting data based on sensortype of the module (chart definition)
-        }
-      }
-    }).pipe(map(({
-      data
-    }) => data.assets));
-
   }
 
   public getAssetPopupDetail(id: string): Observable < IAsset > {

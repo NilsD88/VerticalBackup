@@ -190,6 +190,7 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData, labelTranslation: string, rangeTranslation: string, serieLength: number, consumptions: number[]) {
+    console.log(this.filter.durationInHours);
     if (this.filter.durationInHours > 24) {
       // AVERAGES
       this.options.series.push({

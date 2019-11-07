@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {SharedLayoutService} from '../shared-layout.service';
+import {LayoutService} from './layout.service';
 import {TopMenuConfig} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.component';
 import {TranslateService} from '@ngx-translate/core';
 import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.component';
@@ -19,13 +19,13 @@ export class PublicLayoutComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private translateService: TranslateService,
-              public sharedLayoutService: SharedLayoutService) {
+              public layoutService: LayoutService) {
   }
 
   async ngOnInit(): Promise<void> {
     this.topMenuConfig = {
-      languages: this.sharedLayoutService.languages.map(this.sharedLayoutService.mapLanguage),
-      activeLanguage: this.sharedLayoutService.currentLang,
+      languages: this.layoutService.languages.map(this.layoutService.mapLanguage),
+      activeLanguage: this.layoutService.currentLang,
       languageVisible: true,
       contact: {
         label: await this.translateService.get('LAYOUT.CONTACT').toPromise(),
@@ -36,7 +36,7 @@ export class PublicLayoutComponent implements OnInit, OnDestroy {
         visible: false
       }
     };
-    this.footerConfig = await this.sharedLayoutService.getFooterTranslations();
+    this.footerConfig = await this.layoutService.getFooterTranslations();
   }
 
   ngOnDestroy(): void {

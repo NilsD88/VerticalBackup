@@ -8,5 +8,5 @@
     (downloadCSV)="downloadCSV()"
 ></pxs-chart-controls>
 
-<div [hidden]="loading || !chartData.length" id="chart-container"></div>
-<pxs-loader *ngIf="loading || !chartData.length"></pxs-loader>
+<div [hidden]="loading" id="chart-container"></div>
+<pxs-loader *ngIf="loading"></pxs-loader>

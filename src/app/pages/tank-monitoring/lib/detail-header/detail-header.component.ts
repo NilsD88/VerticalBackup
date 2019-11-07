@@ -21,8 +21,7 @@ export class DetailHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //this.orgName = this.sharedService.user.orgName;
-    this.orgName = 'orgName';
+    this.orgName = this.sharedService.user.orgName;
   }
 
   openDialog(): void {
@@ -35,6 +34,10 @@ export class DetailHeaderComponent implements OnInit {
         selectedLocation: this.asset.location
       }
     });
+  }
+
+  parseLastValue(value: number) {
+    return parseFloat(value.toFixed(2));
   }
 
 }

@@ -25,12 +25,26 @@ export class NewThingService {
                     devEui,
                     name,
                     sensors {
+                        id,
                         sensorType {
                             id,
                             name,
                             postfix,
                             min,
                             max
+                        },
+                        sensorDefinition {
+                            id,
+                            name,
+                            useOnChart,
+                            chartType,
+                            useOnNotification,
+                            aggregatedValues {
+                                min,
+                                max,
+                                sum,
+                                avg
+                            }
                         }
                     }
                 }

@@ -11,7 +11,7 @@
         <div class="icon">
           <img 
             [src]="'assets/smartmonitoring/images/icons/icon-'+ alert?.sensorType?.name + '-white.svg'"
-            [matTooltip]="alert?.sensorType.name + alert?.value + alert?.sensorType?.postfix"
+            [matTooltip]="alert?.sensorType.name + ' ' + alert?.value + alert?.sensorType?.postfix"
             [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
           >
         </div>
@@ -25,7 +25,7 @@
           </span>
         </div>
         <div class="right">
-          <span class="value">{{alert?.value}} {{alert?.sensorType?.postfix}}</span>
+          <span class="value">{{parseLastValue(alert.value)}} {{alert?.sensorType?.postfix}}</span>
           <span class="date">{{alert?.timestamp | date : 'shortDate'}}</span>
         </div>
       </mat-card-content>

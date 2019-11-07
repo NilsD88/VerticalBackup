@@ -1,8 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
-import {PrivateLayoutComponent} from './layout/smartmonitoring/private.layout.component';
-import {PublicLayoutComponent} from './layout/smartmonitoring/public.layout.component';
+import {PrivateLayoutComponent} from './layout/private.layout.component';
+import {PublicLayoutComponent} from './layout/public.layout.component';
 import {RouterModule} from '@angular/router';
 import {AdminAuthGuard, AppRoutes, PublicAuthGuard, UserAuthGuard} from './app.routing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';

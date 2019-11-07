@@ -1,6 +1,6 @@
 <pxs-top-menu
   *ngIf="topMenuConfig"
-  (languageChange)="sharedLayoutService.changeLanguage($event)"
+  (languageChange)="layoutService.changeLanguage($event)"
   (contactClick)="navigateTo('contact')"
   [config]="topMenuConfig"
 >
@@ -15,7 +15,7 @@
           Account
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="sharedLayoutService.login()">
+          <button mat-menu-item (click)="layoutService.login()">
           Login
           </button>
         </div>

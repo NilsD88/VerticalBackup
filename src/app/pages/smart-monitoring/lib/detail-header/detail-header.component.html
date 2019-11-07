@@ -32,7 +32,7 @@
           <div class="last-measurement-sensors">
             <div *ngFor="let sensor of thing.sensors" class="last-measurement-sensor">
               <img
-                [matTooltip]="sensor.sensorType?.name"
+                [matTooltip]="(sensor.sensorDefinition?.name ? sensor.sensorDefinition?.name : sensor.sensorType.name)"
                 [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
                 src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" 
                 alt=""

@@ -28,6 +28,9 @@ import { createCustomElement } from '@angular/elements';
     TankMonitoringMapComponent,
     TankMonitoringMapPopupComponent
   ],
+  entryComponents: [
+    TankMonitoringMapPopupComponent
+  ]
 })
 export class TankMonitoringMapModule {
   constructor(private injector: Injector) {
