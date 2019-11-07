@@ -200,23 +200,23 @@ export const AppRoutes: Routes = [
         children: [
           {
             path: 'manage-locations',
-            loadChildren: './pages/admin/manage-locations/manage-locations.module#ManageLocationsModule'
+            loadChildren: () => import('./pages/admin/manage-locations/manage-locations.module').then(m => m.ManageLocationsModule)
           },
           {
             path: 'manage-assets',
-            loadChildren: './pages/admin/manage-assets/manage-assets.module#ManageAssetsModule'
+            loadChildren: () => import('./pages/admin/manage-assets/manage-assets.module').then(m => m.ManageAssetsModule)
           },
           {
             path: 'manage-things',
-            loadChildren: './pages/admin/manage-things/manage-things.module#ManageThingsModule'
+            loadChildren: () => import('./pages/admin/manage-things/manage-things.module').then(m => m.ManageThingsModule)
           },
           {
             path: 'manage-threshold-templates',
-            loadChildren: './pages/admin/manage-threshold-templates/manage-threshold-templates.module#ManageThresholdTemplatesModule'
+            loadChildren: () => import('./pages/admin/manage-threshold-templates/manage-threshold-templates.module').then(m => m.ManageThresholdTemplatesModule)
           },
           {
             path: 'manage-alert-definition',
-            loadChildren: './pages/admin/alert-definition/alert-definition.module#AlertDefinitionModule'
+            loadChildren: () => import('./pages/admin/alert-definition/alert-definition.module').then(m => m.AlertDefinitionModule)
           },
           {
             path: '**',
