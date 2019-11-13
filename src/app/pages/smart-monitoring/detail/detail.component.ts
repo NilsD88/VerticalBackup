@@ -131,7 +131,7 @@ export class DetailComponent implements OnInit {
 
   public async downloadPdfDetail() {
     const pdf = new jspdf('p', 'mm', 'a4', 1); // A4 size page of PDF (210 x 297)
-    pdf.setFontSize(10);
+    // pdf.setFontSize(10);
 
     function setStyle(styleName) {
       switch (styleName) {
