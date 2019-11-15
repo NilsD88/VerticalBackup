@@ -33,7 +33,7 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (this.chartData.length) {
       this.chartData.forEach((item) => {
-        const aggregatedValue = this.createAggregatedValues(item, `${item.label} ${item.devEui}`);
+        const aggregatedValue = this.createAggregatedValues(item, `${item.label}`);
         this.aggregatedValues.push(aggregatedValue);
       });
     }
