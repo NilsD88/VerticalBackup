@@ -20,7 +20,8 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
     average: string;
     min: string;
     max: string;
-    standardDeviation: string
+    standardDeviation: string;
+    postfix: string
   }[] = [];
 
   constructor() {
@@ -45,12 +46,14 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
       min: string;
       average: string;
       standardDeviation: string;
+      postfix: string
     } = {
       label: '',
       max: '',
       min: '',
       average: '',
-      standardDeviation: ''
+      standardDeviation: '',
+      postfix: ''
     };
 
     const avg = [];
