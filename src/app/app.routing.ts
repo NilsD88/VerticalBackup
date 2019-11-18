@@ -12,177 +12,154 @@ export class PublicAuthGuard implements CanActivate {
   constructor(public authService: AuthService,
               public sharedService: SharedService,
               private router: Router) {
-    }
-
-    async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-      //return true;
-      try {
-        this.sharedService.user = new User(await this.authService.isLoggedIn());
-        if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
-          this.router.navigate(['/private' + state.url]);
-        }
-        return true;
-      } catch (err) {
-        console.log('UserAuthGuard: ', err);
-        return true;
-      }
-    }
-
   }
 
-@Injectable()
-  export class UserAuthGuard implements CanActivate {
-
-    constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
-    }
-
-    async canActivate(): Promise<boolean> {
-      /*
-      this.sharedService.user = new User({
-        email: 'nicolas.ancel@ordina.be',
-        firstName: 'Nicolas',
-        lastName: 'Ancel',
-        impersonation: false,
-        modules: ['TANK_MONITORING', 'PEOPLE_COUTING'],
-        orgName: 'proximus',
-        roles: ['openid', 'pxs:iot:localadmin']
-      });
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    try {
+      this.sharedService.user = new User(await this.authService.isLoggedIn());
+      if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
+        this.router.navigate(['/private' + state.url]);
+      }
       return true;
-      */
-      try {
-        this.sharedService.user = await this.authService.isLoggedIn();
-        return this.sharedService.user.isUser;
-      } catch (err) {
-        switch (err.status) {
-          case 401:
+    } catch (err) {
+      console.log('UserAuthGuard: ', err);
+      return true;
+    }
+  }
+
+}
+
+@Injectable()
+export class UserAuthGuard implements CanActivate {
+
+  constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
+  }
+
+  async canActivate(): Promise<boolean> {
+    try {
+      this.sharedService.user = await this.authService.isLoggedIn();
+      return this.sharedService.user.isUser;
+    } catch (err) {
+      switch (err.status) {
+        case 401:
           this.router.navigate(['/']);
           this.sharedService.showNotification('Unauthorized: 401', 'warning', 3000);
           break;
-          case 403:
+        case 403:
           this.router.navigate(['/']);
           this.sharedService.showNotification('Unauthorized: 403', 'warning', 3000);
           break;
-          case 404:
+        case 404:
           this.router.navigate(['/error/404']);
           break;
-          default:
+        default:
           this.router.navigate(['/error/500']);
-        }
-        return false;
       }
-      return true;
+      return false;
     }
+    return true;
   }
+}
 
 @Injectable()
-  export class AdminAuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanActivate {
 
-    constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
-    }
+  constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
+  }
 
-    async canActivate(): Promise<boolean> {
-      /*
-      this.sharedService.user = new User({
-        email: 'nicolas.ancel@ordina.be',
-        firstName: 'Nicolas',
-        lastName: 'Ancel',
-        impersonation: false,
-        modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
-        orgName: 'proximus',
-        roles: ['openid', 'pxs:iot:localadmin']
-      });
-      return true;
-      */
-      try {
-        this.sharedService.user = await this.authService.isLoggedIn();
-        if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
-          this.sharedService.showNotification('Unauthorized, admin rights needed to perform this action', 'warning', 3000);
-          this.router.navigate(['/home']);
-        }
-        return this.sharedService.user.isAdmin;
-      } catch (err) {
-        switch (err.status) {
-          case 401:
+  async canActivate(): Promise<boolean> {
+
+    try {
+      this.sharedService.user = await this.authService.isLoggedIn();
+      if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
+        this.sharedService.showNotification('Unauthorized, admin rights needed to perform this action', 'warning', 3000);
+        this.router.navigate(['/home']);
+      }
+      return this.sharedService.user.isAdmin;
+    } catch (err) {
+      switch (err.status) {
+        case 401:
           this.router.navigate(['/error/401']);
           break;
-          case 403:
+        case 403:
           this.router.navigate(['/error/403']);
           break;
-          case 404:
+        case 404:
           this.router.navigate(['/error/404']);
           break;
-          case 302:
+        case 302:
           this.router.navigate(['/error/302']);
           break;
-          default:
+        default:
           this.router.navigate(['/error/500']);
-        }
-        return false;
       }
-      return true;
+      return false;
     }
-
+    return true;
   }
+
+}
 
 
 export const AppRoutes: Routes = [
-    /*
-    {
-      path: 'dev',
-      component: PublicLayoutComponent,
-      children: [{
-        path: '',
-        loadChildren: environment.paths.home
-      }]
-    },
-    */
-    {
-      path: 'contact',
-      component: PublicLayoutComponent,
-      children: [{
-        path: '',
-        loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
-      }]
-    },
-    {
-      path: 'privacy',
-      component: PublicLayoutComponent,
-      children: [{
-        path: '',
-        loadChildren: () => import('./pages/privacy/privacy.module').then(m => m.PrivacyModule)
-      }]
-    },
-    {
+  /*
+  {
+    path: 'dev',
+    component: PublicLayoutComponent,
+    children: [{
       path: '',
-      redirectTo: 'home',
-      pathMatch: 'full'
-    },
-    {
+      loadChildren: environment.paths.home
+    }]
+  },
+  */
+  {
+    path: 'contact',
+    component: PublicLayoutComponent,
+    canActivate: [PublicAuthGuard],
+    children: [{
       path: '',
-      component: PublicLayoutComponent,
-      canActivate: [PublicAuthGuard],
-      children: [{
-        path: 'home',
-        loadChildren: () => import('./pages/home/smartmonitoring/home.module').then(m => m.HomeModule)
-      }]
-    },
-    {
-      path: 'error',
-      component: PublicLayoutComponent,
-      canActivate: [PublicAuthGuard],
-      children: [{
-        path: '',
-        loadChildren: () => import('./pages/error/smartmonitoring/error.module').then(m => m.ErrorModule)
-      }]
-    },
-    {
-      path: 'playground',
-      component: PublicLayoutComponent,
-      canActivate: [PublicAuthGuard],
-      children: [{
-        path: '',
-        loadChildren: () => import('./pages/admin/manage-assets/manage-assets.module').then(m => m.ManageAssetsModule)
-      }]
+      loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
+    }]
+  },
+  {
+    path: 'privacy',
+    component: PublicLayoutComponent,
+    children: [{
+      path: '',
+      loadChildren: () => import('./pages/privacy/privacy.module').then(m => m.PrivacyModule)
+    }]
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
+    component: PublicLayoutComponent,
+    canActivate: [PublicAuthGuard],
+    children: [{
+      path: 'home',
+      loadChildren: () => import('./pages/home/smartmonitoring/home.module').then(m => m.HomeModule)
+    }]
+  },
+  {
+    path: 'error',
+    component: PrivateLayoutComponent,
+    canActivate: [PublicAuthGuard],
+    children: [{
+      path: '',
+      loadChildren: () => import('./pages/error/smartmonitoring/error.module').then(m => m.ErrorModule)
+    }]
+  },
+  {
+    path: 'playground',
+    component: PublicLayoutComponent,
+    canActivate: [PublicAuthGuard],
+    children: [{
+      path: '',
+      loadChildren: () => import('./pages/admin/manage-assets/manage-assets.module').then(m => m.ManageAssetsModule)
+    }]
   },
   {
     path: 'private',
@@ -251,10 +228,10 @@ export const AppRoutes: Routes = [
         path: '**',
         redirectTo: '/error/404'
       }]
-    },
-    {
-      path: '**',
-      redirectTo: '/error/404'
-    }
-  ];
+  },
+  {
+    path: '**',
+    redirectTo: '/error/404'
+  }
+];
 
