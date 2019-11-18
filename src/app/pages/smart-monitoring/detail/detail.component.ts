@@ -107,10 +107,11 @@ export class DetailComponent implements OnInit {
               to: this.currentFilter.to,
               interval: this.currentFilter.interval,
             };
+            const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
             aggregatedValues.push({
                 label: labelTranslation,
                 series: sensor.series,
-                standardDeviation: await this.logsService.getStandardDeviation(filter),
+                standardDeviation: (standardDeviation) ? standardDeviation.value : null,
                 postfix: sensor.sensorType.postfix
             });
           }
