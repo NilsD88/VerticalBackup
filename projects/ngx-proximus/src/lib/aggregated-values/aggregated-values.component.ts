@@ -9,11 +9,7 @@ import {isNullOrUndefined} from 'util';
 })
 export class AggregatedValuesComponent implements OnInit, OnChanges {
 
-  @Input() chartData = [];
-  @Input() standardDeviations: {
-    sensorType: string;
-    value: number;
-  }[] = [];
+  @Input() data = [];
 
   public aggregatedValues: {
     label: string;
@@ -31,15 +27,16 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (this.chartData.length) {
-      this.chartData.forEach((item) => {
-        const aggregatedValue = this.createAggregatedValues(item, `${item.label}`);
+    if (this.data.length) {
+      this.aggregatedValues = [];
+      this.data.forEach((item, index) => {
+        const aggregatedValue = this.createAggregatedValues(item);
         this.aggregatedValues.push(aggregatedValue);
       });
     }
   }
 
-  public createAggregatedValues(data, labelTranslation: string) {
+  public createAggregatedValues(data) {
     const aggregatedValue: {
       label: string;
       max: string;
@@ -72,17 +69,12 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
         sum += parseFloat(item);
       });
 
-      aggregatedValue.label = labelTranslation;
+      aggregatedValue.label = data.label ? data.label : '';
       aggregatedValue.max = (max.length > 0) ? Math.max(...max).toFixed(2) : null;
       aggregatedValue.min = (min.length > 0) ? Math.min(...min).toFixed(2) : null;
       aggregatedValue.average = (data.series.length > 0) ? (sum / data.series.length).toFixed(2) : null;
-
-      const retrievedStandardDeviation = this.standardDeviations.find(standardDeviation => {
-        return standardDeviation.sensorType === data.label;
-      });
-      if (retrievedStandardDeviation) {
-        aggregatedValue.standardDeviation = retrievedStandardDeviation.value.toFixed(2);
-      }
+      aggregatedValue.standardDeviation = data.standardDeviation ? data.standardDeviation.toFixed(2) : null;
+      aggregatedValue.postfix = data.postfix ? data.postfix : null;
     }
 
     return aggregatedValue;

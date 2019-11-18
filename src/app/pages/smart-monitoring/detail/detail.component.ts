@@ -35,6 +35,7 @@ export class DetailComponent implements OnInit {
   public chartLoading = false;
   public chartData$ = new Subject<any>();
   public chartData = [];
+  public aggregatedValues = [];
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
@@ -81,11 +82,21 @@ export class DetailComponent implements OnInit {
     this.getLastAlerts();
     this.getChartData(this.chartData$).subscribe(async things => {
       const chartData = [];
-      const standardDeviationPromises = [];
+      const aggregatedValues = [];
 
       // Get the translation of each label
       for (const thing of things) {
         for (const sensor of thing.sensors) {
+
+          let labelTranslation;
+          if ((sensor.sensorDefinition || {}).name) {
+            labelTranslation = sensor.sensorDefinition.name;
+          } else {
+            labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
+            if (labelTranslation.indexOf('SENSORTYPES') > -1) {
+              labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+            }
+          }
 
           // START STANDARD DEVIATION
           if (this.currentFilter.interval !== 'ALL') {
@@ -96,22 +107,19 @@ export class DetailComponent implements OnInit {
               to: this.currentFilter.to,
               interval: this.currentFilter.interval,
             };
-            standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
+            aggregatedValues.push({
+                label: labelTranslation,
+                series: sensor.series,
+                standardDeviation: await this.logsService.getStandardDeviation(filter),
+                postfix: sensor.sensorType.postfix
+            });
           }
           // END STANDARD DEVIATION
 
           if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
             continue;
           }
-          let labelTranslation;
-          if ((sensor.sensorDefinition || {}).name) {
-            labelTranslation = sensor.sensorDefinition.name;
-          } else {
-            labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
-            if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-              labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
-            }
-          }
+
           chartData.push({
             label: labelTranslation,
             sensorId: sensor.id,
@@ -124,7 +132,8 @@ export class DetailComponent implements OnInit {
       this.chartData = chartData;
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
-      this.standardDeviations = await Promise.all(standardDeviationPromises);
+      // STANDARD DEVIATIONS
+      this.aggregatedValues = aggregatedValues;
     });
     this.chartData$.next(this.currentFilter);
   }

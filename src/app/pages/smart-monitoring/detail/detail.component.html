@@ -11,9 +11,9 @@
           </pvf-smartmonitoring-chart>
         </div>
       </div>
-      <div class="row" *ngIf="chartData && !chartLoading && currentFilter.durationInHours > 24">
+      <div class="row" *ngIf="chartData && !chartLoading && currentFilter.interval !== 'ALL'">
         <div class="col-12">
-          <pxs-aggregated-values [chartData]="chartData" [standardDeviations]="standardDeviations" #myAggregatedValues></pxs-aggregated-values>
+          <pxs-aggregated-values [data]="aggregatedValues" #myAggregatedValues></pxs-aggregated-values>
         </div>
       </div>
       <div class="row" *ngIf="asset && (asset?.geolocation && asset.location || asset?.location && asset?.image)">
