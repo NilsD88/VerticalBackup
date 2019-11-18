@@ -4,6 +4,7 @@ import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-p
 import { MOCK_LOCATIONS } from 'src/app/mocks/newlocations';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { SharedService } from 'src/app/services/shared.service';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'pvf-tankmonitoring-detail-header',
@@ -14,6 +15,8 @@ export class DetailHeaderComponent implements OnInit {
 
   @Input() asset: IAsset;
   public orgName: string;
+
+  public isNullOrUndefined = isNullOrUndefined;
 
   constructor(
     public dialog: MatDialog,

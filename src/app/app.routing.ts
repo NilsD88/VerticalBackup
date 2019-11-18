@@ -102,16 +102,14 @@ export class AdminAuthGuard implements CanActivate {
 
 
 export const AppRoutes: Routes = [
-  /*
   {
     path: 'dev',
     component: PublicLayoutComponent,
     children: [{
       path: '',
-      loadChildren: environment.paths.home
+      loadChildren: () => import('./pages/devtest/devtest.module').then(m => m.DevtestModule)
     }]
   },
-  */
   {
     path: 'contact',
     component: PublicLayoutComponent,

@@ -3,6 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
 import { IAsset } from 'src/app/models/g-asset.model';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'pvf-smartmonitoring-detail-header',
@@ -13,6 +14,8 @@ export class DetailHeaderComponent implements OnInit {
 
   @Input() asset: IAsset;
   public orgName: string;
+
+  public isNullOrUndefined = isNullOrUndefined;
 
   constructor(
     public dialog: MatDialog,
