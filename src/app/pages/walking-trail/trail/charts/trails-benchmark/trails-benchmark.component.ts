@@ -3,7 +3,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {uniq} from 'lodash';
 
-import * as randomColor from 'randomColor';
+import * as randomColor from 'randomcolor';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
