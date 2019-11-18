@@ -133,6 +133,7 @@ export class DetailComponent implements OnInit {
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
       // STANDARD DEVIATIONS
+      console.log(aggregatedValues);
       this.aggregatedValues = aggregatedValues;
     });
     this.chartData$.next(this.currentFilter);

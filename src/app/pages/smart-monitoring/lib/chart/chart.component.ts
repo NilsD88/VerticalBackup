@@ -63,8 +63,8 @@ interface IFilterChartData {
 
 enum ESensorColors {
   TEMPERATURE = 'orange',
-    HUMIDITY = 'blue',
-    BATTERY = 'monochrome'
+  HUMIDITY = 'blue',
+  BATTERY = 'monochrome'
 }
 
 interface IChartData {
