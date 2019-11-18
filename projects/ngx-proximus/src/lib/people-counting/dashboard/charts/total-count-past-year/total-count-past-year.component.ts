@@ -4,7 +4,6 @@ import { cloneDeep, uniq } from 'lodash';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
-import { ILeafColors } from 'src/app/models/peoplecounting/leaf.model';
 
 
 declare global {
@@ -15,6 +14,7 @@ declare global {
 
 
 import * as Highcharts from 'highcharts';
+import { ILeafColors } from 'src/app/models/peoplecounting/leaf.model';
 
 declare var require: any;
 require('highcharts/modules/boost');
@@ -26,7 +26,7 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 
 @Component({
-  selector: 'pvf-total-count-past-year',
+  selector: 'pxs-peoplecounting-dashboard-total-count-past-year',
   templateUrl: './total-count-past-year.component.html',
   styleUrls: ['./total-count-past-year.component.scss']
 })

@@ -1,5 +1,6 @@
 import { cloneDeep } from 'lodash';
 import { IWalkingTrailLocation, IWalkingTrailLocationSerie } from 'src/app/models/walkingtrail/location.model';
+import { ILeafColors } from 'src/app/models/peoplecounting/leaf.model';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {findLeaftsLocation} from '../utils';
@@ -183,9 +184,4 @@ function generatePastYearOfDataSeries(): IWalkingTrailLocationSerie[] {
     );
   }
   return dataSeries;
-}
-
-export interface ILeafColors {
-  id: string;
-  color: string;
 }

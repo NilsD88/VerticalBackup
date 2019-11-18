@@ -13,7 +13,6 @@ import {
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-
 import { ILeafColors } from 'src/app/models/peoplecounting/leaf.model';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -41,7 +40,7 @@ exporting(Highcharts);
 exportData(Highcharts);
 
 @Component({
-  selector: 'pvf-count-past-week',
+  selector: 'pxs-peoplecounting-dashboard-count-past-week',
   templateUrl: './count-past-week.component.html',
   styleUrls: ['./count-past-week.component.scss']
 })
