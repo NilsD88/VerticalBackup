@@ -1,47 +1,34 @@
-import { IThing } from 'src/app/models/g-thing.model';
-export let MOCK_TOTAL_COUNT_PAST_WEEK: IThing[] = [{
-  id: '22',
-  devEui: '4883C7DF300C104D',
-  name: 'thing SHOCK',
-  batteryPercentage: 95,
-  sensors: [{
-    id: '24',
-    sensorType: {
-      id: '6',
-      name: 'shock',
-      postfix: '%',
-      min: 0.0,
-      max: 100.0,
+import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
+
+export let MOCK_TRAIL_WALKING_TRAIL: IWalkingTrailLocation = {};
+
+MOCK_TRAIL_WALKING_TRAIL = {
+  id: '2',
+  name: 'Trail A',
+  description: null,
+  geolocation: {
+    lat: 50.453331,
+    lng: 3.948740
+  },
+  image: null,
+  children: [],
+  parent: {
+    id: '1',
+    name: 'Mons',
+  },
+  leftId: null,
+  assets: [
+    {
+      id: 'c1',
+      name: 'Checkpoint 1'
     },
-    sensorDefinition: {
-      name: 'shoooooock',
-      chartType: 'spline',
-      useOnChart: true,
-      aggregatedValues: {
-        min: true,
-        max: true,
-        avg: false,
-        sum: true
-      }
+    {
+      id: 'c2',
+      name: 'Checkpoint 2'
     },
-    series: [{
-      timestamp: 1572476400000,
-      avg: 1.0,
-      min: 1.0,
-      max: 1.0,
-      sum: 14.0
-    }, {
-      timestamp: 1572822000000,
-      avg: 1.0,
-      min: 1.0,
-      max: 1.0,
-      sum: 55.0
-    }, {
-      timestamp: 1572908400000,
-      avg: 1.0,
-      min: 1.0,
-      max: 1.0,
-      sum: 22.0
-    }]
-  }]
-}];
+    {
+      id: 'c3',
+      name: 'Checkpoint 3'
+    },
+  ]
+};

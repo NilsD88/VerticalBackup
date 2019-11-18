@@ -69,6 +69,7 @@ enum ESensorColors {
 
 interface IChartData {
   label: string;
+  sensorId: string;
   sensorTypeId: string;
   sensorDefinition: ISensorDefinition;
   series: IChartSerie[];
@@ -116,10 +117,12 @@ export class ChartComponent implements OnInit, OnChanges {
   public options: any;
   public chart: any;
   public range: {
-    fromDate: number;toDate: number
+    fromDate: number;
+    toDate: number
   };
   public Highcharts = Highcharts;
   public rangeTranslation = 'range';
+  public chartSettingsForAsset = {};
 
   constructor(public translateService: TranslateService) {}
 
@@ -130,6 +133,7 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges() {
+    this.chartSettingsForAsset = ((JSON.parse(window.localStorage.getItem('smartmonitoring:chart-settings')) || {})[this.asset.id] || {});
     const filename = this.asset ? (this.asset.name) : 'Chart';
     this.options = {
       navigator: {
@@ -189,6 +193,17 @@ export class ChartComponent implements OnInit, OnChanges {
           showInNavigator: true,
           marker: {
             enabled: false
+          },
+          events: {
+            legendItemClick: (event) => {
+              const chartSettings = JSON.parse(window.localStorage.getItem('smartmonitoring:chart-settings')) || {};
+              const chartSettingsForAsset = chartSettings[this.asset.id] || {};
+              chartSettingsForAsset[event.target.userOptions.id] = {
+                visible: !event.target.visible
+              };
+              chartSettings[this.asset.id] = chartSettingsForAsset;
+              window.localStorage.setItem('smartmonitoring:chart-settings', JSON.stringify(chartSettings));
+            }
           }
         }
       },
@@ -250,11 +265,13 @@ export class ChartComponent implements OnInit, OnChanges {
     });
     if (this.filter.interval !== 'ALL') {
       if (!isNullOrUndefined(item.sensorDefinition)) {
-        console.log('!isNullOrUndefined(item.sensorDefinition)');
         const sensorDefinition = item.sensorDefinition;
         if (sensorDefinition.aggregatedValues.sum) {
+          const id = item.sensorId + '_sum';
           this.options.series.push({
-            name: item.label,
+            visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+            id,
+            name: item.label + ' ' + 'sum',
             color,
             yAxis: this.getYAxisByLabel(item.label),
             zIndex: 1,
@@ -266,8 +283,11 @@ export class ChartComponent implements OnInit, OnChanges {
           });
         }
         if (sensorDefinition.aggregatedValues.avg) {
+          const id = item.sensorId + '_avg';
           this.options.series.push({
-            name: item.label,
+            visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+            id,
+            name: item.label + ' ' + 'avg',
             color,
             yAxis: this.getYAxisByLabel(item.label),
             zIndex: 1,
@@ -279,7 +299,10 @@ export class ChartComponent implements OnInit, OnChanges {
           });
         }
         if (sensorDefinition.aggregatedValues.max && sensorDefinition.aggregatedValues.min) {
+          const id = item.sensorId + '_min-max';
           this.options.series.push({
+            visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+            id,
             name: item.label + ' ' + this.rangeTranslation,
             color,
             type: 'arearange',
@@ -298,8 +321,11 @@ export class ChartComponent implements OnInit, OnChanges {
           });
         } else {
           if (sensorDefinition.aggregatedValues.max) {
+            const id =  item.sensorId + '_max';
             this.options.series.push({
-              name: item.label,
+              visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+              id,
+              name: item.label + ' ' + 'max',
               color,
               yAxis: this.getYAxisByLabel(item.label),
               zIndex: 1,
@@ -310,8 +336,11 @@ export class ChartComponent implements OnInit, OnChanges {
               })
             });
           } else if (sensorDefinition.aggregatedValues.min) {
+            const id = item.sensorId + '_min';
             this.options.series.push({
-              name: item.label,
+              visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+              id,
+              name: item.label + ' ' + 'min',
               color,
               yAxis: this.getYAxisByLabel(item.label),
               zIndex: 1,
@@ -324,36 +353,28 @@ export class ChartComponent implements OnInit, OnChanges {
           }
         }
       } else {
-        // Check if it is check or presence
-        if (item.sensorTypeId === '6' || item.sensorTypeId === '4') {
-          // SUM
-          this.options.series.push({
-            name: item.label,
-            color,
-            yAxis: this.getYAxisByLabel(item.label),
-            zIndex: 1,
-            type: 'spline',
-            showInLegend: (item.series.length) ? true : false,
-            data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
-            })
-          });
-        } else {
-          // AVERAGE
-          this.options.series.push({
-            name: item.label,
-            color,
-            yAxis: this.getYAxisByLabel(item.label),
-            zIndex: 1,
-            type: 'spline',
-            showInLegend: (item.series.length) ? true : false,
-            data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-            })
-          });
-        }
-        // MIN AND MAX
+
+        // AVERAGE
+        const avgId = item.sensorId + '_avg';
         this.options.series.push({
+          visible: (this.chartSettingsForAsset[avgId]) ? this.chartSettingsForAsset[avgId].visible : true,
+          id: avgId,
+          name: item.label,
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'spline',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+          })
+        });
+
+        // MIN AND MAX
+        const minMaxId = item.sensorId + '_min-max';
+        this.options.series.push({
+          visible: (this.chartSettingsForAsset[minMaxId]) ? this.chartSettingsForAsset[minMaxId].visible : true,
+          id: minMaxId,
           name: item.label + ' ' + this.rangeTranslation,
           color,
           type: 'arearange',
@@ -373,8 +394,11 @@ export class ChartComponent implements OnInit, OnChanges {
       }
     } else {
       // REAL VALUES
+      const id = item.sensorId;
       if (!isNullOrUndefined(item.sensorDefinition)) {
         this.options.series.push({
+          visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+          id,
           name: item.label,
           color,
           yAxis: this.getYAxisByLabel(item.label),
@@ -387,6 +411,8 @@ export class ChartComponent implements OnInit, OnChanges {
         });
       } else {
         this.options.series.push({
+          visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
+          id,
           name: item.label,
           color,
           yAxis: this.getYAxisByLabel(item.label),

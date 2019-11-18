@@ -14,7 +14,6 @@ export let MOCK_LOCATIONS: ILocation[] = [];
 
 export let MOCK_LOCATIONS_WALKING_TRAIL: IWalkingTrailLocation[] = [];
 
-
 MOCK_LOCATIONS = [{
     id: '0',
     parentId: 'null',
@@ -107,7 +106,6 @@ MOCK_LOCATIONS_WALKING_TRAIL = [{
           children: [],
           parentId: null,
           leftId: null,
-          amount: 10
         },
         {
           id: '3',
@@ -121,16 +119,13 @@ MOCK_LOCATIONS_WALKING_TRAIL = [{
           children: [],
           parentId: null,
           leftId: null,
-          amount: 12
         }
       ],
       parentId: null,
       leftId: null,
-      amount: 22
     }, ],
     parentId: null,
     leftId: null,
-    amount: 56
   },
   {
     id: '4',
@@ -162,7 +157,6 @@ MOCK_LOCATIONS_WALKING_TRAIL = [{
           children: [],
           parentId: null,
           leftId: null,
-          amount: 14
         },
         {
           id: '7',
@@ -176,15 +170,12 @@ MOCK_LOCATIONS_WALKING_TRAIL = [{
           children: [],
           parentId: null,
           leftId: null,
-          amount: 20
         }
       ],
       parentId: null,
       leftId: null,
-      amount: 34
     }],
     parentId: null,
     leftId: null,
-    amount: 120
   }
 ];

@@ -82,7 +82,7 @@
         </div>
         <div *ngIf="currentLocation">
           <div class="dropListItem" *ngFor="let asset of currentLocation.assets" [ngClass]="{'selected': selectedAsset === asset}">
-            <a [routerLink]="assetUrl+''+asset.id">
+            <a [routerLink]="assetUrl+''+asset.id" (click)="assetClicked.emit()">
               <pxs-icon icon="document-img" class="asset"></pxs-icon>
               {{asset.name}}
             </a>

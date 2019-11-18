@@ -1,0 +1,143 @@
+@import "variables.scss";
+
+.filter-container {
+  background: $grey-light;
+  padding: 10px 0 20px;
+
+  .row {
+    > div:last-of-type {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+.assets-list {
+  padding: 20px !important;
+}
+
+.assets-loading-container {
+  display         : flex;
+  justify-content : center;
+  flex            : 1;
+}
+
+
+
+
+
+::ng-deep {
+  pxs-location-explorer {
+    display: block;
+    width: 100%;
+    padding: 20px 0 20px;
+  }
+
+  .card {
+    margin: 0;
+    padding: 8px !important;
+  
+    .title {
+      max-width     : 100%;
+      white-space   : nowrap;
+      overflow      : hidden;
+      text-overflow : ellipsis;
+  
+      a {
+        text-decoration : none;
+      }
+    }
+  
+  
+    .wrapper {
+      .header {
+        .locations {
+          padding       : .2rem .5rem;
+          margin        : 5px;
+          display       : inline-flex;
+          max-width     : 95%;
+          white-space   : nowrap;
+          overflow      : hidden;
+          text-overflow : ellipsis;
+          border-radius : 0 0 10px 0;
+        }
+      }
+    }
+  
+    .menu-content {
+      margin          : 0;
+      padding         : 0;
+      list-style-type : none;
+  
+      li {
+        display : inline-block;
+      }
+  
+      span {
+        position    : absolute;
+        left        : 50%;
+        top         : 0;
+        font-size   : 10px;
+        font-weight : 700;
+        transform   : translate(-50%, 0);
+      }
+    }
+  
+    .wrapper {
+      min-height : 250px;
+      position   : relative;
+      overflow   : hidden;
+  
+      &:hover {
+        cursor: pointer;
+        .data {
+          transform : translateY(0);
+        }
+      }
+    }
+  
+    .data {
+      position   : absolute;
+      bottom     : 0;
+      width      : 100%;
+      transform  : translateY(calc(70px + 1em));
+      transition : transform 0.3s;
+  
+      .content {
+        background-color : rgba(0, 0, 0, .8);
+        padding          : 1em;
+        position         : relative;
+        z-index          : 1;
+      }
+    }
+  
+    .thresholdTemplate {
+      text-transform : capitalize;
+      font-size      : 12px;
+      padding        : 5px 10px;
+    }
+  
+    .title {
+      margin-top : 10px;
+    }
+  
+    .text {
+      height : 70px;
+      margin : 0;
+    }
+  
+    input[type='checkbox'] {
+      display : none;
+    }
+  
+    input[type='checkbox']:checked + .menu-content {
+      transform : translateY(-60px);
+    }
+  }
+}

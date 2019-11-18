@@ -5,11 +5,11 @@ import {IThing} from './g-thing.model';
 import {isNullOrUndefined} from 'util';
 import {IAlert} from './g-alert.model';
 
-export interface IAsset {
+export interface IAbstractAsset <TLocation> {
   id?: string;
   name?: string;
   description?: string;
-  location?: ILocation;
+  location?: TLocation;
   locationId?: string;
   geolocation?: IGeolocation;
   image?: string;
@@ -21,6 +21,8 @@ export interface IAsset {
 
   lastAlert?: any;
 }
+
+export interface IAsset extends IAbstractAsset <ILocation> {}
 
 export class Asset {
   id: string;

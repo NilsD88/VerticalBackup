@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { MOCK_LOCATIONS_WALKING_TRAIL } from 'src/app/mocks/newlocations';
+import { MOCK_TRAIL_WALKING_TRAIL } from 'src/app/mocks/walking-trail';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -21,6 +23,13 @@ export class WalkingTrailLocationService extends NewLocationService {
     public getLocationsTree(): Observable < IWalkingTrailLocation[] > {
         return new Observable < IWalkingTrailLocation[] > ((observer) => {
             observer.next(MOCK_LOCATIONS_WALKING_TRAIL);
+            observer.complete();
+        });
+    }
+
+    public getLocationById(locationId: string): Observable < IWalkingTrailLocation > {
+        return new Observable < IWalkingTrailLocation > ((observer) => {
+            observer.next(MOCK_TRAIL_WALKING_TRAIL);
             observer.complete();
         });
     }

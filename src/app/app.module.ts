@@ -20,6 +20,7 @@ import {MatMenuModule, MatSnackBarModule, MatTooltipModule} from '@angular/mater
 import { SharedModule } from './shared/shared.module';
 import { GraphQLModule } from './graphql.module';
 
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
 }

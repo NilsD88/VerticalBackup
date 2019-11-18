@@ -13,7 +13,7 @@
       </div>
       <div class="row" *ngIf="chartData && !chartLoading && currentFilter.durationInHours > 24">
         <div class="col-12">
-          <pxs-aggregated-values [chartData]="chartData" #myAggregatedValues></pxs-aggregated-values>
+          <pxs-aggregated-values [chartData]="chartData" [standardDeviations]="standardDeviations" #myAggregatedValues></pxs-aggregated-values>
         </div>
       </div>
       <div class="row" *ngIf="asset && (asset?.geolocation && asset.location || asset?.location && asset?.image)">

@@ -1,3 +1,4 @@
+import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DetailHeaderComponent} from './detail-header.component';
@@ -15,7 +16,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ImgFallbackModule,
     MatDialogModule,
     LocationPopupModule,
-    NgxSkeletonLoaderModule
+    NgxSkeletonLoaderModule,
+    IconModule
   ],
   exports: [DetailHeaderComponent],
   entryComponents: [

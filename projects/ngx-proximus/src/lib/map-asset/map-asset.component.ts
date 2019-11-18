@@ -1,3 +1,4 @@
+import { Geolocation } from './../../../../../src/app/models/geolocation.model';
 import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef} from '@angular/core';
 import {NgElement, WithProperties} from '@angular/elements';
 import {IAsset} from 'src/app/models/g-asset.model';
@@ -36,10 +37,7 @@ export class MapAssetComponent implements OnInit {
 
   ngOnInit() {
 
-    this.center = {
-      lat: 0,
-      lng: 0
-    };
+    this.center = new Geolocation();
 
     this.markerClusterOptions = {
       iconCreateFunction(cluster) {

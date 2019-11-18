@@ -1,5 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr-BE';
+import localeNl from '@angular/common/locales/nl-BE';
+import localeEn from '@angular/common/locales/en-BE';
 
 @Component({
   selector: 'pvf-root',
@@ -7,6 +12,10 @@ import {TranslateService} from '@ngx-translate/core';
 })
 export class AppComponent {
   constructor(translate: TranslateService) {
+
+    registerLocaleData(localeFr, 'fr');
+    registerLocaleData(localeNl, 'nl');
+    registerLocaleData(localeEn, 'en');
 
     //////////////////////////
     // Setup language to use

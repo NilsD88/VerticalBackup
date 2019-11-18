@@ -8,8 +8,6 @@ import { EasterEggComponent } from './easter-egg.component';
   declarations: [EasterEggComponent],
   imports: [
     CommonModule,
-    LogoModule,
-    IconModule
   ],
   exports: [
     EasterEggComponent

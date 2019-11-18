@@ -15,6 +15,7 @@ import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from './popup/popup.component';
 import { IAsset } from 'src/app/models/g-asset.model';
+import { Observable } from 'apollo-link';
 
 @Component({
   selector: 'pxs-map',

@@ -1,20 +1,22 @@
 <header>
-  <mat-button-toggle-group  (change)="viewAs = $event.value" [value]="viewAs">
-    <mat-button-toggle value="list"><mat-icon>list</mat-icon></mat-button-toggle>
-    <mat-button-toggle value="map"><mat-icon>map</mat-icon></mat-button-toggle>
+  <mat-button-toggle-group (change)="viewAs = $event.value" [value]="viewAs">
+    <mat-button-toggle value="list">
+      <mat-icon>list</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="map">
+      <mat-icon>map</mat-icon>
+    </mat-button-toggle>
   </mat-button-toggle-group>
 </header>
 
-<mat-progress-spinner 
-  *ngIf="!rootLocation"
-  style="margin:20px auto 0;"
-  color="primary" 
-  mode="indeterminate">
+<mat-progress-spinner *ngIf="!rootLocation" style="margin:20px auto 0;" color="primary" mode="indeterminate">
 </mat-progress-spinner>
 
 <div *ngIf="viewAs === 'list'">
-    <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event" [displayAssets]="true"></pxs-location-explorer>
+  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
+    (changeLocation)="selectedLocation=$event" [displayAssets]="true" (assetClicked)="dialogRef.close()"></pxs-location-explorer>
 </div>
 <div *ngIf="viewAs === 'map'" style="height: calc(100vh - 190px);">
-  <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation" (changeLocation)="selectedLocation=$event"></pxs-map>
+  <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
+    (changeLocation)="selectedLocation=$event"></pxs-map>
 </div>

@@ -1,14 +1,50 @@
-<div class="container-fluid">
+<div class="filter-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <mat-button-toggle-group (change)="listStyleOnChange($event)" [value]="listStyleValue">
+            <mat-button-toggle value="map">
+              <mat-icon>map</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="list">
+              <mat-icon>list</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="listStyleValue === 'map'">
     <div class="row">
         <div class="col-md-12" style="min-height: 400px;">
-            <pvf-walkingtrail-map *ngIf="rootLocation" [rootLocation]="rootLocation"></pvf-walkingtrail-map>
+            <pvf-walkingtrail-map *ngIf="rootLocation" [rootLocation]="rootLocation" (changeLocation)="changeLocation($event)"></pvf-walkingtrail-map>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="listStyleValue === 'list'">
+    <div class="row">
+        <div class="col-md-12" style="min-height: 400px;">
+            <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" (changeLocation)="changeLocation($event)"></pxs-location-explorer>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12" *ngIf="currentLeafs?.length < 20">
+            <pvf-count-past-week [leafs]="currentLeafs" [leafColors]="leafColors" (decrease)="decrease()" (increase)="increase()"></pvf-count-past-week>
+        </div>
+        <div class="col-md-12" *ngIf="currentLeafs?.length >= 20" style="height:400px">
+            <pvf-total-count-past-week [leafs]="currentLeafs" style="height:400px"></pvf-total-count-past-week>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <pvf-total-count-past-week [rootLocation]="rootLocation"></pvf-total-count-past-week>
+        <div class="col-md-12" style="height:400px">
+            <pvf-total-count-past-year [leafs]="lastYearLeafs" [leafColors]="leafColors" style="height:400px"></pvf-total-count-past-year>
         </div>
     </div>
 </div>

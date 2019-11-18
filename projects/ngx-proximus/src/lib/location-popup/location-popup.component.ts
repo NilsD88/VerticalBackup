@@ -1,6 +1,6 @@
 import { ILocation } from 'src/app/models/g-location.model';
 import { Component, OnInit, Optional, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { NewLocationService } from 'src/app/services/new-location.service';
 
 @Component({
@@ -17,6 +17,7 @@ export class LocationPopupComponent implements OnInit {
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<LocationPopupComponent>,
     private newLocationService: NewLocationService
   ) { }
 

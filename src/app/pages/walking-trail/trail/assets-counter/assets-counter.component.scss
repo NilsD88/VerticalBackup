@@ -1,0 +1,15 @@
+@import "variables.scss";
+
+::ng-deep {
+  .datatable {
+    width: 100%;
+    [class*="cdk-column-"] {
+      padding: 0 5px !important;
+    }
+  
+    .cdk-column-name {
+      min-width: 200px;
+      padding-right: 0 20px !important;
+    }
+  } 
+}

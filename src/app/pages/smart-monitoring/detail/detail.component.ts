@@ -1,3 +1,5 @@
+import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { LogsService } from './../../../services/logs.service';
 import {cloneDeep} from 'lodash';
 import {NewAssetService} from 'src/app/services/new-asset.service';
 import {SharedService} from 'src/app/services/shared.service';
@@ -40,10 +42,16 @@ export class DetailComponent implements OnInit {
     to: moment().toDate().getTime(),
   };
 
+  public standardDeviations: {
+    sensorType: string;
+    value: number;
+  }[] = [];
+
   constructor(
     public activeRoute: ActivatedRoute,
     private translateService: TranslateService,
     private sharedService: SharedService,
+    private logsService: LogsService,
     public newAlertService: NewAlertService,
     public newAssetService: NewAssetService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -73,10 +81,25 @@ export class DetailComponent implements OnInit {
     this.getLastAlerts();
     this.getChartData(this.chartData$).subscribe(async things => {
       const chartData = [];
+      const standardDeviationPromises = [];
+
       // Get the translation of each label
       for (const thing of things) {
         for (const sensor of thing.sensors) {
-          console.log(sensor);
+
+          // START STANDARD DEVIATION
+          if (this.currentFilter.interval !== 'ALL') {
+            const filter = {
+              deveui: thing.devEui,
+              sensortypeid: sensor.sensorType.id,
+              from: this.currentFilter.from,
+              to: this.currentFilter.to,
+              interval: this.currentFilter.interval,
+            };
+            standardDeviationPromises.push(this.logsService.getStandardDeviation(filter));
+          }
+          // END STANDARD DEVIATION
+
           if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
             continue;
           }
@@ -91,22 +114,24 @@ export class DetailComponent implements OnInit {
           }
           chartData.push({
             label: labelTranslation,
+            sensorId: sensor.id,
             sensorTypeId: sensor.sensorType.id,
             sensorDefinition: sensor.sensorDefinition,
-            series: sensor.series
+            series: sensor.series,
           });
         }
       }
       this.chartData = chartData;
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
+      this.standardDeviations = await Promise.all(standardDeviationPromises);
     });
     this.chartData$.next(this.currentFilter);
   }
 
 
   public updateChartData(options: { interval?: string; from?: number; to?: number; }) {
-    const interval = options.interval ? options.interval : this.currentFilter.interval;
+    const interval = options.interval ? options.interval as Intervals : this.currentFilter.interval as Intervals;
     const from = options.from ? options.from : this.currentFilter.from;
     const to = options.to ? options.to : this.currentFilter.to;
     const duration = moment.duration(moment(to).diff(from));

@@ -1,0 +1,28 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <pvf-trail-map [location]="parentLocation" *ngIf="parentLocation"></pvf-trail-map>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <slideshow [height]="'200px'" [imageUrls]="imageSources" [showDots]="true"
+        [lazyLoad]="imageSources?.length > 1" [autoPlayWaitForLazyLoad]="true">
+      </slideshow>
+      <pvf-summary-statistics [leaf]="leaf"></pvf-summary-statistics>
+    </div>
+  </div>
+</div>
+<pvf-month-view [leaf]="leaf"></pvf-month-view>
+<pvf-trails-benchmark [parentLocation]="parentLocation"></pvf-trails-benchmark>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <pvf-count-by-asset *ngIf="leaf" [assets]="leaf?.assets"></pvf-count-by-asset>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <pvf-assets-counter *ngIf="leaf" [leaf]="leaf"></pvf-assets-counter>
+    </div>
+    <div class="col-md-4 col-sm-12" style="height: 300px;">
+        <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
+    </div>
+  </div>
+</div>

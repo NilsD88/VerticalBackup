@@ -4,7 +4,7 @@ import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 
 
 export interface IFilterChartData {
-  interval?: string;
+  interval?: Intervals;
   from?: number;
   to?: number;
   durationInHours?: number;

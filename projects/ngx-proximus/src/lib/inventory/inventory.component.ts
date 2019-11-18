@@ -90,6 +90,7 @@ export class InventoryComponent implements OnInit {
 
   public changeFilterBE() {
     this.assetsLoading = true;
+    this.assets = [];
     this.filterBE$.next(this.filterBE);
   }
 

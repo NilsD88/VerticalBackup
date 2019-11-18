@@ -1,5 +1,5 @@
 import {
-  ILocation
+  ILocation, IPagedLocations
 } from './../models/g-location.model';
 import {
   Injectable
@@ -260,6 +260,46 @@ export class NewLocationService {
       }) => data.deleteLocation)
     );
 
+  }
+
+  public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedLocations > {
+    const GET_PAGED_LEAF_LOCATIONS = gql `
+      query findLeafLocationsByFilterPaged($input: PagedLeafLocationsFindByFilterInput!) {
+        pagedLeafLocations: findLeafLocationsByFilterPaged(input: $input) {
+          totalElements,
+          totalPages,
+          locations {
+              id,
+              name,
+              description,
+              location {
+                id,
+                name
+              }
+          }
+        }
+      }`;
+
+    interface GetPagedLeafLocationsResponse {
+      pagedLeafLocations: IPagedLocations;
+    }
+
+    return this.apollo.query < GetPagedLeafLocationsResponse > ({
+      query: GET_PAGED_LEAF_LOCATIONS,
+      variables: {
+        input: {
+          organizationId: 1,
+          pageNumber,
+          pageSize,
+          ...filter
+        }
+      },
+      fetchPolicy: 'network-only'
+    }).pipe(map(({
+      data
+    }) => {
+      return data.pagedLeafLocations;
+    }));
   }
 
   // END APOLLO

@@ -15,6 +15,7 @@ export class PublicAuthGuard implements CanActivate {
     }
 
     async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+      //return true;
       try {
         this.sharedService.user = new User(await this.authService.isLoggedIn());
         if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
@@ -36,6 +37,18 @@ export class PublicAuthGuard implements CanActivate {
     }
 
     async canActivate(): Promise<boolean> {
+      /*
+      this.sharedService.user = new User({
+        email: 'nicolas.ancel@ordina.be',
+        firstName: 'Nicolas',
+        lastName: 'Ancel',
+        impersonation: false,
+        modules: ['TANK_MONITORING', 'PEOPLE_COUTING'],
+        orgName: 'proximus',
+        roles: ['openid', 'pxs:iot:localadmin']
+      });
+      return true;
+      */
       try {
         this.sharedService.user = await this.authService.isLoggedIn();
         return this.sharedService.user.isUser;
@@ -68,7 +81,18 @@ export class PublicAuthGuard implements CanActivate {
     }
 
     async canActivate(): Promise<boolean> {
-
+      /*
+      this.sharedService.user = new User({
+        email: 'nicolas.ancel@ordina.be',
+        firstName: 'Nicolas',
+        lastName: 'Ancel',
+        impersonation: false,
+        modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+        orgName: 'proximus',
+        roles: ['openid', 'pxs:iot:localadmin']
+      });
+      return true;
+      */
       try {
         this.sharedService.user = await this.authService.isLoggedIn();
         if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {

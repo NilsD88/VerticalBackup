@@ -1,3 +1,4 @@
+import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
@@ -106,7 +107,7 @@ export class ConsumptionsComponent implements OnInit {
     const originalFilter = cloneDeep(this.currentFilter);
 
     this.currentFilter = {
-      interval,
+      interval: interval as Intervals,
       from,
       to,
       durationInHours

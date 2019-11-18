@@ -28,6 +28,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
+  @Output() assetClicked: EventEmitter<null> = new EventEmitter<null>();
 
   tabs: {name: string, children: ILocation[]}[] = [];
   selectedIndex = 0;

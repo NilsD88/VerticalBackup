@@ -1,32 +1,14 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { cloneDeep } from 'lodash';
+import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
+import { decreaseLeafs } from '../../dashboard.component';
+import * as randomColor from 'randomcolor';
 
-import * as moment from 'moment';
-import * as mTZ from 'moment-timezone';
-import { MOCK_TOTAL_COUNT_PAST_WEEK } from 'src/app/mocks/walking-trail';
-
-declare global {
-  interface Window { moment: any; }
-}
-
-moment.locale('nl-be');
-window.moment = moment;
-mTZ();
-
+import * as Highcharts from 'highcharts';
 declare var require: any;
-const Boost = require('highcharts/modules/boost');
-const noData = require('highcharts/modules/no-data-to-display');
-const More = require('highcharts/highcharts-more');
-const exporting = require('highcharts/modules/exporting');
-const exportData = require('highcharts/modules/export-data');
-const Highcharts = require('highcharts/highstock');
+require('highcharts/highcharts-more')(Highcharts);
+require('highcharts/modules/treemap')(Highcharts);
 
-Boost(Highcharts);
-noData(Highcharts);
-More(Highcharts);
-noData(Highcharts);
-exporting(Highcharts);
-exportData(Highcharts);
 
 @Component({
   selector: 'pvf-total-count-past-week',
@@ -35,33 +17,37 @@ exportData(Highcharts);
 })
 export class TotalCountPastWeekComponent implements OnInit, OnChanges {
 
-  @Input() rootLocation: IWalkingTrailLocation;
+  @Input() leafs: IWalkingTrailLocation[];
 
   public chart: any;
+  public chartOptions: any;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnChanges() {
+    if (this.chart) {
+      this.updateChart();
+    }
   }
 
-  ngOnChanges() {
-    const options = {
-      time: {
-        timezone: 'Europe/Brussels'
-      },
+  ngOnInit() {
+    this.initChartOptions();
+    this.initChart();
+    this.updateChart();
+  }
+
+  private initChartOptions() {
+    this.chartOptions = {
       chart: {
-        zoomType: 'xy',
         height: 400,
       },
-      title: {
-        text: ''
-      },
+      title: 'Trail status',
       exporting: {
         csv: {
           dateFormat: '%d-%m-%Y %H:%M:%S',
         },
         enabled: true,
-        filename: 'total-count-past-week'
+        filename: 'count-past-week',
       },
       credits: {
         enabled: false
@@ -70,60 +56,68 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
         crosshairs: true,
         shared: true,
       },
-      yAxis: [],
-      xAxis: {
-        type: 'datetime',
-        dateTimeLabelFormats: {
-          day: '%a'
-        }
-      },
-      plotOptions: {
-        spline: {
-            marker: {
-                enabled: false
+      series: [{
+        type: 'treemap',
+        layoutAlgorithm: 'stripes',
+        alternateStartingDirection: true,
+        levels: [{
+            level: 1,
+            layoutAlgorithm: 'sliceAndDice',
+            dataLabels: {
+                enabled: true,
+                align: 'left',
+                verticalAlign: 'top',
+                style: {
+                    fontSize: '15px',
+                    fontWeight: 'bold'
+                }
             }
-        },
-        series: {
-          marker: {
-            enabled: false
-          }
-        }
-      },
-      legend: {},
-      series: []
+        }],
+        data: [],
+      }]
     };
+  }
 
-    let counter = 0;
-    for (const thing of MOCK_TOTAL_COUNT_PAST_WEEK) {
-      for (const sensor of thing.sensors) {
-        options.yAxis.push({
-          title: {
-            text: 'Trail'
-          },
-          visible: false
-        });
-        options.series.push(
-          {
-            name: 'Trail',
-            type: 'spline',
-            yAxis: counter,
-            data: sensor.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
-            })
-          }
-        );
-        counter++;
-      }
+  private initChart() {
+    try {
+      this.chart = Highcharts.chart('total-count-past-week-chart-container', this.chartOptions);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  private updateChart() {
+    this.chartOptions.series[0].data = [];
+    if ((this.leafs || []).length < 1) {
+      return;
     }
 
-    console.log(options.series);
-    console.log(moment().weekday(-7));
-
+    const data = [];
+    const leafs = decreaseLeafs(cloneDeep(this.leafs));
+    const colors = randomColor({count: leafs.length});
+    let counter = 0;
+    for (const leaf of leafs) {
+      data.push({
+        id: leaf.id,
+        name: leaf.name,
+        color: colors[counter++]
+      });
+      if ((leaf.children || []).length > 0) {
+        for (const child of leaf.children) {
+          data.push({
+            name: child.name,
+            parent: leaf.id,
+            value: child.series.reduce((a, b) => a + b.sum || 0, 0)
+          });
+        }
+      }
+    }
+    this.chartOptions.series[0].data = data;
     try {
-      this.chart = Highcharts.chart('chart-container', options);
+      this.chart = Highcharts.chart('total-count-past-week-chart-container', this.chartOptions);
     } catch (error) {
-      options.series = [];
-      this.chart = Highcharts.chart('chart-container', options);
+      this.chartOptions.series[0].data = [];
+      this.chart = Highcharts.chart('total-count-past-week-chart-container', this.chartOptions);
       console.log(error);
     }
   }

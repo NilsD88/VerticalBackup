@@ -1,0 +1,5 @@
+<div class="map-trail-container" [style.height.px]="height" *ngIf="location">
+  <div [ngStyle]="{'height.px': height}" *ngIf="options" leaflet [leafletOptions]="options"
+    [leafletLayers]="trailsLayer"  (leafletMapReady)="onMapReady($event)">
+  </div>
+</div>

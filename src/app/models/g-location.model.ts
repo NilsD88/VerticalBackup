@@ -1,22 +1,22 @@
+import { IAsset } from 'src/app/models/g-asset.model';
 import { isNullOrUndefined } from 'util';
 import { IGeolocation } from './geolocation.model';
-import { IAsset } from './g-asset.model';
 
-export interface AbstractLocation <T> {
+export interface AbstractLocation <TLocation, TAsset> {
     id?: string;
     parentId?: string;
-    parent?: T;
+    parent?: TLocation;
     name?: string;
     description?: string;
     geolocation?: IGeolocation;
-    children?: T[];
+    children?: TLocation[];
     image?: string;
-    assets?: IAsset[];
+    assets?: TAsset[];
     leftId?: string;
     rightId?: string;
 }
 
-export interface ILocation extends AbstractLocation <ILocation> {}
+export interface ILocation extends AbstractLocation <ILocation, IAsset> {}
 
 export class Location {
     id: string;
@@ -40,4 +40,11 @@ export class Location {
             }
         }
     }
+}
+
+export interface IPagedLocations {
+    locations?: ILocation[];
+    pageNumber?: number;
+    totalElements?: number;
+    totalPages?: number;
 }
