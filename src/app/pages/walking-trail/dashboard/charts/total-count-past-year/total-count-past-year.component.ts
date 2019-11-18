@@ -4,7 +4,6 @@ import { cloneDeep, uniq } from 'lodash';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
-import { ILeafColors } from 'src/app/models/peoplecounting/leaf.model';
 
 
 declare global {
@@ -15,7 +14,7 @@ declare global {
 
 
 import * as Highcharts from 'highcharts';
-
+import { ILeafColors } from '../../dashboard.component';
 declare var require: any;
 require('highcharts/modules/boost');
 require('highcharts/highcharts-more')(Highcharts);

@@ -13,8 +13,7 @@ import {
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-
-import { ILeafColors } from 'src/app/models/peoplecounting/leaf.model';
+import { ILeafColors } from '../../dashboard.component';
 import { TranslateService } from '@ngx-translate/core';
 
 declare global {
