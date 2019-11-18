@@ -34,7 +34,7 @@ export class LogsService {
       const failedMessage = await this.translateService.get('DETAIL.ERROR.FAIL').toPromise();
       const errorMessage = await this.translateService.get('DETAIL.ERROR.DATA').toPromise();
       this.http.get(
-        `https://www-uat.proximus.be/smartapps/smartmonitoring/sensorreadings?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&interval=${filter.interval}&from=${filter.from}&to=${filter.to}`)
+        `https://www-uat.proximus.be/smartapps/smartmonitoring/api/sensorreadings?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&interval=${filter.interval}&from=${filter.from}&to=${filter.to}`)
         .subscribe((response: any) => {
           if (!isNullOrUndefined(response)) {
             resolve(response);
@@ -56,7 +56,7 @@ export class LogsService {
       const failedMessage = await this.translateService.get('DETAIL.ERROR.FAIL').toPromise();
       const errorMessage = await this.translateService.get('DETAIL.ERROR.DATA').toPromise();
       this.http.get(
-        `https://www-uat.proximus.be/smartapps/smartmonitoring/sensorreadings/v2?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&aggregationtype=none&from=${filter.from}&to=${filter.to}`)
+        `https://www-uat.proximus.be/smartapps/smartmonitoring/api/sensorreadings/v2?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&aggregationtype=none&from=${filter.from}&to=${filter.to}`)
         .subscribe((response: any) => {
           if (!isNullOrUndefined(response)) {
             resolve(response);
@@ -78,7 +78,7 @@ export class LogsService {
       const failedMessage = await this.translateService.get('DETAIL.ERROR.FAIL').toPromise();
       const errorMessage = await this.translateService.get('DETAIL.ERROR.STANDARD_DEVIATION').toPromise();
       this.http.get(
-        `https://www-uat.proximus.be/smartapps/smartmonitoring/sensorreadings/standarddeviation?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&from=${filter.from}&to=${filter.to}`)
+        `https://www-uat.proximus.be/smartapps/smartmonitoring/api/sensorreadings/standarddeviation?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&from=${filter.from}&to=${filter.to}`)
         .subscribe((response: any) => {
           if (!isNullOrUndefined(response)) {
             resolve(response);
