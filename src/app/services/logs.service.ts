@@ -2,11 +2,11 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {MatSnackBar} from '@angular/material';
 import {SharedService} from './shared.service';
-import {environment} from '../../environments/environment';
 import {isNullOrUndefined} from 'util';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from './auth.service';
 import {Router} from '@angular/router';
+import { Observable } from 'rxjs';
 
 export interface SensorReadingFilter {
   deveui: string;
@@ -14,6 +14,11 @@ export interface SensorReadingFilter {
   from: number;
   to: number;
   interval: 'ALL' | 'HOURLY' | 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+}
+
+export interface IAggregatedValue {
+  sensorType: string;
+  value: number;
 }
 
 @Injectable({
@@ -73,25 +78,7 @@ export class LogsService {
     });
   }
 
-  getStandardDeviation(filter: SensorReadingFilter) {
-    return new Promise(async (resolve, reject) => {
-      const failedMessage = await this.translateService.get('DETAIL.ERROR.FAIL').toPromise();
-      const errorMessage = await this.translateService.get('DETAIL.ERROR.STANDARD_DEVIATION').toPromise();
-      this.http.get(
-        `https://www-uat.proximus.be/smartapps/smartmonitoring/api/sensorreadings/standarddeviation?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&from=${filter.from}&to=${filter.to}`)
-        .subscribe((response: any) => {
-          if (!isNullOrUndefined(response)) {
-            resolve(response);
-          } else {
-            this.sharedService.rejectPromise('LogsService: ' + failedMessage, reject);
-          }
-        }, (err) => {
-          if (err.status === 410) {
-            console.log(err);
-          } else {
-            this.sharedService.rejectPromise(errorMessage, reject);
-          }
-        });
-    });
+  public getStandardDeviation(filter: SensorReadingFilter): Observable <IAggregatedValue> {
+    return this.http.get <IAggregatedValue> (`https://www-uat.proximus.be/smartapps/smartmonitoring/api/sensorreadings/standarddeviation?deveui=${filter.deveui}&sensortypeid=${filter.sensortypeid}&from=${filter.from}&to=${filter.to}`);
   }
 }

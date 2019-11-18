@@ -1,5 +1,9 @@
 import { reduce, isEqual } from 'lodash';
 import { ILocation } from 'src/app/models/g-location.model';
+import { IWalkingTrailLocation } from '../models/walkingtrail/location.model';
+import { ILeafColors } from './people-counting/dashboard/leaf.model';
+
+import * as randomColor from 'randomcolor';
 
 function findLocationById(location: ILocation, id: string, path: ILocation[] = []): {location: ILocation, path: ILocation []} {
     if (location && location.id === id) {
@@ -37,9 +41,80 @@ function findItemsWithTermOnKey(term: string, collection: any[], key: string) {
     return collection.filter((item) => item[key].toLocaleUpperCase().includes(TERM));
 }
 
+function decreaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] {
+  const decreasedLeafs = [];
+  const decreasedLeafsRaw = {};
+  for (const leaf of leafs) {
+    if (leaf.parent !== null) {
+      if (!decreasedLeafsRaw[leaf.parent.id]) {
+        decreasedLeafsRaw[leaf.parent.id] = {
+          id: leaf.parent.id,
+          name: leaf.parent.name,
+          series: leaf.series,
+          parent: (leaf.parent || {}).parent,
+          children: [leaf]
+        };
+      } else {
+        decreasedLeafsRaw[leaf.parent.id].series = [
+          ...decreasedLeafsRaw[leaf.parent.id].series,
+          ...leaf.series
+        ];
+        decreasedLeafsRaw[leaf.parent.id].children.push(leaf);
+      }
+    }
+  }
+  Object.values(decreasedLeafsRaw).forEach((leaf: IWalkingTrailLocation) => {
+    const series = {};
+    leaf.series.forEach(serie => {
+      series[serie.timestamp] = {
+        timestamp: serie.timestamp,
+        sum: ((series[serie.timestamp] || {}).sum || 0) + serie.sum
+      };
+    });
+    decreasedLeafs.push({
+      ...leaf,
+      series: Object.values(series),
+    });
+  });
+  if (decreasedLeafs.length > 0) {
+    return decreasedLeafs;
+  } else {
+    return leafs;
+  }
+}
+
+function increaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] {
+  const increasedLeafs = [];
+  for (const leaf of leafs) {
+    if (leaf.children && leaf.children.length > 0) {
+      for (const child of leaf.children) {
+        increasedLeafs.push(child);
+      }
+    }
+  }
+  if (increasedLeafs.length > 0) {
+    return increasedLeafs;
+  } else {
+    return leafs;
+  }
+}
+
+function generateLeafColors(leafs: IWalkingTrailLocation[]): ILeafColors[] {
+  const leafColors = randomColor({count: leafs.length}).map((element, index) => ({
+    id: leafs[index].id,
+    color: element
+  }));
+  return leafColors;
+}
+
+
+
 export {
     findLocationById,
     compareTwoObjectOnSpecificProperties,
-    findItemsWithTermOnKey
+    findItemsWithTermOnKey,
+    decreaseLeafs,
+    increaseLeafs,
+    generateLeafColors,
 };
 
