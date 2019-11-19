@@ -118,7 +118,7 @@ export const AppRoutes: Routes = [
       path: '',
       loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
     }]
-  },
+  },  
   {
     path: 'privacy',
     component: PublicLayoutComponent,
@@ -167,6 +167,12 @@ export const AppRoutes: Routes = [
         path: 'home',
         canActivate: [UserAuthGuard],
         redirectTo: 'smartmonitoring',
+      },
+      {
+        path: 'test',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('./pages/people-counting-retail/people-counting-retail.module').then(m => m.PeopleCountingRetailModule)
+        
       },
       {
         path: 'contact',
