@@ -1,29 +1,11 @@
-import {
-  isNullOrUndefined
-} from 'util';
-import {
-  ISensorDefinition
-} from './../../../../models/g-sensor-definition.model';
-import {
-  PeriodicDuration
-} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  EventEmitter,
-  ViewChild
-} from '@angular/core';
-import {
-  TranslateService
-} from '@ngx-translate/core';
+import {isNullOrUndefined} from 'util';
+import {ISensorDefinition} from './../../../../models/g-sensor-definition.model';
+import {PeriodicDuration} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import {
-  IAsset
-} from 'src/app/models/g-asset.model';
+import {IAsset} from 'src/app/models/g-asset.model';
 
 
 declare global {
@@ -54,10 +36,10 @@ exportData(Highcharts);
 
 
 interface IFilterChartData {
-  interval ? : string;
-  from ? : number;
-  to ? : number;
-  durationInHours ? : number;
+  interval?: string;
+  from?: number;
+  to?: number;
+  durationInHours?: number;
 }
 
 
@@ -77,11 +59,11 @@ interface IChartData {
 
 interface IChartSerie {
   timestamp: number;
-  avg ? : number;
-  min ? : number;
-  max ? : number;
-  value ? : number;
-  sum ? : number;
+  avg?: number;
+  min?: number;
+  max?: number;
+  value?: number;
+  sum?: number;
 }
 
 @Component({
@@ -107,7 +89,7 @@ export class ChartComponent implements OnInit, OnChanges {
 
   @Input() asset: IAsset;
 
-  @Output() updateChartData = new EventEmitter < IFilterChartData > ();
+  @Output() updateChartData = new EventEmitter<IFilterChartData>();
   @Output() download = new EventEmitter();
 
   @ViewChild('dataRangeSelection', {
@@ -124,7 +106,8 @@ export class ChartComponent implements OnInit, OnChanges {
   public rangeTranslation = 'range';
   public chartSettingsForAsset = {};
 
-  constructor(public translateService: TranslateService) {}
+  constructor(public translateService: TranslateService) {
+  }
 
   public ngOnInit() {
     this.translateService.get('SENSORTYPES.range').subscribe((result: string) => {
@@ -321,7 +304,7 @@ export class ChartComponent implements OnInit, OnChanges {
           });
         } else {
           if (sensorDefinition.aggregatedValues.max) {
-            const id =  item.sensorId + '_max';
+            const id = item.sensorId + '_max';
             this.options.series.push({
               visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
               id,
@@ -420,7 +403,9 @@ export class ChartComponent implements OnInit, OnChanges {
           type: 'spline',
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            if (!isNullOrUndefined(serie.value)) {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            }
           })
         });
       }
