@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { ILocation } from 'src/app/models/g-location.model';
 
 @Component({
   selector: 'pxs-location-tile',
@@ -9,8 +9,8 @@ import { IAsset } from 'src/app/models/g-asset.model';
 })
 export class LocationTileComponent implements OnInit, OnDestroy {
 
-  @Input() asset: IAsset;
-  @Input() assetUrl: string;
+  @Input() location: ILocation;
+  @Input() locationUrl: string;
 
   private subscription: Subscription;
   public imageIsLoading = true;

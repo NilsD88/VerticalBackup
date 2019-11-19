@@ -28,6 +28,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
   @Input() customAssetService;
+  @Input() displayAssets = true;
   @Input() assetUrl = '/private/smartmonitoring/detail/';
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
@@ -67,6 +68,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
+        if (this.displayAssets) {
+          return of([]);
+        }
         if (req === 'STOP') {
           return of(this.assets);
         }
@@ -74,7 +78,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           return of([]);
         } else {
           // TODO: reach only asset with the filter?
-          // return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id, this.assetFilter);
           return this.getAssetsByLocation();
         }
       })
@@ -148,7 +151,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       for (const location of path) {
         this.goToChild(location, false);
       }
-      // this.getAssetsBySelectedLocation();
     }
     this.initMap();
   }

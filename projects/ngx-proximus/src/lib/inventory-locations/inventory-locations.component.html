@@ -44,21 +44,21 @@
 </div>
 <div class="container-fluid" *ngIf="listStyleValue === 'icons'">
   <div class="row assets-list">
-    <!--No Assets Found-->
-    <div *ngIf="!assets.length && !assetsLoading" class="text-center col-12">
+    <!--No location Found-->
+    <div *ngIf="!locations.length && !locationsLoading" class="text-center col-12">
       {{'INVENTORY.NONE_FOUND' | translate}}
     </div>
 
-    <!--Assets Loading-->
-    <div *ngIf="assetsLoading" class="col-12">
-      <div class="assets-loading-container">
+    <!--Location loading-->
+    <div *ngIf="locationsLoading" class="col-12">
+      <div class="locations-loading-container">
         <pxs-loader></pxs-loader>
       </div>
     </div>
 
-    <!-- Asset Results -->
-    <div class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2" *ngFor="let asset of assets">
-      <pxs-location-tile [asset]="asset" [assetUrl]="assetUrl"></pxs-location-tile>
+    <!-- Location results -->
+    <div class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2" *ngFor="let location of locations">
+      <pxs-location-tile [location]="location" [locationUrl]="locationUrl"></pxs-location-tile>
     </div>
   </div>
 
@@ -70,10 +70,10 @@
 </div>
 <div *ngIf="listStyleValue === 'list'">
   <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
-    (changeLocation)="changeLocation($event)" [customAssetService]="assetService" [assetUrl]="assetUrl"
-    [displayAssets]="true"></pxs-location-explorer>
+    (changeLocation)="changeLocation($event)" [customAssetService]="assetService"
+  ></pxs-location-explorer>
 </div>
 <div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 130px - 50px - 80px);">
   <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
-    [customAssetService]="assetService" [assetUrl]="assetUrl" (changeLocation)="selectedLocation=$event"></pxs-map>
+    [customAssetService]="assetService" (changeLocation)="selectedLocation=$event"></pxs-map>
 </div>
