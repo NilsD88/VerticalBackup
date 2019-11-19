@@ -1,12 +1,12 @@
 import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
-import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { IWalkingTrailAssetSerie } from 'src/app/models/walkingtrail/asset.model';
 import { MatTableDataSource, MatSort } from '@angular/material';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
 
 declare global {
   interface Window {
@@ -25,13 +25,13 @@ interface ICheckpoint {
 }
 
 @Component({
-  selector: 'pvf-assets-counter',
+  selector: 'pvf-peoplecounting-assets-counter',
   templateUrl: './assets-counter.component.html',
   styleUrls: ['./assets-counter.component.scss']
 })
 export class AssetsCounterComponent implements OnInit {
 
-  @Input() leaf: IWalkingTrailLocation;
+  @Input() leaf: IPeopleCountingLocation;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -46,7 +46,11 @@ export class AssetsCounterComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+  
     for (const asset of this.leaf.assets) {
+
+      // TODO: get these data from the backend
+      // Sum of a specific range per asset for a specific location
       this.checkpoints.push({
         name: asset.name,
         today: generateTodayDataSeries()[0].sum,
@@ -91,8 +95,8 @@ export class AssetsCounterComponent implements OnInit {
 }
 
 
-function generateTodayDataSeries(): IWalkingTrailAssetSerie[] {
-  const dataSeries: IWalkingTrailAssetSerie[] = [];
+function generateTodayDataSeries(): IPeopleCountingAssetSerie[] {
+  const dataSeries: IPeopleCountingAssetSerie[] = [];
   dataSeries.push(
     {
       timestamp: moment().startOf('day').valueOf(),
@@ -102,8 +106,8 @@ function generateTodayDataSeries(): IWalkingTrailAssetSerie[] {
   return dataSeries;
 }
 
-function generateThisWeekDataSeries(): IWalkingTrailAssetSerie[] {
-  const dataSeries: IWalkingTrailAssetSerie[] = [];
+function generateThisWeekDataSeries(): IPeopleCountingAssetSerie[] {
+  const dataSeries: IPeopleCountingAssetSerie[] = [];
   dataSeries.push(
     {
       timestamp: moment().isoWeekday(1).startOf('day').valueOf(),

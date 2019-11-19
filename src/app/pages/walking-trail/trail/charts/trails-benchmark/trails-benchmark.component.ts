@@ -1,4 +1,3 @@
-import { IWalkingTrailLocation, IWalkingTrailLocationSerie } from 'src/app/models/walkingtrail/location.model';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {uniq} from 'lodash';
@@ -10,6 +9,10 @@ import * as mTZ from 'moment-timezone';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { findLeaftsLocation } from '../../../utils';
+import { 
+  IPeopleCountingLocation,
+  IPeopleCountingLocationSerie
+} from 'src/app/models/peoplecounting/location.model';
 
 declare global {
   interface Window {
@@ -34,9 +37,9 @@ require('highcharts/modules/export-data')(Highcharts);
 })
 export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 
-  @Input() parentLocation: IWalkingTrailLocation;
+  @Input() parentLocation: IPeopleCountingLocation;
 
-  public leafs: IWalkingTrailLocation[];
+  public leafs: IPeopleCountingLocation[];
   public chart: any;
   public chartOptions: any;
   public locale: string;
@@ -162,8 +165,10 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
       return;
     }
 
-    const leafs: IWalkingTrailLocation[] = [];
+    const leafs: IPeopleCountingLocation[] = [];
     findLeaftsLocation(this.parentLocation, leafs);
+    // Generate past week per hour per leaf
+    // TODO: get past week per hour per locations from backend for each locations (or leaf locations?)
     leafs.forEach(leaf => {
       leaf.series = generatePastWeekPerHourOfDataSeries();
     });
@@ -213,8 +218,8 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 }
 
 
-function generatePastWeekPerHourOfDataSeries(): IWalkingTrailLocationSerie[] {
-  const dataSeries: IWalkingTrailLocationSerie[] = [];
+function generatePastWeekPerHourOfDataSeries(): IPeopleCountingLocationSerie[] {
+  const dataSeries: IPeopleCountingLocationSerie[] = [];
   for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
     for (let hourIndex = 0; hourIndex < 24; hourIndex++) {
       dataSeries.push(

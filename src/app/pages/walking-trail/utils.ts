@@ -1,6 +1,6 @@
-import {IWalkingTrailLocation} from 'src/app/models/walkingtrail/location.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
-function findLeaftsLocation(location: IWalkingTrailLocation, leafs: IWalkingTrailLocation[], parent = null): IWalkingTrailLocation[] {
+function findLeaftsLocation(location: IPeopleCountingLocation, leafs: IPeopleCountingLocation[], parent = null): IPeopleCountingLocation[] {
   if (!location.children || !location.children.length) {
     leafs.push({
       id: location.id,

@@ -1,6 +1,6 @@
-import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
+import { IPeopleCountingLocation } from '../models/peoplecounting/location.model';
 
-export let MOCK_TRAIL_WALKING_TRAIL: IWalkingTrailLocation = {};
+export let MOCK_TRAIL_WALKING_TRAIL: IPeopleCountingLocation = {};
 
 MOCK_TRAIL_WALKING_TRAIL = {
   id: '2',

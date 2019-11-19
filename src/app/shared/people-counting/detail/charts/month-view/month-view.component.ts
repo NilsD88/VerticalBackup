@@ -8,9 +8,6 @@ import {
   OnChanges
 } from '@angular/core';
 import {
-  IWalkingTrailLocation
-} from 'src/app/models/walkingtrail/location.model';
-import {
   TranslateService
 } from '@ngx-translate/core';
 
@@ -18,7 +15,8 @@ import * as randomColor from 'randomcolor';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { IWalkingTrailAssetSerie } from 'src/app/models/walkingtrail/asset.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
 
 declare global {
   interface Window {
@@ -34,13 +32,13 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 
 @Component({
-  selector: 'pvf-month-view',
+  selector: 'pvf-peoplecounting-month-view',
   templateUrl: './month-view.component.html',
   styleUrls: ['./month-view.component.scss']
 })
 export class MonthViewComponent implements OnInit, OnChanges {
 
-  @Input() leaf: IWalkingTrailLocation;
+  @Input() lastMonthLeafData: IPeopleCountingLocation;
 
   public chart: any;
   public chartOptions: any;
@@ -135,7 +133,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   private updateChart() {
 
-    if (!this.leaf) {
+    if (!this.lastMonthLeafData) {
       return;
     }
 
@@ -144,10 +142,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     const categories = [];
     const series = [];
-
-    this.leaf.assets.forEach(asset => {
-      asset.series = generatePastMonthOfDataSeries();
-    });
 
     // Setting the categories
     for (let index = 0; index < 7; index++) {
@@ -174,14 +168,14 @@ export class MonthViewComponent implements OnInit, OnChanges {
       oldWeekday = weekDay;
     }
 
-    if ((((this.leaf || {}).assets) || []).length) {
+    if ((((this.lastMonthLeafData || {}).assets) || []).length) {
       // Generating asset colors
       const assetColors = randomColor({
-        count: this.leaf.assets.length
+        count: this.lastMonthLeafData.assets.length
       });
 
       // Creating the data series by asset
-      this.leaf.assets.forEach((asset, assetIndex) => {
+      this.lastMonthLeafData.assets.forEach((asset, assetIndex) => {
         const assetName = asset.name;
         const assetValues = cloneDeep(initialValue);
 
@@ -221,19 +215,4 @@ export class MonthViewComponent implements OnInit, OnChanges {
   }
 
 
-}
-
-
-function generatePastMonthOfDataSeries(): IWalkingTrailAssetSerie[] {
-  const dataSeries: IWalkingTrailAssetSerie[] = [];
-  const daysInMonth = moment().subtract(1, 'months').date(1).daysInMonth();
-  for (let index = 0; index < daysInMonth; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().subtract(1, 'months').date(1).add(index, 'days').valueOf(),
-        sum: Math.floor(Math.random() * 101)
-      }
-    );
-  }
-  return dataSeries;
 }

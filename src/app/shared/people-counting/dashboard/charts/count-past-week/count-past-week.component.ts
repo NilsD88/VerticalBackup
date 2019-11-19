@@ -1,3 +1,4 @@
+import { isNullOrUndefined } from 'util';
 import {
   Component,
   OnInit,
@@ -7,14 +8,12 @@ import {
   EventEmitter,
   SimpleChanges
 } from '@angular/core';
-import {
-  IWalkingTrailLocation
-} from 'src/app/models/walkingtrail/location.model';
-
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { TranslateService } from '@ngx-translate/core';
 import { ILeafColors } from '../../leaf.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { Router } from '@angular/router';
 
 declare global {
   interface Window {
@@ -40,14 +39,15 @@ exporting(Highcharts);
 exportData(Highcharts);
 
 @Component({
-  selector: 'pvf-count-past-week',
+  selector: 'pvf-peoplecounting-count-past-week',
   templateUrl: './count-past-week.component.html',
   styleUrls: ['./count-past-week.component.scss']
 })
 export class CountPastWeekComponent implements OnChanges, OnInit {
 
-  @Input() leafs: IWalkingTrailLocation[];
+  @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
+  @Input() leafUrl = '/private/walkingtrail/trail';
   @Output() decrease: EventEmitter <null> = new EventEmitter();
   @Output() increase: EventEmitter <null> = new EventEmitter();
 
@@ -55,7 +55,10 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
   public chartOptions: any;
   public locale: string;
 
-  constructor(private translateService: TranslateService) {}
+  constructor(
+    private translateService: TranslateService,
+    private router: Router,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.chart) {
@@ -75,6 +78,8 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
   }
 
   private initChartOptions() {
+
+    const instance = this;
 
     Highcharts.setOptions({
       lang: {
@@ -138,7 +143,17 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         series: {
           marker: {
             enabled: false
-          }
+          },
+          point: {
+            events: {
+              click: function (event) {
+                const leafId = this.series.userOptions.id;
+                if (!isNullOrUndefined(leafId)) {
+                  instance.router.navigateByUrl(`${instance.leafUrl}/${leafId}`);
+                }
+              }
+            }
+          },
         }
       },
       legend: {},
@@ -165,6 +180,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
 
     let counter = 0;
     for (const leaf of this.leafs) {
+      console.log(leaf);
       this.chartOptions.yAxis.push({
         title: {
           text: 'Trail'
@@ -174,6 +190,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
       const color = (this.leafColors.find(element => element.id === leaf.id) || {})['color'] || randomColor();
       this.chartOptions.series.push({
         name: leaf.name,
+        id: !(leaf.children || []).length ? leaf.id : null,
         color,
         type: 'spline',
         yAxis: counter++,

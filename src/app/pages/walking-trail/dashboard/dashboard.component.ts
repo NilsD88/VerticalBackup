@@ -1,12 +1,33 @@
-import { cloneDeep } from 'lodash';
-import { IWalkingTrailLocation, IWalkingTrailLocationSerie } from 'src/app/models/walkingtrail/location.model';
-import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import {findLeaftsLocation} from '../utils';
+import {
+  cloneDeep
+} from 'lodash';
+import {
+  WalkingTrailLocationService
+} from './../../../services/walkingtrail/location.service';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef
+} from '@angular/core';
+import {
+  findLeaftsLocation
+} from '../utils';
+import {
+  generateLeafColors,
+  increaseLeafs,
+  decreaseLeafs
+} from 'src/app/shared/utils';
+import {
+  ILeafColors
+} from 'src/app/shared/people-counting/dashboard/leaf.model';
 
-import * as randomColor from 'randomcolor';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
+import {
+  IPeopleCountingLocation,
+  IPeopleCountingLocationSerie
+} from 'src/app/models/peoplecounting/location.model';
+
 
 moment.locale('nl-be');
 window.moment = moment;
@@ -19,17 +40,18 @@ mTZ();
 })
 export class DashboardComponent implements OnInit {
 
-  public rootLocation: IWalkingTrailLocation;
-  public leafs: IWalkingTrailLocation[];
+  public rootLocation: IPeopleCountingLocation;
+  public leafs: IPeopleCountingLocation[];
   public leafColors: ILeafColors[];
-  public lastYearLeafs: IWalkingTrailLocation[];
-  public currentLeafs: IWalkingTrailLocation[];
+  public lastYearLeafs: IPeopleCountingLocation[];
+  public currentLeafs: IPeopleCountingLocation[];
   public listStyleValue = 'map';
+  public leafUrl = '/private/walkingtrail/trail';
 
   constructor(
     private locationService: WalkingTrailLocationService,
     private changeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   async ngOnInit() {
     this.rootLocation = {
@@ -42,6 +64,8 @@ export class DashboardComponent implements OnInit {
       children: await this.locationService.getLocationsTree().toPromise()
     };
     this.changeLocation(this.rootLocation);
+
+    const oiazej = 2;
   }
 
   public decrease() {
@@ -53,11 +77,13 @@ export class DashboardComponent implements OnInit {
   }
 
   public listStyleOnChange(event) {
-    const { value } = event;
+    const {
+      value
+    } = event;
     this.listStyleValue = value;
   }
 
-  public changeLocation(location: IWalkingTrailLocation) {
+  public changeLocation(location: IPeopleCountingLocation) {
     const leafs = [];
     findLeaftsLocation(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
@@ -66,11 +92,13 @@ export class DashboardComponent implements OnInit {
     this.leafColors = generateLeafColors(leafs);
 
     // Generate past week data
+    // TODO: get the past week data with day interval for each location (location.series)
     generatePastWeekOfData(leafs);
     this.leafs = leafs;
 
     // Generate past year data
     generatePastYearOfData(lastYearLeafs);
+    // TODO: get the past year data with month interval for each location(location.series)
     this.lastYearLeafs = lastYearLeafs;
 
     this.currentLeafs = cloneDeep(this.leafs);
@@ -80,112 +108,36 @@ export class DashboardComponent implements OnInit {
 }
 
 
-
-export function decreaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] {
-  const decreasedLeafs = [];
-  const decreasedLeafsRaw = {};
-  for (const leaf of leafs) {
-    if (leaf.parent !== null) {
-      if (!decreasedLeafsRaw[leaf.parent.id]) {
-        decreasedLeafsRaw[leaf.parent.id] = {
-          id: leaf.parent.id,
-          name: leaf.parent.name,
-          series: leaf.series,
-          parent: (leaf.parent || {}).parent,
-          children: [leaf]
-        };
-      } else {
-        decreasedLeafsRaw[leaf.parent.id].series = [
-          ...decreasedLeafsRaw[leaf.parent.id].series,
-          ...leaf.series
-        ];
-        decreasedLeafsRaw[leaf.parent.id].children.push(leaf);
-      }
-    }
-  }
-  Object.values(decreasedLeafsRaw).forEach((leaf: IWalkingTrailLocation) => {
-    const series = {};
-    leaf.series.forEach(serie => {
-      series[serie.timestamp] = {
-        timestamp: serie.timestamp,
-        sum: ((series[serie.timestamp] || {}).sum || 0) + serie.sum
-      };
-    });
-    decreasedLeafs.push({
-      ...leaf,
-      series: Object.values(series),
-    });
-  });
-  if (decreasedLeafs.length > 0) {
-    return decreasedLeafs;
-  } else {
-    return leafs;
-  }
-}
-
-function increaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] {
-  const increasedLeafs = [];
-  for (const leaf of leafs) {
-    if (leaf.children && leaf.children.length > 0) {
-      for (const child of leaf.children) {
-        increasedLeafs.push(child);
-      }
-    }
-  }
-  if (increasedLeafs.length > 0) {
-    return increasedLeafs;
-  } else {
-    return leafs;
-  }
-}
-
-function generateLeafColors(leafs: IWalkingTrailLocation[]): ILeafColors[] {
-  const leafColors = randomColor({count: leafs.length}).map((element, index) => ({
-    id: leafs[index].id,
-    color: element
-  }));
-  return leafColors;
-}
-
-function generatePastWeekOfData(leafs: IWalkingTrailLocation[]) {
+function generatePastWeekOfData(leafs: IPeopleCountingLocation[]) {
   leafs.forEach(element => {
     element.series = generatePastWeekOfDataSeries();
   });
 }
 
-function generatePastYearOfData(leafs: IWalkingTrailLocation[]) {
+function generatePastYearOfData(leafs: IPeopleCountingLocation[]) {
   leafs.forEach(element => {
     element.series = generatePastYearOfDataSeries();
   });
 }
 
-function generatePastWeekOfDataSeries(): IWalkingTrailLocationSerie[] {
-  const dataSeries: IWalkingTrailLocationSerie[] = [];
+function generatePastWeekOfDataSeries(): IPeopleCountingLocationSerie[] {
+  const dataSeries: IPeopleCountingLocationSerie[] = [];
   for (let index = 0; index < 7; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().startOf('isoWeek').add(index, 'day').valueOf(),
-        sum: Math.floor(Math.random() * 101)
-      }
-    );
+    dataSeries.push({
+      timestamp: moment().startOf('isoWeek').add(index, 'day').valueOf(),
+      sum: Math.floor(Math.random() * 101)
+    });
   }
   return dataSeries;
 }
 
-function generatePastYearOfDataSeries(): IWalkingTrailLocationSerie[] {
-  const dataSeries: IWalkingTrailLocationSerie[] = [];
+function generatePastYearOfDataSeries(): IPeopleCountingLocationSerie[] {
+  const dataSeries: IPeopleCountingLocationSerie[] = [];
   for (let index = 0; index < 12; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().subtract(12 - index, 'months').valueOf(),
-        sum: Math.floor(Math.random() * 1001)
-      }
-    );
+    dataSeries.push({
+      timestamp: moment().subtract(12 - index, 'months').valueOf(),
+      sum: Math.floor(Math.random() * 1001)
+    });
   }
   return dataSeries;
-}
-
-export interface ILeafColors {
-  id: string;
-  color: string;
 }

@@ -1,7 +1,4 @@
 import {
-  IWalkingTrailLocation
-} from './../models/walkingtrail/location.model';
-import {
   floorPlanImage1,
   floorPlanImage2,
   floorPlanImage3
@@ -9,10 +6,11 @@ import {
 import {
   ILocation
 } from './../models/g-location.model';
+import { IPeopleCountingLocation } from '../models/peoplecounting/location.model';
 
 export let MOCK_LOCATIONS: ILocation[] = [];
 
-export let MOCK_LOCATIONS_WALKING_TRAIL: IWalkingTrailLocation[] = [];
+export let MOCK_LOCATIONS_WALKING_TRAIL: IPeopleCountingLocation[] = [];
 
 MOCK_LOCATIONS = [{
     id: '0',

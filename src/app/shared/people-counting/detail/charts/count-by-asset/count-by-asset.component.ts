@@ -1,7 +1,4 @@
 import {
-  IWalkingTrailAsset
-} from './../../../../../models/walkingtrail/asset.model';
-import {
   Component,
   OnInit,
   OnChanges,
@@ -10,6 +7,7 @@ import {
 
 
 import * as Highcharts from 'highcharts';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 
 declare global {
   interface Window {
@@ -25,13 +23,13 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 
 @Component({
-  selector: 'pvf-count-by-asset',
+  selector: 'pvf-peoplecounting-count-by-asset',
   templateUrl: './count-by-asset.component.html',
   styleUrls: ['./count-by-asset.component.scss']
 })
 export class CountByAssetComponent implements OnInit, OnChanges {
 
-  @Input() assets: IWalkingTrailAsset[];
+  @Input() assets: IPeopleCountingAsset[];
 
   public chart: any;
   public chartOptions: any;

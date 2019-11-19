@@ -1,5 +1,3 @@
-import { IWalkingTrailLocation } from './../../../../models/walkingtrail/location.model';
-import { ITankMonitoringAsset } from './../../../../models/tankmonitoring/asset.model';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -9,6 +7,8 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { WalkingTrailMapPopupComponent } from './popup/popup.component';
 import { divIcon } from 'leaflet';
 import { of } from 'rxjs';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 
 const assetIconTankMonitoring = divIcon({
   className: 'map-marker-asset tank-monitoring',
@@ -56,7 +56,7 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
     super.ngOnInit();
   }
 
-  createAssetPopup(asset: ITankMonitoringAsset): any {
+  createAssetPopup(asset: IPeopleCountingAsset): any {
     const popupEl: NgElement & WithProperties<WalkingTrailMapPopupComponent> =
     document.createElement('walkingtrail-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
@@ -65,7 +65,7 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
     return popupEl;
   }
 
-  createLocationPopup(location: IWalkingTrailLocation): any {
+  createLocationPopup(location: IPeopleCountingLocation): any {
     const popupEl: NgElement & WithProperties<WalkingTrailMapPopupComponent> = document.createElement('walkingtrail-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.goToChild = (location) => { this.goToChild(location, true); };

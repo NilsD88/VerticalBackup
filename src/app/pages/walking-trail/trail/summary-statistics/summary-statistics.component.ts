@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 
 interface IData {
@@ -18,7 +18,7 @@ interface IData {
 })
 export class SummaryStatisticsComponent implements OnInit {
 
-  @Input() leaf: IWalkingTrailLocation;
+  @Input() leaf: IPeopleCountingLocation;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
