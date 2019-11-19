@@ -127,7 +127,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
             parent: leaf.id,
             id: child.id,
             color: (this.leafColors.find(element => element.id === child.id) || {})['color'] || randomColor(),
-            value: child.series.reduce((a, b) => a + b.sum || 0, 0)
+            value: child.series.reduce((a, b) => a + b.value || 0, 0)
           });
         }
       }

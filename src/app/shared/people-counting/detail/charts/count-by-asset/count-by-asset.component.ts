@@ -7,7 +7,8 @@ import {
 
 
 import * as Highcharts from 'highcharts';
-import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
+import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import * as moment from 'moment';
 
 declare global {
   interface Window {
@@ -93,15 +94,16 @@ export class CountByAssetComponent implements OnInit, OnChanges {
   }
 
   private updateChart() {
-    this.chartOptions.series[0].data = [];
     if ((this.assets || []).length) {
       const data = [];
-      for (const asset of this.assets) {
+      // TODO: get value of each asset for today
+      // Generate value of each asset
+      this.assets.forEach(asset => {
         data.push({
           name: asset.name,
-          y: asset.series.reduce((a, b) => a + b.sum || 0, 0)
+          y: generateTodayDataSeries().reduce((a, b) => a + b.value || 0, 0),
         });
-      }
+      });
       this.chartOptions.series[0].data = data;
     }
 
@@ -116,3 +118,15 @@ export class CountByAssetComponent implements OnInit, OnChanges {
 
 
 }
+
+function generateTodayDataSeries(): IPeopleCountingAssetSerie[] {
+  const dataSeries: IPeopleCountingAssetSerie[] = [];
+  dataSeries.push(
+    {
+      timestamp: moment().startOf('day').valueOf(),
+      value: Math.floor(Math.random() * 101)
+    }
+  );
+  return dataSeries;
+}
+

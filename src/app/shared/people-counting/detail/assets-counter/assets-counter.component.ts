@@ -46,15 +46,15 @@ export class AssetsCounterComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-  
+
     for (const asset of this.leaf.assets) {
 
       // TODO: get these data from the backend
       // Sum of a specific range per asset for a specific location
       this.checkpoints.push({
         name: asset.name,
-        today: generateTodayDataSeries()[0].sum,
-        week: generateThisWeekDataSeries()[0].sum
+        today: generateTodayDataSeries()[0].value,
+        week: generateThisWeekDataSeries()[0].value
       });
 
       /*
@@ -100,7 +100,7 @@ function generateTodayDataSeries(): IPeopleCountingAssetSerie[] {
   dataSeries.push(
     {
       timestamp: moment().startOf('day').valueOf(),
-      sum: Math.floor(Math.random() * 101)
+      value: Math.floor(Math.random() * 101)
     }
   );
   return dataSeries;
@@ -111,7 +111,7 @@ function generateThisWeekDataSeries(): IPeopleCountingAssetSerie[] {
   dataSeries.push(
     {
       timestamp: moment().isoWeekday(1).startOf('day').valueOf(),
-      sum: Math.floor(Math.random() * 101)
+      value: Math.floor(Math.random() * 101)
     }
   );
   return dataSeries;

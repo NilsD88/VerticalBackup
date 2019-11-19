@@ -7,5 +7,5 @@ export interface IPeopleCountingLocation extends AbstractLocation<IPeopleCountin
 
 export interface IPeopleCountingLocationSerie {
     timestamp: number;
-    sum: number;
+    value: number;
 }

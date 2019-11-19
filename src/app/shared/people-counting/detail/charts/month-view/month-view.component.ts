@@ -181,7 +181,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
         for (const serie of asset.series) {
           const date = moment(serie.timestamp).date();
-          assetValues[date + 1] = serie.sum;
+          assetValues[date + 1] = serie.value;
         }
 
         for (let index = 1; index <= weekNumber; index++) {

@@ -174,6 +174,8 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     });
     this.leafs = leafs;
 
+
+
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
@@ -192,7 +194,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
       data.push({
         name: leaf.name,
         id: leaf.id,
-        data: leaf.series.map(element => element.sum)
+        data: leaf.series.map(element => element.value)
       });
 
       xAxisCategories.push(
@@ -225,7 +227,7 @@ function generatePastWeekPerHourOfDataSeries(): IPeopleCountingLocationSerie[] {
       dataSeries.push(
         {
           timestamp: moment().startOf('isoWeek').add(dayIndex, 'days').startOf('day').add(hourIndex, 'hours').valueOf(),
-          sum: Math.floor(Math.random() * 101)
+          value: Math.floor(Math.random() * 101)
         }
       );
     }

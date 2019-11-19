@@ -157,7 +157,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
       data.push({
         name: leaf.name,
         id: leaf.id,
-        data: leaf.series.map(element => element.sum)
+        data: leaf.series.map(element => element.value)
       });
       xAxisCategories.push(
         ...leaf.series.map(element => this.datePipe.transform(element.timestamp, 'MMMM', null, this.locale))

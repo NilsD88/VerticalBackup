@@ -125,7 +125,7 @@ function generatePastWeekOfDataSeries(): IPeopleCountingLocationSerie[] {
   for (let index = 0; index < 7; index++) {
     dataSeries.push({
       timestamp: moment().startOf('isoWeek').add(index, 'day').valueOf(),
-      sum: Math.floor(Math.random() * 101)
+      value: Math.floor(Math.random() * 101)
     });
   }
   return dataSeries;
@@ -136,7 +136,7 @@ function generatePastYearOfDataSeries(): IPeopleCountingLocationSerie[] {
   for (let index = 0; index < 12; index++) {
     dataSeries.push({
       timestamp: moment().subtract(12 - index, 'months').valueOf(),
-      sum: Math.floor(Math.random() * 1001)
+      value: Math.floor(Math.random() * 1001)
     });
   }
   return dataSeries;

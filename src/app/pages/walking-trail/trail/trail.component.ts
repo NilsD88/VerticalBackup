@@ -65,7 +65,7 @@ function generatePastMonthOfDataSeries(): IPeopleCountingAssetSerie[] {
     dataSeries.push(
       {
         timestamp: moment().subtract(1, 'months').date(1).add(index, 'days').valueOf(),
-        sum: Math.floor(Math.random() * 101)
+        value: Math.floor(Math.random() * 101)
       }
     );
   }

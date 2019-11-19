@@ -7,5 +7,5 @@ export interface IPeopleCountingAsset extends IAbstractAsset<IPeopleCountingLoca
 
 export interface IPeopleCountingAssetSerie {
     timestamp: number;
-    sum: number;
+    value: number;
 }
