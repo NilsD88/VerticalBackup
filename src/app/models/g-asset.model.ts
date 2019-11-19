@@ -23,7 +23,7 @@ export interface IAbstractAsset<TLocation> {
 }
 
 export interface IAsset extends IAbstractAsset <ILocation> {
-  lastMeasurements: any;
+
 }
 
 export class Asset {
@@ -38,7 +38,7 @@ export class Asset {
   thresholdTemplateId: string;
   things: IThing[] = [];
   thingsId: string[];
-
+  lastMeasurements: any;
   lastAlert: any;
 
   constructor(asset: IAsset = null) {
