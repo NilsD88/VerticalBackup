@@ -84,6 +84,10 @@
     *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"
   ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'People counting'"
+    [mat-menu-trigger-for]="peopleCounting"
+  ></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
     label: numberOfUnreadAlerts,
     class: 'red-badge'
@@ -144,6 +148,24 @@
       <span style="margin-left: 10px;">New location</span>
     </button>
   </div>
+
+  <mat-menu #peopleCounting="matMenu" style="margin-top: 80px;">
+      <div mat-menu-item>
+        <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'dashboard'])">
+          Dashboard
+        </button>
+      </div>
+      <div mat-menu-item>
+        <button mat-menu-item>
+          Stores Overview
+        </button>
+      </div>
+      <div mat-menu-item>
+        <button mat-menu-item>
+          <pxs-icon icon="plus"></pxs-icon>
+          <span style="margin-left: 10px;">New Store</span>
+        </button>
+      </div>
 </mat-menu>
 <mat-menu #assetTracking="matMenu" style="margin-top: 80px;">
   <div mat-menu-item>
