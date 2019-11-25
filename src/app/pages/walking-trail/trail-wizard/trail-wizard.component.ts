@@ -16,6 +16,7 @@ import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { PeopleCountingAssetWizardDialogComponent } from '../asset-wizard/assetWizardDialog.component';
+import { IField } from 'src/app/models/field.model';
 
 @Component({
   selector: 'pvf-trail-wizard',
@@ -35,8 +36,9 @@ export class TrailWizardComponent implements OnInit {
   public location: IPeopleCountingLocation;
   public editMode = false;
   public displayLocationExplorer = false;
-  public keyValues = [];
+  public fields: IField[] = [];
   public assets = [];
+
 
   constructor(
     public formBuilder: FormBuilder,
@@ -57,6 +59,8 @@ export class TrailWizardComponent implements OnInit {
       DescriptionCtrl: ['', null],
       TypeCtrl: ['', null],
     });
+
+    this.fields = await this.newLocationService.getCustomFields().toPromise();
 
     this.assetsRequest$.pipe(
       switchMap(() => {
@@ -96,7 +100,9 @@ export class TrailWizardComponent implements OnInit {
       name: null,
       image: null,
       images: [],
-      geolocation: null
+      geolocation: null,
+      customFields: {},
+      module: 'WALKING_TRAIL'
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();

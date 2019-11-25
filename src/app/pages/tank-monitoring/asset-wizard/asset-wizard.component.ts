@@ -14,6 +14,7 @@ import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
+import { IField } from 'src/app/models/field.model';
 
 
 @Component({
@@ -34,19 +35,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public keyValues: {
-    label: string;
-    type: string;
-  }[] = [
-    {
-      label: 'Country',
-      type: 'string'
-    },
-    {
-      label: 'Address',
-      type: 'string'
-    }
-  ];
+  public fields: IField[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,9 +55,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       TypeCtrl: ['', null],
     });
 
-    for (const kv of this.keyValues) {
-      this.descriptionFormGroup.addControl(kv.label, new FormControl());
-    }
+    this.fields = await this.newAssetService.getCustomFields().toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
@@ -90,7 +77,9 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       name: null,
       locationId: null,
       things: [],
-      thresholdTemplate: null
+      thresholdTemplate: null,
+      customFields: {},
+      module: 'TANK_MONITORING'
     };
   }
 
@@ -185,6 +174,8 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
       console.log(this.asset);
       console.log(this.originalAsset);
+      
+      // TODO: check the differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 

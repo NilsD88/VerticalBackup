@@ -10,6 +10,7 @@ import { isNullOrUndefined } from 'util';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
+import { IField } from 'src/app/models/field.model';
 
 @Component({
   selector: 'pvf-walkingtrail-asset-wizard',
@@ -29,19 +30,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public keyValues: {
-    label: string;
-    type: string;
-  }[] = [
-    {
-      label: 'Country',
-      type: 'string'
-    },
-    {
-      label: 'Address',
-      type: 'string'
-    }
-  ];
+  public fields: IField[] = [];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -59,9 +48,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
       TypeCtrl: ['', null],
     });
 
-    for (const kv of this.keyValues) {
-      this.descriptionFormGroup.addControl(kv.label, new FormControl());
-    }
+    this.fields = await this.assetService.getCustomFields().toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
@@ -162,6 +149,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
 
       console.log(this.asset);
       console.log(this.originalAsset);
+
+      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 

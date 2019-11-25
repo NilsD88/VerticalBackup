@@ -110,6 +110,7 @@ export class LocationWizardComponent implements OnInit {
   public submit() {
     if (this.editMode) {
 
+      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 

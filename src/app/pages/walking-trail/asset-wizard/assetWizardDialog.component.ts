@@ -41,9 +41,7 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
       TypeCtrl: ['', null],
     });
 
-    for (const kv of this.keyValues) {
-      this.descriptionFormGroup.addControl(kv.label, new FormControl());
-    }
+    this.fields = await this.assetService.getCustomFields().toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
@@ -66,7 +64,9 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
       location: this.data.location,
       locationId: this.data.location.id,
       things: [],
-      thresholdTemplate: null
+      thresholdTemplate: null,
+      customFields: {},
+      module: 'WALKING_TRAIL'
     };
   }
 
@@ -77,6 +77,8 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
 
       console.log(this.asset);
       console.log(this.originalAsset);
+
+      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 

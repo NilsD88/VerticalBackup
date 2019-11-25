@@ -18,26 +18,9 @@
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
               [(ngModel)]="asset.description" maxlength="255"></textarea>
           </mat-form-field>
-          <mat-form-field>
-            <mat-select placeholder="Type" [(ngModel)]="asset.type" matInput formControlName="TypeCtrl">
-              <mat-option value="type1">Type 1</mat-option>
-              <mat-option value="type2">Type 2</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <h6>Key Value</h6>
-          <mat-form-field *ngFor="let item of keyValues">
-            <input *ngIf="item.type === 'string' || item.type === 'number'" matInput [placeholder]="item.label"
-              [type]="item.type" formControlName="{{item.label}}">
-          </mat-form-field>
+          <pxs-form-custom-fields [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
         </div>
       </div>
-
-      <!--
-      <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
-      <p>Form value: {{ descriptionFormGroup.value | json }}</p>
-      <p>Form status: {{ descriptionFormGroup.status | json }}</p>
-      -->
-
       <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
 
     </form>

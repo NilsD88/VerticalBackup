@@ -39,10 +39,7 @@
               <mat-option value="type2">Type 2</mat-option>
             </mat-select>
           </mat-form-field>
-          <h6>Key Value</h6>
-          <mat-form-field *ngFor="let item of keyValues">
-            <input *ngIf="item.type === 'string' || item.type === 'number'" matInput [placeholder]="item.label" [type]="item.type" formControlName="{{item.label}}">
-          </mat-form-field>
+          <pxs-form-custom-fields [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
       <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>

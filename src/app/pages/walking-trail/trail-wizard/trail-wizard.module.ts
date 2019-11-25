@@ -1,3 +1,4 @@
+import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
 import { PeopleCountingAssetWizardDialogModule } from './../asset-wizard/assetWizardDialog.module';
 import { LocationWizardDialogModule } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.module';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
@@ -39,7 +40,8 @@ import { PeopleCountingAssetWizardDialogComponent } from '../asset-wizard/assetW
     LocationWizardDialogModule,
     PeopleCountingAssetWizardDialogModule,
     DragDropModule,
-    IconModule
+    IconModule,
+    FormCustomFieldsModule
   ],
   exports: [TrailWizardComponent],
   declarations: [

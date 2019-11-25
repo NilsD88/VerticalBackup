@@ -1,3 +1,4 @@
+import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { LocationWizardDialogModule } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.module';
 import { ListThresholdTemplatesModule } from 'projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
@@ -48,6 +49,7 @@ import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-thre
     PopupConfirmationModule,
     LocationWizardDialogModule,
     ManageThresholdTemplatesDialogModule,
+    FormCustomFieldsModule,
     RouterModule.forChild(TankMonitoringAssetWizardRoutes),
   ],
   exports: [TankMonitoringAssetWizardComponent],

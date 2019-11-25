@@ -1,3 +1,4 @@
+import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
 import { PeopleCountingAssetWizardRoutes } from './asset-wizard.routing';
 import { ListThresholdTemplatesModule } from 'projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import { ListThingsModule } from 'projects/ngx-proximus/src/lib/list-things/list-things.module';
@@ -43,6 +44,7 @@ import { PeopleCountingAssetWizardComponent } from './asset-wizard.component';
     ListThresholdTemplatesModule,
     MatDialogModule,
     PopupConfirmationModule,
+    FormCustomFieldsModule
   ],
   exports: [PeopleCountingAssetWizardComponent]
 })
