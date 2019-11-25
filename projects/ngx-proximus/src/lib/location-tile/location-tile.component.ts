@@ -1,6 +1,8 @@
+import { PeopleCountingLocationService } from './../../../../../src/app/services/peoplecounting/location.service';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ILocation } from 'src/app/models/g-location.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 @Component({
   selector: 'pxs-location-tile',
@@ -9,26 +11,39 @@ import { ILocation } from 'src/app/models/g-location.model';
 })
 export class LocationTileComponent implements OnInit, OnDestroy {
 
-  @Input() location: ILocation;
+  @Input() location: IPeopleCountingLocation;
   @Input() locationUrl: string;
 
-  private subscription: Subscription;
-  public imageIsLoading = true;
+  private subscriptions: Subscription[] = [];
+  public coverIsLoading = true;
+  public floorPlanIsLoading = true;
 
   constructor(
+    private locationService: PeopleCountingLocationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    /*
-    this.subscription = this.assetService.getImageOfAssetById(this.asset.id).subscribe(image => {
-      this.asset.image = image;
-      this.imageIsLoading = false;
-    });
-    */
+    this.subscriptions.push(
+      this.locationService.getImageOfLocationById(this.location.id).subscribe(image => {
+        this.location.image = image;
+        this.floorPlanIsLoading = false;
+      })
+    );
+    this.subscriptions.push(
+      this.locationService.getCoverOfLocationById(this.location.id).subscribe(cover => {
+        this.location.cover = cover;
+        this.coverIsLoading = false;
+      })
+    );
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  openLocation() {
+    this.router.navigateByUrl(`${this.locationUrl}${this.location.id}`);
   }
 
 }

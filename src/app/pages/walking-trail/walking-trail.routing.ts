@@ -14,6 +14,14 @@ export const WalkingTrailRoutes: Routes = [
     }]
   },
   {
+    path: 'trail/new',
+    loadChildren: () => import('./trail-wizard/trail-wizard.module').then(m => m.TrailWizardModule)
+  },
+  {
+    path: 'trail/update/:id',
+    loadChildren: () => import('./trail-wizard/trail-wizard.module').then(m => m.TrailWizardModule)
+  },
+  {
     path: 'trail/:id',
     children: [{
       path: '',
@@ -21,10 +29,17 @@ export const WalkingTrailRoutes: Routes = [
     }]
   },
   {
+    path: 'assets/:id',
+    children: [{
+      path: '',
+      loadChildren: () => import('./asset-wizard/asset-wizard.module').then(m => m.PeopleCountingAssetWizardModule)
+    }]
+  },
+  {
     path: 'inventory',
     children: [{
       path: '',
-      loadChildren: () => import('projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.module').then(m => m.InventoryLocationsModule)
+      loadChildren: () => import('./lib/inventory-locations/inventory-locations.module').then(m => m.WalkingTrailInventoryLocationsModule)
     }]
-  },
+  }
 ];

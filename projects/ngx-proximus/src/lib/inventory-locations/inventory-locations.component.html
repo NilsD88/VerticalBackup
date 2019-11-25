@@ -18,51 +18,34 @@
   </div>
   <div class="container" *ngIf="listStyleValue === 'icons'">
     <div class="row">
-      <div class="col-sm-4 col-md-4 col-xs-12">
-        <mat-form-field>
-          <input type="text" matInput [(ngModel)]="filterBE.name" (ngModelChange)="changeFilterBE()"
-            [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.ASSET_NAME' | translate">
-        </mat-form-field>
-      </div>
-      <div class="col-sm-4 col-md-4 col-xs-12">
+      <div class="col-sm-4 col-md-4 col-xs-12 mx-auto">
         <mat-form-field>
           <input matInput type="text" [placeholder]="'INVENTORY.FILTER.PLACEHOLDERS.LOCATION_NAME' | translate"
-            [(ngModel)]="filterBE.locationName" (ngModelChange)="changeFilterBE()">
+            [(ngModel)]="filterBE.name" (ngModelChange)="changeFilterBE()">
         </mat-form-field>
-      </div>
-      <div class="col-sm-4 col-md-4 col-xs-12">
-        <ng-select [multiple]="true" [clearable]="true" [items]="filterOptions.thresholdTemplateOptions"
-          [loading]="thresholdTemplatesLoading" [(ngModel)]="filterBE.thresholdTemplateIds" [hideSelected]="true"
-          (ngModelChange)="changeFilterBE()" bindValue="id" bindLabel="name"
-          [notFoundText]="'FILTER.THRESHOLD_TEMPLATES.NOT_FOUND' | translate"
-          [loadingText]="'FILTER.THRESHOLD_TEMPLATES.LOADING_TEXT' | translate"
-          [placeholder]="'FILTER.THRESHOLD_TEMPLATES.PLACEHOLDER' | translate">
-        </ng-select>
       </div>
     </div>
   </div>
 </div>
 <div class="container-fluid" *ngIf="listStyleValue === 'icons'">
   <div class="row assets-list">
-    <!--No location Found-->
+    
     <div *ngIf="!locations.length && !locationsLoading" class="text-center col-12">
-      {{'INVENTORY.NONE_FOUND' | translate}}
+      {{'INVENTORY.LOCATION.NONE_FOUND' | translate}}
     </div>
 
-    <!--Location loading-->
+    
     <div *ngIf="locationsLoading" class="col-12">
       <div class="locations-loading-container">
         <pxs-loader></pxs-loader>
       </div>
     </div>
 
-    <!-- Location results -->
+    
     <div class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2" *ngFor="let location of locations">
       <pxs-location-tile [location]="location" [locationUrl]="locationUrl"></pxs-location-tile>
     </div>
   </div>
-
-  <!--Paginator -->
   <mat-paginator [(length)]="totalItems" [(pageIndex)]="page" (page)="pageChanged($event)" [pageSize]="pageSize"
     [pageSizeOptions]="[5, 10, 25, 50, 100]">
   </mat-paginator>
@@ -70,10 +53,10 @@
 </div>
 <div *ngIf="listStyleValue === 'list'">
   <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
-    (changeLocation)="changeLocation($event)" [customAssetService]="assetService"
+    (changeLocation)="changeLocation($event)" [customAssetService]="assetService" [leafUrl]="leafUrl"
   ></pxs-location-explorer>
 </div>
 <div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 130px - 50px - 80px);">
   <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
-    [customAssetService]="assetService" (changeLocation)="selectedLocation=$event"></pxs-map>
+    [customAssetService]="assetService" (changeLocation)="selectedLocation=$event" [leafUrl]="leafUrl"></pxs-map>
 </div>

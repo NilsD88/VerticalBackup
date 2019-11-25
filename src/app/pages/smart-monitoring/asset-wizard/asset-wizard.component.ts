@@ -1,4 +1,4 @@
-import { LocationWizardDialogComponent } from './dialogs/locationWizardDialog.component';
+import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
@@ -13,11 +13,11 @@ import { IAsset } from 'src/app/models/g-asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
-import { ManageThresholdTemplatesDialogComponent } from './dialogs/manageThresholdTemplatesDialog.component';
+import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 
 
 @Component({
-  selector: 'pvf-tankmonitoring-asset-wizard',
+  selector: 'pvf-smartmonitoring-asset-wizard',
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })

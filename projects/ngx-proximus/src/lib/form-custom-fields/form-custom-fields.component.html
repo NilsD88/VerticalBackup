@@ -1,0 +1,21 @@
+<h6>Custom fields</h6>
+<div *ngFor="let field of fields">
+  <mat-form-field *ngIf="field.type === 'text' || field.type === 'number'">
+    <input matInput [placeholder]="field.label[translateService.currentLang]" [type]="field.type"
+      [(ngModel)]="customFields[field.id]" [ngModelOptions]="{standalone: true}">
+  </mat-form-field>
+  <mat-form-field *ngIf="field.type === 'list'">
+    <mat-select [placeholder]="field.label[translateService.currentLang]" matInput
+      [(ngModel)]="customFields[field.id]" [ngModelOptions]="{standalone: true}">
+      <mat-option *ngFor="let option of field.options.split(';')" value="option">{{option}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="field.type === 'boolean'">
+    <mat-select [placeholder]="field.label[translateService.currentLang]" matInput
+      [(ngModel)]="customFields[field.id]" [ngModelOptions]="{standalone: true}">
+      <mat-option value="null"></mat-option>
+      <mat-option value="true">TRUE</mat-option>
+      <mat-option value="false">FALSE</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

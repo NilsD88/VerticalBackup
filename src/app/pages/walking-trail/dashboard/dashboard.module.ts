@@ -10,7 +10,6 @@ import { CountPastWeekModule } from 'src/app/shared/people-counting/dashboard/ch
 import { TotalCountPastWeekModule } from 'src/app/shared/people-counting/dashboard/charts/total-count-past-week/total-count-past-week.module';
 import { TotalCountPastYearModule } from 'src/app/shared/people-counting/dashboard/charts/total-count-past-year/total-count-past-year.module';
 
-
 @NgModule({
   declarations: [DashboardComponent],
   imports: [

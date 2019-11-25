@@ -7,12 +7,12 @@ import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { SeverityLevel } from 'src/app/models/g-threshold-item.model';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
-import { AddThresholdDialogComponent } from './addThresholdDialog.component';
+import { AddThresholdDialogComponent } from './add-threshold/addThresholdDialog.component';
 
 @Component({
   selector: 'pvf-manage-threshold-templates-dialog',
-  templateUrl: '../../../admin/manage-threshold-templates/manage-threshold-templates.component.html',
-  styleUrls: ['../../../admin/manage-threshold-templates/manage-threshold-templates.component.scss']
+  templateUrl: './manage-threshold-templates.component.html',
+  styleUrls: ['./manage-threshold-templates.component.scss']
 })
 export class ManageThresholdTemplatesDialogComponent extends ManageThresholdTemplatesComponent {
 

@@ -120,14 +120,14 @@
     </button>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private', 'tankmonitoring', 'assets', 'new'])">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New tank</span>
     </button>
   </div>
 </mat-menu>
 
-<mat-menu #walkingtrail="matMenu" style="margin-top: 80px;">
+<mat-menu #walkingtrail="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
     <button mat-menu-item (click)="navigateTo(['/private','walkingtrail', 'dashboard'])">
       Dashboard
@@ -139,13 +139,14 @@
     </button>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','walkingtrail', 'trail', 'new'])">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New trail</span>
     </button>
   </div>
 </mat-menu>
-<mat-menu #assetTracking="matMenu" style="margin-top: 80px;">
+
+<mat-menu #assetTracking="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
     <button mat-menu-item>
       Dashboard

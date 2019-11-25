@@ -5,7 +5,6 @@ import {RouterModule} from '@angular/router';
 import {NgxMatDrpModule} from 'ngx-mat-daterange-picker';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {InventoryLocationsRoutes} from './inventory-locations.routing';
-import {InventoryLocationsComponent} from './inventory-locations.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import {
@@ -18,12 +17,16 @@ import {
   MatButtonToggleModule,
   MatAutocompleteModule
 } from '@angular/material';
-import {LoaderModule} from 'projects/ngx-proximus/src/lib/loader/loader.module';
-import { IconModule } from 'projects/ngx-proximus/src/public-api';
-import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
-import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
+import {LoaderModule} from '../loader/loader.module';
+import { IconModule } from '../icon/icon.module';
+import { LocationExplorerModule } from '../location-explorer/location-explorer.module';
+import { MapModule } from '../map/map.module';
+import { InventoryLocationsComponent } from './inventory-locations.component';
 
 @NgModule({
+  declarations: [
+    InventoryLocationsComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule.forChild(InventoryLocationsRoutes),
@@ -48,8 +51,9 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
     MapModule,
     LocationTileModule
   ],
-  declarations: [InventoryLocationsComponent],
-  exports: [InventoryLocationsComponent]
+  exports: [
+    InventoryLocationsComponent
+  ]
 })
 export class InventoryLocationsModule {
 }

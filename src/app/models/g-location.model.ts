@@ -14,6 +14,8 @@ export interface AbstractLocation <TLocation, TAsset> {
     assets?: TAsset[];
     leftId?: string;
     rightId?: string;
+    customFields?: {};
+    module?: string;
 }
 
 export interface ILocation extends AbstractLocation <ILocation, IAsset> {}
@@ -27,9 +29,11 @@ export class Location {
     geolocation?: IGeolocation;
     children?: ILocation[] = [];
     image?: string;
-    assets?: IAsset[];
+    assets?: IAsset[] = [];
     leftId?: string;
     rightId?: string;
+    customFields?: {} = {};
+    module?: string;
 
     constructor(location: ILocation = null) {
         if (location) {
@@ -42,9 +46,11 @@ export class Location {
     }
 }
 
-export interface IPagedLocations {
-    locations?: ILocation[];
+export interface IPagedAbstractLocations <TLocation> {
+    locations?: TLocation[];
     pageNumber?: number;
     totalElements?: number;
     totalPages?: number;
 }
+
+export interface IPagedLocations extends IPagedAbstractLocations <ILocation> {}

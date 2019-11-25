@@ -80,63 +80,70 @@ export class DetailComponent implements OnInit {
 
   private init() {
     this.getLastAlerts();
-    this.getChartData(this.chartData$).subscribe(async things => {
-      const chartData = [];
-      const aggregatedValues = [];
+    this.getChartData(this.chartData$).subscribe(
+      async things => {
+        const chartData = [];
+        const aggregatedValues = [];
 
-      // Get the translation of each label
-      for (const thing of things) {
-        for (const sensor of thing.sensors) {
+        // Get the translation of each label
+        for (const thing of things) {
+          for (const sensor of thing.sensors) {
 
-          let labelTranslation;
-          if ((sensor.sensorDefinition || {}).name) {
-            labelTranslation = sensor.sensorDefinition.name;
-          } else {
-            labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
-            if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-              labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+            let labelTranslation;
+            if ((sensor.sensorDefinition || {}).name) {
+              labelTranslation = sensor.sensorDefinition.name;
+            } else {
+              labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
+              if (labelTranslation.indexOf('SENSORTYPES') > -1) {
+                labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+              }
             }
-          }
 
-          // START STANDARD DEVIATION
-          if (this.currentFilter.interval !== 'ALL') {
-            const filter = {
-              deveui: thing.devEui,
-              sensortypeid: sensor.sensorType.id,
-              from: this.currentFilter.from,
-              to: this.currentFilter.to,
-              interval: this.currentFilter.interval,
-            };
-            const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
-            aggregatedValues.push({
-                label: labelTranslation,
-                series: sensor.series,
-                standardDeviation: (standardDeviation) ? standardDeviation.value : null,
-                postfix: sensor.sensorType.postfix
+            // START STANDARD DEVIATION
+            if (this.currentFilter.interval !== 'ALL') {
+              const filter = {
+                deveui: thing.devEui,
+                sensortypeid: sensor.sensorType.id,
+                from: this.currentFilter.from,
+                to: this.currentFilter.to,
+                interval: this.currentFilter.interval,
+              };
+              const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
+              aggregatedValues.push({
+                  label: labelTranslation,
+                  series: sensor.series,
+                  standardDeviation: (standardDeviation) ? standardDeviation.value : null,
+                  postfix: sensor.sensorType.postfix
+              });
+            }
+            // END STANDARD DEVIATION
+
+            if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
+              continue;
+            }
+
+            chartData.push({
+              label: labelTranslation,
+              sensorId: sensor.id,
+              sensorTypeId: sensor.sensorType.id,
+              sensorDefinition: sensor.sensorDefinition,
+              series: sensor.series,
             });
           }
-          // END STANDARD DEVIATION
-
-          if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
-            continue;
-          }
-
-          chartData.push({
-            label: labelTranslation,
-            sensorId: sensor.id,
-            sensorTypeId: sensor.sensorType.id,
-            sensorDefinition: sensor.sensorDefinition,
-            series: sensor.series,
-          });
         }
+        this.chartData = chartData;
+        this.chartLoading = false;
+        this.changeDetectorRef.detectChanges();
+        // STANDARD DEVIATIONS
+        this.aggregatedValues = aggregatedValues;
+      },
+      error => {
+        this.chartData = [0];
+        this.myAggregatedValues = [0];
+        this.chartLoading = false;
+        this.changeDetectorRef.detectChanges();
       }
-      this.chartData = chartData;
-      this.chartLoading = false;
-      this.changeDetectorRef.detectChanges();
-      // STANDARD DEVIATIONS
-      console.log(aggregatedValues);
-      this.aggregatedValues = aggregatedValues;
-    });
+    );
     this.chartData$.next(this.currentFilter);
   }
 
@@ -166,8 +173,9 @@ export class DetailComponent implements OnInit {
   }
 
   public async downloadPdfDetail() {
-    const pdf = new jspdf('p', 'mm', 'a4', 1); // A4 size page of PDF (210 x 297)
-    // pdf.setFontSize(10);
+    const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF (210 x 297)
+    pdf.setFontSize(10);
+    console.log(pdf);
 
     function setStyle(styleName) {
       switch (styleName) {

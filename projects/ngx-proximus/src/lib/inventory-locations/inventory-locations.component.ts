@@ -1,16 +1,12 @@
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { ILocation } from 'src/app/models/g-location.model';
 import { Subject, Observable } from 'rxjs';
-import { IAsset, IPagedAssets } from 'src/app/models/g-asset.model';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { IPeopleCountingLocation, IPagedPeopleCountingLocations } from 'src/app/models/peoplecounting/location.model';
 
 export interface IInventoryFilterBE {
-  name: string;
-  locationName: string;
-  thresholdTemplateIds: string[];
+  name?: string;
 }
 
 @Component({
@@ -24,8 +20,6 @@ export class InventoryLocationsComponent implements OnInit {
   public filterBE$ = new Subject<IInventoryFilterBE>();
   public filterBE: IInventoryFilterBE = {
     name: '',
-    locationName: '',
-    thresholdTemplateIds: []
   };
 
   public filterOptions = {
@@ -37,28 +31,26 @@ export class InventoryLocationsComponent implements OnInit {
   public thresholdTemplatesLoading = false;
   public locationsLoading = false;
 
-  public locations: ILocation[] = [];
-  public locationUrl = '/private/smartmonitoring/detail/';
+  public locations: IPeopleCountingLocation[] = [];
+  public locationUrl = '';
+  public leafUrl: string;
 
   public pageNumber = 0;
   public pageSize = 10;
   public totalItems = 0;
 
-  public rootLocation: ILocation;
-  public selectedLocation: ILocation;
+  public rootLocation: IPeopleCountingLocation;
+  public selectedLocation: IPeopleCountingLocation;
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     public locationService: NewLocationService,
-    public newThresholdTemplateService: NewThresholdTemplateService,
-    public newLocationService: NewLocationService,
     public activatedRoute: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
     this.getPagedLocations();
-    this.filterOptions.thresholdTemplateOptions = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
-    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+    this.locationService.getLocationsTree().subscribe((locations: IPeopleCountingLocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,
@@ -73,9 +65,9 @@ export class InventoryLocationsComponent implements OnInit {
       }
     });
 
-    this.searchAssetsByFilter(this.filterBE$).subscribe((pagedAssets: IPagedAssets) => {
-      this.locations = pagedAssets.assets;
-      this.totalItems = pagedAssets.totalElements;
+    this.searchLocationsByFilter(this.filterBE$).subscribe((pagedLocations: IPagedPeopleCountingLocations) => {
+      this.locations = pagedLocations.locations;
+      this.totalItems = pagedLocations.totalElements;
       this.locationsLoading = false;
     });
 
@@ -85,6 +77,8 @@ export class InventoryLocationsComponent implements OnInit {
         this.selectedLocation = {id: params.id};
       }
     });
+
+    console.log(this.leafUrl);
   }
 
   public changeFilterBE() {
@@ -93,7 +87,7 @@ export class InventoryLocationsComponent implements OnInit {
     this.filterBE$.next(this.filterBE);
   }
 
-  public changeLocation(location: ILocation) {
+  public changeLocation(location: IPeopleCountingLocation) {
     this.selectedLocation = location;
     this.changeDetectorRef.detectChanges();
   }
@@ -111,7 +105,6 @@ export class InventoryLocationsComponent implements OnInit {
       this.locations = locationsResult.locations;
       this.totalItems = locationsResult.totalElements;
       this.locationsLoading = false;
-      return locationsResult;
     } catch (err) {
       this.locationsLoading = false;
     }
@@ -122,7 +115,7 @@ export class InventoryLocationsComponent implements OnInit {
     this.listStyleValue = value;
   }
 
-  private searchAssetsByFilter(filters: Observable<IInventoryFilterBE>) {
+  private searchLocationsByFilter(filters: Observable<IInventoryFilterBE>) {
     return filters.pipe(
       debounceTime(500),
       switchMap(() => {

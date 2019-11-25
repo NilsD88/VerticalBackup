@@ -1,6 +1,6 @@
 import {
   LocationWizardComponent
-} from 'src/app/pages/admin/manage-locations/location-wizard/location-wizard.component';
+} from './location-wizard.component';
 import {
   Component,
   OnInit,
@@ -23,12 +23,13 @@ import {
   NewLocationService
 } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
   selector: 'pvf-location-wizard-dialog',
-  templateUrl: '../../../admin/manage-locations/location-wizard/location-wizard.component.html',
-  styleUrls: ['../../../admin/manage-locations/location-wizard/location-wizard.component.scss']
+  templateUrl: './location-wizard.component.html',
+  styleUrls: ['./location-wizard.component.scss']
 })
 
 export class LocationWizardDialogComponent extends LocationWizardComponent implements OnInit {

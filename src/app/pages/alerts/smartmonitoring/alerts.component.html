@@ -52,15 +52,27 @@
                 (click)="markAsRead()">{{'ALERTS.MARK_AS_READ' | translate}}</button>
         <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
                 (click)="markAsUnread()">{{'ALERTS.MARK_AS_UNREAD' | translate}}</button>
-        <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
-                (click)="downloadSelectedAlerts()">{{'ALERTS.DOWNLOAD' | translate}}</button>
+
+        <button mat-stroked-button color="primary" [matMenuTriggerFor]="menuDownload" [disabled]="!selectedAlerts.length">
+          <span>{{'ALERTS.DOWNLOAD' | translate}}</span>
+        </button>
+        <mat-menu #menuDownload>
+            <button mat-menu-item (click)="downloadSelectedAlertsPDF()">
+                <mat-icon>picture_as_pdf</mat-icon>
+                <span>Export PDF</span>
+            </button>
+            <button mat-menu-item disabled (click)="downloadSelectedAlertsCSV()" [disabled]="!selectedAlerts.length">
+                <mat-icon>insert_drive_file</mat-icon>
+                <span>Export CSV</span>
+            </button>
+        </mat-menu>
       </div>
     </div>
   </div>
 
   <div class="alerts">
     <div style="overflow-x: scroll">
-      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 alerts-list"
+      <table id="alerts-table" mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 alerts-list"
              [ngClass]="{'loading': isLoading }" matSortDisableClear>
 
         <!-- Checkbox Column -->

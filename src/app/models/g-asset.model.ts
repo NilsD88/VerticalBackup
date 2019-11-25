@@ -18,7 +18,8 @@ export interface IAbstractAsset <TLocation> {
   things?: IThing[];
   thingIds?: string[];
   alerts?: IAlert[];
-
+  customFields?: {};
+  module?: string;
   lastAlert?: any;
 }
 
@@ -35,7 +36,9 @@ export class Asset {
   thresholdTemplate: IThresholdTemplate;
   thresholdTemplateId: string;
   things: IThing[] = [];
-  thingsId: string[];
+  thingsId: string[] = [];
+  customFields?: {} = {};
+  module: string;
 
   lastAlert: any;
 

@@ -12,7 +12,11 @@ export class LayoutService {
   public languages: string[] = [];
   public user: User = this.sharedService.user;
 
-  constructor(private translateService: TranslateService, public authService: AuthService, public sharedService: SharedService) {
+  constructor(
+    private translateService: TranslateService,
+    public authService: AuthService,
+    public sharedService: SharedService
+  ) {
     this.currentLang = this.mapLanguage(this.translateService.currentLang);
     this.languages = this.translateService.langs;
   }
