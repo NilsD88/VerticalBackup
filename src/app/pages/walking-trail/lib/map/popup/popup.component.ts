@@ -1,8 +1,9 @@
-import { IWalkingTrailLocation } from './../../../../../models/walkingtrail/location.model';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 @Component({
   selector: 'pvf-walkingtrail-map-popup',
@@ -11,13 +12,14 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
 })
 export class WalkingTrailMapPopupComponent implements OnInit, OnDestroy {
   @Input() asset: IAsset;
-  @Input() location: IWalkingTrailLocation;
+  @Input() location: IPeopleCountingLocation;
   @Input() goToChild;
 
   private subscription: Subscription;
 
   constructor(
-    private assetService: NewAssetService
+    private assetService: NewAssetService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -38,7 +40,11 @@ export class WalkingTrailMapPopupComponent implements OnInit, OnDestroy {
   }
 
   openLocation() {
-    this.goToChild(this.location);
+    if ((this.location.children || []).length) {
+      this.goToChild(this.location);
+    } else {
+      this.router.navigateByUrl(`/private/walkingtrail/trail/${this.location.id}`);
+    }
   }
 }
 

@@ -1,9 +1,9 @@
 import { reduce, isEqual } from 'lodash';
 import { ILocation } from 'src/app/models/g-location.model';
-import { IWalkingTrailLocation } from '../models/walkingtrail/location.model';
 import { ILeafColors } from './people-counting/dashboard/leaf.model';
 
 import * as randomColor from 'randomcolor';
+import { IPeopleCountingLocation } from '../models/peoplecounting/location.model';
 
 function findLocationById(location: ILocation, id: string, path: ILocation[] = []): {location: ILocation, path: ILocation []} {
     if (location && location.id === id) {
@@ -41,7 +41,7 @@ function findItemsWithTermOnKey(term: string, collection: any[], key: string) {
     return collection.filter((item) => item[key].toLocaleUpperCase().includes(TERM));
 }
 
-function decreaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] {
+function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocation[] {
   const decreasedLeafs = [];
   const decreasedLeafsRaw = {};
   for (const leaf of leafs) {
@@ -63,12 +63,12 @@ function decreaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] 
       }
     }
   }
-  Object.values(decreasedLeafsRaw).forEach((leaf: IWalkingTrailLocation) => {
+  Object.values(decreasedLeafsRaw).forEach((leaf: IPeopleCountingLocation) => {
     const series = {};
     leaf.series.forEach(serie => {
       series[serie.timestamp] = {
         timestamp: serie.timestamp,
-        sum: ((series[serie.timestamp] || {}).sum || 0) + serie.sum
+        value: ((series[serie.timestamp] || {}).value || 0) + serie.value
       };
     });
     decreasedLeafs.push({
@@ -83,7 +83,7 @@ function decreaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] 
   }
 }
 
-function increaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] {
+function increaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocation[] {
   const increasedLeafs = [];
   for (const leaf of leafs) {
     if (leaf.children && leaf.children.length > 0) {
@@ -99,7 +99,7 @@ function increaseLeafs(leafs: IWalkingTrailLocation[]): IWalkingTrailLocation[] 
   }
 }
 
-function generateLeafColors(leafs: IWalkingTrailLocation[]): ILeafColors[] {
+function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
   const leafColors = randomColor({count: leafs.length}).map((element, index) => ({
     id: leafs[index].id,
     color: element

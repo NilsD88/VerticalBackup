@@ -26,5 +26,13 @@ export const TankMonitoringRoutes: Routes = [
       path: '',
       loadChildren: () => import('./consumptions/consumptions.module').then(m => m.ConsumptionsModule)
     }]
+  },
+  {
+    path: 'assets/new',
+    loadChildren: () => import('src/app/pages/tank-monitoring/asset-wizard/asset-wizard.module').then(m => m.TankMonitoringAssetWizardModule)
+  },
+  {
+    path: 'assets/:id',
+    loadChildren: () => import('src/app/pages/tank-monitoring/asset-wizard/asset-wizard.module').then(m => m.TankMonitoringAssetWizardModule)
   }
 ];

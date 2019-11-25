@@ -22,8 +22,13 @@ export class ErrorComponent implements OnInit {
     });
   }
 
-  toHome() {
-    this.router.navigate(['/home']);
+  async toHome() {
+    const isLoggedIn = await this.authService.isLoggedIn;
+    if (isLoggedIn) {
+      this.router.navigate(['/private/home']);
+    } else {
+      this.router.navigate(['/home']);
+    }
   }
 
   logout() {

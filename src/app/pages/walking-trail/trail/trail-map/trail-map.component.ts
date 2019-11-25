@@ -1,5 +1,4 @@
 import { ILocation } from 'src/app/models/g-location.model';
-import { IWalkingTrailLocation, IWalkingTrailLocationSerie } from 'src/app/models/walkingtrail/location.model';
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker } from 'leaflet';
 import { IGeolocation, Geolocation } from 'src/app/models/geolocation.model';
@@ -7,6 +6,7 @@ import { GeoJsonObject } from 'geojson';
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
+import { IPeopleCountingLocation, IPeopleCountingLocationSerie } from 'src/app/models/peoplecounting/location.model';
 
 declare global {
   interface Window {
@@ -26,7 +26,8 @@ mTZ();
 export class TrailMapComponent implements OnInit {
 
   @Input() height = 300;
-  @Input() location: IWalkingTrailLocation;
+  @Input() location: IPeopleCountingLocation;
+  @Input() leaf: IPeopleCountingLocation;
 
   private currentMap: Map;
   private center: IGeolocation;
@@ -134,12 +135,16 @@ export class TrailMapComponent implements OnInit {
   }
 
   public fitBoundsAndZoom() {
-    if (this.trailBounds.isValid()) {
+   if (this.trailBounds.isValid()) {
       this.currentMap.fitBounds(this.trailBounds);
       setTimeout(() => {
         const currentZoom = this.currentMap.getZoom();
-        this.currentMap.setZoom(currentZoom - 0.75);
+        this.currentMap.setView(this.leaf.geolocation, currentZoom - 1);
       }, 0);
+    } else {
+      setTimeout(() => {
+        this.currentMap.panTo(this.leaf.geolocation);
+      });
     }
   }
 
@@ -179,35 +184,4 @@ export class TrailMapComponent implements OnInit {
       }
     }
   }
-}
-
-
-
-
-function generatePastWeekOfDataSeries(): IWalkingTrailLocationSerie[] {
-  const dataSeries: IWalkingTrailLocationSerie[] = [];
-  for (let index = 0; index < 7; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().startOf('isoWeek').add(index, 'day').valueOf(),
-        sum: Math.floor(Math.random() * 101)
-      }
-    );
-  }
-  return dataSeries;
-}
-
-function generateThisWeekOfDataSeries(): IWalkingTrailLocationSerie[] {
-  const dataSeries: IWalkingTrailLocationSerie[] = [];
-  const dayNumber = moment().isoWeekday();
-
-  for (let index = 1; index <= dayNumber; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().subtract(index - 1, 'day').valueOf(),
-        sum: Math.floor(Math.random() * 101)
-      }
-    );
-  }
-  return dataSeries;
 }

@@ -1,3 +1,4 @@
+import { IField } from './../models/field.model';
 import {
   ILocation, IPagedLocations
 } from './../models/g-location.model';
@@ -24,6 +25,7 @@ import gql from 'graphql-tag';
 import {
   environment
 } from 'src/environments/environment';
+import { MOCK_LOCATIONS_CUSTOM_FIELDS } from '../mocks/newlocations';
 
 
 @Injectable({
@@ -262,6 +264,39 @@ export class NewLocationService {
 
   }
 
+  public getCustomFields(): Observable < IField [] > {
+    return new Observable < IField [] > (
+      observer => {
+        observer.next(MOCK_LOCATIONS_CUSTOM_FIELDS);
+        observer.complete();
+      }
+    );
+  }
+
+  public getImageOfLocationById(id: string): Observable < string > {
+    const GET_IMAGE_OF_LOCATION_BY_ID = gql `
+            query findLocationById($id: Long!) {
+                location: findLocationById(id: $id) {
+                    image
+                }
+            }
+        `;
+
+    interface GetImageLocationByIdResponse {
+      location: ILocation;
+    }
+
+    return this.apollo.query < GetImageLocationByIdResponse > ({
+      query: GET_IMAGE_OF_LOCATION_BY_ID,
+      fetchPolicy: 'network-only',
+      variables: {
+        id,
+      }
+    }).pipe(map(({
+      data
+    }) => data.location.image));
+  }
+
   public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedLocations > {
     const GET_PAGED_LEAF_LOCATIONS = gql `
       query findLeafLocationsByFilterPaged($input: PagedLeafLocationsFindByFilterInput!) {
@@ -272,9 +307,11 @@ export class NewLocationService {
               id,
               name,
               description,
-              location {
+              image,
+              parent {
                 id,
-                name
+                name,
+                image
               }
           }
         }

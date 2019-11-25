@@ -1,5 +1,5 @@
-import { LocationWizardDialogComponent } from './dialogs/locationWizardDialog.component';
-import { LocationWizardDialogModule } from './dialogs/locationWizardDialog.module';
+import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
+import { LocationWizardDialogModule } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.module';
 import { ListThresholdTemplatesModule } from 'projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import { ListThingsModule } from 'projects/ngx-proximus/src/lib/list-things/list-things.module';
 import { NgModule } from '@angular/core';
@@ -18,9 +18,8 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
-import { LocationWizardComponent } from '../../admin/manage-locations/location-wizard/location-wizard.component';
-import { ManageThresholdTemplatesDialogModule } from './dialogs/manageThresholdTemplatesDialog.module';
-import { ManageThresholdTemplatesDialogComponent } from './dialogs/manageThresholdTemplatesDialog.component';
+import { ManageThresholdTemplatesDialogModule } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.module';
+import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 
 @NgModule({
   declarations: [

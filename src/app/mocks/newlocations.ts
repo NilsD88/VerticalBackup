@@ -1,6 +1,4 @@
-import {
-  IWalkingTrailLocation
-} from './../models/walkingtrail/location.model';
+import { IField } from './../models/field.model';
 import {
   floorPlanImage1,
   floorPlanImage2,
@@ -9,10 +7,11 @@ import {
 import {
   ILocation
 } from './../models/g-location.model';
+import { IPeopleCountingLocation } from '../models/peoplecounting/location.model';
 
 export let MOCK_LOCATIONS: ILocation[] = [];
-
-export let MOCK_LOCATIONS_WALKING_TRAIL: IWalkingTrailLocation[] = [];
+export let MOCK_LOCATIONS_WALKING_TRAIL: IPeopleCountingLocation[] = [];
+export let MOCK_LOCATIONS_CUSTOM_FIELDS: IField[] = [];
 
 MOCK_LOCATIONS = [{
     id: '0',
@@ -177,5 +176,38 @@ MOCK_LOCATIONS_WALKING_TRAIL = [{
     }],
     parentId: null,
     leftId: null,
+  }
+];
+
+MOCK_LOCATIONS_CUSTOM_FIELDS = [
+  {
+    id: '0',
+    label: {
+      en: 'Country',
+      fr: 'Pays',
+      nl: ''
+    },
+    options: null,
+    type: 'text'
+  },
+  {
+    id: '1',
+    label: {
+      en: 'Boolean',
+      fr: 'Booléen',
+      nl: ''
+    },
+    options: null,
+    type: 'boolean'
+  },
+  {
+    id: '0',
+    label: {
+      en: 'Country',
+      fr: 'Pays',
+      nl: ''
+    },
+    options: 'Belgium;France',
+    type: 'list'
   }
 ];

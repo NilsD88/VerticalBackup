@@ -3,7 +3,6 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { cloneDeep, uniq } from 'lodash';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
 
 
 declare global {
@@ -15,6 +14,7 @@ declare global {
 
 import * as Highcharts from 'highcharts';
 import { ILeafColors } from '../../leaf.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 declare var require: any;
 require('highcharts/modules/boost');
@@ -26,13 +26,13 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 
 @Component({
-  selector: 'pvf-total-count-past-year',
+  selector: 'pvf-peoplecounting-total-count-past-year',
   templateUrl: './total-count-past-year.component.html',
   styleUrls: ['./total-count-past-year.component.scss']
 })
 export class TotalCountPastYearComponent implements OnInit, OnChanges {
 
-  @Input() leafs: IWalkingTrailLocation[];
+  @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
 
   public chart: any;
@@ -157,7 +157,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
       data.push({
         name: leaf.name,
         id: leaf.id,
-        data: leaf.series.map(element => element.sum)
+        data: leaf.series.map(element => element.value)
       });
       xAxisCategories.push(
         ...leaf.series.map(element => this.datePipe.transform(element.timestamp, 'MMMM', null, this.locale))

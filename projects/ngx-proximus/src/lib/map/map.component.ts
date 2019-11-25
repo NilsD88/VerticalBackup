@@ -15,7 +15,6 @@ import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from './popup/popup.component';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { Observable } from 'apollo-link';
 
 @Component({
   selector: 'pxs-map',
@@ -28,7 +27,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
   @Input() customAssetService;
+  @Input() displayAssets = true;
   @Input() assetUrl = '/private/smartmonitoring/detail/';
+  @Input() leafUrl: string;
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
@@ -52,7 +53,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     public newAssetService: NewAssetService,
     public newLocationService: NewLocationService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {}
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -67,6 +68,9 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
+        if (this.displayAssets) {
+          return of([]);
+        }
         if (req === 'STOP') {
           return of(this.assets);
         }
@@ -74,7 +78,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           return of([]);
         } else {
           // TODO: reach only asset with the filter?
-          // return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id, this.assetFilter);
           return this.getAssetsByLocation();
         }
       })
@@ -148,7 +151,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       for (const location of path) {
         this.goToChild(location, false);
       }
-      // this.getAssetsBySelectedLocation();
     }
     this.initMap();
   }
@@ -219,7 +221,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           {
             icon: locationIcon
           }
-        ).bindPopup(() => this.createLocationPopup(child)).openPopup();
+        ).bindPopup(() => this.createLocationPopup(child, this.leafUrl)).openPopup();
         this.locationsLayer.push(newMarker);
       }
     }
@@ -313,11 +315,12 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     return popupEl;
   }
 
-  public createLocationPopup(location: ILocation) {
+  public createLocationPopup(location: ILocation, leafUrl: string = null) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.goToChild = (location) => { this.goToChild(location, true); };
     popupEl.location = location;
+    popupEl.leafUrl = leafUrl;
     document.body.appendChild(popupEl);
     return popupEl;
   }

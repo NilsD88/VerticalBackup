@@ -20,7 +20,6 @@ export class User implements IUser {
   public orgName: string;
 
   constructor(private user: IUser) {
-    console.log(user);
     try {
       this.firstName = user.firstName ? user.firstName : '';
       this.lastName = user.lastName ? user.lastName : '';

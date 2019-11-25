@@ -1,28 +1,33 @@
+import { Router } from '@angular/router';
 import { cloneDeep } from 'lodash';
 import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { IWalkingTrailLocation } from 'src/app/models/walkingtrail/location.model';
 import * as randomColor from 'randomcolor';
 
 import * as Highcharts from 'highcharts';
 import { decreaseLeafs } from 'src/app/shared/utils';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { isNullOrUndefined } from 'util';
+import { ILeafColors } from '../../leaf.model';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/treemap')(Highcharts);
 
 
 @Component({
-  selector: 'pvf-total-count-past-week',
+  selector: 'pvf-peoplecounting-total-count-past-week',
   templateUrl: './total-count-past-week.component.html',
   styleUrls: ['./total-count-past-week.component.scss']
 })
 export class TotalCountPastWeekComponent implements OnInit, OnChanges {
 
-  @Input() leafs: IWalkingTrailLocation[];
+  @Input() leafs: IPeopleCountingLocation[];
+  @Input() leafColors: ILeafColors[];
+  @Input() leafUrl: string;
 
   public chart: any;
   public chartOptions: any;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnChanges() {
     if (this.chart) {
@@ -37,6 +42,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
   }
 
   private initChartOptions() {
+    const instance = this;
     this.chartOptions = {
       chart: {
         height: 400,
@@ -74,7 +80,22 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
             }
         }],
         data: [],
-      }]
+      }],
+      plotOptions: {
+        series: {
+          marker: {
+            enabled: false
+          },
+          events: {
+            click: function (event) {
+              const leafId = event.point.options.id;
+              if (!isNullOrUndefined(leafId)) {
+                instance.router.navigateByUrl(`${instance.leafUrl}/${leafId}`);
+              }
+            }
+          }
+        }
+      },
     };
   }
 
@@ -94,20 +115,19 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
 
     const data = [];
     const leafs = decreaseLeafs(cloneDeep(this.leafs));
-    const colors = randomColor({count: leafs.length});
-    let counter = 0;
     for (const leaf of leafs) {
       data.push({
         id: leaf.id,
         name: leaf.name,
-        color: colors[counter++]
       });
       if ((leaf.children || []).length > 0) {
         for (const child of leaf.children) {
           data.push({
             name: child.name,
             parent: leaf.id,
-            value: child.series.reduce((a, b) => a + b.sum || 0, 0)
+            id: child.id,
+            color: (this.leafColors.find(element => element.id === child.id) || {})['color'] || randomColor(),
+            value: child.series.reduce((a, b) => a + b.value || 0, 0)
           });
         }
       }
