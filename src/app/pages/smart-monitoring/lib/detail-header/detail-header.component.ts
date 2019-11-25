@@ -25,9 +25,6 @@ export class DetailHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.orgName = this.sharedService.user.orgName;
-    if (!isNullOrUndefined(this.asset.lastMeasurements)) {
-      this.asset.lastMeasurements.sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
-    }
   }
 
   openDialog(): void {
