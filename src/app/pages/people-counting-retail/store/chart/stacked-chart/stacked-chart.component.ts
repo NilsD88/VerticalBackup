@@ -115,15 +115,13 @@ export class StackedChartComponent implements OnChanges ,OnInit {
   
 
   constructor() {
-    
-  }
+    this.leaf = this.test;
+     }
 
   ngOnInit() {
     this.getMonthData();
     this.initChartOptions();
     this.initChart();
-
-    
   }
 
   ngOnChanges(changes: SimpleChanges) {
