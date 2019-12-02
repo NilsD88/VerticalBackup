@@ -24,9 +24,8 @@ exportData(Highcharts);
   templateUrl: './stacked-chart.component.html',
   styleUrls: ['./stacked-chart.component.scss']
 })
-export class StackedChartComponent implements OnChanges ,OnInit {
+export class StackedChartComponent implements OnChanges , OnInit {
 
-  
 
   @HostListener('window:resize', ['$event'])
     onResize(event) {
@@ -57,12 +56,12 @@ export class StackedChartComponent implements OnChanges ,OnInit {
       locationId: '2',
       things: [],
       thresholdTemplate: null,
-      series:[{ timestamp:1574937203000, value:10}, //day
-              { timestamp:1574933603000, value:20}, //day
-              { timestamp:1574418901000, value:30}, //week //day
-              { timestamp:1574332501000, value:40}, //week //day
-              { timestamp:1572431701000, value:50}, //month /week /week //day //day
-              { timestamp:1572777301000, value:60}, //month /week /week //day //day
+      series:[{ timestamp:1574937203000, valueIn:10}, //day
+              { timestamp:1574933603000, valueIn:20}, //day
+              { timestamp:1574418901000, valueIn:30}, //week //day
+              { timestamp:1574332501000, valueIn:40}, //week //day
+              { timestamp:1572431701000, valueIn:50}, //month /week /week //day //day
+              { timestamp:1572777301000, valueIn:60}, //month /week /week //day //day
       
     ]
     },
@@ -73,12 +72,12 @@ export class StackedChartComponent implements OnChanges ,OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-              { timestamp:1574937203000, value:10}, 
-              { timestamp:1574933603000, value:20},
-              { timestamp:1574418901000, value:30},
-              { timestamp:1574332501000, value:40},
-              { timestamp:1572431701000, value:50},
-              { timestamp:1572777301000, value:60},
+              { timestamp:1574937203000, valueIn:10}, 
+              { timestamp:1574933603000, valueIn:20},
+              { timestamp:1574418901000, valueIn:30},
+              { timestamp:1574332501000, valueIn:40},
+              { timestamp:1572431701000, valueIn:50},
+              { timestamp:1572777301000, valueIn:60},
       ]
     },
     {
@@ -88,12 +87,12 @@ export class StackedChartComponent implements OnChanges ,OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-              { timestamp:1574937203000, value:10}, 
-              { timestamp:1574933603000, value: 20},
-              { timestamp:1574418901000, value:30},
-              { timestamp:1574332501000, value:40},
-              { timestamp:1572431701000, value:50},
-              { timestamp:1572777301000, value:60},
+              { timestamp:1574937203000, valueIn:10}, 
+              { timestamp:1574933603000, valueIn: 20},
+              { timestamp:1574418901000, valueIn:30},
+              { timestamp:1574332501000, valueIn:40},
+              { timestamp:1572431701000, valueIn:50},
+              { timestamp:1572777301000, valueIn:60},
       ]
     },
     {
@@ -103,12 +102,12 @@ export class StackedChartComponent implements OnChanges ,OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-        { timestamp:1574937203000, value:10}, 
-        { timestamp:1574933603000, value: 20},
-        { timestamp:1574418901000, value:30},
-        { timestamp:1574332501000, value:40},
-        { timestamp:1572431701000, value:50},
-        { timestamp:1572777301000, value:60},]
+        { timestamp:1574937203000, valueIn:10}, 
+        { timestamp:1574933603000, valueIn: 20},
+        { timestamp:1574418901000, valueIn:30},
+        { timestamp:1574332501000, valueIn:40},
+        { timestamp:1572431701000, valueIn:50},
+        { timestamp:1572777301000, valueIn:60},]
     }]
  
   };
@@ -127,7 +126,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
   ngOnChanges(changes: SimpleChanges) {
 
    this.initChartOptions();
-   this.initChart()
+   this.initChart();
   }
 
   private initChartOptions() {
@@ -318,9 +317,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         var timestamp = new Date(serie.timestamp).toDateString();
         if(timestamp === currentDate){
           if(this.categoriesX.includes(new Date(serie.timestamp).getHours())&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())]+=serie.value;
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())]+=serie.valueIn;
             else 
-              dataArr.push(serie.value);
+              dataArr.push(serie.valueIn);
           
 
          
@@ -354,9 +353,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         if(timestamp <= currentDate && timestamp >= dateWeekAgo){
        var k =   dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())];
           if(this.categoriesX.includes(new Date(serie.timestamp).toDateString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.value;
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.valueIn;
             else 
-              dataArr.push(serie.value);
+              dataArr.push(serie.valueIn);
        
         this.categoriesX.push(new Date(serie.timestamp).toDateString());
         }
@@ -388,9 +387,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         var timestamp = new Date(serie.timestamp);
         if(timestamp <= currentDate && timestamp >= dateMonthAgo){ 
           if(this.categoriesX.includes(new Date(serie.timestamp).toDateString())&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.value;
+              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.valueIn;
             else 
-            dataArr.push(serie.value);
+            dataArr.push(serie.valueIn);
           this.categoriesX.push(new Date(serie.timestamp).toDateString());
         }
       
@@ -425,9 +424,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         var timestamp = new Date(serie.timestamp);
         if(timestamp <= currentDate && timestamp >= dateYearAgo){ 
           if(this.categoriesX.includes(new Date(serie.timestamp).getMonth()+1)&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)]+=serie.value;
+              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)]+=serie.valueIn;
             else 
-            dataArr.push(serie.value);
+            dataArr.push(serie.valueIn);
           this.categoriesX.push(new Date(serie.timestamp).getMonth()+1);
         }
       

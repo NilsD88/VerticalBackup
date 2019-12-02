@@ -194,7 +194,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         type: 'spline',
         yAxis: counter++,
         data: leaf.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+          return [serie.timestamp, parseFloat(serie.valueIn.toFixed(2))];
         })
       });
     }

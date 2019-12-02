@@ -9,7 +9,8 @@ export interface IPeopleCountingLocation extends AbstractLocation<IPeopleCountin
 
 export interface IPeopleCountingLocationSerie {
     timestamp: number;
-    value: number;
+    valueIn?: number;
+    valueOut?: number;
 }
 
 export interface IPagedPeopleCountingLocations extends IPagedAbstractLocations <IPeopleCountingLocation> {}

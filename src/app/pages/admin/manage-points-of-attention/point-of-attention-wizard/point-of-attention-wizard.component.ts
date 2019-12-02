@@ -2,13 +2,15 @@ import { PointOfAttentionService } from 'src/app/services/point-of-attention.ser
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IPointOfAttention } from './../../../../models/point-of-attention.model';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import {cloneDeep} from 'lodash';
 import { ILocation } from 'src/app/models/g-location.model';
 import { MatDialog } from '@angular/material';
 import { LocationWizardDialogComponent } from '../../manage-locations/location-wizard/locationWizardDialog.component';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import { GraphQLError } from 'graphql';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 @Component({
   selector: 'pvf-point-of-attention-wizard',
@@ -30,6 +32,7 @@ export class PointOfAttentionWizardComponent implements OnInit {
     private pointOfAttentionService: PointOfAttentionService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
+    private router: Router
   ) { }
 
   async ngOnInit() {
@@ -42,7 +45,7 @@ export class PointOfAttentionWizardComponent implements OnInit {
     if (!isNullOrUndefined(pointOfAttentionId) && pointOfAttentionId !== 'new') {
       this.editMode = true;
       this.pointOfAttention = await this.pointOfAttentionService.getPointOfAttentionById(pointOfAttentionId).toPromise();
-      this.originalPointOfAttention = cloneDeep(this.originalPointOfAttention);
+      this.originalPointOfAttention = cloneDeep(this.pointOfAttention);
       this.originalPointOfAttention.locationId = this.originalPointOfAttention.location.id;
     } else {
       this.pointOfAttention = {
@@ -56,11 +59,14 @@ export class PointOfAttentionWizardComponent implements OnInit {
   }
 
   public updateLocation(location: ILocation) {
-    if (location) {
+    const oldSelectedLocation = this.pointOfAttention.location;
+    if (location && location !== oldSelectedLocation) {
       this.pointOfAttention.location = null;
       this.changeDetectorRef.detectChanges();
-      this.pointOfAttention.location = location;
-      this.pointOfAttention.locationId = location.id;
+      if (location.id) {
+        this.pointOfAttention.location = location;
+        this.pointOfAttention.locationId = location.id;
+      }
     }
   }
 
@@ -97,12 +103,40 @@ export class PointOfAttentionWizardComponent implements OnInit {
         pointOfAttention[difference] = this.pointOfAttention[difference];
       }
 
-      // TODO: check differences for items
-    }
+      pointOfAttention.items = this.pointOfAttention.items;
 
-    console.log(this.pointOfAttention);
+      this.pointOfAttentionService.updatePointOfAttention(pointOfAttention).subscribe(
+        (data) => {
+          this.goToManagePointsOfAttention();
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
+    }
   }
 
+  private goToManagePointsOfAttention() {
+    this.router.navigateByUrl(`/private/admin/manage-points-of-attention`);
+  }
+
+
+  private checkIfNameAlreadyExistAndDisplayDialog(error) {
+    const graphQLErrors: GraphQLError = error.graphQLErrors;
+    const errorExtensions = graphQLErrors[0].extensions;
+    if (errorExtensions) {
+      const nameAlreadyUsed = errorExtensions.thresholdTemplateNameNotUnique;
+      if (nameAlreadyUsed) {
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: `${nameAlreadyUsed} already exist`,
+            message: 'Please choose an other threshold template name to be able to save it'
+          }
+        });
+      }
+    }
+  }
 
 
 }

@@ -33,6 +33,16 @@ export class PointOfAttentionService {
     });
   }
 
+  public getPointOfAttentionByLocationId(locationId: string): Observable < IPointOfAttention[] > {
+    console.log('getPointOfAttentionByLocationId: ', locationId);
+    return new Observable < IPointOfAttention[] > ((observer) => {
+      observer.next(
+        MOCK_POINTS_OF_ATTENTION.filter(pointOfAttention => pointOfAttention.location.id === locationId)
+      );
+      observer.complete();
+    });
+  }
+
   public deletePointOfAttention(id: string): Observable < boolean > {
     const DELETE_POINT_OF_ATTENTION = gql `
         mutation deletePointOfAttention($input: PointOfAttentionDeleteInput!) {
@@ -55,6 +65,28 @@ export class PointOfAttentionService {
       data
     }) => data.deletePointOfAttention));
   }
+
+  public updatePointOfAttention(pointOfAttention: IPointOfAttention): Observable<boolean> {
+    const UPDATE_POINT_OF_ATTENTION = gql`
+        mutation updatePointOfAttention($input: PointOfAttentionUpdateInput!) {
+          updatePointOfAttention(input: $input)
+        }
+    `;
+
+    interface UpdatePointOfAttentionResponse {
+      updatePointOfAttention: boolean;
+    }
+
+    return this.apollo.mutate<UpdatePointOfAttentionResponse>({
+        mutation: UPDATE_POINT_OF_ATTENTION,
+        variables: {
+            input: {
+                ...pointOfAttention
+            }
+        }
+    }).pipe(map(({data}) => data.updatePointOfAttention));
+}
+
 
 
 }

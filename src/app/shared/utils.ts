@@ -68,7 +68,8 @@ function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocatio
     leaf.series.forEach(serie => {
       series[serie.timestamp] = {
         timestamp: serie.timestamp,
-        value: ((series[serie.timestamp] || {}).value || 0) + serie.value
+        valueIn: ((series[serie.timestamp] || {}).valueIn || 0) + serie.valueIn,
+        valueOut: ((series[serie.timestamp] || {}).valueOut || 0) + serie.valueOut
       };
     });
     decreasedLeafs.push({

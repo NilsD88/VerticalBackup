@@ -53,34 +53,9 @@ export class AssetsCounterComponent implements OnInit {
       // Sum of a specific range per asset for a specific location
       this.checkpoints.push({
         name: asset.name,
-        today: generateTodayDataSeries()[0].value,
-        week: generateThisWeekDataSeries()[0].value
+        today: generateTodayDataSeries()[0].valueIn,
+        week: generateThisWeekDataSeries()[0].valueIn
       });
-
-      /*
-      const todayThings: IThing[] = await this.assetService.getAssetDataById(
-        asset.id,
-        'DAILY',
-        moment().startOf('day').valueOf(),
-        moment().add(1, 'days').startOf('day').valueOf()
-      ).toPromise();
-
-      this.assetsSumOfToday.push(
-        todayThings[0].sensors[0].series[0].sum
-      );
-
-      const weekThings: IThing[] = await this.assetService.getAssetDataById(
-        asset.id,
-        'WEEKLY',
-        moment().isoWeekday(1).startOf('day').valueOf(),
-        moment().isoWeekday(8).startOf('day').valueOf()
-      ).toPromise();
-
-      this.assetsSumOfThisWeek.push(
-        weekThings[0].sensors[0].series[0].sum
-      );
-      */
-
     }
 
     this.displayedColumns = ['name', 'today', 'week'];
@@ -100,7 +75,7 @@ function generateTodayDataSeries(): IPeopleCountingAssetSerie[] {
   dataSeries.push(
     {
       timestamp: moment().startOf('day').valueOf(),
-      value: Math.floor(Math.random() * 101)
+      valueIn: Math.floor(Math.random() * 101)
     }
   );
   return dataSeries;
@@ -111,7 +86,7 @@ function generateThisWeekDataSeries(): IPeopleCountingAssetSerie[] {
   dataSeries.push(
     {
       timestamp: moment().isoWeekday(1).startOf('day').valueOf(),
-      value: Math.floor(Math.random() * 101)
+      valueIn: Math.floor(Math.random() * 101)
     }
   );
   return dataSeries;

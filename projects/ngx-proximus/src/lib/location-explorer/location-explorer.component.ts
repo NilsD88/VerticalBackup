@@ -1,3 +1,5 @@
+import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
+import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
 import { DeleteConfirmationPopupComponent } from './delete-confirmation-popup/delete-confirmation-popup.component';
 import { MoveAssetsPopupComponent } from './move-assets-popup/move-assets-popup.component';
 import { Router } from '@angular/router';
@@ -26,22 +28,26 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() asset: IAsset;
   @Input() admin = false;
   @Input() displayAssets = false;
+  @Input() displayPointsOfAttention = false;
   @Input() ghostLocationId: string;
   @Input() customAssetService;
   @Input() assetUrl = '/private/smartmonitoring/detail/';
+  @Input() pointOfAttentionUrl = '/private/smartmonitoring/point-of-attention/';
   @Input() leafUrl: string;
   @Input() assetPicker = false;
 
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
   @Output() assetClicked: EventEmitter<IAsset> = new EventEmitter<IAsset>();
+  @Output() pointOfAttentionClicked: EventEmitter<IPointOfAttention> = new EventEmitter<IPointOfAttention>();
 
   tabs: {name: string, children: ILocation[]}[] = [];
   selectedIndex = 0;
   currentLocation: ILocation;
   selectedAsset: IAsset;
-  loadingAsset = false;
-  assets: IAsset[] = [];
+  loadingAssets = false;
+
+  loadingPointsOfAttention = false;
   isDownloading = false;
   isNullOrUndefined = isNullOrUndefined;
 
@@ -50,12 +56,14 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   public searchResults: ILocation[];
 
   private assetsRequestSource = new Subject();
+  private pointsOfAttentionRequestSource = new Subject();
 
   private subscriptions: Subscription[] = [];
 
   constructor(
     private newAssetService: NewAssetService,
     private newLocationService: NewLocationService,
+    private pointOfAttentionService: PointOfAttentionService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private router: Router,
@@ -81,10 +89,24 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
       })
     );
 
+    const pointsOfAttentionRequestSourcePipe = this.pointsOfAttentionRequestSource.pipe(
+      switchMap(req => {
+        if (req === 'STOP') {
+          return of(this.currentLocation.pointsOfAttention);
+        } else {
+          return this.pointOfAttentionService.getPointOfAttentionByLocationId(this.currentLocation.id);
+        }
+      })
+    );
+
     this.subscriptions.push(
       assetsRequestSourcePipe.subscribe((data: IAsset[]) => {
-        this.loadingAsset = false;
+        this.loadingAssets = false;
         this.currentLocation.assets = data;
+      }),
+      pointsOfAttentionRequestSourcePipe.subscribe((data: IPointOfAttention[]) => {
+        this.loadingPointsOfAttention = false;
+        this.currentLocation.pointsOfAttention = data;
       })
     );
 
@@ -186,13 +208,16 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     if (this.displayAssets || this.assetPicker) {
       this.getAssetsBySelectedLocation();
     }
+    if (this.displayPointsOfAttention) {
+      this.getPointsOfAttentionBySelectedLocation();
+    }
     if (emit) {
       this.changeLocation.emit(location);
     }
   }
 
   clickOnLocation(location) {
-    if (!this.displayAssets && !this.assetPicker && !this.admin) {
+    if (!this.displayAssets && !this.assetPicker && !this.displayPointsOfAttention && !this.admin) {
       if (this.currentLocation !== location) {
         if (this.ghostLocationId !== location.id) {
           this.selectLocation(location, true);
@@ -231,10 +256,20 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   getAssetsBySelectedLocation() {
     if (!this.currentLocation.assets || !(this.currentLocation.assets || []).length) {
       this.currentLocation.assets = [];
-      this.loadingAsset = true;
+      this.loadingAssets = true;
       this.assetsRequestSource.next();
     } else {
       this.assetsRequestSource.next('STOP');
+    }
+  }
+
+  getPointsOfAttentionBySelectedLocation() {
+    if (!this.currentLocation.pointsOfAttention || !(this.currentLocation.pointsOfAttention || []).length) {
+      this.currentLocation.pointsOfAttention = [];
+      this.loadingPointsOfAttention = true;
+      this.pointsOfAttentionRequestSource.next();
+    } else {
+      this.pointsOfAttentionRequestSource.next('STOP');
     }
   }
 
@@ -276,6 +311,11 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     if (!this.assetPicker) {
       this.router.navigateByUrl(`${this.assetUrl}${asset.id}`);
     }
+  }
+
+  public clickOnPointOfAttention(pointOfAttention: IPointOfAttention) {
+    this.pointOfAttentionClicked.emit(pointOfAttention);
+    this.router.navigateByUrl(`${this.pointOfAttentionClicked}${pointOfAttention.id}`);
   }
 
   ngOnDestroy() {
