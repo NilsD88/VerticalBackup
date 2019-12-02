@@ -169,12 +169,6 @@ export const AppRoutes: Routes = [
         redirectTo: 'smartmonitoring',
       },
       {
-        path: 'test',
-        canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/people-counting-retail/people-counting-retail.module').then(m => m.PeopleCountingRetailModule)
-        
-      },
-      {
         path: 'contact',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
@@ -198,6 +192,12 @@ export const AppRoutes: Routes = [
         path: 'walkingtrail',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/walking-trail/walking-trail.module').then(m => m.WalkingTrailModule)
+      },
+      {
+        path: 'peoplecounting',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('./pages/people-counting-retail/people-counting-retail.module').then(m => m.PeopleCountingRetailModule)
+        
       },
       {
         path: 'admin',
