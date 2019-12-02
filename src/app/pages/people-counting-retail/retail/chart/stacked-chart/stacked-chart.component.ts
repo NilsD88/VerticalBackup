@@ -119,12 +119,6 @@ export class StackedChartComponent implements OnChanges ,OnInit {
   
 
   constructor() {
-
-
-    this.leafs = this.test;
-
-
-    
     
      }
 
