@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -41,14 +42,14 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
     public newAssetService: NewAssetService,
     public newLocationService: NewLocationService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     super(
       changeDetectorRef,
       newAssetService,
       newLocationService,
       snackBar,
-      dialog
+      dialog,
     );
   }
 

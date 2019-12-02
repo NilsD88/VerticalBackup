@@ -11,7 +11,7 @@ import { NewLocationService } from 'src/app/services/new-location.service';
   templateUrl: './../../../../../../projects/ngx-proximus/src/lib/inventory/inventory.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/inventory/inventory.component.scss']
 })
- 
+
 export class TankMonitoringInventoryComponent extends InventoryComponent implements OnInit {
 
   constructor(

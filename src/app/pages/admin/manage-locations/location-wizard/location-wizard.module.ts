@@ -1,3 +1,4 @@
+import { FormCustomFieldsModule } from './../../../../../../projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
 import { NgModule } from '@angular/core';
 import { LocationWizardComponent } from './location-wizard.component';
 import { RouterModule } from '@angular/router';
@@ -30,6 +31,7 @@ import { CommonModule } from '@angular/common';
     EditableImageModule,
     LocationExplorerModule,
     MatDialogModule,
+    FormCustomFieldsModule
   ],
   exports: [LocationWizardComponent],
   declarations: [

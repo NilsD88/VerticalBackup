@@ -1,9 +1,9 @@
-import { SharedService } from 'src/app/services/shared.service';
+import {SharedService} from 'src/app/services/shared.service';
 import {Component, Input, OnInit} from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { isNullOrUndefined } from 'util';
+import {MatDialog} from '@angular/material/dialog';
+import {LocationPopupComponent} from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
+import {isNullOrUndefined} from 'util';
+import {Asset} from '../../../../models/g-asset.model';
 
 @Component({
   selector: 'pvf-smartmonitoring-detail-header',
@@ -12,7 +12,7 @@ import { isNullOrUndefined } from 'util';
 })
 export class DetailHeaderComponent implements OnInit {
 
-  @Input() asset: IAsset;
+  @Input() asset: Asset;
   public orgName: string;
 
   public isNullOrUndefined = isNullOrUndefined;
@@ -20,7 +20,8 @@ export class DetailHeaderComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private sharedService: SharedService,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.orgName = this.sharedService.user.orgName;

@@ -5,7 +5,7 @@ import {IThing} from './g-thing.model';
 import {isNullOrUndefined} from 'util';
 import {IAlert} from './g-alert.model';
 
-export interface IAbstractAsset <TLocation> {
+export interface IAbstractAsset<TLocation> {
   id?: string;
   name?: string;
   description?: string;
@@ -18,11 +18,14 @@ export interface IAbstractAsset <TLocation> {
   things?: IThing[];
   thingIds?: string[];
   alerts?: IAlert[];
-
+  customFields?: {};
+  module?: string;
   lastAlert?: any;
 }
 
-export interface IAsset extends IAbstractAsset <ILocation> {}
+export interface IAsset extends IAbstractAsset <ILocation> {
+
+}
 
 export class Asset {
   id: string;
@@ -36,8 +39,8 @@ export class Asset {
   thresholdTemplateId: string;
   things: IThing[] = [];
   thingsId: string[];
-
   lastAlert: any;
+  module: string;
 
   constructor(asset: IAsset = null) {
     if (asset) {

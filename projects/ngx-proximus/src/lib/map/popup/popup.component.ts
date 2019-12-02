@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { NewAssetService } from './../../../../../../src/app/services/new-asset.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
@@ -14,12 +15,16 @@ export class MapPopupComponent implements OnInit, OnDestroy {
   @Input() asset: IAsset;
   @Input() assetUrl: string;
   @Input() location: ILocation;
+  @Input() leafUrl: string;
   @Input() goToChild;
 
   public lastAlert: IAlert;
   private subscription: Subscription;
 
-  constructor(private assetService: NewAssetService) {}
+  constructor(
+    private assetService: NewAssetService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     if (this.asset) {
@@ -39,7 +44,16 @@ export class MapPopupComponent implements OnInit, OnDestroy {
   }
 
   openLocation() {
-    this.goToChild(this.location);
+    console.log('openLocation');
+    console.log((this.location.children || []).length);
+    console.log(this.leafUrl);
+    if (!(this.location.children || []).length && this.leafUrl) {
+      console.log('navigateByUrl: ', `${this.leafUrl}${this.location.id}`);
+      this.router.navigateByUrl(`${this.leafUrl}${this.location.id}`);
+    } else {
+      console.log('goToCHid');
+      this.goToChild(this.location);
+    }
   }
 
 }

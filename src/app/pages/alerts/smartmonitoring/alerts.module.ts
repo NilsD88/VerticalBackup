@@ -19,7 +19,8 @@ import {
   MatProgressSpinnerModule,
   MatCardModule,
   MatButtonToggleModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatMenuModule
 } from '@angular/material';
 import {FormsModule} from '@angular/forms';
 import {DateRangeSelectionModule} from 'projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.module';
@@ -43,6 +44,7 @@ import { ImgFallbackModule } from 'ngx-img-fallback';
     MatIconModule,
     MatSnackBarModule,
     MatButtonModule,
+    MatMenuModule,
     DateRangeSelectionModule,
     NgSelectModule,
     MatTableModule,

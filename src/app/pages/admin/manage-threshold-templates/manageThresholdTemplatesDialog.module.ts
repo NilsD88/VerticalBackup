@@ -19,7 +19,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module';
 import { ManageThresholdTemplatesDialogComponent } from './manageThresholdTemplatesDialog.component';
-import { AddThresholdDialogComponent } from './addThresholdDialog.component';
+import { AddThresholdDialogComponent } from './add-threshold/addThresholdDialog.component';
 
 @NgModule({
   declarations: [

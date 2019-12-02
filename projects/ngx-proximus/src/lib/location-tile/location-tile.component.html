@@ -1,18 +1,22 @@
 <div class="wrapper" style="background: url('') center / cover no-repeat;"
-  [ngStyle]="{ 'background-image': asset.image ? 'url(' + asset.image + ')' : (imageIsLoading ? 'url(assets/images/spinner.gif)' : '') }"
-  [routerLink]="[assetUrl, asset.id]"
+  [ngStyle]="{ 'background-image': location.cover ? 'url(' + location.cover + ')' : (coverIsLoading ? 'url(assets/images/spinner.gif)' : '') }"
+  (click)="openLocation()"
   >
+  <div 
+    *ngIf="location?.image"
+    class="floorPlan" 
+    [ngStyle]="{ 'background-image': location.image ? 'url(' + location.image + ')' : (floorPlanIsLoading ? 'url(assets/images/spinner.gif)' : '') }"
+  >
+  </div>
   <div class="header">
-    <div *ngIf="asset?.location?.name" class="locations">
-      <span class="location">{{asset?.location?.name}}</span>
+    <div *ngIf="location?.name" class="locations">
+      <span class="location">{{location?.parent?.name}}</span>
     </div>
   </div>
   <div class="data">
     <div class="content">
-      <span *ngIf="asset?.thresholdTemplate?.name"
-        class="thresholdTemplate author">{{asset.thresholdTemplate?.name}}</span>
-      <h5 class="title">{{asset.name}}</h5>
-      <p class="text">{{asset?.description?.trunc(120)}}</p>
+      <h5 class="title">{{location.name}}</h5>
+      <p class="text">{{location?.description?.trunc(120)}}</p>
     </div>
   </div>
 </div>

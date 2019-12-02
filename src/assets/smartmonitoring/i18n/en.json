@@ -202,7 +202,12 @@
   },
   "INVENTORY": {
     "TITLE": "Inventory",
-    "NONE_FOUND": "No assets found.",
+    "ASSET": {
+      "NONE_FOUND": "No asset found."
+    },
+    "LOCATION": {
+      "NONE_FOUND": "No location found."
+    },
     "FILTER": {
       "PLACEHOLDERS": {
         "ASSET_NAME": "Asset name",
@@ -410,7 +415,7 @@
     "SALES": {
       "TITLE": "Marketing and sales:",
       "MAILTO": "mailto:iot@proximus.com",
-      "EMAIL": "iotk@proximus.com",
+      "EMAIL": "iot@proximus.com",
       "TELTO": "tel:080022200",
       "TEL": "0800 222 00"
     },

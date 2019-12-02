@@ -59,6 +59,7 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
     const min = [];
 
     if (!isNullOrUndefined(data.series)) {
+      data.series.sort((a, b) => (a.label.toLowerCase() > b.label.toLowerCase()) ? 1 : -1);
       data.series.forEach((item) => {
         avg.push(item.avg);
         max.push(item.max);

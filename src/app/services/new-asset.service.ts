@@ -1,6 +1,5 @@
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { MOCK_NEW_CHART_DATA } from 'src/app/mocks/chart';
 import {
   Injectable
 } from '@angular/core';
@@ -17,6 +16,8 @@ import {
 } from 'rxjs/operators';
 import { IThing } from '../models/g-thing.model';
 import { Observable } from 'rxjs';
+import { IField } from '../models/field.model';
+import { MOCK_ASSETS_CUSTOM_FIELDS } from '../mocks/newasset';
 
 @Injectable({
   providedIn: 'root'
@@ -239,10 +240,6 @@ export class NewAssetService {
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
     return this.http.get < IThing [] > (`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
-    return new Observable < IThing [] > ((observer) => {
-      observer.next(MOCK_NEW_CHART_DATA);
-      observer.complete();
-    });
   }
 
   public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {
@@ -456,113 +453,13 @@ export class NewAssetService {
     }) => data.deleteAsset));
   }
 
-
-  // END APOLLO
-
-  /*
-  getAssets(filter: any = null): Promise < IAsset[] > {
-    return new Promise(async (resolve, reject) => {
-      let request = this.assetUrl;
-      if (filter) {
-        if (filter.name) {
-          request += `?name=${filter.name}`;
-        }
+  public getCustomFields(): Observable < IField [] > {
+    return new Observable < IField [] > (
+      observer => {
+        observer.next(MOCK_ASSETS_CUSTOM_FIELDS);
+        observer.complete();
       }
-      this.http.get < IAsset[] > (request).subscribe(
-        async (assets: IAsset[]) => {
-          console.log(assets);
-          const locations = [];
-          await Promise.all(assets.map(async (asset) => {
-            const location = await this.http.get < ILocation[] > (`${this.locationUrl}/${asset.locationId}`).toPromise();
-            locations.push(location);
-          }));
-
-          assets.forEach((asset: IAsset, index: number) => {
-            asset.location = locations[index];
-          });
-          resolve(assets);
-        }
-      );
-    });
-  }
-  */
-
-  /*
-  getPagedAssets(filter: any = null): Promise < IPagedAssets > {
-    return new Promise(async (resolve, reject) => {
-      const assets = await this.getAssets(filter);
-      resolve({
-        data: assets,
-        pageNumber: 0,
-        totalElements: assets.length
-      });
-    });
-  }
-  */
-
-  /*
-  getAssetById(id: string): Observable < IAsset > {
-    return this.http.get < IAsset > (`${this.assetUrl}/${id}`);
-  }
-  */
-
-  /*
-  getAssetsByLocationId(id: number, filter: any = null): Observable < IAsset[] > {
-    console.log('getAssetsByLocationId', id);
-    if (filter) {
-      console.log(filter);
-      return this.http.get < IAsset[] > (`${this.assetUrl}/?locationId=${id}`);
-    } else {
-      return this.http.get < IAsset[] > (`${this.assetUrl}/?locationId=${id}`);
-    }
-  }
-  */
-
-  /*
-  searchPagedAssetsWithFilter(filters: Observable < any > ) {
-    return filters.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(filter => {
-        return this.getPagedAssets(filter);
-      })
     );
   }
-  */
 
-  /*
-
-  searchAssetsWithFilter(filters: Observable < any > ) {
-    return filters.pipe(
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(filter => {
-        return this.getAssets(filter);
-      })
-    );
-  }
-  */
-
-  /*
-  updateAsset(asset: IAsset) {
-    return this.http.put(`${this.assetUrl}/${asset.id}`, asset, this.httpOptions);
-  }
-  */
-
-  /*
-  createAsset(asset: IAsset) {
-    return this.http.post < ILocation > (`${this.assetUrl}`, asset, this.httpOptions).pipe(
-      tap(data => console.log(data)),
-      catchError(this.handleError)
-    );
-  }
-  */
-
-  /*
-  deleteAsset(assetId: number) {
-    return this.http.delete(`${this.assetUrl}/${assetId}`, this.httpOptions).pipe(
-      catchError(this.handleError)
-    );
-  }
-  */
 }

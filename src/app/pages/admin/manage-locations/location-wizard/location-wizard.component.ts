@@ -1,11 +1,11 @@
+import { IField } from './../../../../models/field.model';
 import { ILocation } from 'src/app/models/g-location.model';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatStepper } from '@angular/material/stepper';
-import {MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 
@@ -24,7 +24,7 @@ export class LocationWizardComponent implements OnInit {
   public location: ILocation;
   public editMode = false;
   public canLoadLocationExplorer = false;
-  public keyValues = [];
+  public fields: IField[] = [];
 
   constructor(
     public formBuilder: FormBuilder,
@@ -36,11 +36,6 @@ export class LocationWizardComponent implements OnInit {
 
   async ngOnInit() {
 
-    //TODO: remove next line
-    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-      console.log(locations);
-    });
-
     const locationId = this.activatedRoute.snapshot.params.id;
     const parentId =  this.getParentId();
 
@@ -49,6 +44,8 @@ export class LocationWizardComponent implements OnInit {
       DescriptionCtrl: ['', null],
       TypeCtrl: ['', null],
     });
+
+    this.fields = await this.newLocationService.getCustomFields().toPromise();
 
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
@@ -77,12 +74,18 @@ export class LocationWizardComponent implements OnInit {
       description: null,
       name: null,
       image: null,
-      geolocation: null
+      geolocation: null,
+      customFields: {}
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
     }
+    this.fields.forEach(field => {
+      this.location.customFields[field.id] = null;
+    });
+
+    console.log(this.location.customFields);
   }
 
   updateLocation(location: ILocation) {
@@ -107,6 +110,7 @@ export class LocationWizardComponent implements OnInit {
   public submit() {
     if (this.editMode) {
 
+      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 

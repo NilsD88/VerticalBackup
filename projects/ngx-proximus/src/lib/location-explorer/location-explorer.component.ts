@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
@@ -25,6 +26,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() ghostLocationId: string;
   @Input() customAssetService;
   @Input() assetUrl = '/private/smartmonitoring/detail/';
+  @Input() leafUrl: string;
 
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
@@ -51,6 +53,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     private newAssetService: NewAssetService,
     private newLocationService: NewLocationService,
     private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -174,6 +177,10 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   goToChild(location) {
     if (this.selectLocation !== location) {
+      if (!(location.children || []).length && this.leafUrl) {
+        this.router.navigateByUrl(`${this.leafUrl}${location.id}`);
+        return;
+      }
       this.selectLocation(location, false);
     }
     this.selectedIndex = this.tabs.length;

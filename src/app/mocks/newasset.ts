@@ -1,7 +1,10 @@
+import { IField } from './../models/field.model';
 import { IAsset } from '../models/g-asset.model';
 import { assetImage1 } from './image';
 
 export let MOCK_ASSETS: IAsset[] = [];
+export let MOCK_ASSETS_CUSTOM_FIELDS: IField[] = [];
+
 
 MOCK_ASSETS = [
   {
@@ -128,3 +131,35 @@ MOCK_ASSETS = [
 ];
 
 
+MOCK_ASSETS_CUSTOM_FIELDS = [
+  {
+    id: '0',
+    label: {
+      en: 'Country',
+      fr: 'Pays',
+      nl: ''
+    },
+    options: null,
+    type: 'text'
+  },
+  {
+    id: '1',
+    label: {
+      en: 'Boolean',
+      fr: 'Booléen',
+      nl: ''
+    },
+    options: null,
+    type: 'boolean'
+  },
+  {
+    id: '0',
+    label: {
+      en: 'Country',
+      fr: 'Pays',
+      nl: ''
+    },
+    options: 'Belgium;France',
+    type: 'list'
+  }
+];

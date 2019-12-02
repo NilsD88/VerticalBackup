@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ITankMonitoringAsset } from './../../../../models/tankmonitoring/asset.model';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
@@ -42,14 +43,14 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     public newAssetService: NewAssetService,
     public newLocationService: NewLocationService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
   ) {
     super(
       changeDetectorRef,
       newAssetService,
       newLocationService,
       snackBar,
-      dialog
+      dialog,
     );
   }
 

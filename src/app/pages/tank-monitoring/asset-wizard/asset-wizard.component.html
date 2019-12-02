@@ -1,0 +1,99 @@
+<mat-horizontal-stepper #stepper [linear]="true" *ngIf="asset && asset.things">
+  <mat-step [stepControl]="descriptionFormGroup">
+    <form [formGroup]="descriptionFormGroup">
+      <ng-template matStepLabel>Description</ng-template>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <div class="asset-image">
+            <pxs-editable-image (change)="asset.image=$event" [image]="asset.image" [dialogTitle]="'Upload an image'"
+              [ratio]="1" [maxWidthAndHeight]="400"></pxs-editable-image>
+          </div>
+          <mat-form-field>
+            <input matInput placeholder="Name" formControlName="NameCtrl" [(ngModel)]="asset.name" required>
+            <mat-error *ngIf="descriptionFormGroup.get('NameCtrl').hasError('minlength')">
+              {{ 'MANAGE_ASSETS.VALIDATORS.NAME.MIN_LENGHT' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
+              [(ngModel)]="asset.description" maxlength="255"></textarea>
+          </mat-form-field>
+          <pxs-form-custom-fields [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
+        </div>
+      </div>
+
+      <!--
+      <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
+      <p>Form value: {{ descriptionFormGroup.value | json }}</p>
+      <p>Form status: {{ descriptionFormGroup.status | json }}</p>
+      -->
+
+      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+
+    </form>
+  </mat-step>
+  <mat-step [completed]="asset.location">
+    <form>
+      <ng-template matStepLabel>Location</ng-template>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <pxs-location-explorer *ngIf="displayLocationExplorer" (changeLocation)="updateLocation($event)"
+            [selectedLocation]="asset.location"></pxs-location-explorer>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+          <hr>
+          <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
+        </div>
+      </div>
+      <pxs-stepper-next [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
+    </form>
+  </mat-step>
+  <mat-step>
+    <form>
+      <ng-template matStepLabel>Geolocation</ng-template>
+      <pxs-form-geolocation
+        *ngIf="asset.location && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
+        [location]="asset.location" (notify)="asset.geolocation=$event" [geolocation]="asset.geolocation">
+      </pxs-form-geolocation>
+      <pxs-stepper-next [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
+    </form>
+  </mat-step>
+  <mat-step [completed]="asset.things.length > 0">
+    <form>
+      <ng-template matStepLabel>Things</ng-template>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mx-auto">
+            <pxs-list-things [selectedThings]="asset.things" (selectChange)="selectedThingsChange($event)">
+            </pxs-list-things>
+          </div>
+        </div>
+        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="stepper.next()"></pxs-stepper-next>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [completed]="asset.things.length > 0">
+    <form>
+      <ng-template matStepLabel>Threshold template</ng-template>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mx-auto">
+            <pxs-list-threshold-templates *ngIf="displayThresholdTemplateList"
+              [selectedThresholdTemplate]="asset.thresholdTemplate" (selectChange)="asset.thresholdTemplate = $event">
+            </pxs-list-threshold-templates>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+            <hr>
+            <button mat-button color="primary" (click)="openAddThresholdTemplate()">Create a new threshold
+              template</button>
+          </div>
+        </div>
+        <pxs-stepper-next text="Save" [completed]="asset.things.length" (next)="wantToSaveAsset()"></pxs-stepper-next>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>

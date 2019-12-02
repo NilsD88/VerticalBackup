@@ -4,6 +4,8 @@ import { IPagedAlerts } from 'src/app/models/g-alert.model';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
+import * as jspdf from 'jspdf';
+import 'jspdf-autotable';
 import { SharedService } from 'src/app/services/shared.service';
 import { IAlert } from 'src/app/models/g-alert.model';
 import { NewAlertService } from 'src/app/services/new-alert.service';
@@ -293,8 +295,8 @@ export class AlertsComponent implements OnInit {
     ).toPromise();
   }
 
-  public downloadSelectedAlerts() {
-    let csv = 'Asset, Location type, Date, Message, Threshold template, Thing, Value, read\n';
+  public downloadSelectedAlertsCSV() {
+    let csv = 'Asset, Location, Date, Message, Threshold template, Thing, Value, read\n';
     this.selectedAlerts.map((alertId) => {
       const index = this.filteredAlerts.findIndex((alert) => alert.id === alertId);
       if (index) {
@@ -313,19 +315,47 @@ export class AlertsComponent implements OnInit {
     this.sharedService.downloadCSV('csv export ' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
   }
 
+  public downloadSelectedAlertsPDF() {
+    const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF (210 x 297)
+    const cols = ['Asset', 'Location', 'Date', 'Message', 'Threshold template', 'Thing', 'Value', 'Read'];
+    const rows = [];
+
+    this.selectedAlerts.map((alertId) => {
+      const index = this.filteredAlerts.findIndex((alert) => alert.id === alertId);
+      const temp = [
+        `${(this.filteredAlerts[index].asset || {}).name}`,
+        `${((this.filteredAlerts[index].asset || {}).location ||  {}).name}`,
+        `${moment(this.filteredAlerts[index].timestamp).format('DD/MM/YYYY \n hh:mm:ss')}`,
+        `${(this.filteredAlerts[index].sensorType || {}).name + ' ' + this.filteredAlerts[index].severity + ' ' + (this.filteredAlerts[index].label || '')}`,
+        `${this.filteredAlerts[index].thresholdTemplateName}`,
+        `${(this.filteredAlerts[index].thing || {}).name}`,
+        `${this.filteredAlerts[index].value + (this.filteredAlerts[index].sensorType || {}).postfix}`,
+        `${this.filteredAlerts[index].read}`,
+      ];
+      rows.push(temp);
+    });
+
+    pdf.autoTable(cols, rows, {
+      startY: 10,
+      columnStyles: {
+        0: {columnWidth: 25},
+        1: {columnWidth: 25},
+        2: {columnWidth: 30},
+        3: {columnWidth: 30},
+        4: {columnWidth: 20},
+        5: {columnWidth: 25},
+        6: {columnWidth: 20},
+        7: {columnWidth: 15},
+      }
+    });
+    pdf.save(`alerts.pdf`);
+  }
+
   public async getSensorTypesOptions(): Promise<void> {
     this.sensorTypesLoading = true;
     this.filterOptions.sensorTypes = (await this.newSensorService.getSensorTypeNames().toPromise()).map((sensorType) => {
       return {label: sensorType.name, id: sensorType.id};
     });
-
-    /*
-
-    this.filterOptions.sensorTypes = (await this.filterService.getSensorTypes()).map((item) => {
-      // TODO: remove toString() when new backend will return string id
-      return {label: item.name, id: item.id.toString()};
-    });
-    */
     this.sensorTypesLoading = false;
   }
 
