@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { StoresOverviewComponent } from './stores-overview.component';
 import { RouterModule } from '@angular/router';
 import {StoresOverviewRoutes} from './stores-overview.routing' 
-import {StackedChartModule} from './chart/stacked-chart/stacked-chart.module'
+
 
 
 
@@ -16,7 +16,7 @@ import {StackedChartModule} from './chart/stacked-chart/stacked-chart.module'
     CommonModule,
     RouterModule.forChild(StoresOverviewRoutes),
     LoaderModule,
-    StackedChartModule
+   
     
   ]
 })
