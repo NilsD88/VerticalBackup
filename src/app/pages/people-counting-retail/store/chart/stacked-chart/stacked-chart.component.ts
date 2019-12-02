@@ -1,10 +1,6 @@
-import { DatePipe } from '@angular/common';
-import { DashboardComponent } from './../../../../tank-monitoring/dashboard/dashboard.component';
 import { Component, OnInit, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import *  as moment from 'moment';
-import { timestamp } from 'rxjs/operators';
-import { WeatherService, IWeatherGivenHour } from 'src/app/services/weather.service';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -24,7 +20,7 @@ exporting(Highcharts);
 exportData(Highcharts);
 
 @Component({
-  selector: 'pvf-stacked-chart',
+  selector: 'pvf-peoplecountingretail-stacked-chart',
   templateUrl: './stacked-chart.component.html',
   styleUrls: ['./stacked-chart.component.scss']
 })
@@ -44,7 +40,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
 });*/
 }
 
-    @Input() leafs: IPeopleCountingLocation;
+  @Input() leaf: IPeopleCountingLocation;
 
 
   public chart: any;
@@ -120,7 +116,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
 
   constructor() {
     
-     }
+  }
 
   ngOnInit() {
     this.getMonthData();
@@ -130,7 +126,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
     
   }
 
-  ngOnChanges(changes: SimpleChanges){
+  ngOnChanges(changes: SimpleChanges) {
 
    this.initChartOptions();
    this.initChart()
@@ -317,7 +313,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
     this.categoriesX = [];
     var dataArr = []; 
     this.filterData();
-    this.leafs.assets.forEach(asset => {
+    this.leaf.assets.forEach(asset => {
        dataArr = [];
      var currentDate = new Date().toDateString();
      asset.series.forEach(serie=>{
@@ -352,7 +348,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
     dateWeekAgo.setDate(currentDate.getDate()-7);
 
     this.filterData();
-    this.leafs.assets.forEach(asset => { 
+    this.leaf.assets.forEach(asset => { 
 
       dataArr =[];
       asset.series.forEach(serie=>{
@@ -387,7 +383,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
     dateMonthAgo.setDate(currentDate.getDate()-30);
 
     this.filterData();
-    this.leafs.assets.forEach(asset => {  
+    this.leaf.assets.forEach(asset => {  
       dataArr =[];
 
      asset.series.forEach(serie=>{
@@ -424,7 +420,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
     dateYearAgo.setDate(currentDate.getDate()-365);
 
     this.filterData();
-    this.leafs.assets.forEach(asset => {  
+    this.leaf.assets.forEach(asset => {  
       dataArr =[];
 
      asset.series.forEach(serie=>{
@@ -455,7 +451,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
 
   private filterData(){
 
-   this.leafs.assets.forEach(asset => {
+   this.leaf.assets.forEach(asset => {
       asset.series.sort((x, y)=>{
         return x.timestamp - y.timestamp;
      })

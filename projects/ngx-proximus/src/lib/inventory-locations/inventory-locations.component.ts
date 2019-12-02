@@ -32,7 +32,6 @@ export class InventoryLocationsComponent implements OnInit {
   public locationsLoading = false;
 
   public locations: IPeopleCountingLocation[] = [];
-  public locationUrl = '';
   public leafUrl: string;
 
   public pageNumber = 0;

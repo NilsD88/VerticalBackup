@@ -11,7 +11,7 @@ export interface IInventoryFilterBE {
   templateUrl: './../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component.scss']
 })
-export class WalkingTrailInventoryLocationsComponent extends InventoryLocationsComponent implements OnInit {
+export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLocationsComponent implements OnInit {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
@@ -23,7 +23,7 @@ export class WalkingTrailInventoryLocationsComponent extends InventoryLocationsC
       locationService,
       activatedRoute
     );
-    this.leafUrl = 'private/walkingtrail/trail/';
+    this.leafUrl = 'private/peoplecounting/store/';
   }
 
   async ngOnInit() {

@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit {
   public lastYearLeafs: IPeopleCountingLocation[];
   public currentLeafs: IPeopleCountingLocation[];
   public listStyleValue = 'map';
-  public leafUrl = '/private/walkingtrail/trail';
+  public leafUrl = '/private/peoplecounting/store';
 
   constructor(
     private locationService: WalkingTrailLocationService,

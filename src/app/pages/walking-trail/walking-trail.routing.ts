@@ -40,7 +40,7 @@ export const WalkingTrailRoutes: Routes = [
     loadChildren: () => import('src/app/pages/walking-trail/detail/detail.module').then(m => m.DetailModule)
   },
   {
-    path: 'inventory',
+    path: 'overview',
     children: [{
       path: '',
       loadChildren: () => import('./lib/inventory-locations/inventory-locations.module').then(m => m.WalkingTrailInventoryLocationsModule)
