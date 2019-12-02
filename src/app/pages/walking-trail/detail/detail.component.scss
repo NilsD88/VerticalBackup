@@ -1,0 +1,30 @@
+@import "variables.scss";
+
+.container {
+    > .row {
+        padding: 15px 0;
+    }
+}
+
+
+.detail-main-content {
+  background-color : $page-background;
+
+  #asset-image {
+    width               : 100%;
+    background-repeat   : no-repeat;
+    background-size     : cover;
+    background-position : center;
+    height              : 400px;
+  }
+
+}
+
+.last-alert-container {
+  background-color : $dark-primary;
+  color: white;
+  h4 {
+    color: white;
+    padding: 10px;
+  }
+}

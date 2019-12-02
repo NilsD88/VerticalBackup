@@ -52,7 +52,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', null],
-      TypeCtrl: ['', null],
     });
 
     this.fields = await this.newAssetService.getCustomFields().toPromise();
@@ -63,6 +62,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
         this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
+        this.originalAsset.locationId = this.originalAsset.location.id;
       } catch (err) {
         this.asset = this.emptyAsset();
       }

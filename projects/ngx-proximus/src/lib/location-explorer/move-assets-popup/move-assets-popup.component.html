@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Transfer attached assets</h1>
+<div mat-dialog-content>
+  <p>Choose a location where to move the attached assets</p>
+  <pxs-location-explorer 
+    [rootLocation]="data.rootLocation"
+    [selectedLocation]="data.selectedLocation"
+    [ghostLocationId]="data.ghostLocationId"
+    (changeLocation)="changeLocation($event)"
+  ></pxs-location-explorer>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel the transfer</button>
+  <button mat-button [mat-dialog-close]="selectedLocationId" cdkFocusInitial>Transfer the assets</button>
+</div>

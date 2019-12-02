@@ -15,8 +15,8 @@ import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locati
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { PeopleCountingAssetWizardDialogComponent } from '../asset-wizard/assetWizardDialog.component';
 import { IField } from 'src/app/models/field.model';
+import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.component';
 
 @Component({
   selector: 'pvf-trail-wizard',
@@ -57,7 +57,6 @@ export class TrailWizardComponent implements OnInit {
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.required],
       DescriptionCtrl: ['', null],
-      TypeCtrl: ['', null],
     });
 
     this.fields = await this.newLocationService.getCustomFields().toPromise();

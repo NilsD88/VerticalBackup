@@ -4,7 +4,7 @@
     matInput
     type="text" 
     [matAutocomplete]="auto"
-    placeholder="Location name"
+    placeholder="Search a location by name"
     [(ngModel)]="filter.name"
     (ngModelChange)="onFilterChange()"
   >
@@ -68,7 +68,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="displayAssets" class="dropList">
+    <div *ngIf="displayAssets || assetPicker" class="dropList">
       <div>
         <hr data-content="ASSETS">
         <mat-progress-spinner 
@@ -83,7 +83,7 @@
         </div>
         <div *ngIf="currentLocation">
           <div class="dropListItem" *ngFor="let asset of currentLocation.assets" [ngClass]="{'selected': selectedAsset === asset}">
-            <a [routerLink]="assetUrl+''+asset.id" (click)="assetClicked.emit()">
+            <a (click)="clickOnAsset(asset)">
               <pxs-icon icon="document-img" class="asset"></pxs-icon>
               {{asset.name}}
             </a>

@@ -12,6 +12,7 @@ import { FormGeolocationModule } from 'projects/ngx-proximus/src/lib/form-geoloc
 import { EditableImageModule } from 'projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { CommonModule } from '@angular/common';
+import { DialogModule } from 'projects/ngx-proximus/src/lib/dialog/dialog.module';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { CommonModule } from '@angular/common';
     EditableImageModule,
     LocationExplorerModule,
     MatDialogModule,
-    FormCustomFieldsModule
+    FormCustomFieldsModule,
+    DialogModule
   ],
   exports: [LocationWizardComponent],
   declarations: [

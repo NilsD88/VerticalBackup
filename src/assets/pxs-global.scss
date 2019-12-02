@@ -551,6 +551,12 @@ button[disabled], button:disabled {
   color       : $primary;
 }
 
+
+.mat-button-toggle-checked {
+  background-color: $primary;
+  color: white !important;
+}
+
 .top-menu-contact::after, .top-menu-search::after, .top-menu-language::after, .pxs-menu-item::after {
   background-color : $primary !important;
 }

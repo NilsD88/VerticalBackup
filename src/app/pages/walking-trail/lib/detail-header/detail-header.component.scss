@@ -1,0 +1,122 @@
+@import "variables.scss";
+
+.detail-header-wrapper {
+  span {
+    width: 100%;
+  }
+}
+
+.detail-header {
+  background: #5c2d91;
+  background-image: linear-gradient(90deg, #5c2d91 0%, #FF418C 100%);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  
+  .detail-header-wrapper {
+    padding: 2rem;
+    display: flex;
+    align-content: space-between;
+    
+    h1 {
+      font-size: 34px;
+      line-height: 38px;
+      margin-bottom: 20px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    h2 {
+      color: rgba(255,255,255, 0.17);
+    }
+    
+    h3 {
+      background-color : $promo;
+      padding: .2em .5em;
+      border-radius: 0 0 10px 0;
+      color: white;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 18px;
+      white-space: nowrap;
+      display: inline-block;
+      margin: 0;
+    }
+    
+    h4 {
+      display: inline-block;
+      margin-top: 12px;
+      font-family : ProximusLight, sans-serif;
+      max-width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      font-size: 18px;
+      white-space: nowrap;
+      margin: 0;
+      background: rgba(255,255,255,0.1);
+      padding: 5px 15px;
+      cursor: pointer;
+    }
+    
+    p {
+      color: rgba(255,255,255, 0.7);
+    }
+  }
+  
+}
+
+.last-measurements-wrapper {
+  margin-left: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  >div {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    .last-measurement-thing {
+      text-align: right;
+      margin-left: 25px;
+      .last-measurement-title {
+        color: rgba(255,255,255, 0.66);
+        .border {
+          margin-top: 6px;
+          height: 1px;
+          background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));;
+        }
+      }
+      .last-measurement-sensors {
+        display: flex;;
+        .last-measurement-sensor {
+          margin: .5rem;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          color: $white;
+    
+          img {
+            height: 3rem;
+            padding: .5rem;
+          }
+        
+          .last-measurement-date {
+            color: $accent;
+          }
+          
+          .last-measurement-time {
+            color: $accent;
+          }
+        }
+      }
+      
+    }
+  }
+  
+  
+}

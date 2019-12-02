@@ -38,11 +38,14 @@ require('highcharts/modules/export-data')(Highcharts);
 })
 export class MonthViewComponent implements OnInit, OnChanges {
 
-  @Input() lastMonthLeafData: IPeopleCountingLocation;
+  @Input() leaf: IPeopleCountingLocation;
 
   public chart: any;
   public chartOptions: any;
   public locale: string;
+
+  public currentMonth;
+  private currentMonthIndex = 1;
 
   constructor(private translateService: TranslateService) {}
 
@@ -133,9 +136,17 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   private updateChart() {
 
-    if (!this.lastMonthLeafData) {
+    if (!this.leaf) {
       return;
     }
+
+    this.currentMonth = moment().subtract(this.currentMonthIndex, 'months').date(1).format('MMMM YY');
+
+    // TODO: get last month data per day and per asset (location.asset.series) for a specific location
+    const lastMonthLeafData = cloneDeep(this.leaf);
+    lastMonthLeafData.assets.forEach(asset => {
+      asset.series = generateMonthOfDataSeries(this.currentMonthIndex);
+    });
 
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
@@ -168,14 +179,14 @@ export class MonthViewComponent implements OnInit, OnChanges {
       oldWeekday = weekDay;
     }
 
-    if ((((this.lastMonthLeafData || {}).assets) || []).length) {
+    if ((((lastMonthLeafData || {}).assets) || []).length) {
       // Generating asset colors
       const assetColors = randomColor({
-        count: this.lastMonthLeafData.assets.length
+        count: lastMonthLeafData.assets.length
       });
 
       // Creating the data series by asset
-      this.lastMonthLeafData.assets.forEach((asset, assetIndex) => {
+      lastMonthLeafData.assets.forEach((asset, assetIndex) => {
         const assetName = asset.name;
         const assetValues = cloneDeep(initialValue);
 
@@ -215,4 +226,24 @@ export class MonthViewComponent implements OnInit, OnChanges {
   }
 
 
+  public swapPeriod(direction: boolean) {
+    this.currentMonthIndex = (direction) ? this.currentMonthIndex - 1 : this.currentMonthIndex + 1;
+    this.updateChart();
+  }
+
+
+}
+
+function generateMonthOfDataSeries(monthIndex: number): IPeopleCountingAssetSerie[] {
+  const dataSeries: IPeopleCountingAssetSerie[] = [];
+  const daysInMonth = moment().subtract(monthIndex, 'months').date(1).daysInMonth();
+  for (let index = 0; index < daysInMonth; index++) {
+    dataSeries.push(
+      {
+        timestamp: moment().subtract(monthIndex, 'months').date(1).add(index, 'days').valueOf(),
+        value: Math.floor(Math.random() * 101)
+      }
+    );
+  }
+  return dataSeries;
 }

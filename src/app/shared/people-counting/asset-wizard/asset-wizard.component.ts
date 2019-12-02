@@ -45,7 +45,6 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', null],
-      TypeCtrl: ['', null],
     });
 
     this.fields = await this.assetService.getCustomFields().toPromise();

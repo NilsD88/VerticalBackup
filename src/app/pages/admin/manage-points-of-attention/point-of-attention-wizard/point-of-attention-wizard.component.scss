@@ -1,0 +1,54 @@
+@import "variables.scss";
+
+$max-width: 600px;
+
+.flex-inline-container{
+    display: inline-flex;
+    width: 100%;
+
+    > div {
+        &:nth-last-of-type(n+2){
+            flex: 1;
+        }
+        &:nth-of-type(n+2){
+            margin-left: 10px;
+        }
+    }
+}
+
+.col-md-6.mx-auto{
+    max-width: $max-width;
+}
+
+pxs-location-explorer {
+    margin: 20px auto 15px;
+}
+
+::ng-deep pxs-form-geolocation .row {
+    margin: 20px auto 15px;
+}
+
+::ng-deep .stepper-next-container {
+    display: flex;
+    justify-content: flex-end;
+    max-width: $max-width;
+}
+
+::ng-deep .mat-form-field-select{
+    .mat-form-field-wrapper {
+        padding-bottom: 2.20em;
+    }
+}
+
+::ng-deep .asset-image {
+    max-width: 300px;
+    margin: 20px auto;
+    img {
+        height: 300px;
+        background: grey;
+    }
+}
+
+::ng-deep .mat-pseudo-checkbox-checked {
+    background: $primary;
+}

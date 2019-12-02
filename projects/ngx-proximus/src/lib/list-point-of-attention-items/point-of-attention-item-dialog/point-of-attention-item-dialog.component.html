@@ -1,0 +1,56 @@
+<div mat-dialog-content *ngIf="pointOfAttentionItem">
+  <form [formGroup]="fieldFormGroup">
+    <mat-form-field *ngIf="sensorTypes">
+      <mat-select 
+        matInput 
+        required
+        [compareWith]="compareById"
+        [placeholder]="'FILTER.PLACEHOLDER_SENSORTYPE' | translate" 
+        [(ngModel)]="pointOfAttentionItem.sensorType"
+        formControlName="SensorTypeCtrl"
+        >
+            <mat-option *ngFor="let sensorType of sensorTypes" [value]="sensorType">{{sensorType.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput [placeholder]="'FILTER.NAME.PLACEHOLDER' | translate" formControlName="NameCtrl"
+        [(ngModel)]="pointOfAttentionItem.name" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select [placeholder]="'FILTER.PLACEHOLDER_AGGREGATION' | translate" matInput
+        [(ngModel)]="pointOfAttentionItem.aggregation" formControlName="AggregationCtrl">
+        <mat-option *ngFor="let aggregation of aggregations" [value]="aggregation">{{aggregation}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div>
+      <hr data-content="ASSETS">
+      <mat-progress-spinner *ngIf="loadingAsset" style="margin:0 auto;" [diameter]="25" color="primary"
+        mode="indeterminate">
+      </mat-progress-spinner>
+      <div *ngIf="!loadingAsset" class="dropList assetsList">
+        <div class="dropListItem" *ngFor="let asset of pointOfAttentionItem.assets">
+          <div class="asset">
+            <div class="left">
+                <pxs-icon icon="document-img" class="asset"></pxs-icon>
+                {{asset.name}}
+            </div>
+            <div class="right">
+                <button mat-icon-button matTooltip="Delete item" color="warn" (click)="deleteAsset(asset.id)">
+                    <pxs-icon icon="trash"></pxs-icon>
+                </button>
+            </div>
+          </div>
+        </div>
+        <div class="dropListItem">
+          <div class="new" (click)="openAssetPicker()">
+            <pxs-icon icon="plus-o"></pxs-icon> Add new asset
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="cancel()">Cancel</button>
+  <pxs-stepper-next [formGroup]="fieldFormGroup" [completed]="pointOfAttentionItem.assets.length > 0" [text]="'Save'" [color]="'success'" (next)="save()"></pxs-stepper-next>
+</div>
