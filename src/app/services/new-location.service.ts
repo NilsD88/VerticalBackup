@@ -234,7 +234,7 @@ export class NewLocationService {
     );
   }
 
-  public deleteLocation(id: string): Observable < boolean > {
+  public deleteLocation(id: string, locationIdToTransferAssets: string): Observable < boolean > {
 
     const DELETE_LOCATION = gql `
           mutation DeleteLocation($input: LocationDeleteInput!) {
@@ -246,14 +246,12 @@ export class NewLocationService {
       deleteLocation: boolean;
     }
 
-    console.log(`[DELETE] LOCATION:`);
-    console.log(id);
-
     return this.apollo.mutate < DeleteLocationResponse > ({
       mutation: DELETE_LOCATION,
       variables: {
         input: {
           id,
+          locationIdToTransferAssets
         }
       }
     }).pipe(

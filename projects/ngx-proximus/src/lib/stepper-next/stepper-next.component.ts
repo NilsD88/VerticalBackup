@@ -8,10 +8,10 @@ import { FormGroup } from '@angular/forms';
 })
 export class StepperNextComponent implements OnInit {
 
-  @Input() completed;
+  @Input() completed = true;
   @Input() text = 'Next';
   @Input() color = 'primary';
-  @Input() formGroup: FormGroup;
+  @Input() formGroup: FormGroup = new FormGroup({});
   @Output() next = new EventEmitter();
 
   constructor() { }

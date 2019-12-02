@@ -10,6 +10,7 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
 import { CommonModule } from '@angular/common';
 import { LocationWizardDialogComponent } from './locationWizardDialog.component';
 import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
+import { DialogModule } from 'projects/ngx-proximus/src/lib/dialog/dialog.module';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custo
     EditableImageModule,
     LocationExplorerModule,
     MatDialogModule,
-    FormCustomFieldsModule
+    FormCustomFieldsModule,
+    DialogModule
   ],
   exports: [
     LocationWizardDialogComponent,

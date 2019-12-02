@@ -1,0 +1,53 @@
+<mat-horizontal-stepper #stepper [linear]="false" *ngIf="pointOfAttention">
+  <mat-step [stepControl]="descriptionFormGroup">
+    <form [formGroup]="descriptionFormGroup">
+      <ng-template matStepLabel>Description</ng-template>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <mat-form-field>
+            <input matInput placeholder="Name" formControlName="NameCtrl" [(ngModel)]="pointOfAttention.name" required>
+            <mat-error *ngIf="descriptionFormGroup.get('NameCtrl').hasError('minlength')">
+              {{ 'MANAGE_ASSETS.VALIDATORS.NAME.MIN_LENGHT' | translate }}
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
+              [(ngModel)]="pointOfAttention.description" maxlength="255"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+    </form>
+  </mat-step>
+  <mat-step [completed]="pointOfAttention.location">
+    <form>
+      <ng-template matStepLabel>Location</ng-template>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <pxs-location-explorer *ngIf="displayLocationExplorer" (changeLocation)="updateLocation($event)"
+            [selectedLocation]="pointOfAttention.location"></pxs-location-explorer>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+          <hr>
+          <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
+        </div>
+      </div>
+      <pxs-stepper-next [completed]="pointOfAttention.location" (next)="stepper.next()"></pxs-stepper-next>
+    </form>
+  </mat-step>
+  <mat-step [completed]="pointOfAttention.location">
+    <form>
+      <ng-template matStepLabel>Items</ng-template>
+      <div class="container">
+          <div class="row">
+            <div class="col-md-12 mx-auto">
+              <pxs-list-point-of-attention-items [(pointOfAttention)]="pointOfAttention"></pxs-list-point-of-attention-items>
+            </div>
+          </div>
+          <pxs-stepper-next [completed]="pointOfAttention.location" (next)="save()"></pxs-stepper-next>
+      </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>

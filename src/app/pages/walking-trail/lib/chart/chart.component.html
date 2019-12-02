@@ -1,0 +1,12 @@
+<pxs-chart-controls
+    [chartDataIsLoading]="loading"
+    [chartDataLength]="chartData.length"
+    [filter]="filter"
+    (intervalChanged)="intervalChanged($event)"
+    (dateRangeChanged)="dateRangeChanged($event)"
+    (downloadPDF)="download.emit()"
+    (downloadCSV)="downloadCSV()"
+></pxs-chart-controls>
+
+<div [hidden]="loading" id="chart-container"></div>
+<pxs-loader *ngIf="loading"></pxs-loader>

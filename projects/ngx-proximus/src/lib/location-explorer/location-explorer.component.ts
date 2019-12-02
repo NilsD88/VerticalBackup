@@ -1,3 +1,5 @@
+import { DeleteConfirmationPopupComponent } from './delete-confirmation-popup/delete-confirmation-popup.component';
+import { MoveAssetsPopupComponent } from './move-assets-popup/move-assets-popup.component';
 import { Router } from '@angular/router';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
@@ -9,6 +11,7 @@ import { Subject, Subscription, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
+import { MatDialog } from '@angular/material';
 
 
 @Component({
@@ -27,10 +30,11 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() customAssetService;
   @Input() assetUrl = '/private/smartmonitoring/detail/';
   @Input() leafUrl: string;
+  @Input() assetPicker = false;
 
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
-  @Output() assetClicked: EventEmitter<null> = new EventEmitter<null>();
+  @Output() assetClicked: EventEmitter<IAsset> = new EventEmitter<IAsset>();
 
   tabs: {name: string, children: ILocation[]}[] = [];
   selectedIndex = 0;
@@ -53,6 +57,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     private newAssetService: NewAssetService,
     private newLocationService: NewLocationService,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
     private router: Router,
   ) {}
 
@@ -127,14 +132,40 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     );
   }
 
-  deleteLocation(locationId: string) {
-    this.newLocationService.deleteLocation(locationId).subscribe((result: boolean) => {
+  async wantToDeleteLocation(locationId: string) {
+
+    const assets = await this.newAssetService.getAssetsByLocationId(locationId).toPromise();
+    if (assets.length > 0) {
+      const wantToDelete = await this.dialog.open(DeleteConfirmationPopupComponent).afterClosed().toPromise();
+      if (wantToDelete) {
+        const locationIdToTransferAssets = await this.dialog.open(MoveAssetsPopupComponent, {
+          data: {
+            rootLocation: this.rootLocation,
+            selectedLocation: this.currentLocation || this.selectedLocation || this.rootLocation,
+            ghostLocationId: locationId
+          }
+        }).afterClosed().toPromise();
+        if (!isNullOrUndefined(locationIdToTransferAssets)) {
+          this.deleteLocation(locationId, locationIdToTransferAssets);
+        } else {
+          this.deleteLocation(locationId);
+        }
+      }
+    } else {
+      this.deleteLocation(locationId);
+    }
+  }
+
+  private deleteLocation(locationId: string, locationIdToTransferAssets: string = null) {
+    this.newLocationService.deleteLocation(locationId, locationIdToTransferAssets).subscribe((result: boolean) => {
       this.rootLocation = null;
       this.selectedLocation = this.currentLocation;
       this.changeDetectorRef.detectChanges();
       this.getLocations();
     });
   }
+
+
 
   private checkIfSelectedLocation() {
     this.currentLocation = this.rootLocation;
@@ -152,7 +183,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   selectLocation(location, emit) {
     this.currentLocation = location;
-    if (this.displayAssets) {
+    if (this.displayAssets || this.assetPicker) {
       this.getAssetsBySelectedLocation();
     }
     if (emit) {
@@ -161,7 +192,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   }
 
   clickOnLocation(location) {
-    if (!this.displayAssets && !this.admin) {
+    if (!this.displayAssets && !this.assetPicker && !this.admin) {
       if (this.currentLocation !== location) {
         if (this.ghostLocationId !== location.id) {
           this.selectLocation(location, true);
@@ -238,6 +269,13 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
     this.isDownloading = false;
     this.initLocationTree();
+  }
+
+  public clickOnAsset(asset: IAsset) {
+    this.assetClicked.emit(asset);
+    if (!this.assetPicker) {
+      this.router.navigateByUrl(`${this.assetUrl}${asset.id}`);
+    }
   }
 
   ngOnDestroy() {

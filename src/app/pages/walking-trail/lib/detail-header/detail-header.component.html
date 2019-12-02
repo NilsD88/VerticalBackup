@@ -1,0 +1,65 @@
+<div class="detail-header">
+  <div class="container">
+    <div class="row detail-header-wrapper">
+      <div class="col-sm-6 col-xs-12">
+        <h2>{{orgName}}</h2>
+        <h4 (click)="openDialog()" class="text-accent" *ngIf="asset">
+          <pxs-icon icon="globe"></pxs-icon> {{asset?.location?.name}}
+        </h4>
+        <h4 class="text-accent" *ngIf="!asset">
+          <a style="color: inherit;">
+            <ngx-skeleton-loader count="1" [theme]="{ width: '30%', 'max-width': '100px', 'margin-right': '10px' }">
+            </ngx-skeleton-loader>
+            <ngx-skeleton-loader count="1" [theme]="{ width: '30%', 'max-width': '100px' }"></ngx-skeleton-loader>
+          </a>
+        </h4>
+        <h1 class="text-white" *ngIf="asset"> {{asset?.name}}</h1>
+        <h1 class="text-white" *ngIf="!asset">
+          <ngx-skeleton-loader count="1" [theme]="{ width: '100%', 'max-width': '300px' }"></ngx-skeleton-loader>
+        </h1>
+        <p>
+          {{asset?.description?.trunc(120)}}
+        </p>
+        <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
+        <br>
+      </div>
+      <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">
+        <div>
+          <div *ngFor="let thing of asset?.things" class="last-measurement-thing">
+            <div class="last-measurement-title">
+              <span>{{thing.devEui}}</span>
+              <span *ngIf="thing.name">: {{thing.name}}</span>
+              <div class="border"></div>
+            </div>
+            <div class="last-measurement-sensors">
+              <div *ngFor="let sensor of thing.sensors" class="last-measurement-sensor">
+                <img
+                  [matTooltip]="(sensor.sensorDefinition?.name ? sensor.sensorDefinition?.name : sensor.sensorType.name)"
+                  [src-fallback]="'assets/smartmonitoring/images/icons/icon-default-white.svg'"
+                  src="assets/smartmonitoring/images/icons/icon-{{sensor.sensorType?.name}}-white.svg" alt="">
+                <span *ngIf="!isNullOrUndefined(sensor?.value)"
+                  class="last-measurement-value">{{parseLastValue(sensor?.value)}}
+                  {{sensor?.sensorType?.postfix}}</span>
+                <small *ngIf="!isNullOrUndefined(sensor?.timestamp)"
+                  class="last-measurement-date">{{sensor?.timestamp | date : 'd/M/yy'}}</small>
+                <small *ngIf="!isNullOrUndefined(sensor?.timestamp)"
+                  class="last-measurement-time">{{sensor?.timestamp | date : 'H:mm'}}</small>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+      <span class="last-measurements-wrapper" *ngIf="!asset">
+        <span *ngFor="let measurement of [].constructor(3)" class="last-measurement">
+          <ngx-skeleton-loader class="last-measurement" count="1" [theme]="{
+              width: '50px',
+              'border-radius': '4px',
+              height: '50px'
+            }"></ngx-skeleton-loader>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>

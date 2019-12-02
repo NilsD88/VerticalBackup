@@ -44,30 +44,7 @@ export class TrailComponent implements OnInit {
       };
       const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
       this.parentLocation = parentLocation;
-
       this.imageSources = [{url: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/fall-1072821__480.jpg'}, {url: 'https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_1280.jpg'}];
-
-      this.lastMonthLeafData = cloneDeep(this.leaf);
-
-      // Generate last month data
-      // TODO: get last month data per day and per asset (location.asset.series) for a specific location
-      this.lastMonthLeafData.assets.forEach(asset => {
-        asset.series = generatePastMonthOfDataSeries();
-      });
     });
   }
-}
-
-function generatePastMonthOfDataSeries(): IPeopleCountingAssetSerie[] {
-  const dataSeries: IPeopleCountingAssetSerie[] = [];
-  const daysInMonth = moment().subtract(1, 'months').date(1).daysInMonth();
-  for (let index = 0; index < daysInMonth; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().subtract(1, 'months').date(1).add(index, 'days').valueOf(),
-        value: Math.floor(Math.random() * 101)
-      }
-    );
-  }
-  return dataSeries;
 }

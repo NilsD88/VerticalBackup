@@ -10,7 +10,8 @@ import {
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogRef
+  MatDialogRef,
+  MatDialog
 } from '@angular/material/dialog';
 import {
   ActivatedRoute,
@@ -40,6 +41,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
     public newLocationService: NewLocationService,
+    public dialog: MatDialog,
     public router: Router,
   ) {
     super(
@@ -47,6 +49,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
       changeDetectorRef,
       activatedRoute,
       newLocationService,
+      dialog,
       router
     );
   }

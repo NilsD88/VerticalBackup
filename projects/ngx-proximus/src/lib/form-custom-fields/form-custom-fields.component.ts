@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { IField } from './../../../../../src/app/models/field.model';
+import { IField, IFieldLabel } from './../../../../../src/app/models/field.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -11,7 +11,7 @@ export class FormCustomFieldsComponent implements OnInit {
 
   public customFieldsValue;
 
-  @Input() fields: IField;
+  @Input() fields: IField [];
   @Input() customFields: {};
   @Output() customFieldsChange: EventEmitter<{}> = new EventEmitter<{}>();
 
@@ -21,4 +21,17 @@ export class FormCustomFieldsComponent implements OnInit {
 
   ngOnInit() {}
 
+  getLabelName(label: IFieldLabel ) {
+    const langs = ['en', 'fr', 'nl'];
+    const currentLang = this.translateService.currentLang;
+    let fieldName = label[currentLang];
+    langs.splice(langs.indexOf(currentLang), 1 );
+    while (!fieldName && langs.length) {
+      fieldName = label[langs.splice(0, 1)[0]];
+    }
+    return fieldName;
+  }
+
 }
+
+

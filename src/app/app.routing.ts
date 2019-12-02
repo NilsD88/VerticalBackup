@@ -15,6 +15,18 @@ export class PublicAuthGuard implements CanActivate {
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    /*
+    this.sharedService.user = new User({
+      email: 'nicolas.ancel@ordina.be',
+      firstName: 'Nicolas',
+      lastName: 'Ancel',
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+      roles: ['pxs:iot:localadmin'],
+      orgName: 'Ordina',
+      impersonation: false
+    });
+    return true;
+    */
     try {
       this.sharedService.user = new User(await this.authService.isLoggedIn());
       if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
@@ -36,6 +48,18 @@ export class UserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
+    /*
+    this.sharedService.user = new User({
+      email: 'nicolas.ancel@ordina.be',
+      firstName: 'Nicolas',
+      lastName: 'Ancel',
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+      roles: ['pxs:iot:localadmin'],
+      orgName: 'Ordina',
+      impersonation: false
+    });
+    return true;
+    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       return this.sharedService.user.isUser;
@@ -68,6 +92,18 @@ export class AdminAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
+    /*
+    this.sharedService.user = new User({
+      email: 'nicolas.ancel@ordina.be',
+      firstName: 'Nicolas',
+      lastName: 'Ancel',
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+      roles: ['pxs:iot:localadmin'],
+      orgName: 'Ordina',
+      impersonation: false
+    });
+    return true;
+    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
@@ -94,7 +130,6 @@ export class AdminAuthGuard implements CanActivate {
       }
       return false;
     }
-    return true;
   }
 
 }
@@ -217,6 +252,10 @@ export const AppRoutes: Routes = [
           {
             path: 'manage-threshold-templates',
             loadChildren: () => import('./pages/admin/manage-threshold-templates/manage-threshold-templates.module').then(m => m.ManageThresholdTemplatesModule)
+          },
+          {
+            path: 'manage-points-of-attention',
+            loadChildren: () => import('./pages/admin/manage-points-of-attention/manage-points-of-attention.module').then(m => m.ManagePointsOfAttentionModule)
           },
           {
             path: 'manage-alert-definition',

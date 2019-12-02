@@ -1,7 +1,9 @@
+import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import { LoaderModule } from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MonthViewComponent } from './month-view.component';
+import { MatButtonModule } from '@angular/material';
 
 
 
@@ -9,7 +11,9 @@ import { MonthViewComponent } from './month-view.component';
   declarations: [MonthViewComponent],
   imports: [
     CommonModule,
-    LoaderModule
+    LoaderModule,
+    MatButtonModule,
+    IconModule
   ],
   exports: [MonthViewComponent]
 })

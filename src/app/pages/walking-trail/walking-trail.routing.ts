@@ -32,8 +32,12 @@ export const WalkingTrailRoutes: Routes = [
     path: 'assets/:id',
     children: [{
       path: '',
-      loadChildren: () => import('./asset-wizard/asset-wizard.module').then(m => m.PeopleCountingAssetWizardModule)
+      loadChildren: () => import('src/app/shared/people-counting/asset-wizard/asset-wizard.module').then(m => m.PeopleCountingAssetWizardModule)
     }]
+  },
+  {
+    path: 'detail/:id',
+    loadChildren: () => import('src/app/pages/walking-trail/detail/detail.module').then(m => m.DetailModule)
   },
   {
     path: 'inventory',

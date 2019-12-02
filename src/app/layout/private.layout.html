@@ -57,6 +57,11 @@
             {{ 'LAYOUT.MANAGE_THRESHOLD_TEMPLATES' | translate }}
           </button>
         </div>
+        <div mat-menu-item>
+          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-points-of-attention'])">
+            {{ 'LAYOUT.MANAGE_POINTS_OF_ATTENTION' | translate }}
+          </button>
+        </div>
       </mat-menu>
     </pxs-menu-item>
   </pxs-top-menu-actions>

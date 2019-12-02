@@ -1,3 +1,4 @@
+import { CalendarViewModule } from './../../../shared/people-counting/detail/charts/calendar-view/calendar-view.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { SummaryStatisticsModule } from './summary-statistics/summary-statistics.module';
 import { TrailMapModule } from './trail-map/trail-map.module';
@@ -26,7 +27,8 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/detail/asset
     TrailMapModule,
     SummaryStatisticsModule,
     SlideshowModule,
-    MapModule
+    MapModule,
+    CalendarViewModule
   ],
   exports: [TrailComponent]
 })
