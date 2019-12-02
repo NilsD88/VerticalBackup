@@ -71,7 +71,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     moment.locale(this.locale);
     window.moment = moment;
     mTZ();
-
     this.initChartOptions();
     this.initChart();
     this.updateChart();

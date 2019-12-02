@@ -152,7 +152,7 @@ export const AppRoutes: Routes = [
       path: '',
       loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
     }]
-  },
+  },  
   {
     path: 'privacy',
     component: PublicLayoutComponent,
@@ -226,6 +226,12 @@ export const AppRoutes: Routes = [
         path: 'walkingtrail',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/walking-trail/walking-trail.module').then(m => m.WalkingTrailModule)
+      },
+      {
+        path: 'peoplecounting',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('./pages/people-counting-retail/people-counting-retail.module').then(m => m.PeopleCountingRetailModule)
+        
       },
       {
         path: 'admin',
