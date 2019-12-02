@@ -14,17 +14,24 @@ export const PeopleCountingRetailRoutes: Routes = [
     }]
   },
   {
-    path: 'overview',
-    children: [{
-      path: '',
-      loadChildren: () => import('./stores-overview/stores-overview.module').then(m => m.StoresOverviewModule)
-    }]
-  },
-  {
     path: 'store/new',
     children: [{
       path: '',
       loadChildren: () => import('./asset-wizard/asset-wizard.module').then(m => m.AssetWizardModule)
+    }]
+  },
+  {
+    path: 'store/:id',
+    children: [{
+      path: '',
+      loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
+    }]
+  },
+  {
+    path: 'overview',
+    children: [{
+      path: '',
+      loadChildren: () => import('./lib/inventory-locations/inventory-locations.module').then(m => m.PeopleCountingRetailInventoryLocationsModule)
     }]
   }
 ];

@@ -43,7 +43,7 @@
 
     
     <div class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2" *ngFor="let location of locations">
-      <pxs-location-tile [location]="location" [locationUrl]="locationUrl"></pxs-location-tile>
+      <pxs-location-tile [location]="location" [locationUrl]="leafUrl"></pxs-location-tile>
     </div>
   </div>
   <mat-paginator [(length)]="totalItems" [(pageIndex)]="page" (page)="pageChanged($event)" [pageSize]="pageSize"

@@ -1,18 +1,15 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6 col-sm-12">
-      <pvf-trail-map [location]="parentLocation" *ngIf="parentLocation" [leaf]="leaf"></pvf-trail-map>
+    <div class="col-md-6">
+      <pvf-peoplecountingretail-stacked-chart [leaf]="leaf"></pvf-peoplecountingretail-stacked-chart>
     </div>
-    <div class="col-md-6 col-sm-12">
-      <slideshow [height]="'200px'" [imageUrls]="imageSources" [showDots]="true"
-        [lazyLoad]="imageSources?.length > 1" [autoPlayWaitForLazyLoad]="true">
-      </slideshow>
-      <pvf-summary-statistics [leaf]="leaf"></pvf-summary-statistics>
+    <div class="col-md-6">
+      <!-- SUMMARY -->
     </div>
   </div>
 </div>
 <pvf-peoplecounting-month-view [leaf]="leaf"></pvf-peoplecounting-month-view>
-<pvf-trails-benchmark [parentLocation]="parentLocation"></pvf-trails-benchmark>
+<pvf-calendar-view [leaf]="leaf"></pvf-calendar-view>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-sm-12">

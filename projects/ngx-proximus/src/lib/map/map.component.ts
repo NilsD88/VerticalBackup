@@ -15,6 +15,7 @@ import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from './popup/popup.component';
 import { IAsset } from 'src/app/models/g-asset.model';
+import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
 
 @Component({
   selector: 'pxs-map',
@@ -251,8 +252,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.setBounds();
       this.options = {
-        // tslint:disable-next-line: max-line-length
-        layers: tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'),
+        layers: tileLayer(MAP_TILES_URL_ACTIVE),
         zoom: 12,
         center: latLng(this.center.lat, this.center.lng),
         // tslint:disable-next-line: max-line-length

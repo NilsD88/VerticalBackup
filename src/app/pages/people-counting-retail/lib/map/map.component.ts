@@ -5,17 +5,17 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
-import { WalkingTrailMapPopupComponent } from './popup/popup.component';
+import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 
 
 @Component({
-  selector: 'pvf-walkingtrail-map',
+  selector: 'pvf-peoplecountingretail-map',
   templateUrl: './../../../../../../projects/ngx-proximus/src/lib/map/map.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/map/map.component.scss']
 })
-export class WalkingTrailMapComponent extends MapComponent implements OnInit, OnChanges {
+export class PeopleCountingRetailMapComponent extends MapComponent implements OnInit, OnChanges {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
@@ -38,8 +38,8 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
   }
 
   createAssetPopup(asset: IPeopleCountingAsset): any {
-    const popupEl: NgElement & WithProperties<WalkingTrailMapPopupComponent> =
-      document.createElement('walkingtrail-map-popup-element') as any;
+    const popupEl: NgElement & WithProperties<PeopleCountingRetailMapPopupComponent> =
+      document.createElement('peoplecountingretail-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
     document.body.appendChild(popupEl);
@@ -47,8 +47,8 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
   }
 
   createLocationPopup(location: IPeopleCountingLocation): any {
-    const popupEl: NgElement & WithProperties<WalkingTrailMapPopupComponent> = 
-      document.createElement('walkingtrail-map-popup-element') as any;
+    const popupEl: NgElement & WithProperties<PeopleCountingRetailMapPopupComponent> =
+      document.createElement('peoplecountingretail-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.goToChild = (loc) => { this.goToChild(loc, true); };
     popupEl.location = location;
