@@ -101,7 +101,7 @@ export class CountByAssetComponent implements OnInit, OnChanges {
       this.assets.forEach(asset => {
         data.push({
           name: asset.name,
-          y: generateTodayDataSeries().reduce((a, b) => a + b.value || 0, 0),
+          y: generateTodayDataSeries().reduce((a, b) => a + b.valueIn || 0, 0),
         });
       });
       this.chartOptions.series[0].data = data;
@@ -124,7 +124,7 @@ function generateTodayDataSeries(): IPeopleCountingAssetSerie[] {
   dataSeries.push(
     {
       timestamp: moment().startOf('day').valueOf(),
-      value: Math.floor(Math.random() * 101)
+      valueIn: Math.floor(Math.random() * 101)
     }
   );
   return dataSeries;

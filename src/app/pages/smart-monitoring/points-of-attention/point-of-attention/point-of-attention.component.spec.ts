@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AssetWizardComponent } from './asset-wizard.component';
+import { PointOfAttentionComponent } from './point-of-attention.component';
 
-describe('AssetWizardComponent', () => {
-  let component: AssetWizardComponent;
-  let fixture: ComponentFixture<AssetWizardComponent>;
+describe('PointOfAttentionComponent', () => {
+  let component: PointOfAttentionComponent;
+  let fixture: ComponentFixture<PointOfAttentionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AssetWizardComponent ]
+      declarations: [ PointOfAttentionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AssetWizardComponent);
+    fixture = TestBed.createComponent(PointOfAttentionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -27,6 +27,7 @@ export interface IPointOfAttentionItem {
   aggregation?: EAggregation;
   assets?: IAsset[];
   tempId?: number;
+  series?: IPointOfAttentionItemData[];
 }
 
 export enum EAggregation {
@@ -36,12 +37,18 @@ export enum EAggregation {
     MAX = 'MAX'
 }
 
+interface IPointOfAttentionItemData {
+    timestamp: number;
+    value: number;
+}
+
 export class PointOfAttentionItem implements IPointOfAttentionItem {
   id?: string;
   name?: string;
   sensorType?: ISensorType;
   aggregation?: EAggregation;
   assets?: IAsset[] = [];
+  series?: IPointOfAttentionItemData[] = [];
 
   constructor(pointOfAttentionItem: IPointOfAttentionItem = null) {
     if (pointOfAttentionItem) {

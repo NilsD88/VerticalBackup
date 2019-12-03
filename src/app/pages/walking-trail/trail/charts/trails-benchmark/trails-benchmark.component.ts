@@ -194,7 +194,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
       data.push({
         name: leaf.name,
         id: leaf.id,
-        data: leaf.series.map(element => element.value)
+        data: leaf.series.map(element => element.valueIn)
       });
 
       xAxisCategories.push(
@@ -227,7 +227,7 @@ function generatePastWeekPerHourOfDataSeries(): IPeopleCountingLocationSerie[] {
       dataSeries.push(
         {
           timestamp: moment().startOf('isoWeek').add(dayIndex, 'days').startOf('day').add(hourIndex, 'hours').valueOf(),
-          value: Math.floor(Math.random() * 101)
+          valueIn: Math.floor(Math.random() * 101)
         }
       );
     }

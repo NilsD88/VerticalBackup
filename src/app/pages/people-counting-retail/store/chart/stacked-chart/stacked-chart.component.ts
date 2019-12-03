@@ -35,7 +35,7 @@ exportData(Highcharts);
   templateUrl: './stacked-chart.component.html',
   styleUrls: ['./stacked-chart.component.scss']
 })
-export class StackedChartComponent implements OnChanges ,OnInit {
+export class StackedChartComponent implements OnChanges , OnInit {
 
   
   @HostListener('window:resize', ['$event'])
@@ -109,25 +109,25 @@ export class StackedChartComponent implements OnChanges ,OnInit {
       console.log(moment().valueOf());
       console.log(moment().subtract(4,'days').valueOf());
       element.series = [];
-      element.series.push({value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(1,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(2,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(3,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(4,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(6,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(7,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(14,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(15,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(16,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(17,'days').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(4,'months').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'months').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(6,'months').valueOf()},
-                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(7,'months').valueOf()}
+      element.series.push({valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(1,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(2,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(3,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(4,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(6,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(7,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(14,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(15,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(16,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(17,'days').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(4,'months').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'months').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(6,'months').valueOf()},
+                          {valueIn: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(7,'months').valueOf()}
 
 
                           
@@ -304,9 +304,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         var timestamp = new Date(serie.timestamp).toDateString();
         if(timestamp === currentDate){
           if(this.categoriesX.includes(new Date(serie.timestamp).getHours())&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())]+=serie.value;
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())]+=serie.valueIn;
             else 
-              dataArr.push(serie.value);
+              dataArr.push(serie.valueIn);
           
 
          
@@ -341,9 +341,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         if(timestamp <= currentDate && timestamp >= dateWeekAgo){
        var k =   dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())];
           if(this.categoriesX.includes(new Date(serie.timestamp).toDateString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.value;
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.valueIn;
             else 
-              dataArr.push(serie.value);
+              dataArr.push(serie.valueIn);
        
         this.categoriesX.push(new Date(serie.timestamp).toDateString());
         this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
@@ -376,9 +376,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         var timestamp = new Date(serie.timestamp);
         if(timestamp <= currentDate && timestamp >= dateMonthAgo){ 
           if(this.categoriesX.includes(new Date(serie.timestamp).toDateString())&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.value;
+              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.valueIn;
             else 
-            dataArr.push(serie.value);
+            dataArr.push(serie.valueIn);
           this.categoriesX.push(new Date(serie.timestamp).toDateString());
           this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
         }
@@ -414,9 +414,9 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         var timestamp = new Date(serie.timestamp);
         if(timestamp <= currentDate && timestamp >= dateYearAgo){ 
           if(this.categoriesX.includes(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))]+=serie.value;
+              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))]+=serie.valueIn;
             else 
-            dataArr.push(serie.value);
+            dataArr.push(serie.valueIn);
           this.categoriesX.push(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }));
           this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
         }

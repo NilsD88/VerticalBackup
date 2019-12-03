@@ -285,7 +285,7 @@ export class CalendarViewComponent implements OnInit, OnChanges {
           return [
             (currentWeekNumber - firstWeekNumber + padding),
             (date.isoWeekday() - 1),
-            serie.value,
+            serie.valueIn,
             (date.isoWeek() - weekNumber + 1),
             serie.timestamp
           ];
@@ -316,7 +316,7 @@ function generatePastMonthOfDataSeries(pastIndex): IPeopleCountingAssetSerie[] {
   for (let index = 0; index < daysInMonth; index++) {
     dataSeries.push({
       timestamp: moment().subtract(pastIndex, 'months').date(1).add(index, 'days').valueOf(),
-      value: Math.floor(Math.random() * 101)
+      valueIn: Math.floor(Math.random() * 101)
     });
   }
   return dataSeries;

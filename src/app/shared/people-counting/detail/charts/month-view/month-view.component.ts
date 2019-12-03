@@ -192,7 +192,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
         for (const serie of asset.series) {
           const date = moment(serie.timestamp).date();
-          assetValues[date + 1] = serie.value;
+          assetValues[date + 1] = serie.valueIn;
         }
 
         for (let index = 1; index <= weekNumber; index++) {
@@ -241,7 +241,7 @@ function generateMonthOfDataSeries(monthIndex: number): IPeopleCountingAssetSeri
     dataSeries.push(
       {
         timestamp: moment().subtract(monthIndex, 'months').date(1).add(index, 'days').valueOf(),
-        value: Math.floor(Math.random() * 101)
+        valueIn: Math.floor(Math.random() * 101)
       }
     );
   }
