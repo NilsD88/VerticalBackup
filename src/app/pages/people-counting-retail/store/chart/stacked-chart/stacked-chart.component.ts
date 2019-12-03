@@ -1,6 +1,10 @@
+import { element } from 'protractor';
+import { MonthViewComponent } from './../../../../../shared/people-counting/detail/charts/month-view/month-view.component';
 import { Component, OnInit, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import *  as moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
+import * as mTZ from 'moment-timezone';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -10,6 +14,13 @@ const exporting = require('highcharts/modules/exporting');
 const exportData = require('highcharts/modules/export-data');
 const Highcharts = require('highcharts/highstock');
 const randomColor = require('randomcolor');
+
+enum currentView{
+  'DAY',
+  'WEEK',
+  'MONTH',
+  'YEAR'
+}
 
 
 Boost(Highcharts);
@@ -27,7 +38,6 @@ exportData(Highcharts);
 export class StackedChartComponent implements OnChanges ,OnInit {
 
   
-
   @HostListener('window:resize', ['$event'])
     onResize(event) {
   //console.log("changes")
@@ -40,94 +50,92 @@ export class StackedChartComponent implements OnChanges ,OnInit {
 });*/
 }
 
+
+
   @Input() leaf: IPeopleCountingLocation;
 
-
+  public currentView= currentView.MONTH;
   public chart: any;
   public chartOptions: any;
   public categoriesX:any[];
   public series:any[];
-  public test: IPeopleCountingLocation ={
-
-    id:"1",
-
-    assets: [{
-      id: '0',
-      name: 'Asset 1',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[{ timestamp:1574937203000, value:10}, //day
-              { timestamp:1574933603000, value:20}, //day
-              { timestamp:1574418901000, value:30}, //week //day
-              { timestamp:1574332501000, value:40}, //week //day
-              { timestamp:1572431701000, value:50}, //month /week /week //day //day
-              { timestamp:1572777301000, value:60}, //month /week /week //day //day
-      
-    ]
-    },
-    {
-      id: '1',
-      name: 'Asset 2',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1574937203000, value:10}, 
-              { timestamp:1574933603000, value:20},
-              { timestamp:1574418901000, value:30},
-              { timestamp:1574332501000, value:40},
-              { timestamp:1572431701000, value:50},
-              { timestamp:1572777301000, value:60},
-      ]
-    },
-    {
-      id: '2',
-      name: 'Asset 3',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1574937203000, value:10}, 
-              { timestamp:1574933603000, value: 20},
-              { timestamp:1574418901000, value:30},
-              { timestamp:1574332501000, value:40},
-              { timestamp:1572431701000, value:50},
-              { timestamp:1572777301000, value:60},
-      ]
-    },
-    {
-      id: '3',
-      name: 'Asset 4',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-        { timestamp:1574937203000, value:10}, 
-        { timestamp:1574933603000, value: 20},
-        { timestamp:1574418901000, value:30},
-        { timestamp:1574332501000, value:40},
-        { timestamp:1572431701000, value:50},
-        { timestamp:1572777301000, value:60},]
-    }]
- 
-  };
+  public locale: string;
+  
   
 
-  constructor() {
-    this.leaf = this.test;
+  constructor(private translateService: TranslateService) {
+
+
      }
 
   ngOnInit() {
+    this.locale = this.translateService.currentLang;
+    moment.locale(this.locale + '-be');
+    window.moment = moment;
+    mTZ();
+
+   if(this.leaf){
     this.getMonthData();
     this.initChartOptions();
     this.initChart();
+   }
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if(this.leaf){
 
-   this.initChartOptions();
-   this.initChart()
+      // This mehtod generates fake data, remove to work with real data
+    this.generateDummyData();
+    if(this.currentView == currentView.DAY)
+      this.getDayData();
+      else if(this.currentView == currentView.WEEK)
+        this.getWeekData();
+        else if(this.currentView == currentView.MONTH)
+          this.getMonthData();
+          else this.getYearData();
+
+          
+ 
+      this.initChartOptions();
+      this.initChart()
+    }
+  }
+
+  private generateDummyData(){
+
+  console.log(this.leaf);
+    
+    this.leaf.assets.forEach(element=>{
+      console.log(moment().valueOf());
+      console.log(moment().subtract(4,'days').valueOf());
+      element.series = [];
+      element.series.push({value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(1,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(2,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(3,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(4,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(6,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(7,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(14,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(15,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(16,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(17,'days').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(4,'months').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(5,'months').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(6,'months').valueOf()},
+                          {value: Math.floor(Math.random() * 50) + 1 , timestamp: moment().subtract(7,'months').valueOf()}
+
+
+                          
+                          
+                          )
+    })
+
+
   }
 
   private initChartOptions() {
@@ -145,7 +153,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
       chart: {
           
           type: 'column',
-          marginBottom:70,
+          marginBottom:80,
           marginTop:100
    
       },
@@ -187,7 +195,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
      
       tooltip: {
           headerFormat: '<b>{point.x}</b><br/>',
-          pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Poor Me water:'+ this.test.assets
+          pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/>'
       },
       plotOptions: {
           column: {
@@ -218,32 +226,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
           this.getDayData();
           this.initChartOptions();
           this.initChart();
-
-          
-         /*chart.series[0].data.forEach(element => {
-           var point = element,
-             text = chart.renderer.text(
-              '🌧️Max °C',
-              point.plotX + chart.plotLeft ,
-              point.plotY + chart.plotTop+20
-          ).attr({
-              zIndex: 5,
-              borderRadius:0
-          }).add(),
-          box = text.getBBox();
-  
-      chart.renderer.rect(box.x - 5, box.y - 5, box.width + 10, box.height + 10, 5)
-          .attr({
-              fill: '#AFAFFF',
-              stroke: 'gray',
-              'stroke-width': 1,
-              zIndex: 4,
-              borderRadius: 0,
-          })
-          .add();
-           
-         });*/
-       
+          this.currentView = currentView.DAY;
          
            
         })
@@ -258,6 +241,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         this.getWeekData();
         this.initChartOptions();
         this.initChart();
+        this.currentView = currentView.WEEK;
         
          
       })
@@ -271,6 +255,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         this.getMonthData();
         this.initChartOptions();
         this.initChart();
+        this.currentView = currentView.MONTH;
          
       })
       .add();
@@ -283,6 +268,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
         this.getYearData();
         this.initChartOptions();
         this.initChart();
+        this.currentView = currentView.YEAR;
         
          
       })
@@ -325,12 +311,13 @@ export class StackedChartComponent implements OnChanges ,OnInit {
 
          
           this.categoriesX.push(new Date(serie.timestamp).getHours());
+          this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
           
         }
       
      })
      this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
+     
     });
 
 
@@ -359,11 +346,12 @@ export class StackedChartComponent implements OnChanges ,OnInit {
               dataArr.push(serie.value);
        
         this.categoriesX.push(new Date(serie.timestamp).toDateString());
+        this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
         }
       
      })
      this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
+     
       
     });
    
@@ -392,11 +380,12 @@ export class StackedChartComponent implements OnChanges ,OnInit {
             else 
             dataArr.push(serie.value);
           this.categoriesX.push(new Date(serie.timestamp).toDateString());
+          this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
         }
       
      })
      this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
+ 
       
     });
 
@@ -424,16 +413,17 @@ export class StackedChartComponent implements OnChanges ,OnInit {
      asset.series.forEach(serie=>{
         var timestamp = new Date(serie.timestamp);
         if(timestamp <= currentDate && timestamp >= dateYearAgo){ 
-          if(this.categoriesX.includes(new Date(serie.timestamp).getMonth()+1)&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)]+=serie.value;
+          if(this.categoriesX.includes(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))] != undefined)
+              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }))]+=serie.value;
             else 
             dataArr.push(serie.value);
-          this.categoriesX.push(new Date(serie.timestamp).getMonth()+1);
+          this.categoriesX.push(new Date(serie.timestamp).toLocaleString('default', { month: 'long' }));
+          this.categoriesX = this.categoriesX.filter((item,index)=> this.categoriesX.indexOf(item)===index)
         }
       
      })
      this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
+     
       
     });
 
@@ -448,6 +438,7 @@ export class StackedChartComponent implements OnChanges ,OnInit {
 
 
   private filterData(){
+
 
    this.leaf.assets.forEach(asset => {
       asset.series.sort((x, y)=>{
