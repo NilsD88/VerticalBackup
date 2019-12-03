@@ -22,13 +22,13 @@ export class SummaryComponent implements OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-              { timestamp:1575202498000, value:33},
-              { timestamp:1574937203000, value:10}, //day
-              { timestamp:1574933603000, value:20}, //day
-              { timestamp:1574418901000, value:30}, //week //day
-              { timestamp:1574332501000, value:40}, //week //day
-              { timestamp:1572431701000, value:50}, //month /week /week //day //day
-              { timestamp:1572777301000, value:60}, //month /week /week //day //day
+              { timestamp:1575202498000, valueIn:33},
+              { timestamp:1574937203000, valueIn:10}, //day
+              { timestamp:1574933603000, valueIn:20}, //day
+              { timestamp:1574418901000, valueIn:30}, //week //day
+              { timestamp:1574332501000, valueIn:40}, //week //day
+              { timestamp:1572431701000, valueIn:50}, //month /week /week //day //day
+              { timestamp:1572777301000, valueIn:60}, //month /week /week //day //day
       
     ]
     },
@@ -39,13 +39,13 @@ export class SummaryComponent implements OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-              { timestamp:1575202498000, value:23},
-              { timestamp:1574937203000, value:10}, 
-              { timestamp:1574933603000, value:20},
-              { timestamp:1574418901000, value:30},
-              { timestamp:1574332501000, value:40},
-              { timestamp:1572431701000, value:50},
-              { timestamp:1572777301000, value:60},
+              { timestamp:1575202498000, valueIn:23},
+              { timestamp:1574937203000, valueIn:10}, 
+              { timestamp:1574933603000, valueIn:20},
+              { timestamp:1574418901000, valueIn:30},
+              { timestamp:1574332501000, valueIn:40},
+              { timestamp:1572431701000, valueIn:50},
+              { timestamp:1572777301000, valueIn:60},
       ]
     },
     {
@@ -55,13 +55,13 @@ export class SummaryComponent implements OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-              { timestamp:1575202498000, value:21},
-              { timestamp:1574937203000, value:10}, 
-              { timestamp:1574933603000, value: 20},
-              { timestamp:1574418901000, value:30},
-              { timestamp:1574332501000, value:40},
-              { timestamp:1572431701000, value:50},
-              { timestamp:1572777301000, value:60},
+              { timestamp:1575202498000, valueIn:21},
+              { timestamp:1574937203000, valueIn:10}, 
+              { timestamp:1574933603000, valueIn: 20},
+              { timestamp:1574418901000, valueIn:30},
+              { timestamp:1574332501000, valueIn:40},
+              { timestamp:1572431701000, valueIn:50},
+              { timestamp:1572777301000, valueIn:60},
       ]
     },
     {
@@ -71,13 +71,13 @@ export class SummaryComponent implements OnInit {
       things: [],
       thresholdTemplate: null,
       series:[
-        { timestamp:1575202498000, value:63},
-        { timestamp:1574937203000, value:10}, 
-        { timestamp:1574933603000, value:20},
-        { timestamp:1574418901000, value:30},
-        { timestamp:1574332501000, value:40},
-        { timestamp:1572431701000, value:50},
-        { timestamp:1572777301000, value:60},]
+        { timestamp:1575202498000, valueIn:63},
+        { timestamp:1574937203000, valueIn:10}, 
+        { timestamp:1574933603000, valueIn:20},
+        { timestamp:1574418901000, valueIn:30},
+        { timestamp:1574332501000, valueIn:40},
+        { timestamp:1572431701000, valueIn:50},
+        { timestamp:1572777301000, valueIn:60},]
     }]
  
   };
