@@ -32,7 +32,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() ghostLocationId: string;
   @Input() customAssetService;
   @Input() assetUrl = '/private/smartmonitoring/detail/';
-  @Input() pointOfAttentionUrl = '/private/smartmonitoring/point-of-attention/';
+  @Input() pointOfAttentionUrl = 'private/smartmonitoring/points-of-attention/point-of-attention/';
   @Input() leafUrl: string;
   @Input() assetPicker = false;
 
@@ -315,7 +315,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   public clickOnPointOfAttention(pointOfAttention: IPointOfAttention) {
     this.pointOfAttentionClicked.emit(pointOfAttention);
-    this.router.navigateByUrl(`${this.pointOfAttentionClicked}${pointOfAttention.id}`);
+    this.router.navigateByUrl(`${this.pointOfAttentionUrl}${pointOfAttention.id}`);
   }
 
   ngOnDestroy() {

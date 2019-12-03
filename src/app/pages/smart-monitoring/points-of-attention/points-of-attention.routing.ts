@@ -8,7 +8,7 @@ export const PointsOfAttentionRoutes: Routes = [
     component: PointsOfAttentionComponent
   },
   {
-    path: 'new',
-    loadChildren: () => import('src/app/pages/admin/manage-points-of-attention/point-of-attention-wizard/point-of-attention-wizard.module').then(m => m.PointOfAttentionWizardModule)
+    path: 'point-of-attention',
+    loadChildren: () => import('./point-of-attention/point-of-attention.module').then(m => m.PointOfAttentionModule)
   }
 ];
