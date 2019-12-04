@@ -1,108 +1,264 @@
-import { time } from 'highcharts';
-import { Component, OnInit, Input } from '@angular/core';
-import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import {
+  IPeopleCountingLocation
+} from 'src/app/models/peoplecounting/location.model';
+import {
+  TranslateService
+} from '@ngx-translate/core';
+import * as moment from 'moment';
+import * as mTZ from 'moment-timezone';
+
+
 
 @Component({
   selector: 'pvf-summary',
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
-export class SummaryComponent implements OnInit {
+export class SummaryComponent implements OnInit, OnChanges {
 
 
-  @Input() leafs: IPeopleCountingLocation;
-  public test: IPeopleCountingLocation ={
 
-    id:"1",
+  @Input() leaf: IPeopleCountingLocation;
+  public totalCountYesterDay: number;
+  public differenceCurrentDayAndSameDayLastWeek: number;
+  public totalLastWeek: number;
+  public differenceLastWeekAndWeekBefore: number;
+  public locale: string;
 
-    assets: [{
-      id: '0',
-      name: 'Asset 1',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1575202498000, valueIn:33},
-              { timestamp:1574937203000, valueIn:10}, //day
-              { timestamp:1574933603000, valueIn:20}, //day
-              { timestamp:1574418901000, valueIn:30}, //week //day
-              { timestamp:1574332501000, valueIn:40}, //week //day
-              { timestamp:1572431701000, valueIn:50}, //month /week /week //day //day
-              { timestamp:1572777301000, valueIn:60}, //month /week /week //day //day
-      
-    ]
-    },
-    {
-      id: '1',
-      name: 'Asset 2',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1575202498000, valueIn:23},
-              { timestamp:1574937203000, valueIn:10}, 
-              { timestamp:1574933603000, valueIn:20},
-              { timestamp:1574418901000, valueIn:30},
-              { timestamp:1574332501000, valueIn:40},
-              { timestamp:1572431701000, valueIn:50},
-              { timestamp:1572777301000, valueIn:60},
-      ]
-    },
-    {
-      id: '2',
-      name: 'Asset 3',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1575202498000, valueIn:21},
-              { timestamp:1574937203000, valueIn:10}, 
-              { timestamp:1574933603000, valueIn: 20},
-              { timestamp:1574418901000, valueIn:30},
-              { timestamp:1574332501000, valueIn:40},
-              { timestamp:1572431701000, valueIn:50},
-              { timestamp:1572777301000, valueIn:60},
-      ]
-    },
-    {
-      id: '3',
-      name: 'Asset 4',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-        { timestamp:1575202498000, valueIn:63},
-        { timestamp:1574937203000, valueIn:10}, 
-        { timestamp:1574933603000, valueIn:20},
-        { timestamp:1574418901000, valueIn:30},
-        { timestamp:1574332501000, valueIn:40},
-        { timestamp:1572431701000, valueIn:50},
-        { timestamp:1572777301000, valueIn:60},]
-    }]
- 
-  };
-  
 
-  constructor() { 
 
-    this.getTotalCountYesterday();
+  constructor(private translateService: TranslateService) {
+
+
+
   }
 
   ngOnInit() {
+
+    this.locale = this.translateService.currentLang;
+    moment.locale(this.locale + '-be');
+    window.moment = moment;
+    mTZ();
+
+    if (this.leaf) {
+      this.generateDummyData();
+      this.getTotalCountYesterday();
+      this.getDifferenceCurrentDayAndSameDayLastWeek()
+      this.getTotalCountLastWeek();
+      this.getDifferenceLastWeekAndWeekBefore();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.leaf) {
+      this.generateDummyData();
+      this.getTotalCountYesterday();
+      this.getDifferenceCurrentDayAndSameDayLastWeek()
+      this.getTotalCountLastWeek();
+      this.getDifferenceLastWeekAndWeekBefore();
+    }
   }
 
 
- public getTotalCountYesterday(){
-   var currentDate = new Date();
-   var DateYesterday = new Date();
-   DateYesterday.setDate(currentDate.getDate()-1);
-
-   
-
-   console.log(currentDate);
-   console.log(DateYesterday);
+  public getTotalCountYesterday() {
+    this.totalCountYesterDay = 0;
+    let yesterdayDate = moment().subtract(1, 'days').startOf('day');
 
 
- }
+    this.leaf.assets.forEach(asset => {
+      asset.series.forEach(serie => {
+
+        if (moment(serie.timestamp).startOf('day').isSame(yesterdayDate)) {
+          this.totalCountYesterDay += serie.valueIn;
+
+        }
+
+      })
+
+    });
+
+
+
+  }
+
+  public getTotalSameDayLastWeek() {
+    let totalCountSameDayLastWeek = 0;
+    let currentDate = moment().startOf('day');
+    let sameDayLastWeek = moment().subtract(1, 'weeks').startOf('day');
+
+
+    this.leaf.assets.forEach(asset => {
+      asset.series.forEach(serie => {
+
+        if (moment(serie.timestamp).startOf('day').isSame(sameDayLastWeek)) {
+          totalCountSameDayLastWeek += serie.valueIn;
+
+        }
+
+      })
+
+    });
+
+    return totalCountSameDayLastWeek;
+
+  }
+
+  public getTotalCountLastWeek() {
+    this.totalLastWeek = 0;
+    let lastWeekStartDate = moment().subtract(1, 'weeks').startOf('isoWeek');
+    let lastWeekEndDate = moment().subtract(1, 'weeks').endOf('isoWeek');
+
+
+    this.leaf.assets.forEach(asset => {
+      asset.series.forEach(serie => {
+
+        if (moment(serie.timestamp).startOf('day').isSameOrAfter(lastWeekStartDate) && moment(serie.timestamp).startOf('day').isSameOrBefore(lastWeekEndDate)) {
+
+          this.totalLastWeek += serie.valueIn;
+
+        }
+
+      })
+
+    });
+
+
+
+  }
+
+  public getTotalCountWeekBeforeLastWeek(): number {
+
+    let totalCountWeekBeforeLastWeek: number = 0;
+    let WeekBeforelastWeekStartDate = moment().subtract(2, 'weeks').startOf('isoWeek');
+    let WeekBeforelastWeekEndDate = moment().subtract(2, 'weeks').endOf('isoWeek');
+
+
+    this.leaf.assets.forEach(asset => {
+      asset.series.forEach(serie => {
+
+
+        if (moment(serie.timestamp).startOf('day').isSameOrAfter(WeekBeforelastWeekStartDate) && moment(serie.timestamp).startOf('day').isSameOrBefore(WeekBeforelastWeekEndDate)) {
+          totalCountWeekBeforeLastWeek += serie.valueIn;
+        }
+      })
+    });
+
+    return totalCountWeekBeforeLastWeek;
+
+
+  }
+  public getTempCountToday(): number {
+    let TempCountToday: number = 0;
+    let currentDate = moment().startOf('day');
+
+
+    this.leaf.assets.forEach(asset => {
+      asset.series.forEach(serie => {
+
+        if (moment(serie.timestamp).startOf('day').isSame(currentDate)) {
+          TempCountToday += serie.valueIn;
+
+        }
+
+      })
+
+    });
+    return TempCountToday;
+
+  }
+
+  public getDifferenceLastWeekAndWeekBefore(): string {
+    this.differenceLastWeekAndWeekBefore = this.totalLastWeek - this.getTotalCountWeekBeforeLastWeek();
+    return (this.totalLastWeek - this.getTotalCountWeekBeforeLastWeek()) > 0 ? "+" + (this.totalLastWeek - this.getTotalCountWeekBeforeLastWeek()).toString() : (this.totalLastWeek - this.getTotalCountWeekBeforeLastWeek()).toString();
+  }
+
+  public getDifferenceCurrentDayAndSameDayLastWeek(): string {
+    this.differenceCurrentDayAndSameDayLastWeek = this.getTempCountToday() - this.getTotalSameDayLastWeek();
+    return (this.getTempCountToday() - this.getTotalSameDayLastWeek()) > 0 ? "+" + (this.getTempCountToday() - this.getTotalSameDayLastWeek()).toString() : (this.getTempCountToday() - this.getTotalSameDayLastWeek()).toString();
+  }
+
+  private generateDummyData() {
+
+
+
+    this.leaf.assets.forEach(element => {
+
+      element.series = [];
+      element.series.push({
+          valueIn: 10,
+          timestamp: moment().valueOf()
+        }, {
+          valueIn: 20,
+          timestamp: moment().valueOf()
+        }, {
+          valueIn: 30,
+          timestamp: moment().subtract(1, 'days').valueOf()
+        }, {
+          valueIn: 40,
+          timestamp: moment().subtract(2, 'days').valueOf()
+        }, {
+          valueIn: 40,
+          timestamp: moment().subtract(3, 'days').valueOf()
+        }, {
+          valueIn: 50,
+          timestamp: moment().subtract(4, 'days').valueOf()
+        }, {
+          valueIn: 25,
+          timestamp: moment().subtract(5, 'days').valueOf()
+        }, {
+          valueIn: 35,
+          timestamp: moment().subtract(5, 'days').valueOf()
+        }, {
+          valueIn: 45,
+          timestamp: moment().subtract(5, 'days').valueOf()
+        }, {
+          valueIn: 55,
+          timestamp: moment().subtract(6, 'days').valueOf()
+        }, {
+          valueIn: 12,
+          timestamp: moment().subtract(7, 'days').valueOf()
+        }, {
+          valueIn: 22,
+          timestamp: moment().subtract(14, 'days').valueOf()
+        }, {
+          valueIn: 33,
+          timestamp: moment().subtract(15, 'days').valueOf()
+        }, {
+          valueIn: 44,
+          timestamp: moment().subtract(16, 'days').valueOf()
+        }, {
+          valueIn: 55,
+          timestamp: moment().subtract(17, 'days').valueOf()
+        }, {
+          valueIn: 6,
+          timestamp: moment().subtract(4, 'months').valueOf()
+        }, {
+          valueIn: 40,
+          timestamp: moment().subtract(5, 'months').valueOf()
+        }, {
+          valueIn: 27,
+          timestamp: moment().subtract(6, 'months').valueOf()
+        }, {
+          valueIn: 16,
+          timestamp: moment().subtract(7, 'months').valueOf()
+        }
+
+
+
+
+      )
+    })
+
+
+
+
+  }
 
 }

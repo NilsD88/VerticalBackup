@@ -9,6 +9,6 @@ import { SummaryComponent } from './summary.component';
   imports: [
     CommonModule
   ],
-  exports:[SummaryComponent]
+  exports: [SummaryComponent]
 })
 export class SummaryModule { }
