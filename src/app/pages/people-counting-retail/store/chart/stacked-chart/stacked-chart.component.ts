@@ -128,10 +128,10 @@ export class StackedChartComponent implements OnChanges, OnInit {
       element.series = [];
       element.series.push({
           valueIn: 10,
-          timestamp: moment().valueOf()
+          timestamp: moment().subtract(1,'hours').valueOf()
         }, {
           valueIn: 20,
-          timestamp: moment().valueOf()
+          timestamp: moment().subtract(2,'hours').valueOf()
         }, {
           valueIn: 30,
           timestamp: moment().subtract(1, 'days').valueOf()
@@ -354,20 +354,22 @@ export class StackedChartComponent implements OnChanges, OnInit {
     this.categoriesX = [];
     var dataArr = [];
     this.filterData();
+    var currentTime = moment();
+    var _24HoursBeforeCurrentTime = moment().subtract(1,'days').startOf('day')
     this.leaf.assets.forEach(asset => {
       dataArr = [];
       var currentDate = new Date().toDateString();
       asset.series.forEach(serie => {
-        var timestamp = new Date(serie.timestamp).toDateString();
-        if (timestamp === currentDate) {
-          if (this.categoriesX.includes(new Date(serie.timestamp).getHours()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())] += serie.valueIn;
+        
+        if (moment(serie.timestamp).isSameOrAfter(_24HoursBeforeCurrentTime)&& moment(serie.timestamp).isSameOrBefore(currentTime) ) {
+          if (this.categoriesX.includes(new Date(serie.timestamp).toTimeString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toTimeString())] != undefined)
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toTimeString())] += serie.valueIn;
           else
             dataArr.push(serie.valueIn);
 
 
 
-          this.categoriesX.push(new Date(serie.timestamp).getHours());
+          this.categoriesX.push(new Date(serie.timestamp).toTimeString());
           this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
 
         }

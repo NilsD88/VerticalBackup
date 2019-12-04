@@ -193,10 +193,10 @@ export class SummaryComponent implements OnInit, OnChanges {
       element.series = [];
       element.series.push({
           valueIn: 10,
-          timestamp: moment().valueOf()
+          timestamp: moment().subtract(1,'hours').valueOf()
         }, {
           valueIn: 20,
-          timestamp: moment().valueOf()
+          timestamp: moment().subtract(2,'hours').valueOf()
         }, {
           valueIn: 30,
           timestamp: moment().subtract(1, 'days').valueOf()
