@@ -210,6 +210,7 @@ export class StackedChartComponent implements OnChanges, OnInit {
       chart: {
 
         type: 'column',
+        height:600,
         marginBottom: 130,
         marginTop: 130,
   
@@ -363,7 +364,6 @@ export class StackedChartComponent implements OnChanges, OnInit {
     var _24HoursBeforeCurrentTime = moment().subtract(1,'days').startOf('day')
     this.leaf.assets.forEach(asset => {
       dataArr = [];
-      var currentDate = new Date().toDateString();
       asset.series.forEach(serie => {
         
         if (moment(serie.timestamp).isSameOrAfter(_24HoursBeforeCurrentTime)&& moment(serie.timestamp).isSameOrBefore(currentTime) ) {
