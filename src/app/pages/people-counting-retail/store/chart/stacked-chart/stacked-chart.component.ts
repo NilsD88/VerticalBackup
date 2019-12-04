@@ -31,10 +31,10 @@ const Highcharts = require('highcharts/highstock');
 const randomColor = require('randomcolor');
 
 enum currentView {
-  'DAY',
-  'WEEK',
-  'MONTH',
-  'YEAR'
+  'day',
+  'week',
+  'month',
+  'year'
 }
 
 
@@ -71,7 +71,7 @@ export class StackedChartComponent implements OnChanges, OnInit {
 
   @Input() leaf: IPeopleCountingLocation;
 
-  public currentView = currentView.MONTH;
+  public currentView = currentView.month;
   public chart: any;
   public chartOptions: any;
   public categoriesX: any[];
@@ -104,14 +104,13 @@ export class StackedChartComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (this.leaf) {
-
-      // This mehtod generates fake data, remove to work with real data
+      // This mehtod generates fake data, comment to work with real data
       this.generateDummyData();
-      if (this.currentView == currentView.DAY)
+      if (this.currentView == currentView.day)
         this.getDayData();
-      else if (this.currentView == currentView.WEEK)
+      else if (this.currentView == currentView.week)
         this.getWeekData();
-      else if (this.currentView == currentView.MONTH)
+      else if (this.currentView == currentView.month)
         this.getMonthData();
       else this.getYearData();
 
@@ -211,12 +210,14 @@ export class StackedChartComponent implements OnChanges, OnInit {
       chart: {
 
         type: 'column',
-        marginBottom: 80,
-        marginTop: 100
+        marginBottom: 130,
+        marginTop: 130,
+  
+       
 
       },
       title: {
-        text: 'Stacked column chart'
+        text: 'Count by ' + currentView[this.currentView]
       },
       xAxis: {
         categories: this.categoriesX
@@ -275,57 +276,61 @@ export class StackedChartComponent implements OnChanges, OnInit {
 
 
 
-        chart.renderer.button('Day', 50, 20)
+        chart.renderer.button('Day', 50, 80)
           .attr({
             zIndex: 3
           })
           .on('click', () => {
             this.getDayData();
+            this.currentView = currentView.day;
             this.initChartOptions();
             this.initChart();
-            this.currentView = currentView.DAY;
+            
 
 
           })
           .add();
 
 
-        chart.renderer.button('Week', 85, 20)
+        chart.renderer.button('Week', 85, 80)
           .attr({
             zIndex: 3
           })
           .on('click', () => {
             this.getWeekData();
+            this.currentView = currentView.week;
             this.initChartOptions();
             this.initChart();
-            this.currentView = currentView.WEEK;
+            
 
 
           })
           .add();
 
-        chart.renderer.button('Month', 130, 20)
+        chart.renderer.button('Month', 130, 80)
           .attr({
             zIndex: 3
           })
           .on('click', () => {
             this.getMonthData();
+            this.currentView = currentView.month;
             this.initChartOptions();
             this.initChart();
-            this.currentView = currentView.MONTH;
+            
 
           })
           .add();
 
-        chart.renderer.button('Year', 180, 20)
+        chart.renderer.button('Year', 180, 80)
           .attr({
             zIndex: 3
           })
           .on('click', () => {
             this.getYearData();
+            this.currentView = currentView.year;
             this.initChartOptions();
             this.initChart();
-            this.currentView = currentView.YEAR;
+            
 
 
           })
@@ -362,14 +367,14 @@ export class StackedChartComponent implements OnChanges, OnInit {
       asset.series.forEach(serie => {
         
         if (moment(serie.timestamp).isSameOrAfter(_24HoursBeforeCurrentTime)&& moment(serie.timestamp).isSameOrBefore(currentTime) ) {
-          if (this.categoriesX.includes(new Date(serie.timestamp).toTimeString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toTimeString())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toTimeString())] += serie.valueIn;
+          if (this.categoriesX.includes(new Date(serie.timestamp).toLocaleTimeString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleTimeString())] != undefined)
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleTimeString())] += serie.valueIn;
           else
             dataArr.push(serie.valueIn);
 
 
 
-          this.categoriesX.push(new Date(serie.timestamp).toTimeString());
+          this.categoriesX.push(new Date(serie.timestamp).toLocaleTimeString());
           this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
 
         }
