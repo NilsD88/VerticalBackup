@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="itemcontainer">
+    <p class="data" [style.color]="'#686868'">{{totalCountYesterDay}}</p>
+    <p class="info">Total count yesterday</p>
+
+  </div>
+  <br />
+
+  <div class="itemcontainer">
+    <p class="data" [style.color]="'#686868'">{{totalLastWeek}}</p>
+    <p class="info">Total count last week</p>
+
+  </div>
+  <br />
+
+  <div class="itemcontainer">
+    <p class="data" [style.color]="differenceLastWeekAndWeekBefore>0? 'green' : 'red'">
+      {{getDifferenceLastWeekAndWeekBefore()}}</p>
+    <p class="info">Difference between last week and the week before last week</p>
+
+  </div>
+  <br />
+  <div class="itemcontainer">
+    <p class="data" [style.color]="differenceCurrentDayAndSameDayLastWeek>0? 'green' : 'red'">
+      {{getDifferenceCurrentDayAndSameDayLastWeek()}}</p>
+    <p class="info">Difference between today and same day last week</p>
+
+  </div>
+</div>

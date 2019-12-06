@@ -1,6 +1,25 @@
-import { Component, OnInit, Input, HostListener, OnChanges, SimpleChanges } from '@angular/core';
-import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import *  as moment from 'moment';
+import {
+  element
+} from 'protractor';
+import {
+  MonthViewComponent
+} from './../../../../../shared/people-counting/detail/charts/month-view/month-view.component';
+import {
+  Component,
+  OnInit,
+  Input,
+  HostListener,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
+import {
+  IPeopleCountingLocation
+} from 'src/app/models/peoplecounting/location.model';
+import * as moment from 'moment';
+import {
+  TranslateService
+} from '@ngx-translate/core';
+import * as mTZ from 'moment-timezone';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -11,6 +30,13 @@ const exportData = require('highcharts/modules/export-data');
 const Highcharts = require('highcharts/highstock');
 const randomColor = require('randomcolor');
 
+enum currentView {
+  'day',
+  'week',
+  'month',
+  'year'
+}
+
 
 Boost(Highcharts);
 noData(Highcharts);
@@ -19,114 +45,154 @@ noData(Highcharts);
 exporting(Highcharts);
 exportData(Highcharts);
 
+
 @Component({
   selector: 'pvf-peoplecountingretail-stacked-chart',
   templateUrl: './stacked-chart.component.html',
   styleUrls: ['./stacked-chart.component.scss']
 })
-export class StackedChartComponent implements OnChanges , OnInit {
+
+export class StackedChartComponent implements OnChanges, OnInit {
 
 
   @HostListener('window:resize', ['$event'])
-    onResize(event) {
-  //console.log("changes")
+  onResize(event) {
+    //console.log("changes")
 
- /* this.chart = Highcharts.chart('stacked-chart', this.chartOptions, function(chart){
-    console.log(this.series[0].points[3].shapeArgs.height);
-    chart.renderer.image('https://www.highcharts.com/samples/graphics/sun.png',((chart.series[0].data[3].plotX)+(chart.plotLeft)), 370 , 30, 30)
-.add();
-    
-});*/
-}
+    /* this.chart = Highcharts.chart('stacked-chart', this.chartOptions, function(chart){
+       console.log(this.series[0].points[3].shapeArgs.height);
+       chart.renderer.image('https://www.highcharts.com/samples/graphics/sun.png',((chart.series[0].data[3].plotX)+(chart.plotLeft)), 370 , 30, 30)
+   .add();
+       
+   });*/
+  }
+
+
 
   @Input() leaf: IPeopleCountingLocation;
 
-
+  public currentView = currentView.month;
   public chart: any;
   public chartOptions: any;
-  public categoriesX:any[];
-  public series:any[];
-  public test: IPeopleCountingLocation ={
+  public categoriesX: any[];
+  public series: any[];
+  public locale: string;
 
-    id:"1",
 
-    assets: [{
-      id: '0',
-      name: 'Asset 1',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[{ timestamp:1574937203000, valueIn:10}, //day
-              { timestamp:1574933603000, valueIn:20}, //day
-              { timestamp:1574418901000, valueIn:30}, //week //day
-              { timestamp:1574332501000, valueIn:40}, //week //day
-              { timestamp:1572431701000, valueIn:50}, //month /week /week //day //day
-              { timestamp:1572777301000, valueIn:60}, //month /week /week //day //day
-      
-    ]
-    },
-    {
-      id: '1',
-      name: 'Asset 2',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1574937203000, valueIn:10}, 
-              { timestamp:1574933603000, valueIn:20},
-              { timestamp:1574418901000, valueIn:30},
-              { timestamp:1574332501000, valueIn:40},
-              { timestamp:1572431701000, valueIn:50},
-              { timestamp:1572777301000, valueIn:60},
-      ]
-    },
-    {
-      id: '2',
-      name: 'Asset 3',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-              { timestamp:1574937203000, valueIn:10}, 
-              { timestamp:1574933603000, valueIn: 20},
-              { timestamp:1574418901000, valueIn:30},
-              { timestamp:1574332501000, valueIn:40},
-              { timestamp:1572431701000, valueIn:50},
-              { timestamp:1572777301000, valueIn:60},
-      ]
-    },
-    {
-      id: '3',
-      name: 'Asset 4',
-      locationId: '2',
-      things: [],
-      thresholdTemplate: null,
-      series:[
-        { timestamp:1574937203000, valueIn:10}, 
-        { timestamp:1574933603000, valueIn: 20},
-        { timestamp:1574418901000, valueIn:30},
-        { timestamp:1574332501000, valueIn:40},
-        { timestamp:1572431701000, valueIn:50},
-        { timestamp:1572777301000, valueIn:60},]
-    }]
- 
-  };
-  
 
-  constructor() {
-    this.leaf = this.test;
-     }
+
+
+
+
+  constructor(private translateService: TranslateService) {
+
+
+  }
 
   ngOnInit() {
-    this.getMonthData();
-    this.initChartOptions();
-    this.initChart();
+    this.locale = this.translateService.currentLang;
+    moment.locale(this.locale + '-be');
+    window.moment = moment;
+    mTZ();
+
+    if (this.leaf) {
+      this.getMonthData();
+      this.initChartOptions();
+      this.initChart();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    if (this.leaf) {
+      // This mehtod generates fake data, comment to work with real data
+      this.generateDummyData();
+      if (this.currentView == currentView.day)
+        this.getDayData();
+      else if (this.currentView == currentView.week)
+        this.getWeekData();
+      else if (this.currentView == currentView.month)
+        this.getMonthData();
+      else this.getYearData();
 
-   this.initChartOptions();
-   this.initChart();
+
+
+      this.initChartOptions();
+      this.initChart()
+    }
+  }
+
+  private generateDummyData() {
+
+    this.leaf.assets.forEach(element => {
+      element.series = [];
+      element.series.push({
+          valueIn: 10,
+          timestamp: moment().subtract(1,'hours').valueOf()
+        }, {
+          valueIn: 20,
+          timestamp: moment().subtract(2,'hours').valueOf()
+        }, {
+          valueIn: 30,
+          timestamp: moment().subtract(1, 'days').valueOf()
+        }, {
+          valueIn: 40,
+          timestamp: moment().subtract(2, 'days').valueOf()
+        }, {
+          valueIn: 40,
+          timestamp: moment().subtract(3, 'days').valueOf()
+        }, {
+          valueIn: 50,
+          timestamp: moment().subtract(4, 'days').valueOf()
+        }, {
+          valueIn: 25,
+          timestamp: moment().subtract(5, 'days').valueOf()
+        }, {
+          valueIn: 35,
+          timestamp: moment().subtract(5, 'days').valueOf()
+        }, {
+          valueIn: 45,
+          timestamp: moment().subtract(5, 'days').valueOf()
+        }, {
+          valueIn: 55,
+          timestamp: moment().subtract(6, 'days').valueOf()
+        }, {
+          valueIn: 12,
+          timestamp: moment().subtract(7, 'days').valueOf()
+        }, {
+          valueIn: 22,
+          timestamp: moment().subtract(14, 'days').valueOf()
+        }, {
+          valueIn: 33,
+          timestamp: moment().subtract(15, 'days').valueOf()
+        }, {
+          valueIn: 44,
+          timestamp: moment().subtract(16, 'days').valueOf()
+        }, {
+          valueIn: 55,
+          timestamp: moment().subtract(17, 'days').valueOf()
+        }, {
+          valueIn: 6,
+          timestamp: moment().subtract(4, 'months').valueOf()
+        }, {
+          valueIn: 40,
+          timestamp: moment().subtract(5, 'months').valueOf()
+        }, {
+          valueIn: 27,
+          timestamp: moment().subtract(6, 'months').valueOf()
+        }, {
+          valueIn: 16,
+          timestamp: moment().subtract(7, 'months').valueOf()
+        }
+
+
+
+
+      )
+    })
+
+
+
+
   }
 
   private initChartOptions() {
@@ -142,317 +208,327 @@ export class StackedChartComponent implements OnChanges , OnInit {
 
     this.chartOptions = {
       chart: {
-          
-          type: 'column',
-          marginBottom:70,
-          marginTop:100
-   
+
+        type: 'column',
+        height:600,
+        marginBottom: 130,
+        marginTop: 130,
+  
+       
+
       },
       title: {
-          text: 'Stacked column chart'
+        text: 'Count by ' + currentView[this.currentView]
       },
       xAxis: {
-          categories: this.categoriesX
+        categories: this.categoriesX
       },
       yAxis: {
-          min: 0,
-          title: {
-              text: 'Count of people'
-          },
-          stackLabels: {
-              enabled: true,
-              style: {
-                  fontWeight: 'bold',
-                  color: ( // theme
-                      Highcharts.defaultOptions.title.style &&
-                      Highcharts.defaultOptions.title.style.color
-                  ) || 'gray'
-              }
+        min: 0,
+        title: {
+          text: 'Count of people'
+        },
+        stackLabels: {
+          enabled: true,
+          style: {
+            fontWeight: 'bold',
+            color: ( // theme
+              Highcharts.defaultOptions.title.style &&
+              Highcharts.defaultOptions.title.style.color
+            ) || 'gray'
           }
+        }
       },
       legend: {
-          align: 'right',
-          x: -30,
-          verticalAlign: 'top',
-          y: 25,
-          floating: true,
-          backgroundColor:
-              Highcharts.defaultOptions.legend.backgroundColor || 'white',
-          borderColor: '#CCC',
-          borderWidth: 1,
-          shadow: false
+        align: 'right',
+        x: -30,
+        verticalAlign: 'top',
+        y: 25,
+        floating: true,
+        backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
       },
 
-     
+
       tooltip: {
-          headerFormat: '<b>{point.x}</b><br/>',
-          pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/> Poor Me water:'+ this.test.assets
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}<br/>'
       },
       plotOptions: {
-          column: {
-              stacking: 'normal',
-              dataLabels: {
-                  enabled: true
-              }
+        column: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true
           }
+        }
       },
       series: this.series
-  };
+    };
   }
 
   private initChart() {
-   
+
 
     try {
-      
-      this.chart = Highcharts.chart('stacked-chart', this.chartOptions,(chart)=>{
-       
 
-        
-        chart.renderer.button('Day',50, 20)
-        .attr({
-            zIndex: 3
-        })
-        .on('click', ()=>{
-          this.getDayData();
-          this.initChartOptions();
-          this.initChart();
+      this.chart = Highcharts.chart('stacked-chart', this.chartOptions, (chart) => {
 
-          
-         /*chart.series[0].data.forEach(element => {
-           var point = element,
-             text = chart.renderer.text(
-              '🌧️Max °C',
-              point.plotX + chart.plotLeft ,
-              point.plotY + chart.plotTop+20
-          ).attr({
-              zIndex: 5,
-              borderRadius:0
-          }).add(),
-          box = text.getBBox();
-  
-      chart.renderer.rect(box.x - 5, box.y - 5, box.width + 10, box.height + 10, 5)
+
+
+        chart.renderer.button('Day', 50, 80)
           .attr({
-              fill: '#AFAFFF',
-              stroke: 'gray',
-              'stroke-width': 1,
-              zIndex: 4,
-              borderRadius: 0,
+            zIndex: 3
+          })
+          .on('click', () => {
+            this.getDayData();
+            this.currentView = currentView.day;
+            this.initChartOptions();
+            this.initChart();
+            
+
+
           })
           .add();
-           
-         });*/
-       
-         
-           
-        })
-        .add();
-     
 
-      chart.renderer.button('Week',85, 20)
-      .attr({
-          zIndex: 3
-      })
-      .on('click',  ()=>{
-        this.getWeekData();
-        this.initChartOptions();
-        this.initChart();
-        
-         
-      })
-      .add();
 
-      chart.renderer.button('Month',130, 20)
-      .attr({
-          zIndex: 3
-      })
-      .on('click',  ()=>{
-        this.getMonthData();
-        this.initChartOptions();
-        this.initChart();
-         
-      })
-      .add();
+        chart.renderer.button('Week', 85, 80)
+          .attr({
+            zIndex: 3
+          })
+          .on('click', () => {
+            this.getWeekData();
+            this.currentView = currentView.week;
+            this.initChartOptions();
+            this.initChart();
+            
 
-      chart.renderer.button('Year',180, 20)
-      .attr({
-          zIndex: 3
-      })
-      .on('click',  ()=>{
-        this.getYearData();
-        this.initChartOptions();
-        this.initChart();
-        
-         
-      })
-      .add();
 
-     
-   
-      
-    })
-    
+          })
+          .add();
+
+        chart.renderer.button('Month', 130, 80)
+          .attr({
+            zIndex: 3
+          })
+          .on('click', () => {
+            this.getMonthData();
+            this.currentView = currentView.month;
+            this.initChartOptions();
+            this.initChart();
+            
+
+          })
+          .add();
+
+        chart.renderer.button('Year', 180, 80)
+          .attr({
+            zIndex: 3
+          })
+          .on('click', () => {
+            this.getYearData();
+            this.currentView = currentView.year;
+            this.initChartOptions();
+            this.initChart();
+            
+
+
+          })
+          .add();
+
+
+
+
+      })
+
     } catch (error) {
       console.log(error);
     }
 
-    
- 
+
+
   }
 
 
 
 
 
-  
-  private getDayData(){
+
+  private getDayData() {
     this.series = [];
     this.categoriesX = [];
-    var dataArr = []; 
+    var dataArr = [];
     this.filterData();
+    var currentTime = moment();
+    var _24HoursBeforeCurrentTime = moment().subtract(1,'days').startOf('day')
     this.leaf.assets.forEach(asset => {
-       dataArr = [];
-     var currentDate = new Date().toDateString();
-     asset.series.forEach(serie=>{
-        var timestamp = new Date(serie.timestamp).toDateString();
-        if(timestamp === currentDate){
-          if(this.categoriesX.includes(new Date(serie.timestamp).getHours())&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getHours())]+=serie.valueIn;
-            else 
-              dataArr.push(serie.valueIn);
-          
+      dataArr = [];
+      asset.series.forEach(serie => {
+        
+        if (moment(serie.timestamp).isSameOrAfter(_24HoursBeforeCurrentTime)&& moment(serie.timestamp).isSameOrBefore(currentTime) ) {
+          if (this.categoriesX.includes(new Date(serie.timestamp).toLocaleTimeString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleTimeString())] != undefined)
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleTimeString())] += serie.valueIn;
+          else
+            dataArr.push(serie.valueIn);
 
-         
-          this.categoriesX.push(new Date(serie.timestamp).getHours());
-          
+
+
+          this.categoriesX.push(new Date(serie.timestamp).toLocaleTimeString());
+          this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
+
         }
-      
-     })
-     this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
+
+      })
+      this.series.push({
+        name: asset.name,
+        data: dataArr
+      });
+
     });
 
 
   }
 
-  private getWeekData(){
- 
+  private getWeekData() {
+
     var dateWeekAgo = new Date();
     var currentDate = new Date();
     this.series = [];
     this.categoriesX = [];
-    var dataArr = []; 
-    dateWeekAgo.setDate(currentDate.getDate()-7);
+    var dataArr = [];
+    dateWeekAgo.setDate(currentDate.getDate() - 7);
 
     this.filterData();
-    this.leaf.assets.forEach(asset => { 
+    this.leaf.assets.forEach(asset => {
 
-      dataArr =[];
-      asset.series.forEach(serie=>{
+      dataArr = [];
+      asset.series.forEach(serie => {
         var timestamp = new Date(serie.timestamp);
-        if(timestamp <= currentDate && timestamp >= dateWeekAgo){
-       var k =   dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())];
-          if(this.categoriesX.includes(new Date(serie.timestamp).toDateString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.valueIn;
-            else 
-              dataArr.push(serie.valueIn);
-       
-        this.categoriesX.push(new Date(serie.timestamp).toDateString());
+        if (timestamp <= currentDate && timestamp >= dateWeekAgo) {
+          var k = dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())];
+          if (this.categoriesX.includes(new Date(serie.timestamp).toDateString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] += serie.valueIn;
+          else
+            dataArr.push(serie.valueIn);
+
+          this.categoriesX.push(new Date(serie.timestamp).toDateString());
+          this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
         }
-      
-     })
-     this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
-      
+
+      })
+      this.series.push({
+        name: asset.name,
+        data: dataArr
+      });
+
+
     });
-   
+
 
   }
 
-  private getMonthData(){
+  private getMonthData() {
 
     this.series = [];
     this.categoriesX = [];
-    var dataArr = []; 
-    
+    var dataArr = [];
+
     var dateMonthAgo = new Date();
     var currentDate = new Date();
-    dateMonthAgo.setDate(currentDate.getDate()-30);
+    dateMonthAgo.setDate(currentDate.getDate() - 30);
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {  
-      dataArr =[];
+    this.leaf.assets.forEach(asset => {
+      dataArr = [];
 
-     asset.series.forEach(serie=>{
+      asset.series.forEach(serie => {
         var timestamp = new Date(serie.timestamp);
-        if(timestamp <= currentDate && timestamp >= dateMonthAgo){ 
-          if(this.categoriesX.includes(new Date(serie.timestamp).toDateString())&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())]+=serie.valueIn;
-            else 
+        if (timestamp <= currentDate && timestamp >= dateMonthAgo) {
+          if (this.categoriesX.includes(new Date(serie.timestamp).toDateString()) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] != undefined)
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toDateString())] += serie.valueIn;
+          else
             dataArr.push(serie.valueIn);
           this.categoriesX.push(new Date(serie.timestamp).toDateString());
+          this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
         }
-      
-     })
-     this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
-      
+
+      })
+      this.series.push({
+        name: asset.name,
+        data: dataArr
+      });
+
+
     });
 
 
-    
-   
+
+
 
   }
 
 
-  private getYearData(){
+  private getYearData() {
 
     this.series = [];
     this.categoriesX = [];
-    var dataArr = []; 
-    
+    var dataArr = [];
+
     var dateYearAgo = new Date();
     var currentDate = new Date();
-    dateYearAgo.setDate(currentDate.getDate()-365);
+    dateYearAgo.setDate(currentDate.getDate() - 365);
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {  
-      dataArr =[];
+    this.leaf.assets.forEach(asset => {
+      dataArr = [];
 
-     asset.series.forEach(serie=>{
+      asset.series.forEach(serie => {
         var timestamp = new Date(serie.timestamp);
-        if(timestamp <= currentDate && timestamp >= dateYearAgo){ 
-          if(this.categoriesX.includes(new Date(serie.timestamp).getMonth()+1)&& dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)] != undefined)
-              dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).getMonth()+1)]+=serie.valueIn;
-            else 
+        if (timestamp <= currentDate && timestamp >= dateYearAgo) {
+          if (this.categoriesX.includes(new Date(serie.timestamp).toLocaleString('default', {
+              month: 'long'
+            })) && dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', {
+              month: 'long'
+            }))] != undefined)
+            dataArr[this.categoriesX.indexOf(new Date(serie.timestamp).toLocaleString('default', {
+              month: 'long'
+            }))] += serie.valueIn;
+          else
             dataArr.push(serie.valueIn);
-          this.categoriesX.push(new Date(serie.timestamp).getMonth()+1);
+          this.categoriesX.push(new Date(serie.timestamp).toLocaleString('default', {
+            month: 'long'
+          }));
+          this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
         }
-      
-     })
-     this.series.push({name: asset.name, data: dataArr});
-     this.categoriesX.length = dataArr.length;
-      
+
+      })
+      this.series.push({
+        name: asset.name,
+        data: dataArr
+      });
+
+
     });
 
 
-    
-    
-   
+
+
+
 
   }
 
-  
 
 
-  private filterData(){
 
-   this.leaf.assets.forEach(asset => {
-      asset.series.sort((x, y)=>{
+  private filterData() {
+
+
+    this.leaf.assets.forEach(asset => {
+      asset.series.sort((x, y) => {
         return x.timestamp - y.timestamp;
-     })
-   });
+      })
+    });
   }
 
 }

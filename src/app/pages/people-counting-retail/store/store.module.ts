@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { StoreRoutes } from './store.routing';
 import { StackedChartModule } from './chart/stacked-chart/stacked-chart.module';
 import { MonthViewModule } from 'src/app/shared/people-counting/detail/charts/month-view/month-view.module';
+import { SummaryModule } from './chart/summary/summary.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { MonthViewModule } from 'src/app/shared/people-counting/detail/charts/mo
     CalendarViewModule,
     CountByAssetModule,
     AssetsCounterModule,
-    MapModule
+    MapModule,
+    SummaryModule
   ],
   exports: [StoreComponent]
 })
