@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
+import { ILocation } from 'src/app/models/g-location.model';
 
 @Component({
   selector: 'pvf-tankmonitoring-map-popup',
@@ -10,7 +11,7 @@ import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asse
 })
 export class TankMonitoringMapPopupComponent implements OnInit, OnDestroy {
   @Input() asset: ITankMonitoringAsset;
-
+  
   private subscription: Subscription;
 
   constructor(

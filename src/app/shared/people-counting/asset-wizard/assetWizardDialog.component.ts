@@ -65,7 +65,7 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
       things: [],
       thresholdTemplate: null,
       customFields: {},
-      module: 'WALKING_TRAIL'
+      module: this.data.module
     };
   }
 

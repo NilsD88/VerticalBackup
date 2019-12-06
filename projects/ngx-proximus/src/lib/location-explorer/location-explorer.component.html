@@ -23,9 +23,9 @@
             <pxs-icon icon="globe" class="location"></pxs-icon>
             {{location.name}}
             <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent">
-              <pxs-icon *ngIf="location.module === 'WALKING_TRAIL'" icon="edit"
+              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
                 [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
-              <pxs-icon *ngIf="!location.module" icon="edit"
+              <pxs-icon *ngIf="location.module === 'SMART_MONITORING'" icon="edit"
                 [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
             </button>
             <button *ngIf="admin && (location.children.length === 0 || !location.children)" mat-icon-button

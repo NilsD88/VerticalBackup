@@ -7,5 +7,5 @@
         <pxs-icon icon="chevron-right"></pxs-icon>
     </button>    
 </div>
-<div [hidden]="!leaf" id="month-view-chart-container"></div>
-<pxs-loader *ngIf="!leaf"></pxs-loader>
+<div [hidden]="!leaf || chartLoading" id="month-view-chart-container"></div>
+<pxs-loader *ngIf="!leaf || chartLoading"></pxs-loader>

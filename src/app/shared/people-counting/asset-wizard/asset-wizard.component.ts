@@ -53,7 +53,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
         this.asset = await this.assetService.getAssetById(assetId).toPromise();
-        if (this.asset.module !== this.assetService.MODULE_NAME) {
+        if (this.asset.module.indexOf('PEOPLE_COUNTING') < 0) {
           this.router.navigate(['/error/404']);
         }
         this.editMode = true;

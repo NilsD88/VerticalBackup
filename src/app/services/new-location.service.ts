@@ -48,7 +48,8 @@ export class NewLocationService {
                   geolocation {
                       lat,
                       lng
-                  }
+                  },
+                  module
               }
           }
       `;
@@ -68,6 +69,7 @@ export class NewLocationService {
           description: location.description,
           geolocation: location.geolocation,
           image: location.image,
+          module: location.module || 'SMART_MONITORING'
         }
       }
     }).pipe(

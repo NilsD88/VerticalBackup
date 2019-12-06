@@ -18,7 +18,7 @@ MOCK_POINTS_OF_ATTENTION = [{
       id: "0",
       name: "asset",
     }],
-    name: "zaeaze",
+    name: "Item",
     aggregation: EAggregation.MAX,
     sensorType: {
       id: "2",

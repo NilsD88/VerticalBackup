@@ -1364,6 +1364,10 @@ mat-form-field {
   animation: spinner .8s linear infinite;
 }
 
-.error-snackbar {
-  background-color: $error;
+.orange-snackbar {
+  background-color: $warn;
+}
+
+.leaflet-popup-content {
+  width: 200px !important;
 }

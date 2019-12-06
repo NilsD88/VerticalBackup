@@ -21,7 +21,7 @@ export class StoreComponent implements OnInit {
   public locale: string;
 
   constructor(
-    private locationService: WalkingTrailLocationService,
+    public locationService: WalkingTrailLocationService,
     private activatedRoute: ActivatedRoute,
   ) { }
 

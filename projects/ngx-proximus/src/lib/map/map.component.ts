@@ -69,7 +69,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
-        if (this.displayAssets) {
+        if (!this.displayAssets) {
           return of([]);
         }
         if (req === 'STOP') {

@@ -1,12 +1,6 @@
-<pxs-top-menu
-  *ngIf="topMenuConfig"
-  (languageChange)="layoutService.changeLanguage($event)"
-  (contactClick)="navigateTo(['private', 'contact'])"
-  (autocompleteClick)="autocompleteClick($event)"
-  [searchResults]="searchResults"
-  (search)="searchTerm$.next($event)"
-  [config]="topMenuConfig"
->
+<pxs-top-menu *ngIf="topMenuConfig" (languageChange)="layoutService.changeLanguage($event)"
+  (contactClick)="navigateTo(['private', 'contact'])" (autocompleteClick)="autocompleteClick($event)"
+  [searchResults]="searchResults" (search)="searchTerm$.next($event)" [config]="topMenuConfig">
   <pxs-menu-item label="Proximus" (action)="pxsClicked()"></pxs-menu-item>
   <pxs-menu-item label="MyThings" (action)="mtClicked()"></pxs-menu-item>
   <pxs-top-menu-actions>
@@ -68,31 +62,16 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item
-    [label]="'Smart monitoring'" 
-    [url]="'/private/smartmonitoring'"
-    [mat-menu-trigger-for]="smartMonitoring"
-  ></pxs-menu-item>
-  <pxs-menu-item
-    [label]="'Tank monitoring'" 
-    [url]="'/private/tankmonitoring'"
-    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" 
-    [mat-menu-trigger-for]="tankMonitoring"
-  ></pxs-menu-item>
-  <pxs-menu-item 
-    [label]="'Walking trail'"
-    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING')"
-    [mat-menu-trigger-for]="walkingtrail"
-  ></pxs-menu-item>
-  <pxs-menu-item
-    [label]="'Asset tracking'"
-    *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
-    [mat-menu-trigger-for]="assetTracking"
-  ></pxs-menu-item>
-  <pxs-menu-item
-    [label]="'People counting'"
-    [mat-menu-trigger-for]="peopleCounting"
-  ></pxs-menu-item>
+  <pxs-menu-item [label]="'Smart monitoring'" [url]="'/private/smartmonitoring'"
+    [mat-menu-trigger-for]="smartMonitoring"></pxs-menu-item>
+  <pxs-menu-item [label]="'Tank monitoring'" [url]="'/private/tankmonitoring'"
+    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
+  <pxs-menu-item [label]="'Walking trail'" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
+    [mat-menu-trigger-for]="walkingtrail"></pxs-menu-item>
+  <pxs-menu-item [label]="'Asset tracking'" *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
+    [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
+  <pxs-menu-item [label]="'People counting'" [mat-menu-trigger-for]="peopleCounting" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"></pxs-menu-item>
+  <pxs-menu-item [label]="'Stairway to health'" [mat-menu-trigger-for]="stairwayToHealth" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
     label: numberOfUnreadAlerts,
     class: 'red-badge'
@@ -104,28 +83,29 @@
 </main>
 
 <mat-menu #smartMonitoring="matMenu" class="main-menu-dropdown">
-    <div mat-menu-item>
-      <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'inventory'])">
-        Inventory
-      </button>
-    </div>
-    <div mat-menu-item>
-      <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'assets', 'new'])">
-        <pxs-icon icon="plus"></pxs-icon>
-        <span style="margin-left: 10px;">New asset</span>
-      </button>
-    </div>
-    <div mat-menu-item>
-      <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'points-of-attention'])">
-        My points of attention
-      </button>
-    </div>
-    <div mat-menu-item>
-      <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new'])">
-        <pxs-icon icon="plus"></pxs-icon>
-        <span style="margin-left: 10px;">New point of attention</span>
-      </button>
-    </div>
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'inventory'])">
+      Inventory
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'assets', 'new'])">
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New asset</span>
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'points-of-attention'])">
+      My points of attention
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item
+      (click)="navigateTo(['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new'])">
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New point of attention</span>
+    </button>
+  </div>
 </mat-menu>
 
 <mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
@@ -166,23 +146,42 @@
   </div>
 </mat-menu>
 
-  <mat-menu #peopleCounting="matMenu" style="margin-top: 80px;">
-      <div mat-menu-item>
-        <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'dashboard'])">
-          Dashboard
-        </button>
-      </div>
-      <div mat-menu-item>
-        <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'overview'])">
-          Stores overview
-        </button>
-      </div>
-      <div mat-menu-item>
-        <button mat-menu-item>
-          <pxs-icon icon="plus"></pxs-icon>
-          <span style="margin-left: 10px;">New store</span>
-        </button>
-      </div>
+<mat-menu #peopleCounting="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'dashboard'])">
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'overview'])">
+      Stores overview
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New store</span>
+    </button>
+  </div>
+</mat-menu>
+
+<mat-menu #stairwayToHealth="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','stairwaytohealth', 'dashboard'])">
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','stairwaytohealth', 'overview'])">
+      Places overview
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New place</span>
+    </button>
+  </div>
 </mat-menu>
 
 <mat-menu #assetTracking="matMenu" class="main-menu-dropdown">

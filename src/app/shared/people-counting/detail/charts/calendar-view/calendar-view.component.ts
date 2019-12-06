@@ -1,3 +1,4 @@
+import { WalkingTrailLocationService } from './../../../../../services/walkingtrail/location.service';
 import {
   isNullOrUndefined
 } from 'util';
@@ -9,8 +10,7 @@ import {
   Component,
   OnInit,
   Input,
-  SimpleChanges,
-  OnChanges
+  ChangeDetectorRef
 } from '@angular/core';
 
 import * as moment from 'moment';
@@ -18,10 +18,12 @@ import * as mTZ from 'moment-timezone';
 import {
   TranslateService
 } from '@ngx-translate/core';
-import {
-  IPeopleCountingAssetSerie
-} from 'src/app/models/peoplecounting/asset.model';
 import { svg } from 'leaflet';
+import { Subject, Observable, of } from 'rxjs';
+import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { MatDialog } from '@angular/material';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 declare global {
   interface Window {
@@ -50,14 +52,17 @@ require('highcharts/modules/heatmap')(Highcharts);
 require('highcharts/modules/series-label')(Highcharts);
 
 @Component({
-  selector: 'pvf-calendar-view',
+  selector: 'pvf-peoplecounting-calendar-view',
   templateUrl: './calendar-view.component.html',
   styleUrls: ['./calendar-view.component.scss']
 })
-export class CalendarViewComponent implements OnInit, OnChanges {
+export class CalendarViewComponent implements OnInit {
 
   @Input() leaf: IPeopleCountingLocation;
+  @Input() locationService: WalkingTrailLocationService;
 
+  public chartData$ = new Subject<any>();
+  public chartLoading = false;
   public chart: any;
   public chartOptions: any;
   public locale: string;
@@ -65,22 +70,21 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   public startMonth: string;
   public endMonth: string;
 
-  private startMonthIndex = 4;
-  private endMonthIndex = 0;
-
   private svgElements: Highcharts.SVGElement [] = [];
+  private numberOfMonths = 4;
 
-
+  public currentFilter: IFilterChartData = {
+    interval: 'DAILY',
+    from: moment().subtract(this.numberOfMonths, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    to: moment().date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+  };
 
   constructor(
     private translateService: TranslateService,
+    private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (this.chart) {
-      this.updateChart();
-    }
-  }
 
   ngOnInit() {
     this.locale = this.translateService.currentLang;
@@ -90,7 +94,12 @@ export class CalendarViewComponent implements OnInit, OnChanges {
 
     this.initChartOptions();
     this.initChart();
-    this.updateChart();
+    this.getChartData(this.chartData$).subscribe(
+      (locations: IPeopleCountingLocation[]) => {
+        this.updateChart((locations[0] || {}).series);
+      }
+    );
+    this.chartData$.next(this.currentFilter);
   }
 
   private initChartOptions() {
@@ -259,22 +268,27 @@ export class CalendarViewComponent implements OnInit, OnChanges {
     }
   }
 
-  private updateChart() {
+  private updateChart(series: IPeopleCountingLocationSerie[]) {
     this.chartOptions.series = [];
-    const startDate = moment().subtract(this.startMonthIndex, 'months').date(1);
-    const endDate = moment().subtract(this.endMonthIndex, 'months').date(1);
-    this.startMonth = startDate.format('MMMM YY');
-    this.endMonth = endDate.format('MMMM YY');
-    const firstWeekNumber = moment().subtract(this.startMonthIndex, 'months').date(1).isoWeek();
+    this.startMonth = moment(this.currentFilter.from).format('MMMM YY');
+    this.endMonth = moment(this.currentFilter.to).subtract(1, 'day').format('MMMM YY');
+
+    if (!series) {
+      return this.displayChart();
+    }
+
+    const firstWeekNumber = moment(this.currentFilter.from).date(1).isoWeek();
     let biggestWeekNumber = firstWeekNumber;
-    for (let index = this.startMonthIndex; index > this.endMonthIndex; index--) {
-      const firstDayOfMonth = moment().subtract(index, 'months').date(1);
+    const durationInMonths = +moment.duration(moment(this.currentFilter.to).diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
+    for (let index = durationInMonths; index > 0; index--) {
+      const firstDayOfMonth = moment(this.currentFilter.from).subtract(index - durationInMonths, 'months').date(1);
+      const currentMonthName = firstDayOfMonth.format('MMMM');
       const weekNumber = firstDayOfMonth.isoWeek();
-      const padding = Math.abs(4 - index + this.endMonthIndex) * 2;
+      const padding = Math.abs(durationInMonths - index) * 2;
       this.chartOptions.series.push({
-        name: firstDayOfMonth.format('MMMM'),
+        name: currentMonthName,
         keys: ['x', 'y', 'value', 'week', 'date'],
-        data: generatePastMonthOfDataSeries(index).map((serie) => {
+        data: series.filter(serie => moment(serie.timestamp).format('MMMM') === currentMonthName).map((serie) => {
           const date = moment(serie.timestamp);
           let currentWeekNumber = date.isoWeek();
           if (currentWeekNumber < biggestWeekNumber) {
@@ -292,7 +306,11 @@ export class CalendarViewComponent implements OnInit, OnChanges {
         })
       });
     }
+    this.displayChart();
+  }
 
+  private displayChart() {
+    this.chartLoading = false;
     try {
       this.chart = Highcharts.chart('calendar-view-chart-container', this.chartOptions);
     } catch (error) {
@@ -303,15 +321,59 @@ export class CalendarViewComponent implements OnInit, OnChanges {
   }
 
   public swapPeriod(direction: boolean) {
-    this.startMonthIndex = (direction) ? this.startMonthIndex - 4 : this.startMonthIndex + 4;
-    this.endMonthIndex = (direction) ? this.endMonthIndex - 4 : this.endMonthIndex + 4;
-    this.updateChart();
+    this.currentFilter.from = moment(this.currentFilter.from).subtract((direction) ? -this.numberOfMonths : this.numberOfMonths, 'months').valueOf();
+    this.currentFilter.to = moment(this.currentFilter.to).subtract((direction) ? -this.numberOfMonths : this.numberOfMonths, 'months').valueOf();
+    this.chartData$.next(this.currentFilter);
+  }
+
+  private getChartData(request: Observable<IFilterChartData>): Observable<IPeopleCountingLocation[]> {
+    return request.pipe(
+      debounceTime(500),
+      switchMap(filter => {
+        this.chartLoading = true;
+        this.changeDetectorRef.detectChanges();
+        
+        // MOCK DATA
+        
+        return new Observable <IPeopleCountingLocation[]> ((observer) => {
+          const durationInMonths = +moment.duration(moment(this.currentFilter.to).diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
+          const differenceFromToday = +moment.duration(moment().diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
+          let series = [];
+          for (let i = 0; i < durationInMonths; i++) {
+            series = [
+              ...series,
+              ...generatePastMonthOfDataSeries(differenceFromToday-i)
+            ];
+          }
+          observer.next(
+            [{series}]
+          );
+        });
+        
+
+        // REAL DATA
+        /*
+        return this.locationService.getLocationsDataByIds(
+          [this.leaf.id],
+          filter.interval, filter.from, filter.to
+        ).pipe(catchError(() => {
+          this.dialog.open(DialogComponent, {
+            data: {
+              title: 'Sorry, an error has occured!',
+              message: 'An error has occured during getting the sensor data'
+            }
+          });
+          return of([]);
+        }));
+        */
+      })
+    );
   }
 
 }
 
-function generatePastMonthOfDataSeries(pastIndex): IPeopleCountingAssetSerie[] {
-  const dataSeries: IPeopleCountingAssetSerie[] = [];
+function generatePastMonthOfDataSeries(pastIndex): IPeopleCountingLocationSerie[] {
+  const dataSeries: IPeopleCountingLocationSerie[] = [];
   const daysInMonth = moment().subtract(pastIndex, 'months').date(1).daysInMonth();
   for (let index = 0; index < daysInMonth; index++) {
     dataSeries.push({

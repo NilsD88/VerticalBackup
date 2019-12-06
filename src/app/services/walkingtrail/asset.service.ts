@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 
+const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +31,6 @@ export class WalkingTrailAssetService extends PeopleCountingAssetService {
     );
   }
 
-  public MODULE_NAME = 'WALKING_TRAIL';
 
   public getAssetsDataByIds(ids: string[], interval: Intervals, from: number, to: number): Observable < IPeopleCountingAsset[] > {
     let idsParams = `ids=${ids[0]}`;
@@ -40,7 +40,7 @@ export class WalkingTrailAssetService extends PeopleCountingAssetService {
       }
     }
     return this.http.get < IPeopleCountingAsset [] >
-      (`${environment.baseUrl}/assets/data?${idsParams}&module=${this.MODULE_NAME}&interval=${interval}&from=${from}&to=${to}`);
+      (`${environment.baseUrl}/assets/data?${idsParams}&module=${MODULE_NAME}&interval=${interval}&from=${from}&to=${to}`);
   }
 
 

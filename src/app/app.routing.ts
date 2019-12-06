@@ -15,18 +15,18 @@ export class PublicAuthGuard implements CanActivate {
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    /*
+    
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
     });
     return true;
-    */
+    
     try {
       this.sharedService.user = new User(await this.authService.isLoggedIn());
       if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
@@ -48,18 +48,18 @@ export class UserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    /*
+    
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
     });
     return true;
-    */
+    
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       return this.sharedService.user.isUser;
@@ -92,18 +92,18 @@ export class AdminAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    /*
+    
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
     });
     return true;
-    */
+    
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
@@ -152,7 +152,7 @@ export const AppRoutes: Routes = [
       path: '',
       loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
     }]
-  },  
+  },
   {
     path: 'privacy',
     component: PublicLayoutComponent,
@@ -231,7 +231,11 @@ export const AppRoutes: Routes = [
         path: 'peoplecounting',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/people-counting-retail/people-counting-retail.module').then(m => m.PeopleCountingRetailModule)
-        
+      },
+      {
+        path: 'stairwaytohealth',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
       },
       {
         path: 'admin',

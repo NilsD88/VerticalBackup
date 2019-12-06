@@ -1,21 +1,21 @@
 import { PeopleCountingLocationService } from './../peoplecounting/location.service';
-import { IPagedPeopleCountingLocations } from './../../models/peoplecounting/location.model';
+import { IPagedPeopleCountingLocations, IPeopleCountingLocation } from './../../models/peoplecounting/location.model';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { MOCK_LOCATIONS_WALKING_TRAIL } from 'src/app/mocks/newlocations';
 import { MOCK_TRAIL_WALKING_TRAIL } from 'src/app/mocks/walking-trail';
-import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
+const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
+
 @Injectable({
     providedIn: 'root'
 })
-
 export class WalkingTrailLocationService extends PeopleCountingLocationService {
 
     constructor(public http: HttpClient, public apollo: Apollo) {
@@ -25,16 +25,23 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
         );
     }
 
-    private MODULE_NAME = 'WALKING_TRAIL';
-
     public getLocationsTree(): Observable < IPeopleCountingLocation[] > {
-        return new Observable < IPeopleCountingLocation[] > ((observer) => {
-            observer.next(MOCK_LOCATIONS_WALKING_TRAIL);
-            observer.complete();
-        });
+      // TODO: Remove those lines when the backend is ready
+      return new Observable < IPeopleCountingLocation[] > ((observer) => {
+          observer.next(MOCK_LOCATIONS_WALKING_TRAIL);
+          observer.complete();
+      });
+
+      const url = `${environment.baseUrl}/location/locationtrees?org_id=1&module=${MODULE_NAME}`;
+      return this.http.get < IPeopleCountingLocation[] > (url);
+      return new Observable < IPeopleCountingLocation[] > ((observer) => {
+          observer.next(MOCK_LOCATIONS_WALKING_TRAIL);
+          observer.complete();
+      });
     }
 
     public getLocationById(locationId: string): Observable < IPeopleCountingLocation > {
+        // TODO: get location by id with the backend with all the assets (id, name)
         return new Observable < IPeopleCountingLocation > ((observer) => {
             observer.next(MOCK_TRAIL_WALKING_TRAIL);
             observer.complete();
@@ -93,7 +100,8 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
                     geolocation {
                         lat,
                         lng
-                    }
+                    },
+                    module
                 }
             }
         `;
@@ -113,6 +121,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
             description: location.description,
             geolocation: location.geolocation,
             image: location.image,
+            module: 'PEOPLE_COUNTING_WALKING_TRAIL'
             // TODO: when the backend will be ready
             /*
             images: location.images,
@@ -128,6 +137,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
     }
 
     public getLocationsDataByIds(ids: string[], interval: Intervals, from: number, to: number): Observable < IPeopleCountingLocation[] > {
+      console.log('getLocationsDataByIds');
       let idsParams = `ids=${ids[0]}`;
       if (ids.length > 1) {
         for (let index = 1; index < ids.length; index++) {
@@ -135,6 +145,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
         }
       }
       return this.http.get < IPeopleCountingLocation [] >
-        (`${environment.baseUrl}/locations/data?${idsParams}&module=${this.MODULE_NAME}&interval=${interval}&from=${from}&to=${to}`);
+        (`${environment.baseUrl}/locations/data?${idsParams}&module=${MODULE_NAME}&interval=${interval}&from=${from}&to=${to}`);
     }
+
 }

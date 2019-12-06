@@ -50,7 +50,7 @@ export class InventoryComponent implements OnInit {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public assetService: NewAssetService, // | TankMonitoringAssetService,
+    public assetService: NewAssetService,
     public newThresholdTemplateService: NewThresholdTemplateService,
     public newLocationService: NewLocationService,
     public activatedRoute: ActivatedRoute,

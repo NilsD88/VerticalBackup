@@ -59,7 +59,6 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
-  @Input() height = 700;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
   @Input() asset: IAsset;
@@ -95,7 +94,6 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       chart: {
         zoomType: 'xy',
-        height: this.height,
       },
       title: {
         text: this.title
@@ -135,7 +133,7 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      const serieLength = data.series.length;
+      const serieLength = (data.series || []).length;
       const {consumptions, average} = this.getConsumptionsAndAverage(data.series, serieLength);
       this.addYAxisOption(serieLength, data.label, average);
       this.addYAxisValues(data, data.label, this.rangeTranslation, serieLength, consumptions);

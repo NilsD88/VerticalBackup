@@ -1,3 +1,4 @@
+import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
@@ -17,6 +18,8 @@ import { switchMap } from 'rxjs/operators';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { IField } from 'src/app/models/field.model';
 import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.component';
+import { GraphQLError } from 'graphql/error';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 @Component({
   selector: 'pvf-trail-wizard',
@@ -45,6 +48,7 @@ export class TrailWizardComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
     public newLocationService: NewLocationService,
+    public walkingTrailLocationService: WalkingTrailLocationService,
     public assetService: NewAssetService,
     public dialog: MatDialog,
     public router: Router,
@@ -130,7 +134,6 @@ export class TrailWizardComponent implements OnInit {
 
   public submitAndContinue() {
     if (this.editMode || !isNullOrUndefined(this.location.id)) {
-
       const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 
@@ -142,23 +145,62 @@ export class TrailWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe(() => {
-        this.originalLocation = cloneDeep(location);
-        this.stepper.next();
-      });
+      this.walkingTrailLocationService.updateLocation(location).subscribe(
+        (updatedLocation: ILocation | null) => {
+          if (updatedLocation) {
+            this.originalLocation = cloneDeep(location);
+            this.stepper.next();
+          }
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
     } else {
-      this.newLocationService.createLocation(this.location).subscribe((location: IPeopleCountingLocation | null) => {
-        this.location.id = location.id;
-        this.originalLocation = cloneDeep(location);
-        this.changeDetectorRef.detectChanges();
-        this.stepper.next();
-        console.log(this.location);
-      });
+      this.walkingTrailLocationService.createLocation(this.location).subscribe(
+        (location: IPeopleCountingLocation | null) => {
+          this.location.id = location.id;
+          this.originalLocation = cloneDeep(location);
+          this.changeDetectorRef.detectChanges();
+          this.stepper.next();
+          console.log(this.location);
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
     }
   }
 
   public done() {
-    this.goToTrailPage(this.location.id);
+    if (this.editMode) {
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images'];
+      const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
+
+      const location: IPeopleCountingLocation = {
+        id: this.location.id,
+      };
+
+      for (const difference of differences) {
+        location[difference] = this.location[difference];
+      }
+
+      this.walkingTrailLocationService.updateLocation(location).subscribe(
+        (updatedLocation: ILocation | null) => {
+          if (updatedLocation) {
+            this.goToTrailPage(this.location.id);
+          }
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
+    } else {
+      this.goToTrailPage(this.location.id);
+    }
   }
 
 
@@ -187,6 +229,7 @@ export class TrailWizardComponent implements OnInit {
       maxHeight: '80vh',
       data: {
         location: this.location,
+        module: 'PEOPLE_COUNTING_WALKING_TRAIL'
       }
     });
     const result: IPeopleCountingAsset = await dialogRef.afterClosed().toPromise();
@@ -212,6 +255,23 @@ export class TrailWizardComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
       this.location.parent = result;
       this.displayLocationExplorer = true;
+    }
+  }
+
+  private checkIfNameAlreadyExistAndDisplayDialog(error) {
+    const graphQLErrors: GraphQLError = error.graphQLErrors;
+    const errorExtensions = graphQLErrors[0].extensions;
+    if (errorExtensions) {
+      const nameAlreadyUsed = errorExtensions.locationNameNotUnique;
+      if (nameAlreadyUsed) {
+        console.log('nameAlreadyUsed');
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: `${nameAlreadyUsed} already exist`,
+            message: 'Please choose an other location name to be able to save it'
+          }
+        });
+      }
     }
   }
 

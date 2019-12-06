@@ -1,5 +1,13 @@
 <div class="map-trail-container" [style.height.px]="height" *ngIf="location">
   <div [ngStyle]="{'height.px': height}" *ngIf="options" leaflet [leafletOptions]="options"
-    [leafletLayers]="trailsLayer"  (leafletMapReady)="onMapReady($event)">
+    [leafletLayers]="trailsLayer"  (leafletMapReady)="onMapReady($event)" [leafletMarkerCluster]="assetsLayer"
+    [leafletMarkerClusterOptions]="markerClusterOptions">
+  </div>
+  <div *ngIf="selectedTrail && selectedTrail.parent" class="parent-location-container">
+    <a (click)="resetMap()">
+      <pxs-icon icon="chevron-left"></pxs-icon>
+    </a>
+    {{selectedTrail.name}}
   </div>
 </div>
+

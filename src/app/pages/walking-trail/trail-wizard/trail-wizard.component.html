@@ -1,5 +1,5 @@
 <!-- TODO: LINEAR TO TRUE -->
-<mat-horizontal-stepper [linear]="false" #stepper *ngIf="location">
+<mat-horizontal-stepper [linear]="true" #stepper *ngIf="location">
   <mat-step [completed]="location.parent">
     <form>
       <ng-template matStepLabel>Parent</ng-template>

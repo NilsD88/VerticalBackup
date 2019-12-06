@@ -123,9 +123,17 @@ export class LocationWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe(() => {
-        this.goToManageLocation();
-      });
+      this.newLocationService.updateLocation(location).subscribe(
+        (updatedLocation: ILocation | null) => {
+          if (updatedLocation) {
+            this.goToManageLocation();
+          }
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
     } else {
      this.createLocation();
     }

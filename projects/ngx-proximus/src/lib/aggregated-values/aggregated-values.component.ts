@@ -73,7 +73,7 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
       aggregatedValue.label = data.label ? data.label : '';
       aggregatedValue.max = (max.length > 0) ? Math.max(...max).toFixed(2) : null;
       aggregatedValue.min = (min.length > 0) ? Math.min(...min).toFixed(2) : null;
-      aggregatedValue.average = (data.series.length > 0) ? (sum / data.series.length).toFixed(2) : null;
+      aggregatedValue.average = ((data.series || []).length > 0) ? (sum / (data.series || []).length).toFixed(2) : null;
       aggregatedValue.standardDeviation = data.standardDeviation ? data.standardDeviation.toFixed(2) : null;
       aggregatedValue.postfix = data.postfix ? data.postfix : null;
     }

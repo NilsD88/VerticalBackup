@@ -10,11 +10,13 @@ import {TranslateService} from '@ngx-translate/core';
 import {IAsset} from 'src/app/models/g-asset.model';
 import {NewAlertService} from 'src/app/services/new-alert.service';
 import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
-import {Observable, Subject} from 'rxjs';
-import {debounceTime, switchMap} from 'rxjs/operators';
+import {Observable, Subject, of} from 'rxjs';
+import {debounceTime, switchMap, catchError} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
 import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -56,6 +58,7 @@ export class DetailComponent implements OnInit {
     public newAlertService: NewAlertService,
     public newAssetService: NewAssetService,
     private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
     private router: Router,
   ) {
   }
@@ -138,8 +141,8 @@ export class DetailComponent implements OnInit {
         this.aggregatedValues = aggregatedValues;
       },
       error => {
-        this.chartData = [0];
-        this.myAggregatedValues = [0];
+        this.chartData = [];
+        this.myAggregatedValues = [];
         this.chartLoading = false;
         this.changeDetectorRef.detectChanges();
       }
@@ -287,7 +290,15 @@ export class DetailComponent implements OnInit {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
-        return this.newAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to);
+        return this.newAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to).pipe(catchError(() => {
+          this.dialog.open(DialogComponent, {
+            data: {
+              title: 'Sorry, an error has occured!',
+              message: 'An error has occured during getting the sensor data'
+            }
+          });
+          return of([]);
+        }));
       })
     );
   }

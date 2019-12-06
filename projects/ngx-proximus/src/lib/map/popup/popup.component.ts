@@ -44,14 +44,9 @@ export class MapPopupComponent implements OnInit, OnDestroy {
   }
 
   openLocation() {
-    console.log('openLocation');
-    console.log((this.location.children || []).length);
-    console.log(this.leafUrl);
     if (!(this.location.children || []).length && this.leafUrl) {
-      console.log('navigateByUrl: ', `${this.leafUrl}${this.location.id}`);
       this.router.navigateByUrl(`${this.leafUrl}${this.location.id}`);
     } else {
-      console.log('goToCHid');
       this.goToChild(this.location);
     }
   }

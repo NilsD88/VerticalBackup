@@ -24,6 +24,11 @@ export class TankMonitoringAssetService extends NewAssetService {
     );
   }
 
+  public createAsset(asset: ITankMonitoringAsset): Observable < boolean > {
+    asset.module = 'TANK_MONITORING';
+    return super.createAsset(asset);
+  }
+
   public getAssets(): Observable < ITankMonitoringAsset[] > {
 
     return new Observable < ITankMonitoringAsset[] > ((observer) => {

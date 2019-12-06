@@ -1,5 +1,5 @@
+import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -41,7 +41,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
-    private newAssetService: NewAssetService,
+    private tankMonitoringAssetService: TankMonitoringAssetService,
     private router: Router,
     public activatedRoute: ActivatedRoute
   ) {
@@ -54,12 +54,12 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       DescriptionCtrl: ['', null],
     });
 
-    this.fields = await this.newAssetService.getCustomFields().toPromise();
+    this.fields = await this.tankMonitoringAssetService.getCustomFields().toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
-        this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
+        this.asset = await this.tankMonitoringAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
       } catch (err) {
@@ -195,11 +195,11 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
         }
       }
 
-      this.newAssetService.updateAsset(asset).subscribe((result) => {
+      this.tankMonitoringAssetService.updateAsset(asset).subscribe((result) => {
         this.goToInventory();
       });
     } else {
-      this.newAssetService.createAsset(this.asset).subscribe((result) => {
+      this.tankMonitoringAssetService.createAsset(this.asset).subscribe((result) => {
         this.goToInventory();
       });
     }

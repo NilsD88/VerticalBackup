@@ -50,7 +50,9 @@ export class NewAssetService {
           geolocation: asset.geolocation,
           image: asset.image,
           thresholdTemplateId: (asset.thresholdTemplate) ? asset.thresholdTemplate.id : null,
-          thingIds: asset.things.map((thing) => thing.id)
+          thingIds: asset.things.map((thing) => thing.id),
+          // TODO: add module when backend is ready
+          // module: asset.module || 'SMART_MONITORING'
         }
       }
     }).pipe(
@@ -243,6 +245,7 @@ export class NewAssetService {
   }
 
   public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {
+    console.log('getAssetsByLocationId', locationId);
     const GET_ASSETS_BY_LOCATION_ID = gql `
       query FindAssetsByLocation($locationId: Long!) {
         assets: findAssetsByLocation(locationId: $locationId) {

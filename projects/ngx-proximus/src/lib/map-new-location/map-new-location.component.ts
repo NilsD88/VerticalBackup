@@ -122,6 +122,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
           this.markers = [];
           this.snackBar.open('No address found!', null, {
             duration: 2000,
+            panelClass: ['orange-snackbar']
           });
         }
       }

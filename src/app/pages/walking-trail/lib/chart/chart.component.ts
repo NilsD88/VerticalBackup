@@ -195,7 +195,7 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      this.addYAxisOption(data.series.length, data.label);
+      this.addYAxisOption((data.series || []).length, data.label);
       this.addYAxisValues(data);
     }
 

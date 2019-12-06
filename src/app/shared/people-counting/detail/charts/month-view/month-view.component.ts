@@ -1,3 +1,4 @@
+import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
   cloneDeep
 } from 'lodash';
@@ -5,7 +6,8 @@ import {
   Component,
   OnInit,
   Input,
-  OnChanges
+  OnChanges,
+  ChangeDetectorRef
 } from '@angular/core';
 import {
   TranslateService
@@ -16,13 +18,19 @@ import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import { Subject, Observable, of } from 'rxjs';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 declare global {
   interface Window {
     moment: any;
   }
 }
+
 
 declare var require: any;
 require('highcharts/modules/boost');
@@ -36,24 +44,30 @@ require('highcharts/modules/export-data')(Highcharts);
   templateUrl: './month-view.component.html',
   styleUrls: ['./month-view.component.scss']
 })
-export class MonthViewComponent implements OnInit, OnChanges {
+export class MonthViewComponent implements OnInit {
 
   @Input() leaf: IPeopleCountingLocation;
+  @Input() assetService: WalkingTrailAssetService ;
 
+  public chartData$ = new Subject<any>();
+  public chartLoading = false;
   public chart: any;
   public chartOptions: any;
   public locale: string;
 
   public currentMonth;
-  private currentMonthIndex = 1;
+  public currentFilter: IFilterChartData = {
+    interval: 'DAILY',
+    from: moment().subtract(1, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    to: moment().date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+  };
 
-  constructor(private translateService: TranslateService) {}
+  constructor(
+    private translateService: TranslateService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
+  ) {}
 
-  ngOnChanges() {
-    if (this.chart) {
-      this.updateChart();
-    }
-  }
 
   ngOnInit() {
     this.locale = this.translateService.currentLang;
@@ -63,7 +77,12 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     this.initChartOptions();
     this.initChart();
-    this.updateChart();
+    this.getChartData(this.chartData$).subscribe(
+      (assets: IPeopleCountingAsset[]) => {
+        this.updateChart(assets);
+      }
+    );
+    this.chartData$.next(this.currentFilter);
   }
 
   private initChartOptions() {
@@ -134,20 +153,13 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  private updateChart() {
+  private updateChart(assets: IPeopleCountingAsset[]) {
 
     if (!this.leaf) {
       return;
     }
 
-    this.currentMonth = moment().subtract(this.currentMonthIndex, 'months').date(1).format('MMMM YY');
-
-    // TODO: get last month data per day and per asset (location.asset.series) for a specific location
-    const lastMonthLeafData = cloneDeep(this.leaf);
-    lastMonthLeafData.assets.forEach(asset => {
-      asset.series = generateMonthOfDataSeries(this.currentMonthIndex);
-    });
-
+    this.currentMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
@@ -179,14 +191,14 @@ export class MonthViewComponent implements OnInit, OnChanges {
       oldWeekday = weekDay;
     }
 
-    if ((((lastMonthLeafData || {}).assets) || []).length) {
+    if ((assets || []).length) {
       // Generating asset colors
       const assetColors = randomColor({
-        count: lastMonthLeafData.assets.length
+        count: assets.length
       });
 
       // Creating the data series by asset
-      lastMonthLeafData.assets.forEach((asset, assetIndex) => {
+      assets.forEach((asset, assetIndex) => {
         const assetName = asset.name;
         const assetValues = cloneDeep(initialValue);
 
@@ -214,6 +226,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     this.chartOptions.series = series;
     this.chartOptions.xAxis.categories = categories;
+    this.chartLoading = false;
 
     try {
       this.chart = Highcharts.chart('month-view-chart-container', this.chartOptions);
@@ -227,12 +240,54 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
 
   public swapPeriod(direction: boolean) {
-    this.currentMonthIndex = (direction) ? this.currentMonthIndex - 1 : this.currentMonthIndex + 1;
-    this.updateChart();
+    this.currentFilter.from = moment(this.currentFilter.from).subtract((direction) ? -1 : 1, 'months').valueOf();
+    this.currentFilter.to = moment(this.currentFilter.to).subtract((direction) ? -1 : 1, 'months').valueOf();
+    this.chartData$.next(this.currentFilter);
+  }
+
+  private getChartData(request: Observable<IFilterChartData>): Observable<IPeopleCountingAsset[]> {
+    return request.pipe(
+      debounceTime(500),
+      switchMap(filter => {
+        this.chartLoading = true;
+        this.changeDetectorRef.detectChanges();
+        return new Observable <IPeopleCountingAsset[]> ((observer) => {
+          const assets: IPeopleCountingAsset[] = [];
+          this.leaf.assets.forEach(asset => {
+              const durationInMonths = moment.duration(moment().diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
+              assets.push({
+                id: asset.id,
+                name: asset.name,
+                series: generateMonthOfDataSeries(
+                  +durationInMonths
+                )
+              });
+          });
+          observer.next(assets);
+        });
+        /*
+        return this.assetService.getAssetsDataByIds(
+          this.leaf.assets.map(asset => asset.id),
+          filter.interval, filter.from, filter.to
+        ).pipe(catchError(() => {
+          this.dialog.open(DialogComponent, {
+            data: {
+              title: 'Sorry, an error has occured!',
+              message: 'An error has occured during getting the sensor data'
+            }
+          });
+          return of([]);
+        }));
+        */
+      })
+    );
   }
 
 
 }
+
+
+
 
 function generateMonthOfDataSeries(monthIndex: number): IPeopleCountingAssetSerie[] {
   const dataSeries: IPeopleCountingAssetSerie[] = [];

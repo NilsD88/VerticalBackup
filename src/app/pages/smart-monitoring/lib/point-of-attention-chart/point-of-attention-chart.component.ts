@@ -75,7 +75,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
-  @Input() height = 700;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
   @Input() colors = [
@@ -126,7 +125,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
       },
       chart: {
         zoomType: 'xy',
-        height: this.height,
       },
       title: {
         text: this.title
@@ -183,7 +181,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      this.addYAxisOption(data.series.length, data.label);
+      this.addYAxisOption((data.series || []).length, data.label);
       this.addYAxisValues(data);
     }
 

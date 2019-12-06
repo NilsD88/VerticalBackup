@@ -1,6 +1,8 @@
+import { IAsset } from './../../../../models/g-asset.model';
+import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
 import { ILocation } from 'src/app/models/g-location.model';
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker } from 'leaflet';
+import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker, Point } from 'leaflet';
 import { IGeolocation, Geolocation } from 'src/app/models/geolocation.model';
 import { GeoJsonObject } from 'geojson';
 import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
@@ -35,16 +37,38 @@ export class TrailMapComponent implements OnInit {
 
   public options: any;
   public trailsLayer: Layer[] = [];
+  public assetsLayer: Layer[] = [];
   public imageBounds: LatLngBounds;
   public trailBounds: LatLngBounds;
-
+  public selectedTrail: IPeopleCountingLocation;
+  public markerClusterOptions: any;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private assetService: WalkingTrailAssetService,
   ) {}
 
   ngOnInit() {
     this.center = new Geolocation();
+
+    this.markerClusterOptions = {
+      iconCreateFunction(cluster) {
+        const childCount = cluster.getChildCount();
+        let c = ' marker-cluster-';
+
+        if (childCount < 10) {
+          c += 'small';
+        } else if (childCount < 100) {
+          c += 'medium';
+        } else {
+          c += 'large';
+        }
+
+        return divIcon({ html: '<div><span>' + childCount + '</span></div>',
+         className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
+        }
+    };
+
     this.initMap();
   }
 
@@ -82,6 +106,7 @@ export class TrailMapComponent implements OnInit {
 
   private populateMarkersWithTrails() {
     this.trailsLayer = [];
+    this.assetsLayer = [];
 
     const trailIcon = (name, status) => divIcon({
       className: 'walking-trail',
@@ -110,11 +135,55 @@ export class TrailMapComponent implements OnInit {
           {
             icon: trailIcon(child.name, status)
           }
-        );
+        ).on('click', async (event) => {
+          this.selectedTrail = child;
+          // TODO: Get these data from backend
+          //const assets = await this.assetService.getAssetsByLocationId(child.id).toPromise();
+          const assets = [{
+            id: '0',
+            name: 'Test Asset',
+            geolocation: {
+              lat: 50.453331,
+              lng: 3.948740
+            },
+          }, {
+            id: '1',
+            name: 'Test Asset 2',
+            geolocation: {
+              lat: 50.453332,
+              lng: 3.948741
+            },
+          }];
+          this.populateMarkersWithAssets(assets);
+        });
+
         /*
         .bindPopup(() => this.createLocationPopup(child)).openPopup();
         */
         this.trailsLayer.push(newMarker);
+      }
+    }
+  }
+
+  private populateMarkersWithAssets(assets: IAsset[]) {
+    this.assetsLayer = [];
+    this.trailsLayer = [];
+
+    const asstIcon = (name) => divIcon({
+      className: 'walking-trail',
+      iconSize: null,
+      html: `<div class="checkpoint"><span></span><div class="name"><span>${name}</span></div></div>`
+    });
+
+    if (assets && assets.length) {
+      for (const asset of assets) {
+        const newMarker = marker(
+          [asset.geolocation.lat, asset.geolocation.lng],
+          {
+            icon: asstIcon(asset.name)
+          }
+        );
+        this.assetsLayer.push(newMarker);
       }
     }
   }
@@ -183,5 +252,10 @@ export class TrailMapComponent implements OnInit {
         }
       }
     }
+  }
+
+  public resetMap() {
+    this.selectedTrail = null;
+    this.initMap();
   }
 }
