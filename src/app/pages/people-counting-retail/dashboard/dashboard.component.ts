@@ -64,8 +64,6 @@ export class DashboardComponent implements OnInit {
       children: await this.locationService.getLocationsTree().toPromise()
     };
     this.changeLocation(this.rootLocation);
-
-    const oiazej = 2;
   }
 
   public decrease() {
@@ -84,7 +82,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public changeLocation(location: IPeopleCountingLocation) {
-    const leafs = [];
+    const leafs: IPeopleCountingLocation[] = [];
     findLeaftsLocation(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
 
@@ -92,14 +90,44 @@ export class DashboardComponent implements OnInit {
     this.leafColors = generateLeafColors(leafs);
 
     // Generate past week data
-    // TODO: get the past week data with day interval for each location (location.series)
     generatePastWeekOfData(leafs);
     this.leafs = leafs;
 
+    // TODO: get the past week data with day interval for each location (location.series)
+    /*
+    this.locationService.getLocationsDataByIds(
+      leafs.map(leaf => leaf.id),
+      'WEEKLY',
+      moment().startOf('isoWeek').valueOf(),
+      moment().startOf('isoWeek').add(7, 'days').valueOf(),
+    ).subscribe(
+      (result) => {
+        leafs.forEach((leaf, index) => {
+          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        });
+      }
+    );
+    */
+
     // Generate past year data
     generatePastYearOfData(lastYearLeafs);
-    // TODO: get the past year data with month interval for each location(location.series)
     this.lastYearLeafs = lastYearLeafs;
+
+    // TODO: get the past year data with month interval for each location(location.series)
+    /*
+    this.locationService.getLocationsDataByIds(
+      leafs.map(leaf => leaf.id),
+      'MONTHLY',
+      moment().subtract(1,'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    ).subscribe(
+      (result) => {
+        lastYearLeafs.forEach((leaf, index) => {
+          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        });
+      }
+    );
+    */
 
     this.currentLeafs = cloneDeep(this.leafs);
     this.changeDetectorRef.detectChanges();

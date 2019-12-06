@@ -1,15 +1,11 @@
-import { cloneDeep } from 'lodash';
+import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { findLocationById } from 'src/app/shared/utils';
 import { ActivatedRoute } from '@angular/router';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { Component, OnInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
 
-
-
-import * as moment from 'moment';
 
 @Component({
   selector: 'pvf-trail',
@@ -27,6 +23,7 @@ export class TrailComponent implements OnInit {
 
   constructor(
     private locationService: WalkingTrailLocationService,
+    public assetService: WalkingTrailAssetService,
     private activatedRoute: ActivatedRoute,
   ) { }
 
@@ -34,7 +31,7 @@ export class TrailComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
       this.leaf = await this.locationService.getLocationById(params.id).toPromise();
       const rootLocation = {
-        id: 'xXx',
+        id: null,
         parentId: null,
         geolocation: null,
         image: null,

@@ -75,7 +75,6 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
-  @Input() height = 700;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
   @Input() colors = [
@@ -104,7 +103,6 @@ export class ChartComponent implements OnInit, OnChanges {
   };
   public Highcharts = Highcharts;
   public rangeTranslation = 'range';
-  public chartSettingsForAsset = {};
 
   constructor(public translateService: TranslateService) {
   }
@@ -116,7 +114,6 @@ export class ChartComponent implements OnInit, OnChanges {
   }
 
   public ngOnChanges() {
-    this.chartSettingsForAsset = ((JSON.parse(window.localStorage.getItem('smartmonitoring:chart-settings')) || {})[this.asset.id] || {});
     const filename = this.asset ? (this.asset.name) : 'Chart';
     this.options = {
       navigator: {
@@ -127,7 +124,6 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       chart: {
         zoomType: 'xy',
-        height: this.height,
       },
       title: {
         text: this.title
@@ -177,17 +173,6 @@ export class ChartComponent implements OnInit, OnChanges {
           marker: {
             enabled: false
           },
-          events: {
-            legendItemClick: (event) => {
-              const chartSettings = JSON.parse(window.localStorage.getItem('smartmonitoring:chart-settings')) || {};
-              const chartSettingsForAsset = chartSettings[this.asset.id] || {};
-              chartSettingsForAsset[event.target.userOptions.id] = {
-                visible: !event.target.visible
-              };
-              chartSettings[this.asset.id] = chartSettingsForAsset;
-              window.localStorage.setItem('smartmonitoring:chart-settings', JSON.stringify(chartSettings));
-            }
-          }
         }
       },
       legend: {},
@@ -245,108 +230,17 @@ export class ChartComponent implements OnInit, OnChanges {
   private addYAxisValues(item: IChartData) {
     const color = randomColor({
       hue: ESensorColors[String(item.label).toUpperCase()]
-    });
+    })
     if (this.filter.interval !== 'ALL') {
-      if (!isNullOrUndefined(item.sensorDefinition)) {
-        const sensorDefinition = item.sensorDefinition;
-        if (sensorDefinition.aggregatedValues.sum) {
-          const id = item.sensorId + '_sum';
-          this.options.series.push({
-            visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-            id,
-            name: item.label + ' ' + 'sum',
-            color,
-            yAxis: this.getYAxisByLabel(item.label),
-            zIndex: 1,
-            type: sensorDefinition.chartType,
-            showInLegend: (item.series.length) ? true : false,
-            data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
-            })
-          });
-        }
-        if (sensorDefinition.aggregatedValues.avg) {
-          const id = item.sensorId + '_avg';
-          this.options.series.push({
-            visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-            id,
-            name: item.label + ' ' + 'avg',
-            color,
-            yAxis: this.getYAxisByLabel(item.label),
-            zIndex: 1,
-            type: sensorDefinition.chartType,
-            showInLegend: (item.series.length) ? true : false,
-            data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-            })
-          });
-        }
-        if (sensorDefinition.aggregatedValues.max && sensorDefinition.aggregatedValues.min) {
-          const id = item.sensorId + '_min-max';
-          this.options.series.push({
-            visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-            id,
-            name: item.label + ' ' + this.rangeTranslation,
-            color,
-            type: 'arearange',
-            yAxis: this.getYAxisByLabel(item.label),
-            showInLegend: (item.series.length) ? true : false,
-            lineWidth: 0,
-            linkedTo: ':previous',
-            fillOpacity: 0.3,
-            zIndex: 0,
-            marker: {
-              enabled: false
-            },
-            data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-            })
-          });
-        } else {
-          if (sensorDefinition.aggregatedValues.max) {
-            const id = item.sensorId + '_max';
-            this.options.series.push({
-              visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-              id,
-              name: item.label + ' ' + 'max',
-              color,
-              yAxis: this.getYAxisByLabel(item.label),
-              zIndex: 1,
-              type: 'areaspline',
-              showInLegend: (item.series.length) ? true : false,
-              data: item.series.map((serie) => {
-                return [serie.timestamp, parseFloat(serie.max.toFixed(2))];
-              })
-            });
-          } else if (sensorDefinition.aggregatedValues.min) {
-            const id = item.sensorId + '_min';
-            this.options.series.push({
-              visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-              id,
-              name: item.label + ' ' + 'min',
-              color,
-              yAxis: this.getYAxisByLabel(item.label),
-              zIndex: 1,
-              type: 'areaspline',
-              showInLegend: (item.series.length) ? true : false,
-              data: item.series.map((serie) => {
-                return [serie.timestamp, parseFloat(serie.min.toFixed(2))];
-              })
-            });
-          }
-        }
-      } else {
-
         // AVERAGE
         const avgId = item.sensorId + '_avg';
         this.options.series.push({
-          visible: (this.chartSettingsForAsset[avgId]) ? this.chartSettingsForAsset[avgId].visible : true,
           id: avgId,
           name: item.label,
           color,
           yAxis: this.getYAxisByLabel(item.label),
           zIndex: 1,
-          type: 'spline',
+          type: 'column',
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
             return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
@@ -356,7 +250,6 @@ export class ChartComponent implements OnInit, OnChanges {
         // MIN AND MAX
         const minMaxId = item.sensorId + '_min-max';
         this.options.series.push({
-          visible: (this.chartSettingsForAsset[minMaxId]) ? this.chartSettingsForAsset[minMaxId].visible : true,
           id: minMaxId,
           name: item.label + ' ' + this.rangeTranslation,
           color,
@@ -374,41 +267,23 @@ export class ChartComponent implements OnInit, OnChanges {
             return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
           })
         });
-      }
     } else {
       // REAL VALUES
       const id = item.sensorId;
-      if (!isNullOrUndefined(item.sensorDefinition)) {
-        this.options.series.push({
-          visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-          id,
-          name: item.label,
-          color,
-          yAxis: this.getYAxisByLabel(item.label),
-          zIndex: 1,
-          type: item.sensorDefinition.chartType,
-          showInLegend: (item.series.length) ? true : false,
-          data: item.series.map((serie) => {
+      this.options.series.push({
+        id,
+        name: item.label,
+        color,
+        yAxis: this.getYAxisByLabel(item.label),
+        zIndex: 1,
+        type: 'column',
+        showInLegend: (item.series.length) ? true : false,
+        data: item.series.map((serie) => {
+          if (!isNullOrUndefined(serie.value)) {
             return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
-          })
-        });
-      } else {
-        this.options.series.push({
-          visible: (this.chartSettingsForAsset[id]) ? this.chartSettingsForAsset[id].visible : true,
-          id,
-          name: item.label,
-          color,
-          yAxis: this.getYAxisByLabel(item.label),
-          zIndex: 1,
-          type: 'spline',
-          showInLegend: (item.series.length) ? true : false,
-          data: item.series.map((serie) => {
-            if (!isNullOrUndefined(serie.value)) {
-              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
-            }
-          })
-        });
-      }
+          }
+        })
+      });
     }
   }
 

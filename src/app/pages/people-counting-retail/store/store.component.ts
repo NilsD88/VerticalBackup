@@ -1,8 +1,8 @@
+import { PeopleCountingRetailAssetService } from './../../../services/peoplecounting-retail/asset.service';
+import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import { findLocationById } from 'src/app/shared/utils';
 import { ActivatedRoute } from '@angular/router';
-import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { Component, OnInit } from '@angular/core';
-import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 import * as moment from 'moment';
@@ -21,7 +21,8 @@ export class StoreComponent implements OnInit {
   public locale: string;
 
   constructor(
-    public locationService: WalkingTrailLocationService,
+    public locationService: PeopleCountingRetailLocationService,
+    public assetService: PeopleCountingRetailAssetService,
     private activatedRoute: ActivatedRoute,
   ) { }
 

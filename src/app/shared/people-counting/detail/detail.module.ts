@@ -3,9 +3,9 @@ import { NoDataModule } from 'projects/ngx-proximus/src/lib/no-data/no-data.modu
 import { ThresholdTemplatesDetailModule } from 'projects/ngx-proximus/src/lib/threshold-templates-detail/threshold-templates-detail.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DetailComponent} from './detail.component';
+import {PeopleCountingDetailComponent} from './detail.component';
 import {RouterModule} from '@angular/router';
-import {DetailRoutes} from './detail.routing';
+import {PeopleCountingDetailRoutes} from './detail.routing';
 import {TranslateModule} from '@ngx-translate/core';
 import { MatDividerModule, MatExpansionModule, MatTooltipModule } from '@angular/material';
 import {HighchartsChartModule} from 'highcharts-angular';
@@ -15,15 +15,15 @@ import {AggregatedValuesModule} from 'projects/ngx-proximus/src/lib/aggregated-v
 import {MapAssetModule} from 'projects/ngx-proximus/src/lib/map-asset/map-asset.module';
 import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import { DetailHeaderModule } from 'src/app/pages/walking-trail/lib/detail-header/detail-header.module';
+import { DetailHeaderModule } from '../lib/detail-header/detail-header.module';
 import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/linked-things.module';
 
 
 @NgModule({
-  declarations: [DetailComponent],
+  declarations: [PeopleCountingDetailComponent],
   imports: [
     CommonModule,
-    RouterModule.forChild(DetailRoutes),
+    RouterModule.forChild(PeopleCountingDetailRoutes),
     TranslateModule,
     MatDividerModule,
     MatExpansionModule,
@@ -42,5 +42,5 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     NoDataModule,
   ]
 })
-export class DetailModule {
+export class PeopleCountingDetailModule {
 }

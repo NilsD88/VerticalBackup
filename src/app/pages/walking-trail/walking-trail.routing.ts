@@ -37,7 +37,7 @@ export const WalkingTrailRoutes: Routes = [
   },
   {
     path: 'detail/:id',
-    loadChildren: () => import('src/app/pages/walking-trail/detail/detail.module').then(m => m.DetailModule)
+    loadChildren: () => import('src/app/shared/people-counting/detail/detail.module').then(m => m.PeopleCountingDetailModule)
   },
   {
     path: 'overview',

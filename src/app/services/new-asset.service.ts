@@ -18,6 +18,7 @@ import { IThing } from '../models/g-thing.model';
 import { Observable } from 'rxjs';
 import { IField } from '../models/field.model';
 import { MOCK_ASSETS_CUSTOM_FIELDS } from '../mocks/newasset';
+import { MOCK_NEW_CHART_TANK_DATA } from '../mocks/chart';
 
 @Injectable({
   providedIn: 'root'
@@ -240,8 +241,19 @@ export class NewAssetService {
     }) => data.asset));
   }
 
-  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    return this.http.get < IThing [] > (`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
+  public getAssetDataById(id: string, interval: string, from: number, to: number, moduleName: string = null): Observable < IThing[] > {
+    let url = `${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`;
+    if (moduleName) {
+      url += `&module=${moduleName}`;
+      // TODO: remove those lines when backend is ready
+      /*
+      return new Observable < IThing [] > ((observer) => {
+        observer.next(MOCK_NEW_CHART_TANK_DATA);
+        observer.complete();
+      });
+      */
+    }
+    return this.http.get < IThing [] > (url);
   }
 
   public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {

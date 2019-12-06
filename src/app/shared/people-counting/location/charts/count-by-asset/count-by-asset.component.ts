@@ -1,3 +1,4 @@
+import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
   Component,
   OnInit,
@@ -31,6 +32,7 @@ require('highcharts/modules/export-data')(Highcharts);
 export class CountByAssetComponent implements OnInit, OnChanges {
 
   @Input() assets: IPeopleCountingAsset[];
+  @Input() assetService: WalkingTrailAssetService;
 
   public chart: any;
   public chartOptions: any;
@@ -93,10 +95,31 @@ export class CountByAssetComponent implements OnInit, OnChanges {
     }
   }
 
-  private updateChart() {
+  private async updateChart() {
     if ((this.assets || []).length) {
       const data = [];
-      // TODO: get value of each asset for today
+
+
+      // TODO: uncomment those lines when backend is ready
+      /*
+      const assets = await this.assetService.getAssetsDataByIds(
+        this.assets.map(asset => asset.id),
+        'DAILY',
+        moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().valueOf(),
+      ).toPromise();
+
+      assets.forEach(asset => {
+        data.push({
+          name: asset.name,
+          y: asset.series[0].valueIn
+        });
+      });
+      */
+
+
+
+      // TODO: remove those lines when backend is ready
       // Generate value of each asset
       this.assets.forEach(asset => {
         data.push({
@@ -104,6 +127,7 @@ export class CountByAssetComponent implements OnInit, OnChanges {
           y: generateTodayDataSeries().reduce((a, b) => a + b.valueIn || 0, 0),
         });
       });
+
       this.chartOptions.series[0].data = data;
     }
 

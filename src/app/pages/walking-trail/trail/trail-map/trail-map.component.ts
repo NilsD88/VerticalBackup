@@ -1,3 +1,4 @@
+import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { IAsset } from './../../../../models/g-asset.model';
 import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -46,6 +47,7 @@ export class TrailMapComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private assetService: WalkingTrailAssetService,
+    private locationService: WalkingTrailLocationService
   ) {}
 
   ngOnInit() {
@@ -104,7 +106,7 @@ export class TrailMapComponent implements OnInit {
     }
   }
 
-  private populateMarkersWithTrails() {
+  private async populateMarkersWithTrails() {
     this.trailsLayer = [];
     this.assetsLayer = [];
 
@@ -116,12 +118,54 @@ export class TrailMapComponent implements OnInit {
 
     const children = this.location.children;
     if (children && children.length) {
+      // TODO: uncomment those lines when backend is ready
+      /*
+      const sumsLastWeekUntilSameReference = (await this.locationService.getLocationsDataByIds(
+        this.location.children.map(location => location.id),
+        'WEEKLY',
+        moment().startOf('isoWeek').subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().subtract(1, 'weeks').valueOf()
+      ).toPromise());
+
+      const sumsThisWeekSameReference = (await this.locationService.getLocationsDataByIds(
+        this.location.children.map(location => location.id),
+        'WEEKLY',
+        moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().valueOf()
+      ).toPromise());
+      */
+
       for (const child of children) {
         child.parent = this.location;
 
-        // TODO: Get these data from backend
+        // TODO: uncomment those lines when backend is ready
+        /*
+        let sumLastWeekUntilSameReference = null;
+        let sumThisWeekSameReference = null;
+
+        const indexLastWeekRef = sumsLastWeekUntilSameReference.findIndex(x => x.id === child.id);
+        if (indexLastWeekRef > -1) {
+          const ref = sumsLastWeekUntilSameReference[indexLastWeekRef];
+          if((ref.series || []).length) {
+            sumLastWeekUntilSameReference = ref.series[0].valueIn;
+          }
+        }
+
+        const indexWeekRef = sumsThisWeekSameReference.findIndex(x => x.id === child.id);
+        if (indexWeekRef > -1) {
+          const ref = sumsThisWeekSameReference[indexWeekRef];
+          if((ref.series || []).length) {
+            sumThisWeekSameReference = ref.series[0].valueIn;
+          }
+        }
+        */
+
+
+        // TODO: remove those lines when backend is ready
+        // MOCK DATA
         const sumLastWeekUntilSameReference = Math.floor(Math.random() * 101);
         const sumThisWeekSameReference = Math.floor(Math.random() * 101);
+
 
         let status: string;
         if (sumLastWeekUntilSameReference === sumThisWeekSameReference) {

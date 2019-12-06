@@ -1,4 +1,4 @@
-import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
+import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
 
@@ -19,9 +19,10 @@ window.moment = moment;
 mTZ();
 
 interface ICheckpoint {
+  id: string;
   name: string;
-  today: number;
-  week: number;
+  today?: number;
+  week?: number;
 }
 
 @Component({
@@ -32,6 +33,7 @@ interface ICheckpoint {
 export class AssetsCounterComponent implements OnInit {
 
   @Input() leaf: IPeopleCountingLocation;
+  @Input() assetService: WalkingTrailAssetService;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -41,17 +43,71 @@ export class AssetsCounterComponent implements OnInit {
   public dataSource: MatTableDataSource<ICheckpoint>;
   public displayedColumns: string[];
 
-  constructor(
-    private assetService: WalkingTrailAssetService
-  ) {}
+
+  constructor() {}
 
   async ngOnInit() {
 
-    for (const asset of this.leaf.assets) {
+    // TODO: uncomment those lines when backend is ready
 
-      // TODO: get these data from the backend
+    let dayValuesReady = false;
+    let weekValuesReady = false;
+
+    /*
+    this.checkpoints = this.leaf.assets.map(asset => {
+      return {
+        id: asset.id,
+        name: asset.name
+      };
+    });
+
+    // Get the today values
+    this.assetService.getAssetsDataByIds(
+      this.leaf.assets.map(asset => asset.id),
+      'DAILY',
+      moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      moment().valueOf()
+    ).subscribe((assets) => {
+      assets.forEach(asset => {
+        const index = this.checkpoints.findIndex(a => a.id === asset.id);
+        if (index > -1) {
+          this.checkpoints[index].today = asset.series[0].valueIn;
+        }
+      });
+      dayValuesReady = true;
+      if(weekValuesReady) {
+        this.updateDataSource(this.checkpoints);
+        this.isLoading = false;
+      }
+    });
+
+    // Get the week values
+    this.assetService.getAssetsDataByIds(
+      this.leaf.assets.map(asset => asset.id),
+      'WEEKLY',
+      moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
+      moment().startOf('isoWeek').valueOf(),
+    ).subscribe((assets) => {
+      assets.forEach(asset => {
+        const index = this.checkpoints.findIndex(a => a.id === asset.id);
+        if (index > -1) {
+          this.checkpoints[index].week = asset.series[0].valueIn;
+        }
+      });
+      weekValuesReady = false;
+      if(dayValuesReady) {
+        this.updateDataSource(this.checkpoints);
+        this.isLoading = false;
+      }
+    });
+    */
+
+
+    // TODO: remove those lines when backend is ready
+    for (const asset of this.leaf.assets) {
       // Sum of a specific range per asset for a specific location
       this.checkpoints.push({
+        id: asset.id,
         name: asset.name,
         today: generateTodayDataSeries()[0].valueIn,
         week: generateThisWeekDataSeries()[0].valueIn
@@ -62,6 +118,7 @@ export class AssetsCounterComponent implements OnInit {
     this.updateDataSource(this.checkpoints);
     this.isLoading = false;
   }
+
 
   private updateDataSource(checkpoint: ICheckpoint[]) {
     this.dataSource = new MatTableDataSource(checkpoint);

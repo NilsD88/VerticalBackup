@@ -20,17 +20,18 @@ declare var require: any;
 const canvg = require('canvg');
 
 @Component({
-  selector: 'pvf-detail',
+  selector: 'pvf-peoplecounting-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.scss']
 })
 
-export class DetailComponent implements OnInit {
+export class PeopleCountingDetailComponent implements OnInit {
 
   @ViewChild('myChart', {static: false}) myChart;
   @ViewChild('myAggregatedValues', {static: false}) myAggregatedValues;
 
   public asset: IAsset;
+  private moduleName: string;
 
   public chartLoading = false;
   public chartData$ = new Subject<any>();
@@ -61,6 +62,20 @@ export class DetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    const re = /^\/private\/(.*)\/detail/;
+    const moduleName = this.router.url.match(re)[1];
+    switch (moduleName) {
+      case 'walkingtrail':
+        this.moduleName = 'PEOPLE_COUNTING_WALKING_TRAIL';
+        break;
+      case 'peoplecountingretail':
+        this.moduleName = 'PEOPLE_COUNTING_RETAIL';
+        break;
+      case 'stairstohealth':
+        this.moduleName = 'PEOPLE_COUNTING_STAIRS_TO_HEALTH';
+        break;
+    }
+
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
         this.newAssetService.getAssetDetailById(params.id).subscribe(
@@ -82,6 +97,7 @@ export class DetailComponent implements OnInit {
     this.getLastAlerts();
     this.getChartData(this.chartData$).subscribe(
       async things => {
+        console.log('subscri');
         const chartData = [];
         const aggregatedValues = [];
 
@@ -108,19 +124,19 @@ export class DetailComponent implements OnInit {
                 to: this.currentFilter.to,
                 interval: this.currentFilter.interval,
               };
-              const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
-              aggregatedValues.push({
-                  label: labelTranslation,
-                  series: sensor.series,
-                  standardDeviation: (standardDeviation) ? standardDeviation.value : null,
-                  postfix: sensor.sensorType.postfix
-              });
+              try {
+                const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
+                aggregatedValues.push({
+                    label: labelTranslation,
+                    series: sensor.series,
+                    standardDeviation: (standardDeviation) ? standardDeviation.value : null,
+                    postfix: sensor.sensorType.postfix
+                });
+              } catch (error) {
+                console.log(error);
+              }
             }
             // END STANDARD DEVIATION
-
-            if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
-              continue;
-            }
 
             chartData.push({
               label: labelTranslation,
@@ -287,7 +303,13 @@ export class DetailComponent implements OnInit {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
-        return this.newAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to);
+        return this.newAssetService.getAssetDataById(
+          this.asset.id,
+          filter.interval,
+          filter.from,
+          filter.to,
+          this.moduleName
+        );
       })
     );
   }

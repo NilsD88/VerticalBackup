@@ -3,7 +3,7 @@ import {
 } from 'protractor';
 import {
   MonthViewComponent
-} from './../../../../../shared/people-counting/detail/charts/month-view/month-view.component';
+} from './../../../../../shared/people-counting/location/charts/month-view/month-view.component';
 import {
   Component,
   OnInit,

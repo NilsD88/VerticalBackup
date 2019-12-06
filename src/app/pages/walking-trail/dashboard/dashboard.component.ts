@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.rootLocation = {
-      id: 'xXx',
+      id: null,
       parentId: null,
       geolocation: null,
       image: null,
@@ -90,7 +90,11 @@ export class DashboardComponent implements OnInit {
     this.leafColors = generateLeafColors(leafs);
 
     // Generate past week data
+    generatePastWeekOfData(leafs);
+    this.leafs = leafs;
+
     // TODO: get the past week data with day interval for each location (location.series)
+    /*
     this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
       'WEEKLY',
@@ -103,14 +107,27 @@ export class DashboardComponent implements OnInit {
         });
       }
     );
-
-    generatePastWeekOfData(leafs);
-    this.leafs = leafs;
+    */
 
     // Generate past year data
     generatePastYearOfData(lastYearLeafs);
-    // TODO: get the past year data with month interval for each location(location.series)
     this.lastYearLeafs = lastYearLeafs;
+
+    // TODO: get the past year data with month interval for each location(location.series)
+    /*
+    this.locationService.getLocationsDataByIds(
+      leafs.map(leaf => leaf.id),
+      'MONTHLY',
+      moment().subtract(1,'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    ).subscribe(
+      (result) => {
+        lastYearLeafs.forEach((leaf, index) => {
+          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        });
+      }
+    );
+    */
 
     this.currentLeafs = cloneDeep(this.leafs);
     this.changeDetectorRef.detectChanges();

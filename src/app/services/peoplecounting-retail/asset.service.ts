@@ -15,11 +15,11 @@ import {
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 
-const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
 @Injectable({
   providedIn: 'root'
 })
-export class WalkingTrailAssetService extends PeopleCountingAssetService {
+export class PeopleCountingRetailAssetService extends PeopleCountingAssetService {
   constructor(
     public apollo: Apollo,
     public http: HttpClient,

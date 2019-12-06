@@ -11,12 +11,12 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
-const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
 
 @Injectable({
     providedIn: 'root'
 })
-export class WalkingTrailLocationService extends PeopleCountingLocationService {
+export class PeopleCountingRetailLocationService extends PeopleCountingLocationService {
 
     constructor(public http: HttpClient, public apollo: Apollo) {
         super(
@@ -64,7 +64,6 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
                         image
                     }
                     image,
-                    images,
                     geolocation {
                         lat
                         lng
@@ -80,7 +79,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
       interface GetLocationByIdQuery {
         location: IPeopleCountingLocation | null;
       }
-  
+
       return this.apollo.query < GetLocationByIdQuery > ({
         query: GET_LOCATION_BY_ID,
         fetchPolicy: 'network-only',

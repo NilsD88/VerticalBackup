@@ -179,7 +179,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
 
     let counter = 0;
     for (const leaf of this.leafs) {
-      console.log(leaf);
       this.chartOptions.yAxis.push({
         title: {
           text: 'Trail'
