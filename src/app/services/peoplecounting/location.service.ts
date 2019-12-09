@@ -52,6 +52,6 @@ export class PeopleCountingLocationService extends NewLocationService {
         }
       }
       return this.http.get < IPeopleCountingLocation [] >
-        (`${environment.baseUrl}/locations/data?${idsParams}&module=${moduleName}&interval=${interval}&from=${from}&to=${to}`);
+        (`${environment.baseUrl}/peoplecounting/location/data?${idsParams}&module=${moduleName}&interval=${interval}&from=${from}&to=${to}`);
     }
 }

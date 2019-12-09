@@ -37,7 +37,7 @@ export class PeopleCountingAssetService extends NewAssetService {
       }
     }
     return this.http.get < IPeopleCountingAsset [] >
-      (`${environment.baseUrl}/assets/data?${idsParams}&module=${moduleName}&interval=${interval}&from=${from}&to=${to}`);
+      (`${environment.baseUrl}/peoplecounting/asset/data?${idsParams}&module=${moduleName}&interval=${interval}&from=${from}&to=${to}`);
   }
 
 }
