@@ -96,6 +96,7 @@ export class PeopleCountingRetailLocationService extends PeopleCountingLocationS
         const GET_PAGED_LEAF_LOCATIONS = gql `
           query findLeafLocationsByFilterPaged($input: PagedLeafLocationsFindByFilterInput!) {
             pagedLeafLocations: findLeafLocationsByFilterPaged(input: $input) {
+              // TODO: add module name in the input to filter the leafs
               totalElements,
               totalPages,
               locations {
@@ -165,12 +166,7 @@ export class PeopleCountingRetailLocationService extends PeopleCountingLocationS
             description: location.description,
             geolocation: location.geolocation,
             image: location.image,
-            module: 'PEOPLE_COUNTING_WALKING_TRAIL'
-            // TODO: when the backend will be ready
-            /*
-            images: location.images,
-            module: XXXX
-            */
+            module: MODULE_NAME
           }
         }
       }).pipe(

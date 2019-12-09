@@ -28,7 +28,7 @@ export class PeopleCountingRetailAssetService extends PeopleCountingAssetService
       apollo,
       http
     );
-  } 
+  }
 
 
   public getAssetsDataByIds(ids: string[], interval: Intervals, from: number, to: number): Observable < IPeopleCountingAsset[] > {
