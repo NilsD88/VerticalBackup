@@ -5,11 +5,17 @@
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
             <pxs-location-explorer
-              *ngIf="canLoadLocationExplorer"
+              *ngIf="displayLocationExplorer"
               (changeLocation)="updateLocation($event)"
               [selectedLocation]="location.parent"
               [ghostLocationId]="location.id"
             ></pxs-location-explorer>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+          <hr>
+          <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
         </div>
       </div>
       <pxs-stepper-next [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
@@ -26,7 +32,6 @@
           <mat-form-field>
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
           </mat-form-field>
-          {{location.fields | json}}
           <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
@@ -45,7 +50,7 @@
       <pxs-stepper-next [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
     </form>
   </mat-step>
-  <mat-step>
+  <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
     <ng-template matStepLabel>Floor plan</ng-template>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
@@ -54,6 +59,26 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [completed]="location.geolocation" [text]="'Save'" [color]="'success'" (next)="submit()"></pxs-stepper-next> 
+    <pxs-stepper-next [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>Assets</ng-template>
+      <div class="row">
+        <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
+          <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
+            <div>
+              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+              {{asset.name}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+          <hr>
+          <button mat-button color="primary" (click)="openAddAsset()">Create a new asset</button>
+        </div>
+      </div>
+      <pxs-stepper-next [completed]="location.geolocation" [text]="'Done!'" [color]="'success'" (next)="done()"></pxs-stepper-next> 
+    </mat-step>
 </mat-horizontal-stepper>

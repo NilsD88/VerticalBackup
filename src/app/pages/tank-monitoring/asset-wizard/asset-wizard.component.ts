@@ -1,3 +1,5 @@
+import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { ISensorType } from './../../../models/g-sensor-type.model';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
@@ -36,12 +38,14 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   public descriptionFormGroup: FormGroup;
 
   public fields: IField[] = [];
+  public compatibleSensorTypes: ISensorType[];
 
   constructor(
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
     private tankMonitoringAssetService: TankMonitoringAssetService,
+    private sensorService: NewSensorService,
     private router: Router,
     public activatedRoute: ActivatedRoute
   ) {
@@ -55,6 +59,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
     });
 
     this.fields = await this.tankMonitoringAssetService.getCustomFields().toPromise();
+    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule('TANK_MONITORING').toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
@@ -62,6 +67,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
         this.asset = await this.tankMonitoringAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
+        this.originalAsset.locationId = this.originalAsset.location.id;
       } catch (err) {
         this.asset = this.emptyAsset();
       }
@@ -77,8 +83,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       locationId: null,
       things: [],
       thresholdTemplate: null,
-      customFields: {},
-      module: 'TANK_MONITORING'
+      customFields: [],
     };
   }
 
@@ -104,7 +109,33 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
     }
   }
 
-  public thresholdTemplateIsCompatibleWithThings() {
+  public checkThings() {
+    if (this.oneThingCompatibleWithModule()) {
+      this.stepper.next();
+    } else {
+      this.dialog.open(PopupConfirmationComponent, {
+        width: '250px',
+        data: {
+          title: 'Warning',
+          content: 'You can an only add an asset with at least one thing defined for tank monitoring',
+          hideContinue: true,
+        }
+      });
+    }
+  }
+
+  public oneThingCompatibleWithModule(): boolean {
+    for (const thing of this.asset.things) {
+      for (const sensor of thing.sensors) {
+        if (this.compatibleSensorTypes.findIndex( x => x.id === sensor.sensorType.id) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public thresholdTemplateIsCompatibleWithThings(): boolean {
     const thresholdTemplate = this.asset.thresholdTemplate;
     if (thresholdTemplate && thresholdTemplate.thresholds) {
       for (const threshold of thresholdTemplate.thresholds) {
@@ -124,26 +155,6 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       return true;
     } else {
       return true;
-    }
-  }
-
-  public checkThresholdTemplate(event) {
-    if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
-      const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
-      if (!compatibleThresholdTemplate) {
-        const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-          width: '250px',
-          data: {
-            title: 'Warning',
-            content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (!result) {
-            this.stepper.selectedIndex = 1;
-          }
-        });
-      }
     }
   }
 
@@ -173,9 +184,8 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
       console.log(this.asset);
       console.log(this.originalAsset);
-      
-      // TODO: check the differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {

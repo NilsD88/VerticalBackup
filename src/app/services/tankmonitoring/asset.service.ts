@@ -9,6 +9,9 @@ import { map } from 'rxjs/operators';
 import { IThing } from 'src/app/models/g-thing.model';
 import { HttpClient } from '@angular/common/http';
 
+
+const MODULE_NAME = 'TANK_MONITORING';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +28,7 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public createAsset(asset: ITankMonitoringAsset): Observable < boolean > {
-    asset.module = 'TANK_MONITORING';
+    asset.module = MODULE_NAME;
     return super.createAsset(asset);
   }
 
@@ -152,10 +155,20 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+    // TODO: remove those lines when backend is ready
     return new Observable < IThing [] > ((observer) => {
       observer.next(MOCK_NEW_CHART_TANK_DATA);
       observer.complete();
     });
+
+    // TODO: uncomment those lines when backend is ready
+    super.getAssetDataById(
+      id,
+      interval,
+      from,
+      to,
+      MODULE_NAME
+    );
   }
 
 }

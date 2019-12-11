@@ -52,6 +52,7 @@ export class NewAssetService {
           image: asset.image,
           thresholdTemplateId: (asset.thresholdTemplate) ? asset.thresholdTemplate.id : null,
           thingIds: asset.things.map((thing) => thing.id),
+          customFields: asset.customFields,
           // TODO: add module when backend is ready
           // module: asset.module || 'SMART_MONITORING'
         }
@@ -131,7 +132,11 @@ export class NewAssetService {
                       id,
                       name
                     },
-                    image
+                    image,
+                    customFields {
+                      keyId,
+                      value
+                    }
                 }
             }
         `;
@@ -245,13 +250,6 @@ export class NewAssetService {
     let url = `${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`;
     if (moduleName) {
       url += `&module=${moduleName}`;
-      // TODO: remove those lines when backend is ready
-      /*
-      return new Observable < IThing [] > ((observer) => {
-        observer.next(MOCK_NEW_CHART_TANK_DATA);
-        observer.complete();
-      });
-      */
     }
     return this.http.get < IThing [] > (url);
   }
@@ -469,12 +467,35 @@ export class NewAssetService {
   }
 
   public getCustomFields(): Observable < IField [] > {
-    return new Observable < IField [] > (
-      observer => {
-        observer.next(MOCK_ASSETS_CUSTOM_FIELDS);
-        observer.complete();
+    const GET_CUSTOM_FIELDS = gql `
+      query findFields($organizationId: Long!, $subjectType: String!) {
+          fields: getKeysByOrganizationAndSubjectType(organizationId: $organizationId, subjectType: $subjectType) {
+            id,
+            label {
+              fr,
+              en,
+              nl
+            }
+            type,
+            options
+          }
       }
-    );
+    `;
+
+    interface GetCustomFieldsResponse {
+      fields: IField[];
+    }
+
+    return this.apollo.query < GetCustomFieldsResponse > ({
+      query: GET_CUSTOM_FIELDS,
+      fetchPolicy: 'network-only',
+      variables: {
+        organizationId: 1,
+        subjectType: 'ASSET'
+      }
+    }).pipe(map(({
+      data,
+    }) => data.fields));
   }
 
 }

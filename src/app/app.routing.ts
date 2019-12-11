@@ -15,7 +15,7 @@ export class PublicAuthGuard implements CanActivate {
   }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    
+    /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
@@ -26,7 +26,7 @@ export class PublicAuthGuard implements CanActivate {
       impersonation: false
     });
     return true;
-    
+    */
     try {
       this.sharedService.user = new User(await this.authService.isLoggedIn());
       if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
@@ -48,7 +48,8 @@ export class UserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    
+    console.log('UserAuthGuard');
+    /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
@@ -59,7 +60,7 @@ export class UserAuthGuard implements CanActivate {
       impersonation: false
     });
     return true;
-    
+    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       return this.sharedService.user.isUser;
@@ -85,14 +86,15 @@ export class UserAuthGuard implements CanActivate {
   }
 }
 
+
 @Injectable()
-export class AdminAuthGuard implements CanActivate {
+export class HomeUserAuthGuard implements CanActivate {
 
   constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
   }
 
   async canActivate(): Promise<boolean> {
-    
+    /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
@@ -103,7 +105,73 @@ export class AdminAuthGuard implements CanActivate {
       impersonation: false
     });
     return true;
-    
+    */
+    try {
+      this.sharedService.user = await this.authService.isLoggedIn();
+      const modules = this.sharedService.user.modules;
+      if (modules.length === 1) {
+        switch (modules[0]){
+          case 'TANK_MONITORING':
+            this.router.navigate(['private/tankmonitoring/dashboard']);
+            break;
+          case 'PEOPLE_COUNTING_WALKING_TRAIL':
+            this.router.navigate(['private/walkingtrail/dashboard']);
+            break;
+          case 'PEOPLE_COUNTING_WALKING_RETAIL':
+            this.router.navigate(['private/peoplecounting/dashboard']);
+            break;
+          case 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH':
+            this.router.navigate(['private/stairwaytohealth/dashboard']);
+            break;
+          default:
+            this.router.navigate(['private/smartmonitoring/inventory']);
+            break;
+        }
+      } else {
+        this.router.navigate(['private/smartmonitoring/inventory']);
+      }
+      return true;
+    } catch (err) {
+      switch (err.status) {
+        case 401:
+          this.router.navigate(['/']);
+          this.sharedService.showNotification('Unauthorized: 401', 'warning', 3000);
+          break;
+        case 403:
+          this.router.navigate(['/']);
+          this.sharedService.showNotification('Unauthorized: 403', 'warning', 3000);
+          break;
+        case 404:
+          this.router.navigate(['/error/404']);
+          break;
+        default:
+          this.router.navigate(['/error/500']);
+      }
+      return true;
+    }
+  }
+}
+
+
+@Injectable()
+export class AdminAuthGuard implements CanActivate {
+
+  constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
+  }
+
+  async canActivate(): Promise<boolean> {
+    /*
+    this.sharedService.user = new User({
+      email: 'nicolas.ancel@ordina.be',
+      firstName: 'Nicolas',
+      lastName: 'Ancel',
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
+      roles: ['pxs:iot:localadmin'],
+      orgName: 'Ordina',
+      impersonation: false
+    });
+    return true;
+    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
@@ -199,8 +267,8 @@ export const AppRoutes: Routes = [
     children: [
       {
         path: 'home',
-        canActivate: [UserAuthGuard],
-        redirectTo: 'smartmonitoring',
+        canActivate: [HomeUserAuthGuard],
+        children: []
       },
       {
         path: 'contact',

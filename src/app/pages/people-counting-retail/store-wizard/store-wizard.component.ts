@@ -1,3 +1,4 @@
+import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -22,11 +23,11 @@ import { GraphQLError } from 'graphql/error';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 @Component({
-  selector: 'pvf-trail-wizard',
-  templateUrl: './trail-wizard.component.html',
-  styleUrls: ['./trail-wizard.component.scss']
+  selector: 'pvf-store-wizard',
+  templateUrl: './store-wizard.component.html',
+  styleUrls: ['./store-wizard.component.scss']
 })
-export class TrailWizardComponent implements OnInit {
+export class StoreWizardComponent implements OnInit {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -48,7 +49,7 @@ export class TrailWizardComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
     public newLocationService: NewLocationService,
-    public walkingTrailLocationService: WalkingTrailLocationService,
+    public peopleCountingRetailLocationService: PeopleCountingRetailLocationService,
     public assetService: NewAssetService,
     public dialog: MatDialog,
     public router: Router,
@@ -102,7 +103,6 @@ export class TrailWizardComponent implements OnInit {
       description: null,
       name: null,
       image: null,
-      images: [],
       geolocation: null,
       customFields: [],
       module: 'WALKING_TRAIL'
@@ -134,7 +134,7 @@ export class TrailWizardComponent implements OnInit {
 
   public submitAndContinue() {
     if (this.editMode || !isNullOrUndefined(this.location.id)) {
-      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images', 'customFields'];
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 
       const location: IPeopleCountingLocation = {
@@ -145,7 +145,7 @@ export class TrailWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.walkingTrailLocationService.updateLocation(location).subscribe(
+      this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
         (updatedLocation: ILocation | null) => {
           if (updatedLocation) {
             this.originalLocation = cloneDeep(location);
@@ -158,7 +158,7 @@ export class TrailWizardComponent implements OnInit {
         }
       );
     } else {
-      this.walkingTrailLocationService.createLocation(this.location).subscribe(
+      this.peopleCountingRetailLocationService.createLocation(this.location).subscribe(
         (location: IPeopleCountingLocation | null) => {
           this.location.id = location.id;
           this.originalLocation = cloneDeep(location);
@@ -176,7 +176,7 @@ export class TrailWizardComponent implements OnInit {
 
   public done() {
     if (this.editMode) {
-      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images', 'customFields'];
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 
       const location: IPeopleCountingLocation = {
@@ -187,7 +187,7 @@ export class TrailWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.walkingTrailLocationService.updateLocation(location).subscribe(
+      this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
         (updatedLocation: ILocation | null) => {
           if (updatedLocation) {
             this.goToTrailPage(this.location.id);

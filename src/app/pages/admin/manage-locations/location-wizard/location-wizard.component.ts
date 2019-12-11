@@ -49,7 +49,6 @@ export class LocationWizardComponent implements OnInit {
     });
 
     this.fields = await this.newLocationService.getCustomFields().toPromise();
-
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
         this.location = await this.newLocationService.getLocationById(locationId).toPromise();
@@ -78,15 +77,12 @@ export class LocationWizardComponent implements OnInit {
       name: null,
       image: null,
       geolocation: null,
-      customFields: {}
+      customFields: []
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
     }
-    this.fields.forEach(field => {
-      this.location.customFields[field.id] = null;
-    });
   }
 
   updateLocation(location: ILocation) {
@@ -112,7 +108,7 @@ export class LocationWizardComponent implements OnInit {
     if (this.editMode) {
 
       // TODO: check differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image'];
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 
       const location: ILocation = {

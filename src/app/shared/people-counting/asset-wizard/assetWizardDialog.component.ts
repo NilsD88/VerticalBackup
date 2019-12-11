@@ -64,7 +64,7 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
       locationId: this.data.location.id,
       things: [],
       thresholdTemplate: null,
-      customFields: {},
+      customFields: [],
       module: this.data.module
     };
   }

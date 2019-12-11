@@ -14,6 +14,14 @@ export const PeopleCountingRetailRoutes: Routes = [
     }]
   },
   {
+    path: 'store/new',
+    loadChildren: () => import('./store-wizard/store-wizard.module').then(m => m.StoreWizardModule)
+  },
+  {
+    path: 'store/update/:id',
+    loadChildren: () => import('./store-wizard/store-wizard.module').then(m => m.StoreWizardModule)
+  },
+  {
     path: 'store/:id',
     children: [{
       path: '',

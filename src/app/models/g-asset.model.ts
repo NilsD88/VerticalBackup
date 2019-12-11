@@ -4,6 +4,7 @@ import {IThresholdTemplate} from './g-threshold-template.model';
 import {IThing} from './g-thing.model';
 import {isNullOrUndefined} from 'util';
 import {IAlert} from './g-alert.model';
+import { ICustomField } from './field.model';
 
 export interface IAbstractAsset<TLocation> {
   id?: string;
@@ -18,7 +19,7 @@ export interface IAbstractAsset<TLocation> {
   things?: IThing[];
   thingIds?: string[];
   alerts?: IAlert[];
-  customFields?: {};
+  customFields?: ICustomField[];
   module?: string;
   lastAlert?: any;
 }
@@ -40,6 +41,7 @@ export class Asset {
   things: IThing[] = [];
   thingsId: string[];
   lastAlert: any;
+  customFields?: ICustomField[] = [];
   module: string;
 
   constructor(asset: IAsset = null) {

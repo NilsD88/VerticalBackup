@@ -18,7 +18,7 @@
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
               [(ngModel)]="asset.description" maxlength="255"></textarea>
           </mat-form-field>
-          <pxs-form-custom-fields *ngIf="asset.customFields" [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
         </div>
       </div>
 
@@ -70,7 +70,7 @@
             </pxs-list-things>
           </div>
         </div>
-        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="stepper.next()"></pxs-stepper-next>
+        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>

@@ -150,7 +150,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
       console.log(this.originalAsset);
 
       // TODO: check differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {

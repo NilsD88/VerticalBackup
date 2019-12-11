@@ -69,6 +69,7 @@ export class NewLocationService {
           description: location.description,
           geolocation: location.geolocation,
           image: location.image,
+          customFields: location.customFields,
           module: location.module || 'SMART_MONITORING'
         }
       }
@@ -127,6 +128,10 @@ export class NewLocationService {
                   geolocation {
                       lat
                       lng
+                  },
+                  customFields {
+                    keyId,
+                    value
                   }
               }
           }
@@ -253,7 +258,7 @@ export class NewLocationService {
       variables: {
         input: {
           id,
-          locationIdToTransferAssets
+          assetHeirId: locationIdToTransferAssets
         }
       }
     }).pipe(
@@ -265,12 +270,35 @@ export class NewLocationService {
   }
 
   public getCustomFields(): Observable < IField [] > {
-    return new Observable < IField [] > (
-      observer => {
-        observer.next(MOCK_LOCATIONS_CUSTOM_FIELDS);
-        observer.complete();
+    const GET_CUSTOM_FIELDS = gql `
+      query findFields($organizationId: Long!, $subjectType: String!) {
+          fields: getKeysByOrganizationAndSubjectType(organizationId: $organizationId, subjectType: $subjectType) {
+            id,
+            label {
+              fr,
+              en,
+              nl
+            }
+            type,
+            options
+          }
       }
-    );
+    `;
+
+    interface GetCustomFieldsResponse {
+      fields: IField[];
+    }
+
+    return this.apollo.query < GetCustomFieldsResponse > ({
+      query: GET_CUSTOM_FIELDS,
+      fetchPolicy: 'network-only',
+      variables: {
+        organizationId: 1,
+        subjectType: 'LOCATION'
+      }
+    }).pipe(map(({
+      data,
+    }) => data.fields));
   }
 
   public getImageOfLocationById(id: string): Observable < string > {
@@ -297,7 +325,12 @@ export class NewLocationService {
     }) => data.location.image));
   }
 
-  public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedLocations > {
+  public getPagedLeafLocations(
+    pageNumber: number = 0,
+    pageSize: number = 10,
+    filter = {},
+    moduleName: string = null
+    ): Observable < IPagedLocations > {
     const GET_PAGED_LEAF_LOCATIONS = gql `
       query findLeafLocationsByFilterPaged($input: PagedLeafLocationsFindByFilterInput!) {
         pagedLeafLocations: findLeafLocationsByFilterPaged(input: $input) {
@@ -328,7 +361,8 @@ export class NewLocationService {
           organizationId: 1,
           pageNumber,
           pageSize,
-          ...filter
+          ...filter,
+          moduleName
         }
       },
       fetchPolicy: 'network-only'

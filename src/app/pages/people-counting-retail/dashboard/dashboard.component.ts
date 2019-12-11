@@ -55,7 +55,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.rootLocation = {
-      id: 'xXx',
+      id: null,
       parentId: null,
       geolocation: null,
       image: null,

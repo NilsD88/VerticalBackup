@@ -28,7 +28,7 @@ export class PlaceComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
       this.leaf = await this.locationService.getLocationById(params.id).toPromise();
       const rootLocation = {
-        id: 'xXx',
+        id: null,
         parentId: null,
         geolocation: null,
         image: null,

@@ -92,48 +92,14 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
       }) => data.location));
     }
 
-
     public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedPeopleCountingLocations > {
-        const GET_PAGED_LEAF_LOCATIONS = gql `
-          query findLeafLocationsByFilterPaged($input: PagedLeafLocationsFindByFilterInput!) {
-            pagedLeafLocations: findLeafLocationsByFilterPaged(input: $input) {
-              totalElements,
-              totalPages,
-              locations {
-                  id,
-                  name,
-                  description,
-                  image,
-                  parent {
-                    id,
-                    name,
-                    image
-                  }
-              }
-            }
-          }`;
-
-        interface GetPagedLeafLocationsResponse {
-          pagedLeafLocations: IPagedPeopleCountingLocations;
-        }
-
-        return this.apollo.query < GetPagedLeafLocationsResponse > ({
-          query: GET_PAGED_LEAF_LOCATIONS,
-          variables: {
-            input: {
-              organizationId: 1,
-              pageNumber,
-              pageSize,
-              ...filter
-            }
-          },
-          fetchPolicy: 'network-only'
-        }).pipe(map(({
-          data
-        }) => {
-          return data.pagedLeafLocations;
-        }));
-    }
+      return super.getPagedLeafLocations(
+        pageNumber,
+        pageSize,
+        filter,
+        MODULE_NAME
+      );
+   }
 
     public createLocation(location: IPeopleCountingLocation): Observable < IPeopleCountingLocation > {
       const CREATE_LOCATION = gql `
@@ -166,6 +132,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
             description: location.description,
             geolocation: location.geolocation,
             image: location.image,
+            customFields: location.customFields,
             module: 'PEOPLE_COUNTING_WALKING_TRAIL'
             // TODO: when the backend will be ready
             /*

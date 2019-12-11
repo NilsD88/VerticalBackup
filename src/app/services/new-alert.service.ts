@@ -92,6 +92,10 @@ export class NewAlertService {
               label,
               timestamp,
               value,
+              range {
+                from,
+                to
+              }
           }
         }
       }`;
@@ -145,6 +149,10 @@ export class NewAlertService {
           label,
           timestamp,
           value,
+          range {
+            from,
+            to
+          }
         }
       }`;
 
