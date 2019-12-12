@@ -7,7 +7,7 @@ import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
-import { divIcon } from 'leaflet';
+import { divIcon, Marker } from 'leaflet';
 import { of } from 'rxjs';
 
 const assetIconTankMonitoring = divIcon({
@@ -71,14 +71,17 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     return of(this.tanks.filter(tank => tank.location.id === locationId));
   }
 
-  createAssetPopup(asset: ITankMonitoringAsset): any {
+  createAssetPopup(asset: ITankMonitoringAsset, assetUrl: string, marker: Marker): any {
     const popupEl: NgElement & WithProperties<TankMonitoringMapPopupComponent> =
     document.createElement('tankmonitoring-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
+    popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;
   }
+
+
 
   generateAssetMarker(asset: ITankMonitoringAsset) {
     const status = asset.status;
