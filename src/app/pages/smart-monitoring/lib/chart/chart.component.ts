@@ -290,7 +290,7 @@ export class ChartComponent implements OnInit, OnChanges {
             yAxis: this.getYAxisByLabel(item.label),
             showInLegend: (item.series.length) ? true : false,
             lineWidth: 0,
-            linkedTo: ':previous',
+            linkedTo: (sensorDefinition.aggregatedValues.avg || sensorDefinition.aggregatedValues.sum) ? ':previous' : null,
             fillOpacity: 0.3,
             zIndex: 0,
             marker: {
