@@ -1,3 +1,4 @@
+import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { SummaryStatisticsModule } from './summary-statistics/summary-statistics.module';
 import { TrailMapModule } from './trail-map/trail-map.module';
@@ -25,6 +26,7 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/location/ass
     AssetsCounterModule,
     TrailMapModule,
     SummaryStatisticsModule,
+    LocationExplorerModule,
     SlideshowModule,
     MapModule
   ],

@@ -33,7 +33,8 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public getAssets(): Observable < ITankMonitoringAsset[] > {
-
+    // Mock data
+    /*
     return new Observable < ITankMonitoringAsset[] > ((observer) => {
       observer.next([{
           id: '0',
@@ -86,12 +87,18 @@ export class TankMonitoringAssetService extends NewAssetService {
       ]);
       observer.complete();
     });
+    */
 
+    // Real data
     const GET_ASSETS_BY_MODULE = gql `
         query FindAssetsByModule($input: AssetFindByModuleInput!) {
           assets: findAssetsByModule(input: $input) {
             id,
             name,
+            location {
+              id,
+              name
+            }
             things {
               devEui,
               batteryPercentage,
@@ -117,8 +124,7 @@ export class TankMonitoringAssetService extends NewAssetService {
       fetchPolicy: 'network-only',
       variables: {
         input: {
-          // moduleId: // TODO: module id
-          // onlySensorsNeeded: // TODO: to be able to get only interesting data based on sensortype of the module (chart definition)
+          moduleName: MODULE_NAME
         }
       }
     }).pipe(map(({

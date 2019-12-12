@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
+import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
 import { Subscription } from 'rxjs';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -9,30 +11,19 @@ import { ILocation } from 'src/app/models/g-location.model';
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class TankMonitoringMapPopupComponent implements OnInit, OnDestroy {
-  @Input() asset: ITankMonitoringAsset;
-  
-  private subscription: Subscription;
+export class TankMonitoringMapPopupComponent extends MapPopupComponent implements OnInit, OnDestroy {
 
   constructor(
-    private tankMonitoringAssetService: TankMonitoringAssetService
-  ) {}
+    public tankMonitoringAssetService: TankMonitoringAssetService,
+    public router: Router,
+    public elementRef: ElementRef
 
-  ngOnInit() {
-    if (this.asset) {
-      this.subscription = this.tankMonitoringAssetService.getAssetPopupDetail(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
-        this.asset = {
-          ...this.asset,
-          ...asset
-        };
-      });
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  ) {
+    super(
+      tankMonitoringAssetService,
+      router,
+      elementRef
+    );
   }
 }
 

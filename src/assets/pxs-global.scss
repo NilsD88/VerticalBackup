@@ -1370,4 +1370,10 @@ mat-form-field {
 
 .leaflet-popup-content {
   width: 200px !important;
+  padding: 0px !important;
+  margin: 0px !important;
+  > * {
+    display: block;
+    padding: 13px 19px;
+  }
 }

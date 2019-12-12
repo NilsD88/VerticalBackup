@@ -361,7 +361,11 @@ export class CalendarViewComponent implements OnInit {
             data: {
               title: 'Sorry, an error has occured!',
               message: 'An error has occured during getting the sensor data'
-            }
+            },
+            minWidth: '320px',
+            maxWidth: '400px',
+            width: '100vw',
+            maxHeight: '80vh',
           });
           return of([]);
         }));

@@ -1,3 +1,4 @@
+import { IPeopleCountingAsset } from './../../../../models/peoplecounting/asset.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
@@ -33,6 +34,7 @@ interface ICheckpoint {
 export class AssetsCounterComponent implements OnInit {
 
   @Input() leaf: IPeopleCountingLocation;
+  @Input() assets: IPeopleCountingAsset[];
   @Input() assetService: WalkingTrailAssetService;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -48,13 +50,17 @@ export class AssetsCounterComponent implements OnInit {
 
   async ngOnInit() {
 
+    if (!this.assets) {
+      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+    }
+
     // TODO: uncomment those lines when backend is ready
 
     let dayValuesReady = false;
     let weekValuesReady = false;
 
     /*
-    this.checkpoints = this.leaf.assets.map(asset => {
+    this.checkpoints = this.assets.map(asset => {
       return {
         id: asset.id,
         name: asset.name
@@ -63,7 +69,7 @@ export class AssetsCounterComponent implements OnInit {
 
     // Get the today values
     this.assetService.getAssetsDataByIds(
-      this.leaf.assets.map(asset => asset.id),
+      this.assets.map(asset => asset.id),
       'DAILY',
       moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
       moment().valueOf()
@@ -83,7 +89,7 @@ export class AssetsCounterComponent implements OnInit {
 
     // Get the week values
     this.assetService.getAssetsDataByIds(
-      this.leaf.assets.map(asset => asset.id),
+      this.assets.map(asset => asset.id),
       'WEEKLY',
       moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
       moment().startOf('isoWeek').valueOf(),
@@ -104,7 +110,7 @@ export class AssetsCounterComponent implements OnInit {
 
 
     // TODO: remove those lines when backend is ready
-    for (const asset of this.leaf.assets) {
+    for (const asset of this.assets) {
       // Sum of a specific range per asset for a specific location
       this.checkpoints.push({
         id: asset.id,

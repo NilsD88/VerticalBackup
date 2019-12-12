@@ -1,12 +1,14 @@
-<mat-form-field>
-  <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
-    (ngModelChange)="onFilterChange()">
-</mat-form-field>
-<mat-autocomplete #auto="matAutocomplete">
-  <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
-    {{ option.name }}
-  </mat-option>
-</mat-autocomplete>
+<div *ngIf="searchBar">
+  <mat-form-field>
+    <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
+      (ngModelChange)="onFilterChange()">
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
+      {{ option.name }}
+    </mat-option>
+  </mat-autocomplete>
+</div>
 
 <div>
   <mat-progress-spinner *ngIf="isDownloading" style="margin:0 auto;" color="primary" mode="indeterminate">

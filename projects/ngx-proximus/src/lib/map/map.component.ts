@@ -4,7 +4,7 @@ import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { NgElement, WithProperties } from '@angular/elements';
 import { IGeolocation } from 'src/app/models/geolocation.model';
-import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point} from 'leaflet';
+import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point, Marker} from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -163,13 +163,17 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     if (this.assets && this.assets.length) {
       for (const asset of this.assets) {
         if (asset.geolocation) {
+          const that = this;
           const assetIcon = this.generateAssetMarker(asset);
           const newMarker = marker(
             [asset.geolocation.lat, asset.geolocation.lng],
             {
               icon: assetIcon
             }
-          ).bindPopup(() => this.createAssetPopup(asset, this.assetUrl)).openPopup();
+          ).bindPopup(() => this.createAssetPopup(asset, this.assetUrl, newMarker));
+          newMarker.on('mouseover', function() {
+            this.openPopup();
+          });
           this.markers.push(newMarker);
         } else {
           assetWithoutPosition.push(asset);
@@ -222,7 +226,10 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           {
             icon: locationIcon
           }
-        ).bindPopup(() => this.createLocationPopup(child, this.leafUrl)).openPopup();
+        ).bindPopup(() => this.createLocationPopup(child, this.leafUrl, newMarker));
+        newMarker.on('mouseover', function() {
+          this.openPopup();
+        });
         this.locationsLayer.push(newMarker);
       }
     }
@@ -306,21 +313,23 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public createAssetPopup(asset: IAsset, assetUrl: string) {
+  public createAssetPopup(asset: IAsset, assetUrl: string, marker: Marker) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
     popupEl.assetUrl = assetUrl;
+    popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;
   }
 
-  public createLocationPopup(location: ILocation, leafUrl: string = null) {
+  public createLocationPopup(location: ILocation, leafUrl: string = null, marker: Marker) {
     const popupEl: NgElement & WithProperties<MapPopupComponent> = document.createElement('map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.goToChild = (location) => { this.goToChild(location, true); };
     popupEl.location = location;
     popupEl.leafUrl = leafUrl;
+    popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;
   }

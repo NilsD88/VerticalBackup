@@ -29,6 +29,7 @@ export class EditableImageComponent implements OnInit {
         maxWidthAndHeight: this.maxWidthAndHeight
       },
       width: '100vw',
+      maxHeight: '80vh',
     });
 
     const result = await dialogRef.afterClosed().toPromise();

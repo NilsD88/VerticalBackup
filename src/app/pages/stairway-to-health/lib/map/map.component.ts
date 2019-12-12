@@ -8,6 +8,7 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
+import { Marker } from 'leaflet';
 
 
 @Component({
@@ -37,21 +38,24 @@ export class PeopleCountingRetailMapComponent extends MapComponent implements On
     super.ngOnInit();
   }
 
-  createAssetPopup(asset: IPeopleCountingAsset): any {
+
+  createAssetPopup(asset: IPeopleCountingAsset, assetUrl: string, marker: Marker): any {
     const popupEl: NgElement & WithProperties<PeopleCountingRetailMapPopupComponent> =
       document.createElement('peoplecountingretail-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
+    popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;
   }
 
-  createLocationPopup(location: IPeopleCountingLocation): any {
+  createLocationPopup(location: IPeopleCountingLocation, leafUrl: string = null, marker: Marker): any {
     const popupEl: NgElement & WithProperties<PeopleCountingRetailMapPopupComponent> =
       document.createElement('peoplecountingretail-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.goToChild = (loc) => { this.goToChild(loc, true); };
     popupEl.location = location;
+    popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;
   }

@@ -174,7 +174,11 @@ export class LocationWizardComponent implements OnInit {
           data: {
             title: `${nameAlreadyUsed} already exist`,
             message: 'Please choose an other location name to be able to save it'
-          }
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
         });
       }
     }

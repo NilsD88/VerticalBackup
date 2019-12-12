@@ -251,6 +251,9 @@ export class MonthViewComponent implements OnInit {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
+
+        // MOCK DATA
+        /*
         return new Observable <IPeopleCountingAsset[]> ((observer) => {
           const assets: IPeopleCountingAsset[] = [];
           this.leaf.assets.forEach(asset => {
@@ -265,7 +268,9 @@ export class MonthViewComponent implements OnInit {
           });
           observer.next(assets);
         });
-        /*
+        */
+
+        // REAL DATA
         return this.assetService.getAssetsDataByIds(
           this.leaf.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
@@ -274,11 +279,14 @@ export class MonthViewComponent implements OnInit {
             data: {
               title: 'Sorry, an error has occured!',
               message: 'An error has occured during getting the sensor data'
-            }
+            },
+            minWidth: '320px',
+            maxWidth: '400px',
+            width: '100vw',
+            maxHeight: '80vh',
           });
           return of([]);
         }));
-        */
       })
     );
   }

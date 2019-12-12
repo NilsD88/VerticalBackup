@@ -27,25 +27,25 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
 
     public getLocationsTree(): Observable < IPeopleCountingLocation[] > {
       // TODO: Remove those lines when the backend is ready
+      /*
       return new Observable < IPeopleCountingLocation[] > ((observer) => {
           observer.next(MOCK_LOCATIONS_WALKING_TRAIL);
           observer.complete();
       });
+      */
 
       const url = `${environment.baseUrl}/location/locationtrees?org_id=1&module=${MODULE_NAME}`;
       return this.http.get < IPeopleCountingLocation[] > (url);
-      return new Observable < IPeopleCountingLocation[] > ((observer) => {
-          observer.next(MOCK_LOCATIONS_WALKING_TRAIL);
-          observer.complete();
-      });
     }
 
     public getLocationById(id: string): Observable < IPeopleCountingLocation > {
         // TODO: get location by id with the backend with all the assets (id, name)
+        /*
         return new Observable < IPeopleCountingLocation > ((observer) => {
             observer.next(MOCK_TRAIL_WALKING_TRAIL);
             observer.complete();
         });
+        */
 
 
         const GET_LOCATION_BY_ID = gql `
@@ -64,12 +64,13 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
                         image
                     }
                     image,
-                    images,
+                    # // TODO: add images when backend is ready
+                    #images,
                     geolocation {
                         lat
                         lng
                     },
-                    asset {
+                    assets {
                       id,
                       name
                     }
@@ -137,7 +138,6 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
             // TODO: when the backend will be ready
             /*
             images: location.images,
-            module: XXXX
             */
           }
         }

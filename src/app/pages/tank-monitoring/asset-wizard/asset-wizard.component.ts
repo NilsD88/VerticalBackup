@@ -114,7 +114,10 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       this.stepper.next();
     } else {
       this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'You can an only add an asset with at least one thing defined for tank monitoring',
@@ -163,7 +166,10 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -226,8 +232,9 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '600px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
       }
@@ -244,8 +251,9 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   public async openAddThresholdTemplate() {
     const dialogRef = this.dialog.open(ManageThresholdTemplatesDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '600px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
         fromPopup: true,

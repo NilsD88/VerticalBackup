@@ -67,17 +67,11 @@ export class NewSensorService {
     }
 
     public getSensorTypesByModule(moduleName: string): Observable<ISensorType[]> {
-
-        // TODO: get only sensor types from the module
-        const GET_SENSOR_TYPE_NAMES = gql`
-            query findAllSensorTypes {
-                sensorTypes: findAllSensorTypes {
+        const GET_SENSOR_TYPES_BY_MODULE = gql`
+            query findAllSensorTypesByModule($input: String) {
+                sensorTypes: findAllSensorTypesByModule(input: $input) {
                     id,
                     name,
-                    type,
-                    min,
-                    max,
-                    postfix
                 }
             }
         `;
@@ -87,8 +81,11 @@ export class NewSensorService {
         }
 
         return this.apollo.query<GetSensorTypeNamesResponse>({
-            query: GET_SENSOR_TYPE_NAMES,
-            fetchPolicy: 'network-only'
+            query: GET_SENSOR_TYPES_BY_MODULE,
+            fetchPolicy: 'network-only',
+            variables: {
+                input: moduleName
+            }
         }).pipe(map(({data}) => {
             return data.sensorTypes;
         }));

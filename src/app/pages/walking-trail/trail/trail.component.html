@@ -16,13 +16,18 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-sm-12">
-      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="leaf" [assets]="leaf?.assets"></pvf-peoplecounting-count-by-asset>
+      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets"></pvf-peoplecounting-count-by-asset>
     </div>
     <div class="col-md-4 col-sm-12">
-      <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="leaf" [leaf]="leaf"></pvf-peoplecounting-assets-counter>
+      <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets"></pvf-peoplecounting-assets-counter>
     </div>
     <div class="col-md-4 col-sm-12" style="height: 300px;">
         <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <pxs-location-explorer *ngIf="leaf" [displayAssets]="true" [rootLocation]="leaf" [customAssetService]="assetService" [searchBar]="false"></pxs-location-explorer>
     </div>
   </div>
 </div>

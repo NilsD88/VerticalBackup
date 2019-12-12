@@ -76,6 +76,7 @@ export class PointOfAttentionWizardComponent implements OnInit {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
       maxWidth: '1024px',
+      maxHeight: '80vh',
       width: '100vw',
       data: {
         parentLocation: this.pointOfAttention.location,
@@ -132,7 +133,11 @@ export class PointOfAttentionWizardComponent implements OnInit {
           data: {
             title: `${nameAlreadyUsed} already exist`,
             message: 'Please choose an other threshold template name to be able to save it'
-          }
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
         });
       }
     }

@@ -49,7 +49,10 @@ export class ManageThresholdTemplatesDialogComponent extends ManageThresholdTemp
 
   public addThresholdDialogRef() {
     return this.dialog.open(AddThresholdDialogComponent, {
-      width: '90vw'
+      minWidth: '320px',
+      maxWidth: '400px',
+      width: '100vw',
+      maxHeight: '80vh',
     });
   }
 

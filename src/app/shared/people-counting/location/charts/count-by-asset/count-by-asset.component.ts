@@ -1,3 +1,4 @@
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
   Component,
@@ -31,7 +32,9 @@ require('highcharts/modules/export-data')(Highcharts);
 })
 export class CountByAssetComponent implements OnInit, OnChanges {
 
+  @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
+
   @Input() assetService: WalkingTrailAssetService;
 
   public chart: any;
@@ -45,7 +48,10 @@ export class CountByAssetComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (!this.assets) {
+      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+    }
     this.initChartOptions();
     this.initChart();
     this.updateChart();
@@ -98,7 +104,6 @@ export class CountByAssetComponent implements OnInit, OnChanges {
   private async updateChart() {
     if ((this.assets || []).length) {
       const data = [];
-
 
       // TODO: uncomment those lines when backend is ready
       /*

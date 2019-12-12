@@ -35,6 +35,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() pointOfAttentionUrl = 'private/smartmonitoring/points-of-attention/point-of-attention/';
   @Input() leafUrl: string;
   @Input() assetPicker = false;
+  @Input() searchBar = true;
 
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
@@ -70,6 +71,8 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+
+    console.log('rootLocation', this.rootLocation);
 
 
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
@@ -165,7 +168,8 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
             rootLocation: this.rootLocation,
             selectedLocation: this.currentLocation || this.selectedLocation || this.rootLocation,
             ghostLocationId: locationId
-          }
+          },
+          maxHeight: '80vh',
         }).afterClosed().toPromise();
         if (!isNullOrUndefined(locationIdToTransferAssets)) {
           this.deleteLocation(locationId, locationIdToTransferAssets);

@@ -132,7 +132,10 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -195,8 +198,9 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '400px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
       }

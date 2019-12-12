@@ -53,8 +53,7 @@ export class NewAssetService {
           thresholdTemplateId: (asset.thresholdTemplate) ? asset.thresholdTemplate.id : null,
           thingIds: asset.things.map((thing) => thing.id),
           customFields: asset.customFields,
-          // TODO: add module when backend is ready
-          // module: asset.module || 'SMART_MONITORING'
+          module: asset.module || 'SMART_MONITORING'
         }
       }
     }).pipe(
@@ -254,11 +253,10 @@ export class NewAssetService {
     return this.http.get < IThing [] > (url);
   }
 
-  public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {
-    console.log('getAssetsByLocationId', locationId);
+  public getAssetsByLocationId(locationId: string, moduleName: string = null): Observable < IAsset[] > {
     const GET_ASSETS_BY_LOCATION_ID = gql `
-      query FindAssetsByLocation($locationId: Long!) {
-        assets: findAssetsByLocation(locationId: $locationId) {
+      query FindAssetsByLocation($input: AssetFindByLocationInput!) {
+        assets: findAssetsByLocation(input: $input) {
             id,
             name,
             description,
@@ -282,7 +280,10 @@ export class NewAssetService {
       query: GET_ASSETS_BY_LOCATION_ID,
       fetchPolicy: 'network-only',
       variables: {
-        locationId,
+        input: {
+          locationId,
+          moduleName
+        }
       }
     }).pipe(map(({
       data

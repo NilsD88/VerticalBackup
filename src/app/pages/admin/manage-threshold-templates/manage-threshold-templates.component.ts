@@ -207,7 +207,10 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   public addThresholdDialogRef() {
     return this.dialog.open(AddThresholdComponent, {
-      width: '90vw'
+      minWidth: '320px',
+      maxWidth: '400px',
+      width: '100vw',
+      maxHeight: '80vh',
     });
   }
 
@@ -271,7 +274,11 @@ export class ManageThresholdTemplatesComponent implements OnInit {
           data: {
             title: `${nameAlreadyUsed} already exist`,
             message: 'Please choose an other threshold template name to be able to save it'
-          }
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
         });
       }
     }
