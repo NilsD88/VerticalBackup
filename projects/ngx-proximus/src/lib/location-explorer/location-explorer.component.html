@@ -1,97 +1,103 @@
-
-<mat-form-field>
-  <input 
-    matInput
-    type="text" 
-    [matAutocomplete]="auto"
-    placeholder="Location name"
-    [(ngModel)]="filter.name"
-    (ngModelChange)="onFilterChange()"
-  >
-</mat-form-field>
-<mat-autocomplete  #auto="matAutocomplete">
+<div *ngIf="searchBar">
+  <mat-form-field>
+    <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
+      (ngModelChange)="onFilterChange()">
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
       {{ option.name }}
     </mat-option>
-</mat-autocomplete>      
+  </mat-autocomplete>
+</div>
 
 <div>
-    <mat-progress-spinner 
-    *ngIf="isDownloading"
-    style="margin:0 auto;"
-    color="primary" 
-    mode="indeterminate">
+  <mat-progress-spinner *ngIf="isDownloading" style="margin:0 auto;" color="primary" mode="indeterminate">
   </mat-progress-spinner>
-  <mat-tab-group 
-    *ngIf="!isDownloading"
-    [selectedIndex]="selectedIndex"
-    (selectedIndexChange)="selectedIndexChange($event)"
-  >
+  <mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex"
+    (selectedIndexChange)="selectedIndexChange($event)">
     <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-    <div 
-      cdkDropList
-      (cdkDropListDropped)="drop($event)"
-      [cdkDropListDisabled]="!admin"
-      class="dropList"
-    >
-      <hr data-content="LOCATIONS">
-      <div 
-        cdkDrag
-        class="dropListItem"
-        *ngFor="let location of tab.children"
-        [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
-        (click)="clickOnLocation(location)"
-      >
-        <div>
-          <pxs-icon icon="globe" class="location"></pxs-icon>
-          {{location.name}}
-          <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent">
-            <pxs-icon *ngIf="location.module === 'WALKING_TRAIL'" icon="edit" [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
-            <pxs-icon *ngIf="!location.module" icon="edit" [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
-          </button>
-          <button *ngIf="admin && (location.children.length === 0 || !location.children)" mat-icon-button matTooltip="Delete location" color="warn">
-            <pxs-icon icon="trash" (click)="deleteLocation(location.id)"></pxs-icon>
-          </button>
+      <div cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="!admin" class="dropList">
+        <hr data-content="LOCATIONS">
+        <div cdkDrag class="dropListItem" *ngFor="let location of tab.children"
+          [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
+          (click)="clickOnLocation(location)">
+          <div>
+            <pxs-icon icon="globe" class="location"></pxs-icon>
+            {{location.name}}
+            <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent">
+              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
+                [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
+              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_RETAIL'" icon="edit"
+                [routerLink]="['/private/peoplecounting/store/update/'+location.id]"></pxs-icon>
+              <pxs-icon *ngIf="location.module === 'SMART_MONITORING'" icon="edit"
+                [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
+            </button>
+            <button *ngIf="admin && (location.children.length === 0 || !location.children)" mat-icon-button
+              matTooltip="Delete location" color="warn">
+              <pxs-icon icon="trash" (click)="wantToDeleteLocation(location.id)"></pxs-icon>
+            </button>
+          </div>
+          <div *ngIf="location.id !== ghostLocationId">
+            <span (click)="openLocation(location)">
+              <pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon>
+            </span>
+          </div>
         </div>
-        <div *ngIf="location.id !== ghostLocationId">
-          <span (click)="openLocation(location)"><pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon></span>
+        <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)"
+          [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
+          <div>
+            <pxs-icon icon="plus-o"></pxs-icon> Add new location
+          </div>
         </div>
-      </div>
-      <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
-        <div>
-          <pxs-icon icon="plus-o"></pxs-icon> Add new location
-        </div>
-      </div>
-      <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)" [routerLink]="['/private/admin/manage-locations/new/']">
-        <div>
-          <pxs-icon icon="plus-o"></pxs-icon> Add new location
-        </div>
-      </div>
-    </div>
-    <div *ngIf="displayAssets" class="dropList">
-      <div>
-        <hr data-content="ASSETS">
-        <mat-progress-spinner 
-          *ngIf="loadingAsset"
-          style="margin:0 auto;"
-          [diameter]="25"
-          color="primary" 
-          mode="indeterminate">
-        </mat-progress-spinner>
-        <div *ngIf="currentLocation && !loadingAsset && (!currentLocation.assets ||currentLocation.assets.length < 1)">
-          No asset found at this location
-        </div>
-        <div *ngIf="currentLocation">
-          <div class="dropListItem" *ngFor="let asset of currentLocation.assets" [ngClass]="{'selected': selectedAsset === asset}">
-            <a [routerLink]="assetUrl+''+asset.id" (click)="assetClicked.emit()">
-              <pxs-icon icon="document-img" class="asset"></pxs-icon>
-              {{asset.name}}
-            </a>
+        <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)"
+          [routerLink]="['/private/admin/manage-locations/new/']">
+          <div>
+            <pxs-icon icon="plus-o"></pxs-icon> Add new location
           </div>
         </div>
       </div>
-    </div>
-    <br><br>
-  </mat-tab>
+      <div *ngIf="displayAssets || assetPicker" class="dropList">
+        <div>
+          <hr data-content="ASSETS">
+          <mat-progress-spinner *ngIf="loadingAssets" style="margin:0 auto;" [diameter]="25" color="primary"
+            mode="indeterminate">
+          </mat-progress-spinner>
+          <div
+            *ngIf="currentLocation && !loadingAssets && (!currentLocation.assets ||currentLocation.assets.length < 1)">
+            No asset found at this location
+          </div>
+          <div *ngIf="currentLocation">
+            <div class="dropListItem" *ngFor="let asset of currentLocation.assets"
+              [ngClass]="{'selected': selectedAsset === asset}">
+              <a (click)="clickOnAsset(asset)">
+                <pxs-icon icon="document-img" class="asset"></pxs-icon>
+                {{asset.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="displayPointsOfAttention" class="dropList">
+        <div>
+          <hr data-content="POINTS OF ATTENTION">
+          <mat-progress-spinner *ngIf="loadingPointsOfAttention" style="margin:0 auto;" [diameter]="25" color="primary"
+            mode="indeterminate">
+          </mat-progress-spinner>
+          <div
+            *ngIf="currentLocation && !loadingPointsOfAttention && (!currentLocation.pointsOfAttention ||currentLocation.pointsOfAttention.length < 1)">
+            No point of attention found at this location
+          </div>
+          <div *ngIf="currentLocation">
+            <div class="dropListItem" *ngFor="let pointOfAttention of currentLocation.pointsOfAttention">
+              <a (click)="clickOnPointOfAttention(pointOfAttention)">
+                <pxs-icon icon="document-img" class="asset"></pxs-icon>
+                {{pointOfAttention.name}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+    </mat-tab>
   </mat-tab-group>
 </div>

@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 @Injectable({
     providedIn: 'root'
@@ -40,5 +42,16 @@ export class PeopleCountingLocationService extends NewLocationService {
       }).pipe(map(({
         data
       }) => data.location.image));
+    }
+
+    public getLocationsDataByIds(ids: string[], interval: Intervals, from: number, to: number, moduleName: string): Observable < IPeopleCountingLocation[] > {
+      let idsParams = `ids=${ids[0]}`;
+      if (ids.length > 1) {
+        for (let index = 1; index < ids.length; index++) {
+          idsParams += `&ids=${ids[index]}`;
+        }
+      }
+      return this.http.get < IPeopleCountingLocation [] >
+        (`${environment.baseUrl}/peopleCounting/locations?${idsParams}&module=${moduleName}&interval=${interval}&from=${from}&to=${to}`);
     }
 }

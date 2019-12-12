@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="row" style="margin-top: 1rem;">
+    <div class="col-md-12 manage-header">
+      <h1 class="pxs-title">{{'LAYOUT.MANAGE_POINTS_OF_ATTENTION' | translate}}</h1>
+      <button mat-mini-fab color="primary" routerLink="/private/admin/manage-points-of-attention/points-of-attention/new"
+        [matTooltip]="'MANAGE_POINTS_OF_ATTENTION.NEW' | translate">
+        <pxs-icon icon="plus-o"></pxs-icon>
+      </button>
+    </div>
+  </div>
+  <pxs-list-points-of-attention></pxs-list-points-of-attention>
+</div>

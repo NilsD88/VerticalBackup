@@ -1,3 +1,4 @@
+import { WalkingTrailLocationService } from './../../../../../services/walkingtrail/location.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {uniq} from 'lodash';
@@ -46,6 +47,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 
   constructor(
     private translateService: TranslateService,
+    private locationService: WalkingTrailLocationService,
     private datePipe: DatePipe,
     private router: Router
   ) {}
@@ -168,11 +170,27 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     const leafs: IPeopleCountingLocation[] = [];
     findLeaftsLocation(this.parentLocation, leafs);
     // Generate past week per hour per leaf
-    // TODO: get past week per hour per locations from backend for each locations (or leaf locations?)
     leafs.forEach(leaf => {
       leaf.series = generatePastWeekPerHourOfDataSeries();
     });
     this.leafs = leafs;
+
+
+    // TODO: get past week per hour per locations from backend for each locations (or leaf locations?)
+    /*
+    this.locationService.getLocationsDataByIds(
+      leafs.map(leaf => leaf.id),
+      'HOURLY',
+      moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
+      moment().startOf('isoWeek').valueOf()
+    ).subscribe(
+      (result) => {
+        leafs.forEach((leaf, index) => {
+          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        });
+      }
+    );
+    */
 
 
 
@@ -194,7 +212,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
       data.push({
         name: leaf.name,
         id: leaf.id,
-        data: leaf.series.map(element => element.value)
+        data: leaf.series.map(element => element.valueIn)
       });
 
       xAxisCategories.push(
@@ -227,7 +245,7 @@ function generatePastWeekPerHourOfDataSeries(): IPeopleCountingLocationSerie[] {
       dataSeries.push(
         {
           timestamp: moment().startOf('isoWeek').add(dayIndex, 'days').startOf('day').add(hourIndex, 'hours').valueOf(),
-          value: Math.floor(Math.random() * 101)
+          valueIn: Math.floor(Math.random() * 101)
         }
       );
     }

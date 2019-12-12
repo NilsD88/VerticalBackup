@@ -1,18 +1,18 @@
 <h6>Custom fields</h6>
 <div *ngFor="let field of fields">
   <mat-form-field *ngIf="field.type === 'text' || field.type === 'number'">
-    <input matInput [placeholder]="field.label[translateService.currentLang]" [type]="field.type"
-      [(ngModel)]="customFields[field.id]" [ngModelOptions]="{standalone: true}">
+    <input matInput [placeholder]="getLabelName(field.label)" [type]="field.type" [value]="getValue(field.id)"
+      (change)="setValue(field.id, $event.target.value)">
   </mat-form-field>
   <mat-form-field *ngIf="field.type === 'list'">
-    <mat-select [placeholder]="field.label[translateService.currentLang]" matInput
-      [(ngModel)]="customFields[field.id]" [ngModelOptions]="{standalone: true}">
+    <mat-select [placeholder]="getLabelName(field.label)" matInput 
+    [value]="getValue(field.id)" (change)="setValue(field.id, $event.target.value)">
       <mat-option *ngFor="let option of field.options.split(';')" value="option">{{option}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="field.type === 'boolean'">
-    <mat-select [placeholder]="field.label[translateService.currentLang]" matInput
-      [(ngModel)]="customFields[field.id]" [ngModelOptions]="{standalone: true}">
+    <mat-select [placeholder]="getLabelName(field.label)" matInput
+    [value]="getValue(field.id)" (change)="setValue(field.id, $event.target.value)">
       <mat-option value="null"></mat-option>
       <mat-option value="true">TRUE</mat-option>
       <mat-option value="false">FALSE</mat-option>

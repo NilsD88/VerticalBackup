@@ -1,5 +1,5 @@
 <!-- TODO: LINEAR TO TRUE -->
-<mat-horizontal-stepper [linear]="false" #stepper *ngIf="location">
+<mat-horizontal-stepper [linear]="true" #stepper *ngIf="location">
   <mat-step [completed]="location.parent">
     <form>
       <ng-template matStepLabel>Parent</ng-template>
@@ -33,16 +33,7 @@
           <mat-form-field>
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
           </mat-form-field>
-          <mat-form-field>
-            <mat-select placeholder="Type" matInput formControlName="TypeCtrl" [(ngModel)]="location.type">
-              <mat-option value="type1">Type 1</mat-option>
-              <mat-option value="type2">Type 2</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <h6>Key Value</h6>
-          <mat-form-field *ngFor="let item of keyValues">
-            <input *ngIf="item.type === 'string' || item.type === 'number'" matInput [placeholder]="item.label" [type]="item.type" formControlName="{{item.label}}">
-          </mat-form-field>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
       <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
@@ -89,7 +80,7 @@
   <mat-step>
       <ng-template matStepLabel>Assets</ng-template>
       <div class="row">
-        <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList">
+        <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
           <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
             <div>
               <pxs-icon icon="document-img" class="asset"></pxs-icon>

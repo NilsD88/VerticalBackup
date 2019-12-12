@@ -1,6 +1,8 @@
+import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { isNullOrUndefined } from 'util';
 import { IGeolocation } from './geolocation.model';
+import { ICustomField } from './field.model';
 
 export interface AbstractLocation <TLocation, TAsset> {
     id?: string;
@@ -12,9 +14,10 @@ export interface AbstractLocation <TLocation, TAsset> {
     children?: TLocation[];
     image?: string;
     assets?: TAsset[];
+    pointsOfAttention?: IPointOfAttention[];
     leftId?: string;
     rightId?: string;
-    customFields?: {};
+    customFields?: ICustomField[];
     module?: string;
 }
 
@@ -30,9 +33,10 @@ export class Location {
     children?: ILocation[] = [];
     image?: string;
     assets?: IAsset[] = [];
+    pointsOfAttention?: IPointOfAttention[] = [];
     leftId?: string;
     rightId?: string;
-    customFields?: {} = {};
+    customFields: ICustomField[] = [];
     module?: string;
 
     constructor(location: ILocation = null) {

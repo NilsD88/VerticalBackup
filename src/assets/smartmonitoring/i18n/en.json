@@ -108,6 +108,7 @@
     "MANAGE_LOCATIONS": "Manage locations",
     "MANAGE_THINGS": "Manage things",
     "MANAGE_THRESHOLD_TEMPLATES": "Manage threshold templates",
+    "MANAGE_POINTS_OF_ATTENTION": "Manage points of attention",
     "ALERT_DEFINITIONS": "Alert definitions",
     "ALERTS": "Alerts",
     "LANGUAGE": "Language",
@@ -130,6 +131,7 @@
     "SAVE_AS_DEFAULT": "Save as default filter",
     "REVERT_DEFAULT": "Revert to default filter",
     "PLACEHOLDER_SENSORTYPE": "Select sensor type",
+    "PLACEHOLDER_AGGREGATION": "Select aggregation",
     "PLACEHOLDER_THRESHOLD_TEMPLATE": "Select threshold template",
     "THRESHOLD_TEMPLATES": {
       "NOT_FOUND": "No threshold templates found",
@@ -380,6 +382,14 @@
       "SELECT_THING": "Select Thing",
       "THING_NAME": "Thing name"
     }
+  },
+  "MANAGE_POINTS_OF_ATTENTION": {
+    "TITLE": "Manage points of attention",
+    "NEW": "New point of attention"
+  },
+  "MANAGE_POINT_OF_ATTENTION_ITEMS": {
+    "TITLE": "Manage point of attention items",
+    "NEW": "New item"
   },
   "MANAGE_ASSETS": {
     "TITLE": "Manage assets",

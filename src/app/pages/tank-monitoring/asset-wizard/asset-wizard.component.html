@@ -18,17 +18,7 @@
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
               [(ngModel)]="asset.description" maxlength="255"></textarea>
           </mat-form-field>
-          <mat-form-field>
-            <mat-select placeholder="Type" [(ngModel)]="asset.type" matInput formControlName="TypeCtrl">
-              <mat-option value="type1">Type 1</mat-option>
-              <mat-option value="type2">Type 2</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <h6>Key Value</h6>
-          <mat-form-field *ngFor="let item of keyValues">
-            <input *ngIf="item.type === 'string' || item.type === 'number'" matInput [placeholder]="item.label"
-              [type]="item.type" formControlName="{{item.label}}">
-          </mat-form-field>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
         </div>
       </div>
 
@@ -80,7 +70,7 @@
             </pxs-list-things>
           </div>
         </div>
-        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="stepper.next()"></pxs-stepper-next>
+        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>

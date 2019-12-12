@@ -66,6 +66,32 @@ export class NewSensorService {
         }));
     }
 
+    public getSensorTypesByModule(moduleName: string): Observable<ISensorType[]> {
+        const GET_SENSOR_TYPES_BY_MODULE = gql`
+            query findAllSensorTypesByModule($input: String) {
+                sensorTypes: findAllSensorTypesByModule(input: $input) {
+                    id,
+                    name,
+                }
+            }
+        `;
+
+        interface GetSensorTypeNamesResponse {
+            sensorTypes: ISensorType[];
+        }
+
+        return this.apollo.query<GetSensorTypeNamesResponse>({
+            query: GET_SENSOR_TYPES_BY_MODULE,
+            fetchPolicy: 'network-only',
+            variables: {
+                input: moduleName
+            }
+        }).pipe(map(({data}) => {
+            return data.sensorTypes;
+        }));
+    }
+
+
     public updateSensorDefinition(sensorId: string, sensorDefinition: ISensorDefinition): Observable<boolean> {
         const UPDATE_SENSOR_DEFINITION = gql `
               mutation updateSensorDefinition($input: SensorDefinitionUpdateInput!) {

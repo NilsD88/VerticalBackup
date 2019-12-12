@@ -107,6 +107,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
       minWidth: '320px',
       maxWidth: '600px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         thresholdTemplate
       }

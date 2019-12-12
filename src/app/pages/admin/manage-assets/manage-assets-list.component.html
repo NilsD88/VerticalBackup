@@ -56,7 +56,7 @@
                 <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/smartmonitoring/detail/{{element.id}}">
                   <pxs-icon icon="eye"></pxs-icon>
                 </button>
-                <button *ngIf="element.module === 'WALKING_TRAIL'" mat-icon-button matTooltip="Edit asset" color="accent"
+                <button *ngIf="element.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" mat-icon-button matTooltip="Edit asset" color="accent"
                         routerLink="/private/walkingtrail/assets/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>
@@ -64,7 +64,7 @@
                         routerLink="/private/tankmonitoring/assets/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>
-                <button *ngIf="!element.module" mat-icon-button matTooltip="Edit asset" color="accent"
+                <button *ngIf="element.module === 'SMART_MONITORING'" mat-icon-button matTooltip="Edit asset" color="accent"
                         routerLink="/private/smartmonitoring/assets/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>

@@ -1,0 +1,11 @@
+<div class="chart-control">
+    <button mat-button (click)="swapPeriod(false)" class="swap-button">
+        <pxs-icon icon="chevron-left"></pxs-icon>
+    </button>
+    {{ currentMonth }} 
+    <button mat-button (click)="swapPeriod(true)" class="swap-button">
+        <pxs-icon icon="chevron-right"></pxs-icon>
+    </button>    
+</div>
+<div [hidden]="!leaf || chartLoading" id="month-view-chart-container"></div>
+<pxs-loader *ngIf="!leaf || chartLoading"></pxs-loader>

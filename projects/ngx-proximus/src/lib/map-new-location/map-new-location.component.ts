@@ -5,7 +5,7 @@ import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { ILocation } from 'src/app/models/g-location.model';
 import { isNullOrUndefined } from 'util';
-
+import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
 
 @Component({
   selector: 'pxs-map-new-location',
@@ -55,7 +55,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
         }
       } else {
         const { lat, lng } = this.parentLocation.geolocation;
-        this.backgroundLayer = tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'); 
+        this.backgroundLayer = tileLayer(MAP_TILES_URL_ACTIVE),
         this.options = {
           layers: this.backgroundLayer,
           zoom: 12,
@@ -122,6 +122,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
           this.markers = [];
           this.snackBar.open('No address found!', null, {
             duration: 2000,
+            panelClass: ['orange-snackbar']
           });
         }
       }
@@ -129,7 +130,7 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   }
 
   createOptionsMapWithUserGeolocation() {
-    this.backgroundLayer = tileLayer('https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoibmljb2xhc2FuY2VsIiwiYSI6ImNqeHZ4ejg0ZjAzeGIzcW1vazI0MHJia3MifQ.METba-D_-BOMeRbRnwDkFw'); 
+    this.backgroundLayer = tileLayer(MAP_TILES_URL_ACTIVE);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {

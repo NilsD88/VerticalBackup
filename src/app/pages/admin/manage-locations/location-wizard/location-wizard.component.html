@@ -26,13 +26,8 @@
           <mat-form-field>
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
           </mat-form-field>
-          <mat-form-field>
-            <mat-select placeholder="Type" matInput formControlName="TypeCtrl" [(ngModel)]="location.type">
-              <mat-option value="type1">Type 1</mat-option>
-              <mat-option value="type2">Type 2</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <pxs-form-custom-fields [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
+          {{location.fields | json}}
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
       <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>

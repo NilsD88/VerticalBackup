@@ -14,6 +14,7 @@ import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
+import { IField } from 'src/app/models/field.model';
 
 
 @Component({
@@ -34,19 +35,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public keyValues: {
-    label: string;
-    type: string;
-  }[] = [
-    {
-      label: 'Country',
-      type: 'string'
-    },
-    {
-      label: 'Address',
-      type: 'string'
-    }
-  ];
+  public fields: IField[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,19 +52,16 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       DescriptionCtrl: ['', null],
-      TypeCtrl: ['', null],
     });
 
-    for (const kv of this.keyValues) {
-      this.descriptionFormGroup.addControl(kv.label, new FormControl());
-    }
-
+    this.fields = await this.newAssetService.getCustomFields().toPromise();
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
         this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
+        this.originalAsset.locationId = this.originalAsset.location.id;
       } catch (err) {
         this.asset = this.emptyAsset();
       }
@@ -90,7 +76,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       name: null,
       locationId: null,
       things: [],
-      thresholdTemplate: null
+      thresholdTemplate: null,
+      customFields: []
     };
   }
 
@@ -139,32 +126,16 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     }
   }
 
-  public checkThresholdTemplate(event) {
-    if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
-      const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
-      if (!compatibleThresholdTemplate) {
-        const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-          width: '250px',
-          data: {
-            title: 'Warning',
-            content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (!result) {
-            this.stepper.selectedIndex = 1;
-          }
-        });
-      }
-    }
-  }
 
   public wantToSaveAsset() {
     console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -185,7 +156,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
       console.log(this.asset);
       console.log(this.originalAsset);
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {
@@ -226,8 +198,9 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '400px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
       }

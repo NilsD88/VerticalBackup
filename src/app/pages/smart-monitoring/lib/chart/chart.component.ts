@@ -75,7 +75,6 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
-  @Input() height = 700;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
   @Input() colors = [
@@ -127,7 +126,6 @@ export class ChartComponent implements OnInit, OnChanges {
       },
       chart: {
         zoomType: 'xy',
-        height: this.height,
       },
       title: {
         text: this.title
@@ -195,7 +193,7 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      this.addYAxisOption(data.series.length, data.label);
+      this.addYAxisOption((data.series || []).length, data.label);
       this.addYAxisValues(data);
     }
 
@@ -292,7 +290,7 @@ export class ChartComponent implements OnInit, OnChanges {
             yAxis: this.getYAxisByLabel(item.label),
             showInLegend: (item.series.length) ? true : false,
             lineWidth: 0,
-            linkedTo: ':previous',
+            linkedTo: (sensorDefinition.aggregatedValues.avg || sensorDefinition.aggregatedValues.sum) ? ':previous' : null,
             fillOpacity: 0.3,
             zIndex: 0,
             marker: {

@@ -23,7 +23,6 @@ export class WalkingTrailInventoryLocationsComponent extends InventoryLocationsC
       locationService,
       activatedRoute
     );
-    this.locationUrl = 'private/walkingtrail/trail/';
     this.leafUrl = 'private/walkingtrail/trail/';
   }
 

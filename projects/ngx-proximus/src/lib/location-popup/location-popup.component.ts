@@ -47,4 +47,8 @@ export class LocationPopupComponent implements OnInit {
     }
   }
 
+  public assetClicked() {
+    this.dialogRef.close();
+  }
+
 }

@@ -1,4 +1,5 @@
-import { PeopleCountingAssetWizardDialogModule } from './../asset-wizard/assetWizardDialog.module';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
 import { LocationWizardDialogModule } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.module';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
@@ -16,7 +17,8 @@ import { EditableImageModule } from 'projects/ngx-proximus/src/lib/editable-imag
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PeopleCountingAssetWizardDialogComponent } from '../asset-wizard/assetWizardDialog.component';
+import { PeopleCountingAssetWizardDialogModule } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.module';
+import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.component';
 
 @NgModule({
   imports: [
@@ -39,7 +41,8 @@ import { PeopleCountingAssetWizardDialogComponent } from '../asset-wizard/assetW
     LocationWizardDialogModule,
     PeopleCountingAssetWizardDialogModule,
     DragDropModule,
-    IconModule
+    IconModule,
+    FormCustomFieldsModule
   ],
   exports: [TrailWizardComponent],
   declarations: [
@@ -47,7 +50,8 @@ import { PeopleCountingAssetWizardDialogComponent } from '../asset-wizard/assetW
   ],
   entryComponents: [
     PeopleCountingAssetWizardDialogComponent,
-    LocationWizardDialogComponent
+    LocationWizardDialogComponent,
+    DialogComponent
   ]
 })
 

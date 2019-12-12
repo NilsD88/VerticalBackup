@@ -1,106 +1,90 @@
-
-  <div class="row">
-      <div class="col-xs-12 col-md-6 mx-auto">
-          <mat-form-field>
-            <input 
-              matInput
-              type="text"
-              placeholder="Thing name or devEui"
-              [(ngModel)]="filter.name"
-              (ngModelChange)="filterByName()"
-            >
-          </mat-form-field>
-      </div>
+<div class="row">
+  <div class="col-xs-12 col-md-6 mx-auto">
+    <mat-form-field>
+      <input matInput type="text" placeholder="Thing name or devEui" [(ngModel)]="filter.name"
+        (ngModelChange)="filterByName()">
+    </mat-form-field>
   </div>
-  <div>
-      <div style="overflow-x: scroll">
-        <table 
-          mat-table [dataSource]="dataSource" 
-          matSort class="mat-elevation-z8 things-list" 
-          [ngClass]="{'loading': isLoading }"
-          matSortDisableClear
-        >
+</div>
+<div>
+  <div style="overflow-x: scroll">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 things-list"
+      [ngClass]="{'loading': isLoading }" matSortDisableClear>
 
-        <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef></th>
-            <td mat-cell *matCellDef="let element">
-              <mat-checkbox 
-                (click)="$event.stopPropagation()"
-                (change)="selectChange.emit(element)"
-                [checked]="checkOneThing(element.id)"
-              ></mat-checkbox>
-            </td>
-          </ng-container>
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let element">
-              <div *ngIf="!element.editing">
-                  {{element.name}}
-              </div> 
-              <div *ngIf="element.editing">
-                <mat-form-field style="margin-right: -40px; padding-right: 20px;">
-                  <input matInput [(ngModel)]="element.tempName" required>
-                </mat-form-field>
-              </div> 
-            </td>
-          </ng-container>
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="selectChange.emit(element)"
+            [checked]="checkOneThing(element.id)"></mat-checkbox>
+        </td>
+      </ng-container>
+      
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element">
+          <div *ngIf="!element.editing">
+            {{element.name}}
+          </div>
+          <div *ngIf="element.editing">
+            <mat-form-field style="margin-right: -40px; padding-right: 20px;">
+              <input matInput [(ngModel)]="element.tempName" required>
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
 
-          <!-- Name Column -->
-          <ng-container matColumnDef="devEui">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> DevEui </th>
-            <td mat-cell *matCellDef="let element" > {{element.devEui}} </td>
-          </ng-container>
-          
-          <!-- Sensors Column -->
-          <ng-container matColumnDef="sensors">
-              <th mat-header-cell *matHeaderCellDef> Sensors </th>
-              <td mat-cell *matCellDef="let element" class="things-container">
-                <div class="thing">
-                    <img 
-                      *ngFor="let sensor of element.sensors"
-                      style="cursor: pointer;"
-                      (click)="openDialogSensorDefinition(sensor, element.name)"
-                      [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
-                      [matTooltip]="(sensor.sensorDefinition?.name ? sensor.sensorDefinition?.name : sensor.sensorType.name) + ' ' + sensor.sensorType.min + sensor.sensorType.postfix + ' - '+ sensor.sensorType.max + sensor.sensorType.postfix"
-                      [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
-                    >
-                </div>
-              </td>
-          </ng-container>
-  
-          <!-- Actions template -->
-          <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef> Actions </th>
-              <td mat-cell *matCellDef="let element">
-                  <button *ngIf="!element.editing" (click)="element.editing = true; element.tempName = element.name;" mat-icon-button matTooltip="Edit thing" color="accent">
-                    <pxs-icon icon="edit"></pxs-icon>
-                  </button>
-                  <button *ngIf="element.editing" (click)="updateThing(element)" mat-icon-button matTooltip="Update" color="primary">
-                    <pxs-icon icon="check"></pxs-icon>
-                  </button>
-                  <button *ngIf="element.editing" (click)="element.editing = false" mat-icon-button matTooltip="Cancel" color="warn">
-                    <pxs-icon icon="close"></pxs-icon>
-                  </button>
-              </td>
-          </ng-container>
-    
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  
-        </table>
-      </div>
-        <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; border-radius: 0;">
-          <mat-progress-spinner 
-            color="primary" 
-            mode="indeterminate">
-          </mat-progress-spinner>
-        </mat-card>
-        <mat-paginator 
-          [length]="things?.length"
-          [pageSize]="10"
-          [pageSizeOptions]="[5, 10, 25, 100]">
-        </mat-paginator>
-    </div>
+      <!-- Name Column -->
+      <ng-container matColumnDef="devEui">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> DevEui </th>
+        <td mat-cell *matCellDef="let element"> {{element.devEui}} </td>
+      </ng-container>
 
+      <!-- Sensors Column -->
+      <ng-container matColumnDef="sensors">
+        <th mat-header-cell *matHeaderCellDef> Sensors </th>
+        <td mat-cell *matCellDef="let element" class="things-container">
+          <div class="thing">
+            <img *ngFor="let sensor of element.sensors" style="cursor: pointer;"
+              (click)="openDialogSensorDefinition(sensor, element.name)"
+              [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
+              [matTooltip]="(sensor.sensorDefinition?.name ? sensor.sensorDefinition?.name : sensor.sensorType.name) + ' ' + sensor.sensorType.min + sensor.sensorType.postfix + ' - '+ sensor.sensorType.max + sensor.sensorType.postfix"
+              [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Actions template -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button *ngIf="!element.editing" (click)="element.editing = true; element.tempName = element.name;"
+            mat-icon-button matTooltip="Edit thing" color="accent">
+            <pxs-icon icon="edit"></pxs-icon>
+          </button>
+          <button *ngIf="element.editing" (click)="updateThing(element)" mat-icon-button matTooltip="Update"
+            color="primary">
+            <pxs-icon icon="check"></pxs-icon>
+          </button>
+          <button *ngIf="element.editing" (click)="element.editing = false" mat-icon-button matTooltip="Cancel"
+            color="warn">
+            <pxs-icon icon="close"></pxs-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  </div>
+  <mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; border-radius: 0;">
+    <mat-progress-spinner color="primary" mode="indeterminate">
+    </mat-progress-spinner>
+  </mat-card>
+  <!--
+  <mat-paginator [length]="things?.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]">
+  </mat-paginator>
+  -->
+</div>

@@ -1,3 +1,4 @@
+import { IconModule } from './../../../../../../projects/ngx-proximus/src/lib/icon/icon.module';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,7 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
     RouterModule,
     LeafletModule.forRoot(),
     LeafletMarkerClusterModule,
+    IconModule
   ],
   exports: [TrailMapComponent]
 })

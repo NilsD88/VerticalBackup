@@ -18,6 +18,10 @@ export const SmartMonitoringRoutes: Routes = [
     loadChildren: () => import('src/app/pages/smart-monitoring/detail/detail.module').then(m => m.DetailModule)
   },
   {
+    path: 'points-of-attention',
+    loadChildren: () => import('src/app/pages/smart-monitoring/points-of-attention/points-of-attention.module').then(m => m.PointsOfAttentionModule)
+  },
+  {
     path: 'assets/new',
     loadChildren: () => import('src/app/pages/smart-monitoring/asset-wizard/asset-wizard.module').then(m => m.SmartMonitoringAssetWizardModule)
   },

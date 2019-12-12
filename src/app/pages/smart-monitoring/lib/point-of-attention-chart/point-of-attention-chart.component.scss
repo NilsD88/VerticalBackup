@@ -1,0 +1,10 @@
+@import "variables.scss";
+
+#chart-container {
+    width: 100%;
+}
+
+:host{
+    display: flex;
+    flex-direction: column;
+}

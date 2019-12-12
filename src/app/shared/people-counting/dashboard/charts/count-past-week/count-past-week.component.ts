@@ -71,7 +71,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     moment.locale(this.locale);
     window.moment = moment;
     mTZ();
-
     this.initChartOptions();
     this.initChart();
     this.updateChart();
@@ -180,7 +179,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
 
     let counter = 0;
     for (const leaf of this.leafs) {
-      console.log(leaf);
       this.chartOptions.yAxis.push({
         title: {
           text: 'Trail'
@@ -195,7 +193,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         type: 'spline',
         yAxis: counter++,
         data: leaf.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+          return [serie.timestamp, parseFloat(serie.valueIn.toFixed(2))];
         })
       });
     }

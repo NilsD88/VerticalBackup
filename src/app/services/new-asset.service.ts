@@ -1,6 +1,5 @@
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { MOCK_NEW_CHART_DATA } from 'src/app/mocks/chart';
 import {
   Injectable
 } from '@angular/core';
@@ -17,6 +16,9 @@ import {
 } from 'rxjs/operators';
 import { IThing } from '../models/g-thing.model';
 import { Observable } from 'rxjs';
+import { IField } from '../models/field.model';
+import { MOCK_ASSETS_CUSTOM_FIELDS } from '../mocks/newasset';
+import { MOCK_NEW_CHART_TANK_DATA } from '../mocks/chart';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +51,9 @@ export class NewAssetService {
           geolocation: asset.geolocation,
           image: asset.image,
           thresholdTemplateId: (asset.thresholdTemplate) ? asset.thresholdTemplate.id : null,
-          thingIds: asset.things.map((thing) => thing.id)
+          thingIds: asset.things.map((thing) => thing.id),
+          customFields: asset.customFields,
+          module: asset.module || 'SMART_MONITORING'
         }
       }
     }).pipe(
@@ -127,7 +131,11 @@ export class NewAssetService {
                       id,
                       name
                     },
-                    image
+                    image,
+                    customFields {
+                      keyId,
+                      value
+                    }
                 }
             }
         `;
@@ -237,14 +245,18 @@ export class NewAssetService {
     }) => data.asset));
   }
 
-  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    return this.http.get < IThing [] > (`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
+  public getAssetDataById(id: string, interval: string, from: number, to: number, moduleName: string = null): Observable < IThing[] > {
+    let url = `${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`;
+    if (moduleName) {
+      url += `&module=${moduleName}`;
+    }
+    return this.http.get < IThing [] > (url);
   }
 
-  public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {
+  public getAssetsByLocationId(locationId: string, moduleName: string = null): Observable < IAsset[] > {
     const GET_ASSETS_BY_LOCATION_ID = gql `
-      query FindAssetsByLocation($locationId: Long!) {
-        assets: findAssetsByLocation(locationId: $locationId) {
+      query FindAssetsByLocation($input: AssetFindByLocationInput!) {
+        assets: findAssetsByLocation(input: $input) {
             id,
             name,
             description,
@@ -268,7 +280,10 @@ export class NewAssetService {
       query: GET_ASSETS_BY_LOCATION_ID,
       fetchPolicy: 'network-only',
       variables: {
-        locationId,
+        input: {
+          locationId,
+          moduleName
+        }
       }
     }).pipe(map(({
       data
@@ -450,6 +465,38 @@ export class NewAssetService {
     }).pipe(map(({
       data
     }) => data.deleteAsset));
+  }
+
+  public getCustomFields(): Observable < IField [] > {
+    const GET_CUSTOM_FIELDS = gql `
+      query findFields($organizationId: Long!, $subjectType: String!) {
+          fields: getKeysByOrganizationAndSubjectType(organizationId: $organizationId, subjectType: $subjectType) {
+            id,
+            label {
+              fr,
+              en,
+              nl
+            }
+            type,
+            options
+          }
+      }
+    `;
+
+    interface GetCustomFieldsResponse {
+      fields: IField[];
+    }
+
+    return this.apollo.query < GetCustomFieldsResponse > ({
+      query: GET_CUSTOM_FIELDS,
+      fetchPolicy: 'network-only',
+      variables: {
+        organizationId: 1,
+        subjectType: 'ASSET'
+      }
+    }).pipe(map(({
+      data,
+    }) => data.fields));
   }
 
 }

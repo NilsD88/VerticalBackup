@@ -9,6 +9,9 @@ import { map } from 'rxjs/operators';
 import { IThing } from 'src/app/models/g-thing.model';
 import { HttpClient } from '@angular/common/http';
 
+
+const MODULE_NAME = 'TANK_MONITORING';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,8 +27,14 @@ export class TankMonitoringAssetService extends NewAssetService {
     );
   }
 
-  public getAssets(): Observable < ITankMonitoringAsset[] > {
+  public createAsset(asset: ITankMonitoringAsset): Observable < boolean > {
+    asset.module = MODULE_NAME;
+    return super.createAsset(asset);
+  }
 
+  public getAssets(): Observable < ITankMonitoringAsset[] > {
+    // Mock data
+    /*
     return new Observable < ITankMonitoringAsset[] > ((observer) => {
       observer.next([{
           id: '0',
@@ -78,12 +87,18 @@ export class TankMonitoringAssetService extends NewAssetService {
       ]);
       observer.complete();
     });
+    */
 
+    // Real data
     const GET_ASSETS_BY_MODULE = gql `
         query FindAssetsByModule($input: AssetFindByModuleInput!) {
           assets: findAssetsByModule(input: $input) {
             id,
             name,
+            location {
+              id,
+              name
+            }
             things {
               devEui,
               batteryPercentage,
@@ -109,8 +124,7 @@ export class TankMonitoringAssetService extends NewAssetService {
       fetchPolicy: 'network-only',
       variables: {
         input: {
-          // moduleId: // TODO: module id
-          // onlySensorsNeeded: // TODO: to be able to get only interesting data based on sensortype of the module (chart definition)
+          moduleName: MODULE_NAME
         }
       }
     }).pipe(map(({
@@ -147,10 +161,20 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+    // TODO: remove those lines when backend is ready
     return new Observable < IThing [] > ((observer) => {
       observer.next(MOCK_NEW_CHART_TANK_DATA);
       observer.complete();
     });
+
+    // TODO: uncomment those lines when backend is ready
+    super.getAssetDataById(
+      id,
+      interval,
+      from,
+      to,
+      MODULE_NAME
+    );
   }
 
 }
