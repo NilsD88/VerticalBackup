@@ -75,6 +75,9 @@ export class CountByAssetComponent implements OnInit, OnChanges {
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
       },
+      credits: {
+        enabled: false
+      },
       plotOptions: {
         pie: {
           allowPointSelect: true,

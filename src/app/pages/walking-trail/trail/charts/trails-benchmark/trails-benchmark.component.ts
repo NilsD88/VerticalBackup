@@ -12,7 +12,6 @@ import { DatePipe } from '@angular/common';
 import { findLeafLocations } from '../../../utils';
 import { 
   IPeopleCountingLocation,
-  IPeopleCountingLocationSerie
 } from 'src/app/models/peoplecounting/location.model';
 
 declare global {
@@ -66,16 +65,11 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
       }
     );
 
-
     this.initChartOptions();
     this.initChart();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('----');
-    console.log(changes)
-    console.log('----');
-
     if (changes.parentLocation) {
       if (changes.parentLocation.currentValue !== changes.parentLocation.previousValue) {
         this.updateChart();
@@ -175,16 +169,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 
     const leafs: IPeopleCountingLocation[] = [];
     findLeafLocations(this.parentLocation, leafs);
-    // Generate past week per hour per leaf
-    /*
-    leafs.forEach(leaf => {
-      leaf.series = generatePastWeekPerHourOfDataSeries();
-    });
-    this.leafs = leafs;
-    */
 
-
-    // TODO: get past week per hour per locations from backend for each locations (or leaf locations?)
     this.leafs = await this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
       'HOURLY',
@@ -195,8 +180,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
-
-    if ((leafs || []).length < 1) {
+    if ((this.leafs || []).length < 1) {
       return;
     }
 
@@ -232,20 +216,4 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     }
   }
 
-}
-
-
-function generatePastWeekPerHourOfDataSeries(): IPeopleCountingLocationSerie[] {
-  const dataSeries: IPeopleCountingLocationSerie[] = [];
-  for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-    for (let hourIndex = 0; hourIndex < 24; hourIndex++) {
-      dataSeries.push(
-        {
-          timestamp: moment().startOf('isoWeek').add(dayIndex, 'days').startOf('day').add(hourIndex, 'hours').valueOf(),
-          valueIn: Math.floor(Math.random() * 101)
-        }
-      );
-    }
-  }
-  return dataSeries;
 }
