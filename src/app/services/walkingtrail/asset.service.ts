@@ -90,7 +90,6 @@ export class WalkingTrailAssetService extends PeopleCountingAssetService {
   }
 
   public getAssetsByLocationId(locationId: string): Observable < IPeopleCountingAsset[] > {
-    console.log('getAssetsByLocationId for WT');
     return super.getAssetsByLocationId(locationId, MODULE_NAME);
   }
 

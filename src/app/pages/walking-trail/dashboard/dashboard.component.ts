@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {
-  findLeaftsLocation
+  findLeafLocations
 } from '../utils';
 import {
   generateLeafColors,
@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
 
   public changeLocation(location: IPeopleCountingLocation) {
     const leafs: IPeopleCountingLocation[] = [];
-    findLeaftsLocation(location, leafs);
+    findLeafLocations(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
 
     // Generate colors of trails

@@ -35,6 +35,7 @@ export class AssetsCounterComponent implements OnInit {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
+  @Input() assetUrl: string;
   @Input() assetService: WalkingTrailAssetService;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -58,8 +59,6 @@ export class AssetsCounterComponent implements OnInit {
 
     let dayValuesReady = false;
     let weekValuesReady = false;
-
-    /*
     this.checkpoints = this.assets.map(asset => {
       return {
         id: asset.id,
@@ -81,7 +80,7 @@ export class AssetsCounterComponent implements OnInit {
         }
       });
       dayValuesReady = true;
-      if(weekValuesReady) {
+      if (weekValuesReady) {
         this.updateDataSource(this.checkpoints);
         this.isLoading = false;
       }
@@ -101,15 +100,15 @@ export class AssetsCounterComponent implements OnInit {
         }
       });
       weekValuesReady = false;
-      if(dayValuesReady) {
+      if (dayValuesReady) {
         this.updateDataSource(this.checkpoints);
         this.isLoading = false;
       }
     });
-    */
 
 
     // TODO: remove those lines when backend is ready
+    /*
     for (const asset of this.assets) {
       // Sum of a specific range per asset for a specific location
       this.checkpoints.push({
@@ -119,6 +118,7 @@ export class AssetsCounterComponent implements OnInit {
         week: generateThisWeekDataSeries()[0].valueIn
       });
     }
+    */
 
     this.displayedColumns = ['name', 'today', 'week'];
     this.updateDataSource(this.checkpoints);

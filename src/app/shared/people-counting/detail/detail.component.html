@@ -1,14 +1,14 @@
 <div class="detail-page">
-  <pvf-walkingtrail-detail-header [asset]="asset"></pvf-walkingtrail-detail-header>
+  <pvf-peoplecounting-detail-header [asset]="asset"></pvf-peoplecounting-detail-header>
   <div class="detail-main-content">
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <pvf-walkingtrail-chart
+          <pvf-peoplecounting-asset-chart
             *ngIf="asset" style="display: flex;" [loading]="chartLoading"
             [title]="'Data'" [chartData]="chartData" (updateChartData)="updateChartData($event)"
             [filter]="currentFilter" (download)="downloadPdfDetail()" [asset]="asset" #myChart>
-          </pvf-walkingtrail-chart>
+          </pvf-peoplecounting-asset-chart>
         </div>
       </div>
       <div class="row" *ngIf="chartData && !chartLoading && currentFilter.interval !== 'ALL'">

@@ -161,14 +161,7 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    // TODO: remove those lines when backend is ready
-    return new Observable < IThing [] > ((observer) => {
-      observer.next(MOCK_NEW_CHART_TANK_DATA);
-      observer.complete();
-    });
-
-    // TODO: uncomment those lines when backend is ready
-    super.getAssetDataById(
+    return super.getAssetDataById(
       id,
       interval,
       from,

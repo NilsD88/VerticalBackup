@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
       min: 0,
       max: 100
     },
-    statuses: ['EMPTY', 'LOW', 'OK'],
+    statuses: ['EMPTY', 'LOW', 'OK', 'UNKNOW'],
     name: '',
   };
 
@@ -70,6 +70,7 @@ export class DashboardComponent implements OnInit {
     'rgba(204, 0, 0, 0.7)',
     'rgba(255, 204, 51, 1)',
     'rgba(102, 204, 0, 0.7)',
+    'rgba(100, 100, 100, 0.7)',
   ];
 
   displayedColumns: string[] = ['name', 'thing', 'location.name', 'fuel', 'battery', 'actions'];
@@ -93,13 +94,21 @@ export class DashboardComponent implements OnInit {
     };
     this.assets = await this.assetService.getAssets().toPromise();
     this.assets.forEach((asset) => {
-      const VALUE = asset.things[0].sensors[0].value;
-      if (VALUE < 10) {
-        asset.status = 'EMPTY';
-      } else if (VALUE < 20) {
-        asset.status = 'LOW';
+      if ((asset.things || []).length) {
+        const VALUE = asset.things[0].sensors[0].value;
+        if (VALUE) {
+          if (VALUE < 10) {
+            asset.status = 'EMPTY';
+          } else if (VALUE < 20) {
+            asset.status = 'LOW';
+          } else {
+            asset.status = 'OK';
+          }
+        } else {
+          asset.status = 'UNKNOW';
+        }
       } else {
-        asset.status = 'OK';
+        asset.status = 'UNKNOW';
       }
     });
     console.log(this.assets);
@@ -192,6 +201,7 @@ export class DashboardComponent implements OnInit {
       EMPTY: [],
       LOW: [],
       OK: [],
+      UNKNOW: [],
     };
 
     assets.forEach((asset) => {

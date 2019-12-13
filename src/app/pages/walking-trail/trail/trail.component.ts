@@ -8,6 +8,8 @@ import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 
+
+
 @Component({
   selector: 'pvf-trail',
   templateUrl: './trail.component.html',
@@ -20,8 +22,8 @@ export class TrailComponent implements OnInit {
   public lastMonthLeafData: IPeopleCountingLocation;
   public parentLocation: IPeopleCountingLocation;
   public imageSources: string[] | IImage[];
-
   public locale: string;
+  public assetUrl = '/private/walkingtrail/detail/';
 
   constructor(
     private locationService: WalkingTrailLocationService,
@@ -48,6 +50,7 @@ export class TrailComponent implements OnInit {
       } else {
         this.parentLocation = rootLocation;
       }
+      this.leaf.parent = this.parentLocation;
       this.imageSources = [{url: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/fall-1072821__480.jpg'}, {url: 'https://cdn.pixabay.com/photo/2015/09/09/16/05/forest-931706_1280.jpg'}];
     });
   }

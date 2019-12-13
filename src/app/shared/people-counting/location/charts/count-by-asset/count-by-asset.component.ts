@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
@@ -34,13 +35,15 @@ export class CountByAssetComponent implements OnInit, OnChanges {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
-
+  @Input() assetUrl: string;
   @Input() assetService: WalkingTrailAssetService;
 
   public chart: any;
   public chartOptions: any;
 
-  constructor() {}
+  constructor(
+    private router: Router
+  ) {}
 
   ngOnChanges() {
     if (this.chart) {
@@ -82,8 +85,16 @@ export class CountByAssetComponent implements OnInit, OnChanges {
           },
           innerSize: 100,
           depth: 0
+        },
+        series: {
+          point: {
+            events: {
+              click: (event) => {
+                this.router.navigateByUrl(`${this.assetUrl}${event.point.id}`);
+              }
+            }
+          }
         }
-
       },
       series: [{
         name: 'Checkpoint',
@@ -106,7 +117,7 @@ export class CountByAssetComponent implements OnInit, OnChanges {
       const data = [];
 
       // TODO: uncomment those lines when backend is ready
-      /*
+      
       const assets = await this.assetService.getAssetsDataByIds(
         this.assets.map(asset => asset.id),
         'DAILY',
@@ -114,24 +125,30 @@ export class CountByAssetComponent implements OnInit, OnChanges {
         moment().valueOf(),
       ).toPromise();
 
+
+
       assets.forEach(asset => {
+        const series = asset.series || [];
         data.push({
+          id: asset.id,
           name: asset.name,
-          y: asset.series[0].valueIn
+          y: (series.length) ? asset.series[0].valueIn : null,
         });
       });
-      */
 
 
 
       // TODO: remove those lines when backend is ready
       // Generate value of each asset
+      /*
       this.assets.forEach(asset => {
         data.push({
+          id: asset.id,
           name: asset.name,
           y: generateTodayDataSeries().reduce((a, b) => a + b.valueIn || 0, 0),
         });
       });
+      */
 
       this.chartOptions.series[0].data = data;
     }

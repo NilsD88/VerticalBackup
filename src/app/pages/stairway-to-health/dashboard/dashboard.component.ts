@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {
-  findLeaftsLocation
+  findLeafLocations
 } from '../../walking-trail/utils';
 import {
   generateLeafColors,
@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit {
 
   public changeLocation(location: IPeopleCountingLocation) {
     const leafs = [];
-    findLeaftsLocation(location, leafs);
+    findLeafLocations(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
 
     // Generate colors of trails

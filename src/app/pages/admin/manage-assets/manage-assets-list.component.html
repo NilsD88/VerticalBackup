@@ -53,24 +53,33 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.module === 'SMART_MONITORING'">
                 <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/smartmonitoring/detail/{{element.id}}">
                   <pxs-icon icon="eye"></pxs-icon>
                 </button>
-                <button *ngIf="element.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" mat-icon-button matTooltip="Edit asset" color="accent"
-                        routerLink="/private/walkingtrail/assets/{{element.id}}">
+                <button mat-icon-button matTooltip="Edit asset" color="accent" routerLink="/private/smartmonitoring/assets/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>
-                <button *ngIf="element.module === 'TANK_MONITORING'" mat-icon-button matTooltip="Edit asset" color="accent"
-                        routerLink="/private/tankmonitoring/assets/{{element.id}}">
+              </span>
+              <span *ngIf="element.module === 'TANK_MONITORING'">
+                <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/tankmonitoring/consumptions/{{element.id}}">
+                  <pxs-icon icon="eye"></pxs-icon>
+                </button>
+                <button mat-icon-button matTooltip="Edit asset" color="accent" routerLink="/private/tankmonitoring/assets/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>
-                <button *ngIf="element.module === 'SMART_MONITORING'" mat-icon-button matTooltip="Edit asset" color="accent"
-                        routerLink="/private/smartmonitoring/assets/{{element.id}}">
+              </span>
+              <span *ngIf="element.module === 'PEOPLE_COUNTING_WALKING_TRAIL'">
+                <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/walkingtrail/detail/{{element.id}}">
+                  <pxs-icon icon="eye"></pxs-icon>
+                </button>
+                <button mat-icon-button matTooltip="Edit asset" color="accent" routerLink="/private/walkingtrail/assets/{{element.id}}">
                   <pxs-icon icon="edit"></pxs-icon>
                 </button>
-                <button mat-icon-button matTooltip="Delete asset" color="warn" (click)="deleteAsset(element.id)">
-                  <pxs-icon icon="trash"></pxs-icon>
-                </button>
+              </span>                
+              <button mat-icon-button matTooltip="Delete asset" color="warn" (click)="deleteAsset(element.id)">
+                <pxs-icon icon="trash"></pxs-icon>
+              </button>
             </td>
         </ng-container>
   

@@ -77,7 +77,8 @@ export class NewAssetService {
           thresholdTemplate {
               id,
               name
-          }
+          },
+          module
         }
       }
     `;
@@ -104,6 +105,7 @@ export class NewAssetService {
                     id,
                     name,
                     description,
+                    module,
                     geolocation {
                       lat,
                       lng

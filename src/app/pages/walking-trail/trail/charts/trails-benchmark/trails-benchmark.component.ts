@@ -1,5 +1,5 @@
 import { WalkingTrailLocationService } from './../../../../../services/walkingtrail/location.service';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {uniq} from 'lodash';
 
@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { findLeaftsLocation } from '../../../utils';
+import { findLeafLocations } from '../../../utils';
 import { 
   IPeopleCountingLocation,
   IPeopleCountingLocationSerie
@@ -52,11 +52,6 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     private router: Router
   ) {}
 
-  ngOnChanges() {
-    if (this.chart) {
-      this.updateChart();
-    }
-  }
 
   ngOnInit() {
     this.locale = this.translateService.currentLang;
@@ -74,7 +69,18 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 
     this.initChartOptions();
     this.initChart();
-    this.updateChart();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('----');
+    console.log(changes)
+    console.log('----');
+
+    if (changes.parentLocation) {
+      if (changes.parentLocation.currentValue !== changes.parentLocation.previousValue) {
+        this.updateChart();
+      }
+    }
   }
 
   private initChartOptions() {
@@ -161,45 +167,36 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     }
   }
 
-  private updateChart() {
+  private async updateChart() {
 
     if (!this.parentLocation) {
       return;
     }
 
     const leafs: IPeopleCountingLocation[] = [];
-    findLeaftsLocation(this.parentLocation, leafs);
+    findLeafLocations(this.parentLocation, leafs);
     // Generate past week per hour per leaf
+    /*
     leafs.forEach(leaf => {
       leaf.series = generatePastWeekPerHourOfDataSeries();
     });
     this.leafs = leafs;
+    */
 
 
     // TODO: get past week per hour per locations from backend for each locations (or leaf locations?)
-    /*
-    this.locationService.getLocationsDataByIds(
+    this.leafs = await this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
       'HOURLY',
       moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
       moment().startOf('isoWeek').valueOf()
-    ).subscribe(
-      (result) => {
-        leafs.forEach((leaf, index) => {
-          leaf.series = result[index] as IPeopleCountingLocationSerie[];
-        });
-      }
-    );
-    */
-
-
+    ).toPromise();
 
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
 
-
-    if ((this.leafs || []).length < 1) {
+    if ((leafs || []).length < 1) {
       return;
     }
 
@@ -222,7 +219,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 
     this.chartOptions.series = data;
     this.chartOptions.xAxis.categories = uniq(xAxisCategories);
-    this.chartOptions.colors = randomColor({count: this.leafs.length});
+    this.chartOptions.colors = colors;
 
     try {
       this.chart = Highcharts.chart('trails-benchmark-chart-container', this.chartOptions);

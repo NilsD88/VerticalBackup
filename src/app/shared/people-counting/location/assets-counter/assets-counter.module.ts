@@ -3,6 +3,7 @@ import { LoaderModule } from 'projects/ngx-proximus/src/lib/loader/loader.module
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AssetsCounterComponent } from './assets-counter.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -13,7 +14,8 @@ import { AssetsCounterComponent } from './assets-counter.component';
     MatTableModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    RouterModule
   ],
   exports: [AssetsCounterComponent]
 })

@@ -1,4 +1,4 @@
-import { WalkingTrailAssetService } from './../../../services/walkingtrail/asset.service';
+import { NewSensorService } from 'src/app/services/new-sensor.service';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IThing } from 'src/app/models/g-thing.model';
@@ -11,6 +11,8 @@ import { IAsset } from 'src/app/models/g-asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { IField } from 'src/app/models/field.model';
+import { ISensorType } from 'src/app/models/g-sensor-type.model';
+import { NewAssetService } from 'src/app/services/new-asset.service';
 
 @Component({
   selector: 'pvf-walkingtrail-asset-wizard',
@@ -24,6 +26,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
   public asset: IAsset;
   public originalAsset: IAsset;
   public editMode = false;
+  public compatibleSensorTypes: ISensorType[];
 
   public displayLocationExplorer = true;
   public displayThresholdTemplateList = true;
@@ -35,20 +38,15 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     public dialog: MatDialog,
-    public assetService: WalkingTrailAssetService,
+    public assetService: NewAssetService,
+    public sensorService: NewSensorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {
   }
 
   async ngOnInit() {
-    this.descriptionFormGroup = this.formBuilder.group({
-      NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
-      DescriptionCtrl: ['', null],
-    });
-
-    this.fields = await this.assetService.getCustomFields().toPromise();
-
+    this.init();
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
@@ -68,6 +66,15 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
     }
   }
 
+  public async init() {
+    this.descriptionFormGroup = this.formBuilder.group({
+      NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      DescriptionCtrl: ['', null],
+    });
+
+    this.fields = await this.assetService.getCustomFields().toPromise();
+    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule(this.asset.module).toPromise();
+  }
 
 
   public selectedThingsChange(thing: IThing) {
@@ -125,6 +132,35 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
     }
   }
 
+  public checkThings() {
+    if (this.oneThingCompatibleWithModule()) {
+      this.stepper.next();
+    } else {
+      this.dialog.open(PopupConfirmationComponent, {
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+        data: {
+          title: 'Warning',
+          content: 'You can an only add an asset with at least one thing defined for tank monitoring',
+          hideContinue: true,
+        }
+      });
+    }
+  }
+
+  public oneThingCompatibleWithModule(): boolean {
+    for (const thing of this.asset.things) {
+      for (const sensor of thing.sensors) {
+        if (this.compatibleSensorTypes.findIndex( x => x.id === sensor.sensorType.id) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public wantToSaveAsset() {
     console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
@@ -177,7 +213,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
       }
 
       this.assetService.updateAsset(asset).subscribe((result) => {
-        //this.dialogRef.close(this.asset);
+          this.router.navigateByUrl('/private/admin/manage-assets');
       });
     }
   }

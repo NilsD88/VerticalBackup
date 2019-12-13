@@ -1,3 +1,4 @@
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { IAsset } from './../../../../models/g-asset.model';
 import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
@@ -10,7 +11,8 @@ import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { IPeopleCountingLocation, IPeopleCountingLocationSerie } from 'src/app/models/peoplecounting/location.model';
+import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { Router } from '@angular/router';
 
 declare global {
   interface Window {
@@ -32,6 +34,7 @@ export class TrailMapComponent implements OnInit {
   @Input() height = 300;
   @Input() location: IPeopleCountingLocation;
   @Input() leaf: IPeopleCountingLocation;
+  @Input() assetUrl: string;
 
   private currentMap: Map;
   private center: IGeolocation;
@@ -47,7 +50,8 @@ export class TrailMapComponent implements OnInit {
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private assetService: WalkingTrailAssetService,
-    private locationService: WalkingTrailLocationService
+    private locationService: WalkingTrailLocationService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -95,7 +99,6 @@ export class TrailMapComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
       };
     } else {
-      this.setBounds();
       this.options = {
         layers: tileLayer(MAP_TILES_URL_ACTIVE),
         zoom: 12,
@@ -118,8 +121,6 @@ export class TrailMapComponent implements OnInit {
 
     const children = this.location.children;
     if (children && children.length) {
-      // TODO: uncomment those lines when backend is ready
-      /*
       const sumsLastWeekUntilSameReference = (await this.locationService.getLocationsDataByIds(
         this.location.children.map(location => location.id),
         'WEEKLY',
@@ -133,13 +134,9 @@ export class TrailMapComponent implements OnInit {
         moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
         moment().valueOf()
       ).toPromise());
-      */
 
       for (const child of children) {
         child.parent = this.location;
-
-        // TODO: uncomment those lines when backend is ready
-        /*
         let sumLastWeekUntilSameReference = null;
         let sumThisWeekSameReference = null;
 
@@ -154,18 +151,10 @@ export class TrailMapComponent implements OnInit {
         const indexWeekRef = sumsThisWeekSameReference.findIndex(x => x.id === child.id);
         if (indexWeekRef > -1) {
           const ref = sumsThisWeekSameReference[indexWeekRef];
-          if((ref.series || []).length) {
+          if ((ref.series || []).length) {
             sumThisWeekSameReference = ref.series[0].valueIn;
           }
         }
-        */
-
-
-        // TODO: remove those lines when backend is ready
-        // MOCK DATA
-        const sumLastWeekUntilSameReference = Math.floor(Math.random() * 101);
-        const sumThisWeekSameReference = Math.floor(Math.random() * 101);
-
 
         let status: string;
         if (sumLastWeekUntilSameReference === sumThisWeekSameReference) {
@@ -181,29 +170,9 @@ export class TrailMapComponent implements OnInit {
           }
         ).on('click', async (event) => {
           this.selectedTrail = child;
-          // TODO: Get these data from backend
-          //const assets = await this.assetService.getAssetsByLocationId(child.id).toPromise();
-          const assets = [{
-            id: '0',
-            name: 'Test Asset',
-            geolocation: {
-              lat: 50.453331,
-              lng: 3.948740
-            },
-          }, {
-            id: '1',
-            name: 'Test Asset 2',
-            geolocation: {
-              lat: 50.453332,
-              lng: 3.948741
-            },
-          }];
+          const assets = await this.assetService.getAssetsByLocationId(child.id).toPromise();
           this.populateMarkersWithAssets(assets);
         });
-
-        /*
-        .bindPopup(() => this.createLocationPopup(child)).openPopup();
-        */
         this.trailsLayer.push(newMarker);
       }
     }
@@ -226,13 +195,16 @@ export class TrailMapComponent implements OnInit {
           {
             icon: asstIcon(asset.name)
           }
-        );
+        ).on('click', async (event) => {
+          this.router.navigateByUrl(`${this.assetUrl}${asset.id}`);
+        });
         this.assetsLayer.push(newMarker);
       }
+      this.fitBoundsAndZoomOnCheckpoints(assets);
     }
   }
 
-  private setBounds(location: ILocation = this.location) {
+  private setTrailBounds(location: ILocation = this.location) {
     const geoJsonData = {
       type: 'Feature',
       properties: {},
@@ -247,13 +219,39 @@ export class TrailMapComponent implements OnInit {
     this.trailBounds = geoJsonLayer.getBounds();
   }
 
-  public fitBoundsAndZoom() {
-   if (this.trailBounds.isValid()) {
+  private getCheckpointBounds(assets: IPeopleCountingAsset[]) {
+    const geoJsonData = {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Polygon',
+        coordinates: [[]]
+      }
+    };
+
+    this.addCheckpointsBounds(geoJsonData, assets);
+    const geoJsonLayer = geoJSON(geoJsonData as GeoJsonObject);
+    return geoJsonLayer.getBounds();
+  }
+
+  public fitBoundsAndZoomOnTrail() {
+    if (this.trailBounds.isValid()) {
       this.currentMap.fitBounds(this.trailBounds);
       setTimeout(() => {
         const currentZoom = this.currentMap.getZoom();
         this.currentMap.setView(this.leaf.geolocation, currentZoom - 1);
       }, 0);
+    } else {
+      setTimeout(() => {
+        this.currentMap.panTo(this.leaf.geolocation);
+      });
+    }
+  }
+
+  public fitBoundsAndZoomOnCheckpoints(assets: IPeopleCountingAsset[]) {
+    const bounds = this.getCheckpointBounds(assets);
+    if (bounds.isValid()) {
+      this.currentMap.fitBounds(bounds);
     } else {
       setTimeout(() => {
         this.currentMap.panTo(this.leaf.geolocation);
@@ -273,6 +271,15 @@ export class TrailMapComponent implements OnInit {
     }
   }
 
+  private addCheckpointsBounds(geoJsonData, assets: IPeopleCountingAsset[]) {
+    if (assets && assets.length) {
+      assets.forEach(asset => {
+        const {lng, lat} = asset.geolocation;
+        geoJsonData.geometry.coordinates[0].push([lng, lat]);
+      });
+    }
+  }
+
   public onMapReady(map: Map) {
     this.currentMap = map;
 
@@ -281,7 +288,7 @@ export class TrailMapComponent implements OnInit {
       this.currentMap.setMaxBounds(this.imageBounds);
     } else if (this.trailBounds) {
       if (this.trailBounds.getNorthEast() && this.trailBounds.getSouthWest()) {
-        this.fitBoundsAndZoom();
+        this.fitBoundsAndZoomOnTrail();
       } else {
         const parent = this.location.parent;
         if (parent) {
@@ -290,8 +297,8 @@ export class TrailMapComponent implements OnInit {
             this.currentMap.panTo({lng, lat});
             this.currentMap.setZoom(12);
           } else {
-            this.setBounds(this.location.parent);
-            this.fitBoundsAndZoom();
+            this.setTrailBounds(this.location.parent);
+            this.fitBoundsAndZoomOnTrail();
           }
         }
       }
@@ -301,5 +308,7 @@ export class TrailMapComponent implements OnInit {
   public resetMap() {
     this.selectedTrail = null;
     this.initMap();
+    this.setTrailBounds(this.location.parent);
+    this.fitBoundsAndZoomOnTrail();
   }
 }
