@@ -7,6 +7,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
+import { ILocation } from 'src/app/models/g-location.model';
+import { TankMonitoringLocationService } from 'src/app/services/tankmonitoring/location.service';
 
 interface IRange {
   min: number;
@@ -30,6 +32,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
+  public rootLocation: ILocation;
   public assets: ITankMonitoringAsset[] = [];
   public selectedAssets: ITankMonitoringAsset[];
 
@@ -74,10 +77,20 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private assetService: TankMonitoringAssetService,
+    private locationService: TankMonitoringLocationService
   ) {}
 
   async ngOnInit() {
     this.isLoading = true;
+    this.rootLocation = {
+      id: null,
+      parentId: null,
+      geolocation: null,
+      image: null,
+      name: 'Locations',
+      description: null,
+      children: await this.locationService.getLocationsTree().toPromise()
+    };
     this.assets = await this.assetService.getAssets().toPromise();
     this.assets.forEach((asset) => {
       const VALUE = asset.things[0].sensors[0].value;

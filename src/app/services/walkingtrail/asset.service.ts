@@ -41,8 +41,8 @@ export class WalkingTrailAssetService extends PeopleCountingAssetService {
   public getAssets(): Observable < IPeopleCountingAsset[] > {
 
     const GET_ASSETS_BY_MODULE = gql `
-        query FindAssetsByModule($moduleName: String!) {
-          assets: findAssetsByModule(moduleName: $moduleName) {
+        query FindAssetsByModule($input: AssetFindByModuleInput!) {
+          assets: findAssetsByModule(input: $input) {
             id,
             name,
             things {
