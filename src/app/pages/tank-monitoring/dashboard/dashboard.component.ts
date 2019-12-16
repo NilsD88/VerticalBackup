@@ -136,7 +136,7 @@ export class DashboardComponent implements OnInit {
 
       if (this.filterFE.batteryLevel && result) {
         const {min, max} = this.filterFE.batteryLevel;
-        const batteryLevel = asset.things[0].batteryPercentage;
+        const batteryLevel = (asset.things.length) ? asset.things[0].batteryPercentage : null;
         if (min === 0 && max === 100) {
           result = true;
         } else {
@@ -150,7 +150,7 @@ export class DashboardComponent implements OnInit {
 
       if (this.filterFE.fuelLevel && result) {
         const {min, max} = this.filterFE.fuelLevel;
-        const fuelLevel = asset.things[0].sensors[0].value;
+        const fuelLevel =  (asset.things.length) ? asset.things[0].sensors[0].value : null;
         if (min === 0 && max === 100) {
           result = true;
         } else {

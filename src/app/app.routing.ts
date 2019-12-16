@@ -48,8 +48,7 @@ export class UserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    console.log('UserAuthGuard');
-    
+    /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
@@ -60,6 +59,7 @@ export class UserAuthGuard implements CanActivate {
       impersonation: false
     });
     return true;
+    */
     
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
@@ -94,7 +94,7 @@ export class HomeUserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    
+    /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
@@ -105,7 +105,7 @@ export class HomeUserAuthGuard implements CanActivate {
       impersonation: false
     });
     return true;
-    
+    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       const modules = this.sharedService.user.modules;
@@ -160,7 +160,7 @@ export class AdminAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    
+    /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
@@ -171,7 +171,7 @@ export class AdminAuthGuard implements CanActivate {
       impersonation: false
     });
     return true;
-    
+    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
