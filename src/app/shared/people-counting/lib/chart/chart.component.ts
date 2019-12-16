@@ -67,11 +67,11 @@ interface IChartSerie {
 }
 
 @Component({
-  selector: 'pvf-walkingtrail-chart',
+  selector: 'pvf-peoplecounting-asset-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss']
 })
-export class ChartComponent implements OnInit, OnChanges {
+export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;

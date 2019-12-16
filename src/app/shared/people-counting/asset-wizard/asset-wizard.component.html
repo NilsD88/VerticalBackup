@@ -52,7 +52,7 @@
             </pxs-list-things>
           </div>
         </div>
-        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="stepper.next()"></pxs-stepper-next>
+        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>

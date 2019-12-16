@@ -153,6 +153,9 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
     const data = [];
     const xAxisCategories = [];
 
+    console.log('::::::::');
+    console.log(this.leafs);
+    console.log('::::::::');
     for (const leaf of this.leafs) {
       data.push({
         name: leaf.name,

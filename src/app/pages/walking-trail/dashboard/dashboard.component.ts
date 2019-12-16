@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {
-  findLeaftsLocation
+  findLeafLocations
 } from '../utils';
 import {
   generateLeafColors,
@@ -83,18 +83,21 @@ export class DashboardComponent implements OnInit {
 
   public changeLocation(location: IPeopleCountingLocation) {
     const leafs: IPeopleCountingLocation[] = [];
-    findLeaftsLocation(location, leafs);
+    findLeafLocations(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
 
     // Generate colors of trails
     this.leafColors = generateLeafColors(leafs);
 
+    
     // Generate past week data
+    /*
     generatePastWeekOfData(leafs);
     this.leafs = leafs;
+    */
 
     // TODO: get the past week data with day interval for each location (location.series)
-    /*
+    
     this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
       'WEEKLY',
@@ -102,35 +105,47 @@ export class DashboardComponent implements OnInit {
       moment().startOf('isoWeek').add(7, 'days').valueOf(),
     ).subscribe(
       (result) => {
-        leafs.forEach((leaf, index) => {
-          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        leafs.forEach(leaf => {
+          const leafIndex = result.findIndex((x => x.id === leaf.id));
+          if (leafIndex > -1) {
+            leaf.series = result[leafIndex].series;
+          } else {
+            leaf.series = [];
+          }
         });
+        this.leafs = result;
+        this.currentLeafs = cloneDeep(this.leafs);
+        this.changeDetectorRef.detectChanges();
       }
     );
-    */
 
     // Generate past year data
+    /*
     generatePastYearOfData(lastYearLeafs);
     this.lastYearLeafs = lastYearLeafs;
+    */
 
     // TODO: get the past year data with month interval for each location(location.series)
-    /*
+
     this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
       'MONTHLY',
-      moment().subtract(1,'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
       moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
     ).subscribe(
       (result) => {
-        lastYearLeafs.forEach((leaf, index) => {
-          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        lastYearLeafs.forEach(leaf => {
+          const leafIndex = result.findIndex((x => x.id === leaf.id));
+          if (leafIndex > -1) {
+            leaf.series = result[leafIndex].series;
+          } else {
+            leaf.series = [];
+          }
         });
+        this.lastYearLeafs = lastYearLeafs;
+        this.changeDetectorRef.detectChanges();
       }
     );
-    */
-
-    this.currentLeafs = cloneDeep(this.leafs);
-    this.changeDetectorRef.detectChanges();
   }
 
 }

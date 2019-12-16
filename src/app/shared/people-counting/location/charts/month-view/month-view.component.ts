@@ -7,7 +7,8 @@ import {
   OnInit,
   Input,
   OnChanges,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  SimpleChanges
 } from '@angular/core';
 import {
   TranslateService
@@ -44,9 +45,11 @@ require('highcharts/modules/export-data')(Highcharts);
   templateUrl: './month-view.component.html',
   styleUrls: ['./month-view.component.scss']
 })
-export class MonthViewComponent implements OnInit {
+export class MonthViewComponent implements OnInit, OnChanges {
 
   @Input() leaf: IPeopleCountingLocation;
+  @Input() assets: IPeopleCountingAsset[];
+  @Input() assetUrl: string;
   @Input() assetService: WalkingTrailAssetService ;
 
   public chartData$ = new Subject<any>();
@@ -82,7 +85,15 @@ export class MonthViewComponent implements OnInit {
         this.updateChart(assets);
       }
     );
-    this.chartData$.next(this.currentFilter);
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.assets) {
+      if (changes.assets.currentValue && changes.assets.currentValue !== changes.assets.previousValue) {
+        this.chartData$.next(this.currentFilter);
+      }
+    }
   }
 
   private initChartOptions() {
@@ -154,10 +165,6 @@ export class MonthViewComponent implements OnInit {
   }
 
   private updateChart(assets: IPeopleCountingAsset[]) {
-
-    if (!this.leaf) {
-      return;
-    }
 
     this.currentMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.chartOptions.series = [];
@@ -272,7 +279,7 @@ export class MonthViewComponent implements OnInit {
 
         // REAL DATA
         return this.assetService.getAssetsDataByIds(
-          this.leaf.assets.map(asset => asset.id),
+          this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError(() => {
           this.dialog.open(DialogComponent, {

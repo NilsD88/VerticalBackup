@@ -1,6 +1,6 @@
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
-function findLeaftsLocation(location: IPeopleCountingLocation, leafs: IPeopleCountingLocation[], parent = null): IPeopleCountingLocation[] {
+function findLeafLocations(location: IPeopleCountingLocation, leafs: IPeopleCountingLocation[], parent = null): IPeopleCountingLocation[] {
   if (!location.children || !location.children.length) {
     leafs.push({
       id: location.id,
@@ -13,7 +13,7 @@ function findLeaftsLocation(location: IPeopleCountingLocation, leafs: IPeopleCou
     if (children && children.length) {
       for (const child of children) {
         if (child) {
-          findLeaftsLocation(child, leafs, {
+          findLeafLocations(child, leafs, {
             id: location.id,
             name: location.name,
             parent
@@ -25,5 +25,5 @@ function findLeaftsLocation(location: IPeopleCountingLocation, leafs: IPeopleCou
 }
 
 export {
-    findLeaftsLocation
+    findLeafLocations
 };

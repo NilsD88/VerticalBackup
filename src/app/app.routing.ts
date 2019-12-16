@@ -48,7 +48,6 @@ export class UserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    console.log('UserAuthGuard');
     /*
     this.sharedService.user = new User({
       email: 'nicolas.ancel@ordina.be',
@@ -61,6 +60,7 @@ export class UserAuthGuard implements CanActivate {
     });
     return true;
     */
+    
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       return this.sharedService.user.isUser;

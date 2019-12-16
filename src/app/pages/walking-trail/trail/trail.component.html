@@ -1,25 +1,25 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-sm-12">
-      <pvf-trail-map [location]="parentLocation" *ngIf="parentLocation" [leaf]="leaf"></pvf-trail-map>
+      <pvf-trail-map [location]="parentLocation" *ngIf="parentLocation" [leaf]="leaf" [assetUrl]="assetUrl"></pvf-trail-map>
     </div>
     <div class="col-md-6 col-sm-12">
       <slideshow [height]="'200px'" [imageUrls]="imageSources" [showDots]="true"
         [lazyLoad]="imageSources?.length > 1" [autoPlayWaitForLazyLoad]="true">
       </slideshow>
-      <pvf-summary-statistics [leaf]="leaf"></pvf-summary-statistics>
+      <pvf-summary-statistics *ngIf="leaf?.parent" [leaf]="leaf"></pvf-summary-statistics>
     </div>
   </div>
 </div>
-<pvf-peoplecounting-month-view [leaf]="leaf" [assetService]="assetService"></pvf-peoplecounting-month-view>
+<pvf-peoplecounting-month-view [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
 <pvf-trails-benchmark [parentLocation]="parentLocation"></pvf-trails-benchmark>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-4 col-sm-12">
-      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets"></pvf-peoplecounting-count-by-asset>
+      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
     <div class="col-md-4 col-sm-12">
-      <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets"></pvf-peoplecounting-assets-counter>
+      <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-assets-counter>
     </div>
     <div class="col-md-4 col-sm-12" style="height: 300px;">
         <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>

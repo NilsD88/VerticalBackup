@@ -38,7 +38,7 @@ export class SummaryStatisticsComponent implements OnInit {
     this.displayedColumns = ['totalWeek', 'totalDay', 'avgWeek', 'avgDay'];
 
     // TODO: uncomment those lines when the backend is ready
-    /*
+    console.log(this.leaf);
     const leafs = await this.locationService.getLocationsDataByIds(
       this.leaf.parent.children.map(location => location.id),
       'DAILY',
@@ -46,11 +46,13 @@ export class SummaryStatisticsComponent implements OnInit {
       moment().valueOf()
     ).toPromise();
 
-    if((leafs || []).length) {
-      const leaf = leafs.find(x => x.id === this.leaf.id);
+    if ((leafs || []).length) {
+      console.log(leafs);
+      const leaf = leafs.find(x => x.id === this.leaf.id) || {series: []};
+      const series = leaf.series;
       this.data = {
-        totalWeek: leaf.series.reduce((a, b) => a + b.valueIn, 0),
-        totalDay: leaf.series[leaf.series.length - 1].valueIn,
+        totalWeek: (series.length) ? series.reduce((a, b) => a + b.valueIn, 0) : null,
+        totalDay:  (series.length) ? series[series.length - 1].valueIn : null,
         avgWeek: leafs.reduce(
           (a, b) => {
             return a + b.series.reduce((c, d) => c + d.valueIn, 0);
@@ -58,15 +60,16 @@ export class SummaryStatisticsComponent implements OnInit {
         ) / leafs.length,
         avgDay: leafs.reduce(
           (a, b) => {
-            return a + b.series[b.series.length - 1].valueIn;
+            const valueIn = (b.series.length) ? b.series[b.series.length - 1].valueIn : 0;
+            return a + valueIn;
           }, 0
         ) / leafs.length,
       };
     }
-    */
 
 
     // TODO: remove those lines when the backend is ready
+    /*
     // MOCK DATA
     this.data = {
       totalWeek: Math.floor(Math.random() * 101 * 7),
@@ -74,6 +77,7 @@ export class SummaryStatisticsComponent implements OnInit {
       avgWeek: Math.floor(Math.random() * 101 * 7),
       avgDay: Math.floor(Math.random() * 101)
     };
+    */
 
 
 

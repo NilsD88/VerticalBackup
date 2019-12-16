@@ -1,6 +1,6 @@
+import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { ILocation } from 'src/app/models/g-location.model';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject } from '@angular/core';
@@ -49,7 +49,7 @@ export class TrailWizardComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
     public newLocationService: NewLocationService,
     public walkingTrailLocationService: WalkingTrailLocationService,
-    public assetService: NewAssetService,
+    public assetService: WalkingTrailAssetService,
     public dialog: MatDialog,
     public router: Router,
   ) {}

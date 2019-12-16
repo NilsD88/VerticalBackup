@@ -6,11 +6,11 @@ import {isNullOrUndefined} from 'util';
 import {Asset} from '../../../../models/g-asset.model';
 
 @Component({
-  selector: 'pvf-walkingtrail-detail-header',
+  selector: 'pvf-peoplecounting-detail-header',
   templateUrl: './detail-header.component.html',
   styleUrls: ['./detail-header.component.scss']
 })
-export class DetailHeaderComponent implements OnInit {
+export class PeopleCountingDetailHeaderComponent implements OnInit {
 
   @Input() asset: Asset;
   public orgName: string;

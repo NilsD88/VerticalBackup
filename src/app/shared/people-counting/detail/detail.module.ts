@@ -9,13 +9,13 @@ import {PeopleCountingDetailRoutes} from './detail.routing';
 import {TranslateModule} from '@ngx-translate/core';
 import { MatDividerModule, MatExpansionModule, MatTooltipModule } from '@angular/material';
 import {HighchartsChartModule} from 'highcharts-angular';
-import {ChartModule} from '../lib/chart/chart.module';
+import {PeopleCountingAssetChartModule} from '../lib/chart/chart.module';
 import {RangeSliderModule} from 'projects/ngx-proximus/src/lib/range-slider/range-slider.module';
 import {AggregatedValuesModule} from 'projects/ngx-proximus/src/lib/aggregated-values/aggregated-values.module';
 import {MapAssetModule} from 'projects/ngx-proximus/src/lib/map-asset/map-asset.module';
 import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import { DetailHeaderModule } from '../lib/detail-header/detail-header.module';
+import { PeopleCountingDetailHeaderModule } from '../lib/detail-header/detail-header.module';
 import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/linked-things.module';
 
 
@@ -29,12 +29,12 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     MatExpansionModule,
     MatTooltipModule,
     HighchartsChartModule,
-    ChartModule,
+    PeopleCountingAssetChartModule,
     AggregatedValuesModule,
     MapAssetModule,
     IconModule,
     FlexLayoutModule,
-    DetailHeaderModule,
+    PeopleCountingDetailHeaderModule,
     RangeSliderModule,
     ThresholdTemplatesDetailModule,
     LinkedThingsModule,
