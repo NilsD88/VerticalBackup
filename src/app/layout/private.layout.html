@@ -27,32 +27,32 @@
           {{ 'LAYOUT.ADMIN' | translate }}
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-alert-definition'])">
+          <a mat-menu-item [routerLink]="['/private','admin','manage-alert-definition']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.ALERT_DEFINITIONS' | translate }}
-          </button>
+          </a>
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-locations'])">
+          <button mat-menu-item [routerLink]="['/private','admin','manage-locations']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_LOCATIONS' | translate }}
           </button>
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-assets'])">
+          <button mat-menu-item [routerLink]="['/private','admin','manage-assets']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_ASSETS' | translate }}
           </button>
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-things'])">
+          <button mat-menu-item [routerLink]="['/private','admin','manage-things']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_THINGS' | translate }}
           </button>
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-threshold-templates'])">
+          <button mat-menu-item [routerLink]="['/private','admin','manage-threshold-templates']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_THRESHOLD_TEMPLATES' | translate }}
           </button>
         </div>
         <div mat-menu-item>
-          <button mat-menu-item (click)="navigateTo(['/private','admin','manage-points-of-attention'])">
+          <button mat-menu-item [routerLink]="['/private','admin','manage-points-of-attention']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_POINTS_OF_ATTENTION' | translate }}
           </button>
         </div>
@@ -84,111 +84,110 @@
 
 <mat-menu #smartMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'inventory'])">
+    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'inventory']" routerLinkActive="router-link-active">
       Inventory
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'assets', 'new'])">
+    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'assets', 'new']" routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New asset</span>
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','smartmonitoring', 'points-of-attention'])">
+    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention']" routerLinkActive="router-link-active">
       My points of attention
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item
-      (click)="navigateTo(['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new'])">
+    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new']" routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New point of attention</span>
-    </button>
+    </a>
   </div>
 </mat-menu>
 
 <mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','tankmonitoring', 'dashboard'])">
+    <a mat-menu-item [routerLink]="['/private','tankmonitoring', 'dashboard']" routerLinkActive="router-link-active">
       Dashboard
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','tankmonitoring', 'inventory'])">
+    <a mat-menu-item [routerLink]="['/private','tankmonitoring', 'inventory']" routerLinkActive="router-link-active">
       Tank inventory
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private', 'tankmonitoring', 'assets', 'new'])">
+    <a mat-menu-item [routerLink]="['/private', 'tankmonitoring', 'assets', 'new']" routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New tank</span>
-    </button>
+    </a>
   </div>
 </mat-menu>
 
 <mat-menu #walkingtrail="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','walkingtrail', 'dashboard'])">
+    <a mat-menu-item [routerLink]="['/private','walkingtrail', 'dashboard']" routerLinkActive="router-link-active">
       Dashboard
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','walkingtrail', 'overview'])">
+    <a mat-menu-item [routerLink]="['/private','walkingtrail', 'overview']" routerLinkActive="router-link-active">
       Trails overview
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','walkingtrail', 'trail', 'new'])">
+    <a mat-menu-item [routerLink]="['/private','walkingtrail', 'trail', 'new']" routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New trail</span>
-    </button>
+    </a>
   </div>
 </mat-menu>
 
 <mat-menu #peopleCounting="matMenu" style="margin-top: 80px;">
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'dashboard'])">
+    <a mat-menu-item [routerLink]="['/private','peoplecounting', 'dashboard']" routerLinkActive="router-link-active">
       Dashboard
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'overview'])">
+    <a mat-menu-item [routerLink]="['/private','peoplecounting', 'overview']" routerLinkActive="router-link-active">
       Stores overview
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-      <button mat-menu-item (click)="navigateTo(['/private','peoplecounting', 'store', 'new'])">
+    <a mat-menu-item [routerLink]="['/private','peoplecounting', 'store', 'new']" routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New store</span>
-    </button>
+    </a>
   </div>
 </mat-menu>
 
 <mat-menu #stairwayToHealth="matMenu" style="margin-top: 80px;">
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','stairwaytohealth', 'dashboard'])">
+    <a mat-menu-item [routerLink]="['/private','stairwaytohealth', 'dashboard']" routerLinkActive="router-link-active">
       Dashboard
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','stairwaytohealth', 'overview'])">
+    <button mat-menu-item [routerLink]="['/private','stairwaytohealth', 'overview']" routerLinkActive="router-link-active">
       Places overview
     </button>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item>
+    <a mat-menu-item>
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New place</span>
-    </button>
+    </a>
   </div>
 </mat-menu>
 
 <mat-menu #assetTracking="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <button mat-menu-item>
+    <a mat-menu-item>
       Dashboard
-    </button>
+    </a>
   </div>
   <div mat-menu-item>
     <button mat-menu-item>
@@ -196,10 +195,10 @@
     </button>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item>
+    <a mat-menu-item>
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New Asset</span>
-    </button>
+    </a>
   </div>
 </mat-menu>
 

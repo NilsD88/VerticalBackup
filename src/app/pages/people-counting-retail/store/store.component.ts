@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 import * as moment from 'moment';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 
 @Component({
   selector: 'pvf-store',
@@ -17,7 +18,8 @@ export class StoreComponent implements OnInit {
   public leaf: IPeopleCountingLocation;
   public lastMonthLeafData: IPeopleCountingLocation;
   public parentLocation: IPeopleCountingLocation;
-
+  public assets: IPeopleCountingAsset[];
+  public assetUrl = '/private/peoplecounting/detail/';
   public locale: string;
 
   constructor(
@@ -27,8 +29,10 @@ export class StoreComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.activatedRoute.params.subscribe(async (params) => {
       this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
       const rootLocation = {
         id: null,
         parentId: null,
@@ -38,9 +42,13 @@ export class StoreComponent implements OnInit {
         description: null,
         children:  await this.locationService.getLocationsTree().toPromise()
       };
-      const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
-      this.parentLocation = parentLocation;
-      console.log(this.leaf);
+      if (this.leaf.parent) {
+        const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
+        this.parentLocation = parentLocation;
+      } else {
+        this.parentLocation = rootLocation;
+      }
+      this.leaf.parent = this.parentLocation;
     });
   }
 }

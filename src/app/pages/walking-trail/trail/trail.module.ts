@@ -1,3 +1,4 @@
+import { TrailImagesModule } from './trail-images/trail-images.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { SummaryStatisticsModule } from './summary-statistics/summary-statistics.module';
@@ -8,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { TrailComponent } from './trail.component';
 import { RouterModule } from '@angular/router';
 import { TrailRoutes } from './trail.routing';
-import {SlideshowModule} from 'ng-simple-slideshow';
 import { MonthViewModule } from 'src/app/shared/people-counting/location/charts/month-view/month-view.module';
 import { CountByAssetModule } from 'src/app/shared/people-counting/location/charts/count-by-asset/count-by-asset.module';
 import { AssetsCounterModule } from 'src/app/shared/people-counting/location/assets-counter/assets-counter.module';
@@ -20,6 +20,7 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/location/ass
   imports: [
     CommonModule,
     RouterModule.forChild(TrailRoutes),
+    TrailImagesModule,
     MonthViewModule,
     TrailsBenchmarkModule,
     CountByAssetModule,
@@ -27,7 +28,6 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/location/ass
     TrailMapModule,
     SummaryStatisticsModule,
     LocationExplorerModule,
-    SlideshowModule,
     MapModule
   ],
   exports: [TrailComponent]

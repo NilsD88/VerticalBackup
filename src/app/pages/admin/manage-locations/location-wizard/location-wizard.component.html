@@ -54,6 +54,6 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [completed]="location.geolocation" [text]="'Save'" [color]="'success'" (next)="submit()"></pxs-stepper-next> 
+    <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Save'" [color]="'success'" (next)="submit()"></pxs-stepper-next> 
   </mat-step>
 </mat-horizontal-stepper>

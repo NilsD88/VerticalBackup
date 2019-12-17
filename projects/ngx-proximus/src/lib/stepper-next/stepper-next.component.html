@@ -4,7 +4,7 @@
         {{text}}
         <pxs-icon [icon]="'chevron-right'"></pxs-icon>
       </pxs-button>
-      <pxs-button *ngIf="(formGroup && formGroup.status==='VALID') && completed" [color]="color" size="large" (click)="callNext()">
+      <pxs-button [class.spinner]="loading" [disabled]="loading" *ngIf="(formGroup && formGroup.status==='VALID') && completed" [color]="color" size="large" (click)="callNext()">
         {{text}}
         <pxs-icon [icon]="'chevron-right'"></pxs-icon>
       </pxs-button>

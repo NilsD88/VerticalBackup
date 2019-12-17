@@ -13,6 +13,8 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { map } from 'rxjs/operators';
+import gql from 'graphql-tag';
 
 
 const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
@@ -31,6 +33,47 @@ export class PeopleCountingRetailAssetService extends PeopleCountingAssetService
   }
 
 
+  public getAssets(): Observable < IPeopleCountingAsset[] > {
+
+    const GET_ASSETS_BY_MODULE = gql `
+        query FindAssetsByModule($input: AssetFindByModuleInput!) {
+          assets: findAssetsByModule(input: $input) {
+            id,
+            name,
+            things {
+              devEui,
+              batteryPercentage,
+              sensors {
+                sensorType {
+                  id,
+                  name
+                }
+                value,
+                timestamp
+              }
+            }
+          }
+        }
+      `;
+
+    interface GetAssetsWalkingTrailResponse {
+      assets: IPeopleCountingAsset[];
+    }
+
+    return this.apollo.query < GetAssetsWalkingTrailResponse > ({
+      query: GET_ASSETS_BY_MODULE,
+      fetchPolicy: 'network-only',
+      variables: {
+        input: {
+          moduleName: MODULE_NAME
+        }
+      }
+    }).pipe(map(({
+      data
+    }) => data.assets));
+
+  }
+
   public getAssetsDataByIds(ids: string[], interval: Intervals, from: number, to: number): Observable < IPeopleCountingAsset[] > {
     return super.getAssetsDataByIds(
       ids,
@@ -39,6 +82,10 @@ export class PeopleCountingRetailAssetService extends PeopleCountingAssetService
       to,
       MODULE_NAME
     );
+  }
+
+  public getAssetsByLocationId(locationId: string): Observable < IPeopleCountingAsset[] > {
+    return super.getAssetsByLocationId(locationId, MODULE_NAME);
   }
 
 

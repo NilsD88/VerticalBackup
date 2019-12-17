@@ -88,6 +88,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       (data: IAsset[]) => {
         this.markers = [];
         this.assets = data;
+        console.log(data);
         this.populateMarkersWithAssets();
       })
     );
@@ -188,7 +189,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           this.dialog.open(MapDialogComponent, {
             width: '300px',
             data: {
-              assets: assetWithoutPosition
+              assets: assetWithoutPosition,
+              assetUrl: this.assetUrl
             }
           });
       });

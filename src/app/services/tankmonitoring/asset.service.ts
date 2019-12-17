@@ -1,5 +1,4 @@
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { MOCK_NEW_CHART_TANK_DATA } from 'src/app/mocks/chart';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
@@ -8,6 +7,7 @@ import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model'
 import { map } from 'rxjs/operators';
 import { IThing } from 'src/app/models/g-thing.model';
 import { HttpClient } from '@angular/common/http';
+import { IPagedAssets } from 'src/app/models/g-asset.model';
 
 
 const MODULE_NAME = 'TANK_MONITORING';
@@ -33,62 +33,6 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public getAssets(): Observable < ITankMonitoringAsset[] > {
-    // Mock data
-    /*
-    return new Observable < ITankMonitoringAsset[] > ((observer) => {
-      observer.next([{
-          id: '0',
-          name: 'test',
-          location: {
-            id: '102',
-            name: '2tc'
-          },
-          things: [{
-            devEui: 'OKAZEAZEAZ',
-            batteryPercentage: 15,
-            sensors: [{
-              sensorType: {
-                id: '1',
-                name: 'sensorTypeName'
-              },
-              value: 9,
-              timestamp: new Date().getTime()
-            }]
-          }],
-          geolocation: {
-            lat: 1,
-            lng: 1
-          }
-        },
-        {
-          id: '1',
-          name: 'test 2',
-          location: {
-            id: '0',
-            name: 'location 2'
-          },
-          things: [{
-            devEui: '12321312312',
-            batteryPercentage: 82,
-            sensors: [{
-              sensorType: {
-                id: '1',
-                name: 'sensorTypeName'
-              },
-              value: 33,
-              timestamp: new Date().getTime()
-            }]
-          }],
-          geolocation: {
-            lat: 1.2,
-            lng: 1.2
-          }
-        }
-      ]);
-      observer.complete();
-    });
-    */
-
     // Real data
     const GET_ASSETS_BY_MODULE = gql `
         query FindAssetsByModule($input: AssetFindByModuleInput!) {
@@ -97,7 +41,11 @@ export class TankMonitoringAssetService extends NewAssetService {
             name,
             location {
               id,
-              name
+              name,
+            },
+            geolocation {
+              lat,
+              lng
             }
             things {
               devEui,
@@ -133,24 +81,107 @@ export class TankMonitoringAssetService extends NewAssetService {
 
   }
 
+  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedAssets > {
+    return super.getPagedAssets(
+      pageNumber,
+      pageSize,
+      filter,
+      MODULE_NAME
+    );
+  }
+
   public getAssetPopupDetail(id: string): Observable < ITankMonitoringAsset > {
-    const GET_ASSET_POPUP_DETAIL_BY_ID = gql `
-        query findAssetById($id: Long!) {
-          asset: findAssetById(id: $id) {
-              id,
-              name,
-              description,
-              image
-          }
-        }
-      `;
+    return super.getAssetPopupDetail(id);
+  }
+
+  public getAssetDetailById(id: string): Observable < ITankMonitoringAsset > {
+
+    const GET_ASSET_DETAIL_BY_ID = gql `
+            query findAssetById($id: Long!) {
+                asset: findAssetById(id: $id) {
+                    id,
+                    name,
+                    description,
+                    lastRefill {
+                      Date
+                    },
+                    geolocation {
+                      lat,
+                      lng
+                    },
+                    location {
+                      id,
+                      name,
+                      geolocation {
+                        lat,
+                        lng
+                      },
+                      image
+                    },
+                    customFields {
+                      keyId,
+                      value
+                    }
+                    things {
+                     id,
+                     name,
+                     devEui,
+                     batteryPercentage,
+                     sensors {
+                       id,
+                       sensorType {
+                        id,
+                        name,
+                        postfix
+                       },
+                       timestamp,
+                       value,
+                       sensorDefinition {
+                         name,
+                         useOnChart,
+                         chartType,
+                         aggregatedValues {
+                          min,
+                          max,
+                          avg,
+                          sum
+                         }
+                       }
+                     }
+                    },
+                    thresholdTemplate {
+                      id,
+                      name,
+                      thresholds {
+                          sensorType {
+                              id,
+                              name,
+                              postfix,
+                              min,
+                              max,
+                              type
+                          },
+                          thresholdItems {
+                              id,
+                              range {
+                                  from,
+                                  to
+                              },
+                              severity,
+                          }
+                      }
+                    },
+                    image
+                }
+            }
+        `;
 
     interface GetAssetDetailByIdResponse {
       asset: ITankMonitoringAsset;
     }
 
     return this.apollo.query < GetAssetDetailByIdResponse > ({
-      query: GET_ASSET_POPUP_DETAIL_BY_ID,
+      query: GET_ASSET_DETAIL_BY_ID,
       fetchPolicy: 'network-only',
       variables: {
         id,

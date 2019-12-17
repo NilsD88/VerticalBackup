@@ -37,8 +37,9 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public fields: IField[] = [];
+  public fields: IField[];
   public compatibleSensorTypes: ISensorType[];
+  public isSavingOrUpdating: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -162,7 +163,6 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   }
 
   public wantToSaveAsset() {
-    console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
@@ -186,14 +186,10 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   }
 
   private submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
-
-      console.log(this.asset);
-      console.log(this.originalAsset);
-
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
-
       const asset: IAsset = {
         id: this.asset.id,
       };
@@ -211,18 +207,32 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
         }
       }
 
-      this.tankMonitoringAssetService.updateAsset(asset).subscribe((result) => {
-        this.goToInventory();
-      });
+      this.tankMonitoringAssetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.goToInventory();
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     } else {
-      this.tankMonitoringAssetService.createAsset(this.asset).subscribe((result) => {
-        this.goToInventory();
-      });
+      this.tankMonitoringAssetService.createAsset(this.asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.goToInventory();
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
 
   private goToInventory() {
-    this.router.navigateByUrl('/private/smartmonitoring/inventory');
+    this.router.navigateByUrl('/private/tankmonitoring/inventory');
   }
 
 

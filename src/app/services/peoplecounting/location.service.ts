@@ -22,11 +22,11 @@ export class PeopleCountingLocationService extends NewLocationService {
         );
     }
 
-    public getCoverOfLocationById(id: string): Observable < string > {
+    public getCoverOfLocationById(id: string): Observable < string[] > {
       const GET_IMAGE_OF_LOCATION_BY_ID = gql `
               query findLocationById($id: Long!) {
                   location: findLocationById(id: $id) {
-                      image
+                      images
                   }
               }
           `;
@@ -41,7 +41,7 @@ export class PeopleCountingLocationService extends NewLocationService {
         }
       }).pipe(map(({
         data
-      }) => data.location.image));
+      }) => data.location.images));
     }
 
     public getLocationsDataByIds(ids: string[], interval: Intervals, from: number, to: number, moduleName: string): Observable < IPeopleCountingLocation[] > {

@@ -162,11 +162,13 @@ a {
   font-family : ProximusRegular, sans-serif;
   cursor      : pointer;
 
-  &:hover {
+  &:not(.mat-menu-item) :hover {
     color           : $link;
     text-decoration : underline;
   }
 }
+
+
 
 small {
   color : $sub;
@@ -1362,6 +1364,7 @@ mat-form-field {
   border: 2px solid #ffffff;
   border-top-color: $primary;
   animation: spinner .8s linear infinite;
+  z-index: 1;
 }
 
 .orange-snackbar {

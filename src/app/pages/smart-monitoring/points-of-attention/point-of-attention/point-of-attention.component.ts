@@ -39,7 +39,6 @@ export class PointOfAttentionComponent implements OnInit {
     public activeRoute: ActivatedRoute,
     private translateService: TranslateService,
     private sharedService: SharedService,
-    private logsService: LogsService,
     public pointOfAttentionService: PointOfAttentionService,
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,

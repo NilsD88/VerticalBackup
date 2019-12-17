@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+    <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
   <mat-step>
       <ng-template matStepLabel>Assets</ng-template>
@@ -95,6 +95,6 @@
           <button mat-button color="primary" (click)="openAddAsset()">Create a new asset</button>
         </div>
       </div>
-      <pxs-stepper-next [completed]="location.geolocation" [text]="'Done!'" [color]="'success'" (next)="done()"></pxs-stepper-next> 
+      <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Done!'" [color]="'success'" (next)="done()"></pxs-stepper-next> 
     </mat-step>
 </mat-horizontal-stepper>

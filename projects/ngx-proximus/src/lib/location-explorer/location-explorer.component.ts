@@ -71,10 +71,6 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-
-    console.log('rootLocation', this.rootLocation);
-
-
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
         if (req === 'STOP') {

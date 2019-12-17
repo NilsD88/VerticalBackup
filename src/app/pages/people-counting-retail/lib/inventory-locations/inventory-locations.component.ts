@@ -1,4 +1,4 @@
-import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
+import { PeopleCountingRetailLocationService } from './../../../../services/peoplecounting-retail/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InventoryLocationsComponent } from '../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component';
@@ -15,7 +15,7 @@ export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLo
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public locationService: WalkingTrailLocationService,
+    public locationService: PeopleCountingRetailLocationService,
     public activatedRoute: ActivatedRoute,
   ) {
     super(

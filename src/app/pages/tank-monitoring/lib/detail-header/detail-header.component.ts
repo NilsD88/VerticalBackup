@@ -1,8 +1,7 @@
+import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import {Component, Input, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
-import { MOCK_LOCATIONS } from 'src/app/mocks/newlocations';
-import { IAsset } from 'src/app/models/g-asset.model';
 import { SharedService } from 'src/app/services/shared.service';
 import { isNullOrUndefined } from 'util';
 
@@ -13,7 +12,7 @@ import { isNullOrUndefined } from 'util';
 })
 export class DetailHeaderComponent implements OnInit {
 
-  @Input() asset: IAsset;
+  @Input() asset: ITankMonitoringAsset;
   public orgName: string;
 
   public isNullOrUndefined = isNullOrUndefined;

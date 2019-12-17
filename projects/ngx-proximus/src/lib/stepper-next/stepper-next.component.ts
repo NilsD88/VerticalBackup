@@ -12,6 +12,7 @@ export class StepperNextComponent implements OnInit {
   @Input() text = 'Next';
   @Input() color = 'primary';
   @Input() formGroup: FormGroup = new FormGroup({});
+  @Input() loading: boolean;
   @Output() next = new EventEmitter();
 
   constructor() { }

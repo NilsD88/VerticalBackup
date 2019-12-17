@@ -33,7 +33,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public fields: IField[] = [];
+  public fields: IField[];
+  public isSavingOrUpdating: boolean;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -186,12 +187,9 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
   }
 
   public submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
 
-      console.log(this.asset);
-      console.log(this.originalAsset);
-
-      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
@@ -212,9 +210,16 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
         }
       }
 
-      this.assetService.updateAsset(asset).subscribe((result) => {
+      this.assetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
           this.router.navigateByUrl('/private/admin/manage-assets');
-      });
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
 }

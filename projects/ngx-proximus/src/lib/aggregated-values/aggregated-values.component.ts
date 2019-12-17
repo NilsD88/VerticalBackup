@@ -30,7 +30,6 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
     if (this.data.length) {
       this.aggregatedValues = [];
       this.data.forEach((item) => {
-        console.log(item);
         const aggregatedValue = this.createAggregatedValues(item);
         this.aggregatedValues.push(aggregatedValue);
       });
@@ -77,10 +76,6 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
       aggregatedValue.standardDeviation = data.standardDeviation ? data.standardDeviation.toFixed(2) : null;
       aggregatedValue.postfix = data.postfix ? data.postfix : null;
     }
-
-    console.log(aggregatedValue);
-
-
     return aggregatedValue;
   }
 

@@ -12,14 +12,20 @@
 <pvf-peoplecounting-calendar-view [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-calendar-view>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4 col-sm-12">
-        <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="leaf" [leaf]="leaf"></pvf-peoplecounting-count-by-asset>
+    <div class="col-md-6 col-sm-12">
+      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
-    <div class="col-md-4 col-sm-12">
-      <pvf-peoplecounting-assets-counter *ngIf="leaf" [leaf]="leaf" [assetService]="assetService"></pvf-peoplecounting-assets-counter>
+    <div class="col-md-6 col-sm-12">
+      <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-assets-counter>
     </div>
-    <div class="col-md-4 col-sm-12" style="height: 300px;">
-        <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
+  </div>
+  <div class="row">
+    <div class="col-md-6 col-sm-12" style="height: 300px;">
+      <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <pxs-location-explorer *ngIf="leaf" [displayAssets]="true" [rootLocation]="leaf" [customAssetService]="assetService" [searchBar]="false"></pxs-location-explorer>
     </div>
   </div>
 </div>
+

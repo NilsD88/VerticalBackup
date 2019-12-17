@@ -9,7 +9,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { Observable, Subject, of} from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { NewAlertService } from 'src/app/services/new-alert.service';
 import {formatDate} from '@angular/common';
@@ -45,7 +44,6 @@ export class ConsumptionsComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private newAssetService: NewAssetService,
     private tankMonitoringAssetService: TankMonitoringAssetService,
     private newAlertService: NewAlertService,
     private sharedService: SharedService,
@@ -58,8 +56,9 @@ export class ConsumptionsComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
-        this.newAssetService.getAssetDetailById(params.id).subscribe(
+        this.tankMonitoringAssetService.getAssetDetailById(params.id).subscribe(
           (asset) => {
+            console.log(asset);
             this.asset = asset;
             this.changeDetectorRef.detectChanges();
             this.init();
@@ -76,7 +75,6 @@ export class ConsumptionsComponent implements OnInit {
   private init() {
     this.getLastAlerts();
     this.getChartData(this.chartData$).subscribe(async things => {
-      console.log('sucribe');
       const chartData = [];
       // Get the translation of each label
       for (const thing of things) {

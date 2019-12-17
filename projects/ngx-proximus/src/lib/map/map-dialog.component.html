@@ -1,5 +1,5 @@
 <div class="dropListItem" *ngFor="let asset of data.assets" [ngClass]="{'selected': selectedAsset === asset}">
-  <div>
+  <div [routerLink]="[data.assetUrl+asset.id]" routerLinkActive="router-link-active" >
     <pxs-icon icon="document-img" class="asset"></pxs-icon>
     {{asset.name}}
   </div>
