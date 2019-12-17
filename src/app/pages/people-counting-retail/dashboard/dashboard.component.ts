@@ -89,7 +89,7 @@ export class DashboardComponent implements OnInit {
     // Get the past week data with day interval for each leafs
     this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
-      'WEEKLY',
+      'DAILY',
       moment().startOf('isoWeek').subtract(1, 'week').valueOf(),
       moment().startOf('isoWeek').valueOf(),
     ).subscribe(

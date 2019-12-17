@@ -9,7 +9,6 @@ import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { RouterModule } from '@angular/router';
 import { createCustomElement } from '@angular/elements';
 import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
-import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map/map-dialog.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map/map-dialog
   ],
   entryComponents: [
     TankMonitoringMapPopupComponent,
-    MapDialogComponent,
     MapPopupComponent
   ]
 })

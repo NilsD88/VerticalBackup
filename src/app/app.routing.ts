@@ -240,7 +240,7 @@ export const AppRoutes: Routes = [
     canActivate: [PublicAuthGuard],
     children: [{
       path: 'home',
-      loadChildren: () => import('./pages/home/smartmonitoring/home.module').then(m => m.HomeModule)
+      loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
     }]
   },
   {
