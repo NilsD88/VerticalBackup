@@ -334,7 +334,7 @@ export class CalendarViewComponent implements OnInit {
         this.changeDetectorRef.detectChanges();
         
         // MOCK DATA
-        
+        /*
         return new Observable <IPeopleCountingLocation[]> ((observer) => {
           const durationInMonths = +moment.duration(moment(this.currentFilter.to).diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
           const differenceFromToday = +moment.duration(moment().diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
@@ -349,10 +349,10 @@ export class CalendarViewComponent implements OnInit {
             [{series}]
           );
         });
+        */
         
 
         // REAL DATA
-        /*
         return this.locationService.getLocationsDataByIds(
           [this.leaf.id],
           filter.interval, filter.from, filter.to
@@ -369,7 +369,6 @@ export class CalendarViewComponent implements OnInit {
           });
           return of([]);
         }));
-        */
       })
     );
   }

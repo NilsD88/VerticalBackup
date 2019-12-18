@@ -1,10 +1,8 @@
 import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 
 @Component({
   selector: 'pvf-walkingtrail-map-popup',
