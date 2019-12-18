@@ -4,7 +4,7 @@ export interface ITankMonitoringAsset extends IAsset {
     status?: TTankMonitoringStatus;
     lastRefill?: {
         id?: string;
-        Date?: number;
+        timestamp?: string;
         value?: string;
     };
 }

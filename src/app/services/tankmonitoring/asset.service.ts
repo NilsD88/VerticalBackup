@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
-import { map } from 'rxjs/operators';
+import { map, timestamp } from 'rxjs/operators';
 import { IThing } from 'src/app/models/g-thing.model';
 import { HttpClient } from '@angular/common/http';
 import { IPagedAssets } from 'src/app/models/g-asset.model';
@@ -103,7 +103,7 @@ export class TankMonitoringAssetService extends NewAssetService {
                     name,
                     description,
                     lastRefill {
-                      Date
+                      timestamp
                     },
                     geolocation {
                       lat,
