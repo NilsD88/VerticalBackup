@@ -1,4 +1,4 @@
-import { MapDialogComponent } from './map-dialog.component';
+import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
