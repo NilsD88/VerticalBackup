@@ -1,3 +1,5 @@
+import { MapDialogComponent } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
+import { MapDialogModule } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.module';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -8,7 +10,6 @@ import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/ma
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { RouterModule } from '@angular/router';
 import { createCustomElement } from '@angular/elements';
-import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup
     MatButtonModule,
     IconModule,
     MatSnackBarModule,
+    MapDialogModule,
     MatDialogModule
   ],
   exports: [
@@ -31,7 +33,7 @@ import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup
   ],
   entryComponents: [
     TankMonitoringMapPopupComponent,
-    MapPopupComponent
+    MapDialogComponent
   ]
 })
 export class TankMonitoringMapModule {
@@ -39,10 +41,6 @@ export class TankMonitoringMapModule {
     if (!customElements.get('tankmonitoring-map-popup-element')) {
       const TankMonitoringMapPopupElement = createCustomElement(TankMonitoringMapPopupComponent, {injector});
       customElements.define('tankmonitoring-map-popup-element', TankMonitoringMapPopupElement);
-    }
-    if (!customElements.get('map-popup-element')) {
-      const MapPopupElement = createCustomElement(MapPopupComponent, {injector});
-      customElements.define('map-popup-element', MapPopupElement);
     }
   }
 }

@@ -16,14 +16,10 @@ export class MoveAssetsPopupComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.data);
-    console.log(this.data.selectedLocation);
-    console.log(this.data.selectedLocation.id);
     this.selectedLocationId = this.data.selectedLocation.id;
   }
 
   changeLocation(location) {
-    console.log('change location to: ', location);
     this.selectedLocationId = location.id;
   }
 

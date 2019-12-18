@@ -45,7 +45,6 @@ export class PointOfAttentionService {
   }
 
   public getPointOfAttentionByLocationId(locationId: string): Observable < IPointOfAttention[] > {
-    console.log('getPointOfAttentionByLocationId: ', locationId);
     return new Observable < IPointOfAttention[] > ((observer) => {
       observer.next(
         MOCK_POINTS_OF_ATTENTION.filter(pointOfAttention => pointOfAttention.location.id === locationId)

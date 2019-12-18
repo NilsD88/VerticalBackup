@@ -1,3 +1,4 @@
+import { MapDialogModule } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.module';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -8,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { createCustomElement } from '@angular/elements';
 import { PeopleCountingRetailMapComponent } from './map.component';
 import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
+import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,14 +24,16 @@ import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
     MatButtonModule,
     IconModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MapDialogModule
   ],
   exports: [
     PeopleCountingRetailMapComponent,
     PeopleCountingRetailMapPopupComponent
   ],
   entryComponents: [
-    PeopleCountingRetailMapPopupComponent
+    PeopleCountingRetailMapPopupComponent,
+    MapDialogComponent
   ]
 })
 export class PeopleCountingRetailMapModule {

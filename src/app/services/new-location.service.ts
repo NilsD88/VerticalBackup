@@ -194,10 +194,6 @@ export class NewLocationService {
       location: ILocation | null;
     }
 
-
-    console.log(`[UPDATE] LOCATION:`);
-    console.log(location);
-
     return this.apollo.mutate < UpdateLocationResponse > ({
       mutation: UPDATE_LOCATION,
       variables: {
@@ -305,6 +301,7 @@ export class NewLocationService {
     const GET_IMAGE_OF_LOCATION_BY_ID = gql `
             query findLocationById($id: Long!) {
                 location: findLocationById(id: $id) {
+                    images,
                     image
                 }
             }

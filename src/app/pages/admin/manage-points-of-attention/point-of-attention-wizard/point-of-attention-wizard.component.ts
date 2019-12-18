@@ -143,5 +143,8 @@ export class PointOfAttentionWizardComponent implements OnInit {
     }
   }
 
+  public cancelWizard() {
+    this.router.navigateByUrl('private/admin/manage-points-of-attention');
+  }
 
 }

@@ -33,3 +33,12 @@
         </ul>
   </div>
 </div>
+
+<div class="container" *ngIf="location">
+  <div class="title">
+    <h6>{{location.name}}</h6>
+  </div>
+  <div class="subtitle">
+    <a (click)="openLocation()">Open this location</a>
+  </div>
+</div>

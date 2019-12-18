@@ -20,11 +20,12 @@ export class FormCustomFieldsComponent implements OnInit {
   ngOnInit() {}
 
   getValue(id: string): string {
-    return (this.customFields.find(x => x.keyId === id) || {}).value || '';
+    return ((this.customFields || []).find(x => x.keyId === id) || {}).value || '';
   }
 
   setValue(id: string, value: string) {
-    const index = this.customFields.findIndex(x => x.keyId === id);
+
+    const index = (this.customFields || []).findIndex(x => x.keyId === id);
     if (index < 0) {
       this.customFields.push({
         keyId: id,

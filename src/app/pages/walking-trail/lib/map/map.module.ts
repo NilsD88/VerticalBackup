@@ -1,3 +1,4 @@
+import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
 import { WalkingTrailMapPopupComponent } from './popup/popup.component';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -8,6 +9,7 @@ import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/ma
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { RouterModule } from '@angular/router';
 import { createCustomElement } from '@angular/elements';
+import { MapDialogModule } from 'projects/ngx-proximus/src/lib/map-dialog/map-dialog.module';
 
 @NgModule({
   declarations: [
@@ -22,14 +24,16 @@ import { createCustomElement } from '@angular/elements';
     MatButtonModule,
     IconModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MapDialogModule
   ],
   exports: [
     WalkingTrailMapComponent,
     WalkingTrailMapPopupComponent
   ],
   entryComponents: [
-    WalkingTrailMapPopupComponent
+    WalkingTrailMapPopupComponent,
+    MapDialogComponent
   ]
 })
 export class WalkingTrailMapModule {

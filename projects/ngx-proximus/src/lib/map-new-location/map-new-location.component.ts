@@ -12,7 +12,7 @@ import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
   templateUrl: './map-new-location.component.html',
   styleUrls: ['./map-new-location.component.scss']
 })
-export class MapNewLocationComponent implements OnInit, OnChanges {
+export class MapNewLocationComponent implements OnInit {
 
   @Input() parentLocation: ILocation;
   @Input() geolocation: IGeolocation;
@@ -33,11 +33,9 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    console.log(this.geolocation);
     if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
       const floorPlan = this.parentLocation.image;
       if(floorPlan){
-        console.log("There is a floor plan");
         const image:HTMLImageElement = new Image();
         image.src = floorPlan;
         image.onload = () => {
@@ -72,10 +70,6 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    const parentLocationChanges = changes.parentLocation;
-    console.log(changes);
-  }
 
   onMapReady(map: Map) {
     this.currentMap = map;
@@ -134,7 +128,6 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log('geolocation');
           const { latitude, longitude } = position.coords;
           this.options = {
             layers: this.backgroundLayer,
@@ -144,18 +137,15 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
           };
         },
         (error) => {
-          console.log(error);
           this.defaultMap();
         }
       );
     } else {
-      console.log('Your brower has no geolocation');
       this.defaultMap();
     }
   }
 
   private defaultMap() {
-    console.log('use default map');
     const defaultValue = {lat: 50.85045, lng: 4.34878};
     this.options = {
       layers: this.backgroundLayer,
@@ -214,7 +204,6 @@ export class MapNewLocationComponent implements OnInit, OnChanges {
   }
 
   removeMarker() {
-    console.log('remove marker');
     this.markers = [];
   }
 }

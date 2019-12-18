@@ -64,7 +64,6 @@ export class ListPointOfAttentionItemsComponent implements OnInit {
       }
     }).afterClosed().subscribe((newItem: IPointOfAttentionItem) => {
       if (!isNullOrUndefined(newItem)) {
-        console.log(newItem);
         let itemIndex = null;
         if (!isNullOrUndefined(newItem.id)) {
           itemIndex = this.pointOfAttention.items.findIndex(i => i.id === newItem.id);

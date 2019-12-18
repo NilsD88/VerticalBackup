@@ -5,11 +5,13 @@
 </h1>
 <div mat-dialog-content>
 
-  <div class="counting-direction">
-    <mat-button-toggle-group name="countingDirection" aria-label="Counting direction" appearance="legacy">
-      <mat-button-toggle value="bold">IN/OUT</mat-button-toggle>
-      <mat-button-toggle value="italic">IN</mat-button-toggle>
-      <mat-button-toggle value="underline">OUT</mat-button-toggle>
+  <div class="counting-direction" *ngIf="data.sensor.sensorType.type === 'COUNTER'">
+    <mat-button-toggle-group
+      name="countingDirection" aria-label="Counting direction"
+      appearance="legacy"
+      [(ngModel)]="sensorDefinition.inOutType"
+    >
+      <mat-button-toggle *ngFor="let value of inOutValues" [value]="value">{{value}}</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 

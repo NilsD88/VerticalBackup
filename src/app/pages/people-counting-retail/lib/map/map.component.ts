@@ -1,4 +1,3 @@
-import { Router } from '@angular/router';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { NewAssetService } from 'src/app/services/new-asset.service';

@@ -2,7 +2,6 @@ import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asse
 import { InventoryComponent } from 'projects/ngx-proximus/src/lib/inventory/inventory.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { NewLocationService } from 'src/app/services/new-location.service';
 
@@ -16,7 +15,7 @@ export class TankMonitoringInventoryComponent extends InventoryComponent impleme
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public assetService: NewAssetService, // TankMonitoringAssetService
+    public assetService: TankMonitoringAssetService,
     public newThresholdTemplateService: NewThresholdTemplateService,
     public newLocationService: NewLocationService,
     public activatedRoute: ActivatedRoute,

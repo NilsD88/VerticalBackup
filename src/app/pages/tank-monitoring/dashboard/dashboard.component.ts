@@ -111,7 +111,6 @@ export class DashboardComponent implements OnInit {
         asset.status = 'UNKNOW';
       }
     });
-    console.log(this.assets);
     this.updateDataSourceWithFilteredAssets(this.assets);
     this.isLoading = false;
     filteredAssetsObs(this.filterFE$).subscribe(() => { this.updateFilterdAssets(); });

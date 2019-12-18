@@ -39,7 +39,6 @@ export class ManageThresholdTemplatesComponent implements OnInit {
     if (!isNullOrUndefined(thresholdTemplateId)) {
       this.editMode = true;
       this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
-      console.log(this.thresholdTemplate);
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.compose([Validators.required, Validators.pattern('[A-zÀ-ú0-9 ]*')])],
       });
@@ -228,10 +227,6 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
 
   public saveThresholdTemplate() {
-
-    console.log('SAVE THRESHOLDS');
-    console.log({...this.thresholdTemplate});
-
     if (this.editMode) {
       this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
         (data) => {

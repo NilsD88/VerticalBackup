@@ -51,6 +51,13 @@
                 color: white;
             }
 
+            &.unknow-fuel {
+                .pxi-map-marker {
+                    background: $inactive;
+                    color: white;
+                }
+            }
+
             &.low-fuel {
                 .pxi-map-marker {
                     background: $severity-low;

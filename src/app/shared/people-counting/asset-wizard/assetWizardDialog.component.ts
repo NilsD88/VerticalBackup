@@ -35,6 +35,7 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         activatedRoute,
         router
       );
+      this.showCancel = false;
   }
 
   async ngOnInit() {
@@ -69,12 +70,9 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
 
 
   public submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
 
-      console.log(this.asset);
-      console.log(this.originalAsset);
-
-      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
@@ -95,13 +93,27 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         }
       }
 
-      this.assetService.updateAsset(asset).subscribe((result) => {
-        this.dialogRef.close(this.asset);
-      });
+      this.assetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.dialogRef.close(this.asset);
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     } else {
-      this.assetService.createAsset(this.asset).subscribe((result) => {
-        this.dialogRef.close(this.asset);
-      });
+      this.assetService.createAsset(this.asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.dialogRef.close(this.asset);
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
 }

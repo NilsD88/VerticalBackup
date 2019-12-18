@@ -47,7 +47,9 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
       chart: {
         height: 400,
       },
-      title: 'Trail status',
+      title: {
+        text: 'Last week'
+      },
       exporting: {
         csv: {
           dateFormat: '%d-%m-%Y %H:%M:%S',

@@ -23,36 +23,9 @@ export class HomeComponent implements OnInit {
     {translationPostfix: '3', image: 'assets/smartmonitoring/images/home/smart-care.jpg'},
   ];
 
-  constructor(
-    private apollo: Apollo
-  ) {}
+  constructor() {}
 
   ngOnInit() {
-    /*
-    console.log('[HOME] ngOnInt');
-    const TEST = gql`
-      {
-        someFiled: someField @client {
-          test
-        }
-      }
-    `;
-
-    interface TestQuery {
-      someFiled: {
-        test: string
-      };
-    }
-
-    this.apollo.query<TestQuery>({
-      query: TEST
-    }).pipe(map(({data}) => {
-      return data.someFiled;
-    })).subscribe((data) => {
-      console.log(data);
-    });
-    */
-
   }
 
 }

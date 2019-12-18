@@ -96,7 +96,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         height: 400,
       },
       title: {
-        text: ''
+        text: 'Last week'
       },
       exporting: {
         csv: {
@@ -177,15 +177,13 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
       return;
     }
 
-    console.log(this.leafs);
-
     let counter = 0;
     for (const leaf of this.leafs) {
       this.chartOptions.yAxis.push({
         title: {
           text: 'Trail'
         },
-        visible: false
+        visible: true
       });
       const color = (this.leafColors.find(element => element.id === leaf.id) || {})['color'] || randomColor();
       this.chartOptions.series.push({

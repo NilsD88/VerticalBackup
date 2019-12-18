@@ -4,9 +4,7 @@
       <pvf-trail-map [location]="parentLocation" *ngIf="parentLocation" [leaf]="leaf" [assetUrl]="assetUrl"></pvf-trail-map>
     </div>
     <div class="col-md-6 col-sm-12">
-      <slideshow [height]="'200px'" [imageUrls]="imageSources" [showDots]="true"
-        [lazyLoad]="imageSources?.length > 1" [autoPlayWaitForLazyLoad]="true">
-      </slideshow>
+      <pvf-trail-images [leaf]="leaf"></pvf-trail-images>
       <pvf-summary-statistics *ngIf="leaf?.parent" [leaf]="leaf"></pvf-summary-statistics>
     </div>
   </div>
@@ -15,18 +13,18 @@
 <pvf-trails-benchmark [parentLocation]="parentLocation"></pvf-trails-benchmark>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-4 col-sm-12">
+    <div class="col-md-6 col-sm-12">
       <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
-    <div class="col-md-4 col-sm-12">
+    <div class="col-md-6 col-sm-12">
       <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-assets-counter>
-    </div>
-    <div class="col-md-4 col-sm-12" style="height: 300px;">
-        <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6 col-sm-12" style="height: 300px;">
+      <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
+    </div>
+    <div class="col-md-6 col-sm-12">
       <pxs-location-explorer *ngIf="leaf" [displayAssets]="true" [rootLocation]="leaf" [customAssetService]="assetService" [searchBar]="false"></pxs-location-explorer>
     </div>
   </div>

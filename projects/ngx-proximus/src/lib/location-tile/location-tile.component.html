@@ -1,5 +1,5 @@
 <div class="wrapper" style="background: url('') center / cover no-repeat;"
-  [ngStyle]="{ 'background-image': location.cover ? 'url(' + location.cover + ')' : (coverIsLoading ? 'url(assets/images/spinner.gif)' : '') }"
+  [ngStyle]="{ 'background-image': location.images?.length ? 'url(' + location.images[0] + ')' : (coverIsLoading ? 'url(assets/images/spinner.gif)' : '') }"
   (click)="openLocation()"
   >
   <div 

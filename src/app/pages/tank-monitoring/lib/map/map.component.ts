@@ -9,9 +9,16 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
 import { divIcon, Marker } from 'leaflet';
 import { of } from 'rxjs';
+import { ILocation } from 'src/app/models/g-location.model';
 
 const assetIconTankMonitoring = divIcon({
   className: 'map-marker-asset tank-monitoring',
+  iconSize: null,
+  html: '<div><span class="pxi-map-marker"></span></div>'
+});
+
+const assetIconTankMonitoringUnknowFuel = divIcon({
+  className: 'map-marker-asset tank-monitoring unknow-fuel',
   iconSize: null,
   html: '<div><span class="pxi-map-marker"></span></div>'
 });
@@ -81,16 +88,30 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     return popupEl;
   }
 
+  createLocationPopup(location: ILocation, leafUrl: string = null, marker: Marker): any {
+    const popupEl: NgElement & WithProperties<TankMonitoringMapPopupComponent> = 
+      document.createElement('tankmonitoring-map-popup-element') as any;
+    popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+    popupEl.goToChild = (loc) => { this.goToChild(loc, true); };
+    popupEl.location = location;
+    popupEl.marker = marker;
+    document.body.appendChild(popupEl);
+    return popupEl;
+  }
+
 
 
   generateAssetMarker(asset: ITankMonitoringAsset) {
     const status = asset.status;
-    if (status === 'EMPTY') {
-      return assetIconTankMonitoringEmptyFuel;
-    } else if (status === 'LOW') {
-      return assetIconTankMonitoringLowFuel;
-    } else {
-      return assetIconTankMonitoring;
+    switch (status) {
+      case 'EMPTY':
+        return assetIconTankMonitoringEmptyFuel;
+      case 'LOW':
+        return assetIconTankMonitoringLowFuel;
+      case 'UNKNOW':
+        return assetIconTankMonitoringUnknowFuel;
+      default:
+        return assetIconTankMonitoring;
     }
   }
 }

@@ -98,7 +98,7 @@ export class NewAssetService {
   }
 
   public getAssetById(id: string): Observable < IAsset > {
-
+    console.log('getAssetById SM');
     const GET_ASSET_BY_ID = gql `
             query findAssetById($id: Long!) {
                 asset: findAssetById(id: $id) {
@@ -348,7 +348,7 @@ export class NewAssetService {
     }) => data.asset));
   }
 
-  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedAssets > {
+  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}, moduleName: string = null): Observable < IPagedAssets > {
     const GET_PAGED_ASSETS = gql `
       query findAssetsByFilterPaged($input: PagedAssetFindByFilterInput!) {
         pagedAssets: findAssetsByFilterPaged(input: $input) {
@@ -381,7 +381,8 @@ export class NewAssetService {
           organizationId: 1,
           pageNumber,
           pageSize,
-          ...filter
+          ...filter,
+          module: moduleName
         }
       },
       fetchPolicy: 'network-only'
@@ -428,9 +429,6 @@ export class NewAssetService {
     interface UpdateAssetResponse {
       response: boolean;
     }
-
-    console.log(`[UPDATE] ASSET:`);
-    console.log(asset);
 
     return this.apollo.mutate < UpdateAssetResponse > ({
       mutation: UPDATE_ASSET,

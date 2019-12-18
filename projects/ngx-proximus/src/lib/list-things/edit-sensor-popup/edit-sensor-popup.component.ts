@@ -1,5 +1,5 @@
 import { NewSensorService } from './../../../../../../src/app/services/new-sensor.service';
-import { chartTypes, aggregatedValues } from 'src/app/models/g-sensor-definition.model';
+import { chartTypes, aggregatedValues, InOutValues } from 'src/app/models/g-sensor-definition.model';
 import {Component, OnInit, Optional, Inject} from '@angular/core';
 import {MatDialogRef, MatCheckboxChange, MatSnackBar} from '@angular/material';
 import { ISensorDefinition } from 'src/app/models/g-sensor-definition.model';
@@ -16,6 +16,7 @@ export class EditSensorPopupComponent implements OnInit {
     public aggregatedValues = aggregatedValues;
     public sensorDefinition: ISensorDefinition;
     public loading = false;
+    public inOutValues = InOutValues;
 
     constructor(
         @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -27,7 +28,6 @@ export class EditSensorPopupComponent implements OnInit {
     async ngOnInit() {
         if (this.data.sensor.sensorDefinition) {
             this.sensorDefinition = this.data.sensor.sensorDefinition;
-            console.log(this.sensorDefinition);
         } else {
             this.sensorDefinition = {
                 name: null,
@@ -41,6 +41,9 @@ export class EditSensorPopupComponent implements OnInit {
                     sum: false,
                 }
             };
+            if (this.data.sensor.sensorType.type === 'COUNTER') {
+                this.sensorDefinition.inOutType = 'BOTH';
+            }
         }
     }
 

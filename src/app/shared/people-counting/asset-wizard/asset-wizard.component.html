@@ -21,15 +21,7 @@
           <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
         </div>
       </div>
-
-      <!--
-      <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
-      <p>Form value: {{ descriptionFormGroup.value | json }}</p>
-      <p>Form status: {{ descriptionFormGroup.status | json }}</p>
-      -->
-
-      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
-
+      <pxs-stepper-next [showCancel]="showCancel" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step>
@@ -39,7 +31,7 @@
         *ngIf="asset.location && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 1"
         [location]="asset.location" (notify)="asset.geolocation=$event" [geolocation]="asset.geolocation">
       </pxs-form-geolocation>
-      <pxs-stepper-next [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="showCancel" (cancel)="cancelWizard()" [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="asset.things.length > 0">
@@ -52,7 +44,7 @@
             </pxs-list-things>
           </div>
         </div>
-        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
+        <pxs-stepper-next [showCancel]="showCancel" (cancel)="cancelWizard()" [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>

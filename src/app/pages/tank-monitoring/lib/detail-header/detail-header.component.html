@@ -21,6 +21,9 @@
           {{asset?.description?.trunc(120)}}
         </p>
         <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
+        <p>
+          <i *ngIf="asset?.lastRefill?.timestamp">Last refill: {{asset?.lastRefill?.timestamp | date: 'dd/MM/yyyy' }}</i>
+        </p>
         <br>
       </div>
       <div class="col-sm-6 col-xs-12 last-measurements-wrapper" *ngIf="asset">

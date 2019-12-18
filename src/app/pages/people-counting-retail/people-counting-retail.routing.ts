@@ -29,6 +29,10 @@ export const PeopleCountingRetailRoutes: Routes = [
     }]
   },
   {
+    path: 'detail/:id',
+    loadChildren: () => import('src/app/shared/people-counting/detail/detail.module').then(m => m.PeopleCountingDetailModule)
+  },
+  {
     path: 'overview',
     children: [{
       path: '',

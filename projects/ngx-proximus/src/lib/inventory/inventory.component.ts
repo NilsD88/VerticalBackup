@@ -100,7 +100,6 @@ export class InventoryComponent implements OnInit {
   }
 
   public pageChanged(evt) {
-    console.log(evt);
     this.pageNumber = evt.pageIndex;
     this.pageSize = evt.pageSize;
     this.getPagedAssets();
