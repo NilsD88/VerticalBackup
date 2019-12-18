@@ -9,6 +9,7 @@ import { NgElement, WithProperties } from '@angular/elements';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
 import { divIcon, Marker } from 'leaflet';
 import { of } from 'rxjs';
+import { ILocation } from 'src/app/models/g-location.model';
 
 const assetIconTankMonitoring = divIcon({
   className: 'map-marker-asset tank-monitoring',
@@ -82,6 +83,17 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     document.createElement('tankmonitoring-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
+    popupEl.marker = marker;
+    document.body.appendChild(popupEl);
+    return popupEl;
+  }
+
+  createLocationPopup(location: ILocation, leafUrl: string = null, marker: Marker): any {
+    const popupEl: NgElement & WithProperties<TankMonitoringMapPopupComponent> = 
+      document.createElement('tankmonitoring-map-popup-element') as any;
+    popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+    popupEl.goToChild = (loc) => { this.goToChild(loc, true); };
+    popupEl.location = location;
     popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;
