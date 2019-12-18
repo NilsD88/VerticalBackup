@@ -225,6 +225,10 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     }
   }
 
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/smartmonitoring/');
+  }
+
   public async openAddThresholdTemplate() {
     const dialogRef = this.dialog.open(ManageThresholdTemplatesDialogComponent, {
       minWidth: '320px',

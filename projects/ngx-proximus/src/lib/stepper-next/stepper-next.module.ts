@@ -1,3 +1,4 @@
+import { MatButtonModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepperNextComponent } from './stepper-next.component';
@@ -9,7 +10,8 @@ import { ButtonModule } from '../button/button.module';
   imports: [
     CommonModule,
     IconModule,
-    ButtonModule
+    ButtonModule,
+    MatButtonModule
   ],
   exports: [
     StepperNextComponent

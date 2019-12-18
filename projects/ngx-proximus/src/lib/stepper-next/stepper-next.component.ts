@@ -13,11 +13,18 @@ export class StepperNextComponent implements OnInit {
   @Input() color = 'primary';
   @Input() formGroup: FormGroup = new FormGroup({});
   @Input() loading: boolean;
+  @Input() showCancel = false;
   @Output() next = new EventEmitter();
+  @Output() cancel = new EventEmitter();
+
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  callCancel() {
+    this.cancel.emit();
   }
 
   callNext() {

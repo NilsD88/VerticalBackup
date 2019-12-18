@@ -22,8 +22,9 @@ import { svg } from 'leaflet';
 import { Subject, Observable, of } from 'rxjs';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { MatDialog } from '@angular/material';
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, switchMap, catchError, timestamp } from 'rxjs/operators';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import {uniqBy, orderBy} from 'lodash';
 
 declare global {
   interface Window {
@@ -269,6 +270,12 @@ export class CalendarViewComponent implements OnInit {
   }
 
   private updateChart(series: IPeopleCountingLocationSerie[]) {
+
+    console.log('~~~~~~~~~~');
+    console.log(this.currentFilter.from, new Date(this.currentFilter.from));
+    console.log(this.currentFilter.to, new Date(this.currentFilter.to));
+    console.log('~~~~~~~~~~');
+
     this.chartOptions.series = [];
     this.startMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.endMonth = moment(this.currentFilter.to).subtract(1, 'day').format('MMMM YY');
@@ -276,6 +283,11 @@ export class CalendarViewComponent implements OnInit {
     if (!series) {
       return this.displayChart();
     }
+
+    // TODO: remove these lines when the backend will send all the timestamp between the period
+    const concat = series.concat(allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'days'));
+    const uniq = uniqBy(concat, (serie) => serie.timestamp);
+    series = orderBy(uniq, ['timestamp'], ['asc']);
 
     const firstWeekNumber = moment(this.currentFilter.from).date(1).isoWeek();
     let biggestWeekNumber = firstWeekNumber;
@@ -332,25 +344,6 @@ export class CalendarViewComponent implements OnInit {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
-        
-        // MOCK DATA
-        /*
-        return new Observable <IPeopleCountingLocation[]> ((observer) => {
-          const durationInMonths = +moment.duration(moment(this.currentFilter.to).diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
-          const differenceFromToday = +moment.duration(moment().diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
-          let series = [];
-          for (let i = 0; i < durationInMonths; i++) {
-            series = [
-              ...series,
-              ...generatePastMonthOfDataSeries(differenceFromToday-i)
-            ];
-          }
-          observer.next(
-            [{series}]
-          );
-        });
-        */
-        
 
         // REAL DATA
         return this.locationService.getLocationsDataByIds(
@@ -375,14 +368,16 @@ export class CalendarViewComponent implements OnInit {
 
 }
 
-function generatePastMonthOfDataSeries(pastIndex): IPeopleCountingLocationSerie[] {
-  const dataSeries: IPeopleCountingLocationSerie[] = [];
-  const daysInMonth = moment().subtract(pastIndex, 'months').date(1).daysInMonth();
-  for (let index = 0; index < daysInMonth; index++) {
-    dataSeries.push({
-      timestamp: moment().subtract(pastIndex, 'months').date(1).add(index, 'days').valueOf(),
-      valueIn: Math.floor(Math.random() * 101)
+function allIntervalBetween(from: number, to: number, interval: moment.unitOfTime.DurationConstructor): IPeopleCountingLocationSerie[] {
+  let currentTimestamp: number = from;
+  const emptySeries: IPeopleCountingLocationSerie[] = [];
+  do {
+    emptySeries.push({
+      timestamp: currentTimestamp,
+      valueIn: null,
+      valueOut: null
     });
-  }
-  return dataSeries;
+    currentTimestamp = moment(currentTimestamp).add(1, interval).valueOf();
+  } while (currentTimestamp <= to);
+  return emptySeries;
 }

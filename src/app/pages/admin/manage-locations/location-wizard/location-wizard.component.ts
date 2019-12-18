@@ -29,6 +29,7 @@ export class LocationWizardComponent implements OnInit {
   public fields: IField[];
   public isSavingOrUpdating: boolean;
   private parentIdParam: string;
+  public showCancel = true;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -194,6 +195,10 @@ export class LocationWizardComponent implements OnInit {
         });
       }
     }
+  }
+
+  public cancelWizard() {
+    this.router.navigateByUrl('private/admin/manage-locations');
   }
 
 }

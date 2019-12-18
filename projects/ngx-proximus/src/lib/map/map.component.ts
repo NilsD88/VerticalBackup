@@ -89,7 +89,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       (data: IAsset[]) => {
         this.markers = [];
         this.assets = data;
-        console.log(data);
         this.populateMarkersWithAssets();
       })
     );

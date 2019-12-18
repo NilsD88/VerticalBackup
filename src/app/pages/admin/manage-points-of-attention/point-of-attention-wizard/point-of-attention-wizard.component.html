@@ -16,7 +16,7 @@
           </mat-form-field>
         </div>
       </div>
-      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="pointOfAttention.location">
@@ -34,7 +34,7 @@
           <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
         </div>
       </div>
-      <pxs-stepper-next [completed]="pointOfAttention.location" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="pointOfAttention.location" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="pointOfAttention.location">

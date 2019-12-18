@@ -299,5 +299,9 @@ export class TrailWizardComponent implements OnInit {
     }
   }
 
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/walkingtrail/');
+  }
+
 
 }

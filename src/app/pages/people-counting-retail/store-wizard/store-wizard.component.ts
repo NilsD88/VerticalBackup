@@ -287,5 +287,9 @@ export class StoreWizardComponent implements OnInit {
     }
   }
 
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/peoplecounting/');
+  }
+
 
 }

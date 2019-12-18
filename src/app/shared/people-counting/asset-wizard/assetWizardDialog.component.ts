@@ -35,6 +35,7 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         activatedRoute,
         router
       );
+      this.showCancel = false;
   }
 
   async ngOnInit() {

@@ -12,7 +12,7 @@
             ></pxs-location-explorer>
         </div>
       </div>
-      <pxs-stepper-next [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
+      <pxs-stepper-next [showCancel]="showCancel" (cancel)="cancelWizard()" [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
     </form>
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
@@ -30,7 +30,7 @@
           <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
-      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="showCancel" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation">
@@ -42,7 +42,7 @@
         (notify)="location.geolocation=$event"
         [geolocation]="location.geolocation"
       ></pxs-form-geolocation>
-      <pxs-stepper-next [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
+      <pxs-stepper-next [showCancel]="showCancel" (cancel)="cancelWizard()" [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
     </form>
   </mat-step>
   <mat-step>

@@ -30,7 +30,7 @@ pxs-location-explorer {
 
 ::ng-deep .stepper-next-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     max-width: $max-width;
 }
 

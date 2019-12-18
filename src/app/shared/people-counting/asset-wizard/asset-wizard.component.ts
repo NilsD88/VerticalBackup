@@ -35,6 +35,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
 
   public fields: IField[];
   public isSavingOrUpdating: boolean;
+  public showCancel = true;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -222,4 +223,9 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
       );
     }
   }
+
+  public cancelWizard() {
+    this.router.navigateByUrl('private/admin/manage-assets');
+  }
+
 }
