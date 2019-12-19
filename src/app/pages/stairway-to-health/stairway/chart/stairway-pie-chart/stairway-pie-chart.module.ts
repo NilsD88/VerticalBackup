@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { LoaderModule } from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import {StairWayPieChartRoutes} from './stairway-pie-chart.routing';
 import { PieChartModule } from 'projects/ngx-proximus/src/lib/pie-chart/pie-chart.module';
-import { PieMonthChartComponent } from './charts/pie-month-chart/pie-month-chart.component';
 import { PieDayChartComponent } from './charts/pie-day-chart/pie-day-chart.component';
 import { PieTotalChartComponent } from './charts/pie-total-chart/pie-total-chart.component';
 import { PieWeekChartComponent } from './charts/pie-week-chart/pie-week-chart.component';
@@ -15,7 +14,7 @@ import { PieWeekChartComponent } from './charts/pie-week-chart/pie-week-chart.co
 
 
 @NgModule({
-  declarations: [StairwayPieChartComponent, PieMonthChartComponent, PieDayChartComponent, PieTotalChartComponent, PieWeekChartComponent],
+  declarations: [StairwayPieChartComponent, PieDayChartComponent, PieTotalChartComponent, PieWeekChartComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(StairWayPieChartRoutes),
