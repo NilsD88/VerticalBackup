@@ -1,9 +1,10 @@
+import { PeopleCountingAssetService } from './../../../services/peoplecounting/asset.service';
 import {
   cloneDeep
 } from 'lodash';
 import {
-  WalkingTrailLocationService
-} from './../../../services/walkingtrail/location.service';
+  PeopleCountingLocationService
+} from './../../../services/peoplecounting/location.service';
 import {
   Component,
   OnInit,
@@ -49,7 +50,7 @@ export class DashboardComponent implements OnInit {
   public leafUrl = '/private/peoplecounting/store';
 
   constructor(
-    private locationService: WalkingTrailLocationService,
+    private locationService: PeopleCountingLocationService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 

@@ -1,0 +1,13 @@
+
+<pxs-chart-controls
+[chartDataIsLoading]="loading"
+
+[filter]="filter"
+(intervalChanged)="intervalChanged($event)"
+(dateRangeChanged)="dateRangeChanged($event)"
+(downloadPDF)="download.emit()"
+(downloadCSV)="downloadCSV()"
+></pxs-chart-controls>
+<div [hidden]="!leaf" id="stairway-chart"></div>
+ <pxs-loader *ngIf="!leaf"></pxs-loader>  
+ 

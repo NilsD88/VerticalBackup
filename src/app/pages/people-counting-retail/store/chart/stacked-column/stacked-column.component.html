@@ -1,0 +1,10 @@
+<div class="filter">
+    <mat-button-toggle-group (change)="periodOnChange($event)" [value]="periodValue">
+        <mat-button-toggle value="day">Day</mat-button-toggle>
+        <mat-button-toggle value="week">Week</mat-button-toggle>
+        <mat-button-toggle value="month">Month</mat-button-toggle>
+        <mat-button-toggle value="year">Year</mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
+<div [hidden]="!assets?.length || chartLoading" id="store-stacked-column-counter"></div>
+<pxs-loader *ngIf="!assets?.length || chartLoading"></pxs-loader>

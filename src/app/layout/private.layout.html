@@ -183,6 +183,20 @@
   </div>
 </mat-menu>
 
+<mat-menu #stairwaytohealth="matMenu" style="margin-top: 80px;">
+  <div mat-menu-item>
+    <button mat-menu-item (click)="navigateTo(['/private','stairwaytohealth', 'dashboard'])">
+      Dashboard
+    </button>
+  </div>
+  <div mat-menu-item>
+    <button mat-menu-item>
+      <pxs-icon icon="plus"></pxs-icon>
+      <span style="margin-left: 10px;">New store</span>
+    </button>
+  </div>
+</mat-menu>
+
 <mat-menu #assetTracking="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
     <a mat-menu-item>

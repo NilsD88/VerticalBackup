@@ -306,6 +306,12 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
       },
       {
+        path: 'stairwaytohealth',
+        canActivate: [UserAuthGuard],
+        loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
+        
+      },
+      {
         path: 'admin',
         canActivate: [AdminAuthGuard],
         children: [

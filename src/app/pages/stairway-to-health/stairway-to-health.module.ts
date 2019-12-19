@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {StairwayToHealth} from './stairway-to-health.routing'
 import { RouterModule } from '@angular/router';
-import { StairwayToHealthRoutes } from './stairway-to-health.routing';
 
 
 
@@ -11,7 +11,7 @@ import { StairwayToHealthRoutes } from './stairway-to-health.routing';
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forChild(StairwayToHealthRoutes)
+    RouterModule.forChild(StairwayToHealth)
   ]
 })
 export class StairwayToHealthModule { }

@@ -1,6 +1,8 @@
-import {Routes} from '@angular/router';
 
-export const StairwayToHealthRoutes: Routes = [
+
+import { Routes } from '@angular/router';
+
+export const StairwayToHealth: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
@@ -10,28 +12,8 @@ export const StairwayToHealthRoutes: Routes = [
     path: 'dashboard',
     children: [{
       path: '',
-      loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+      loadChildren: () => import('./stairway/chart/stairway-pie-chart/stairway-pie-chart.module').then(m => m.StairwayPieChartModule)
     }]
   },
-  {
-    path: 'place/:id',
-    children: [{
-      path: '',
-      loadChildren: () => import('./place/place.module').then(m => m.PlaceModule)
-    }]
-  },
-  {
-    path: 'overview',
-    children: [{
-      path: '',
-      loadChildren: () => import('./lib/inventory-locations/inventory-locations.module').then(m => m.PeopleCountingRetailInventoryLocationsModule)
-    }]
-  },
-  {
-    path: 'assets/:id',
-    children: [{
-      path: '',
-      loadChildren: () => import('src/app/shared/people-counting/asset-wizard/asset-wizard.module').then(m => m.PeopleCountingAssetWizardModule)
-    }]
-  },
+  
 ];

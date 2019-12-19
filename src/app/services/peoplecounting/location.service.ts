@@ -1,3 +1,7 @@
+
+
+import { MOCK_STORE_PEOPLE_COUNTING } from './../../mocks/people-counting';
+import { MOCK_LOCATIONS_PEOPLE_COUNTING } from './../../mocks/people-counting';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -54,4 +58,18 @@ export class PeopleCountingLocationService extends NewLocationService {
       return this.http.get < IPeopleCountingLocation [] >
         (`${environment.baseUrl}/peopleCounting/locations?${idsParams}&module=${moduleName}&interval=${interval}&from=${from}&to=${to}`);
     }
+
+    public getLocationById(locationId: string): Observable < IPeopleCountingLocation > {
+      return new Observable < IPeopleCountingLocation > ((observer) => {
+          observer.next(MOCK_STORE_PEOPLE_COUNTING);
+          observer.complete();
+      });
+  }
+
+  public getLocationsTree(): Observable < IPeopleCountingLocation[] > {
+    return new Observable < IPeopleCountingLocation[] > ((observer) => {
+        observer.next(MOCK_LOCATIONS_PEOPLE_COUNTING);
+        observer.complete();
+    });
+}
 }

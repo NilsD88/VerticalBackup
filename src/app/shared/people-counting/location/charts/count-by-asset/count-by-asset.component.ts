@@ -12,6 +12,7 @@ import {
 import * as Highcharts from 'highcharts';
 import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
 import * as moment from 'moment';
+import * as randomColor from 'randomcolor';
 
 declare global {
   interface Window {
@@ -37,6 +38,7 @@ export class CountByAssetComponent implements OnInit, OnChanges {
   @Input() assets: IPeopleCountingAsset[];
   @Input() assetUrl: string;
   @Input() assetService: WalkingTrailAssetService;
+  @Input() assetColors: string[];
 
   public chart: any;
   public chartOptions: any;
@@ -117,41 +119,24 @@ export class CountByAssetComponent implements OnInit, OnChanges {
   private async updateChart() {
     if ((this.assets || []).length) {
       const data = [];
-
-      // TODO: uncomment those lines when backend is ready
-      
+      const assetColors = this.assetColors || randomColor({
+        count: this.assets.length
+      });
       const assets = await this.assetService.getAssetsDataByIds(
         this.assets.map(asset => asset.id),
         'DAILY',
         moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
         moment().valueOf(),
       ).toPromise();
-
-
-
-      assets.forEach(asset => {
+      assets.forEach((asset, assetIndex) => {
         const series = asset.series || [];
         data.push({
           id: asset.id,
           name: asset.name,
+          color: assetColors[assetIndex],
           y: (series.length) ? asset.series[0].valueIn : null,
         });
       });
-
-
-
-      // TODO: remove those lines when backend is ready
-      // Generate value of each asset
-      /*
-      this.assets.forEach(asset => {
-        data.push({
-          id: asset.id,
-          name: asset.name,
-          y: generateTodayDataSeries().reduce((a, b) => a + b.valueIn || 0, 0),
-        });
-      });
-      */
-
       this.chartOptions.series[0].data = data;
     }
 
