@@ -32,7 +32,7 @@ export class NewAssetService {
 
   public createAsset(asset: IAsset): Observable < boolean > {
     const CREATE_ASSET = gql `
-            mutation CreateLocation($input: AssetCreateInput!) {
+            mutation CreateAsset($input: AssetCreateInput!) {
                 createAsset(input: $input)
             }
         `;
@@ -311,8 +311,6 @@ export class NewAssetService {
       fetchPolicy: 'network-only',
       variables: {
         input: {
-          // TODO remove orgid
-          organizationId: 1,
           name: name || ''
         }
       }
@@ -378,7 +376,6 @@ export class NewAssetService {
       query: GET_PAGED_ASSETS,
       variables: {
         input: {
-          organizationId: 1,
           pageNumber,
           pageSize,
           ...filter,
@@ -469,8 +466,8 @@ export class NewAssetService {
 
   public getCustomFields(): Observable < IField [] > {
     const GET_CUSTOM_FIELDS = gql `
-      query findFields($organizationId: Long!, $subjectType: String!) {
-          fields: getKeysByOrganizationAndSubjectType(organizationId: $organizationId, subjectType: $subjectType) {
+      query findFields($subjectType: String!) {
+          fields: getKeysBySubjectType(subjectType: $subjectType) {
             id,
             label {
               fr,
@@ -491,7 +488,6 @@ export class NewAssetService {
       query: GET_CUSTOM_FIELDS,
       fetchPolicy: 'network-only',
       variables: {
-        organizationId: 1,
         subjectType: 'ASSET'
       }
     }).pipe(map(({

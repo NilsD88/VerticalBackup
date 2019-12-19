@@ -133,8 +133,6 @@ export class PeopleCountingRetailLocationService extends PeopleCountingLocationS
         mutation: CREATE_LOCATION,
         variables: {
           input: {
-            // TODO: REMOVE ORG_ID
-            organizationId: 1,
             parentId: location.parentId,
             name: location.name,
             description: location.description,

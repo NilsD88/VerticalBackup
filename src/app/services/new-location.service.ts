@@ -62,8 +62,6 @@ export class NewLocationService {
       mutation: CREATE_LOCATION,
       variables: {
         input: {
-          // TODO: REMOVE ORG_ID
-          organizationId: 1,
           parentId: location.parentId,
           name: location.name,
           description: location.description,
@@ -267,8 +265,8 @@ export class NewLocationService {
 
   public getCustomFields(): Observable < IField [] > {
     const GET_CUSTOM_FIELDS = gql `
-      query findFields($organizationId: Long!, $subjectType: String!) {
-          fields: getKeysByOrganizationAndSubjectType(organizationId: $organizationId, subjectType: $subjectType) {
+      query findFields($subjectType: String!) {
+          fields: getKeysBySubjectType(subjectType: $subjectType) {
             id,
             label {
               fr,
@@ -289,7 +287,6 @@ export class NewLocationService {
       query: GET_CUSTOM_FIELDS,
       fetchPolicy: 'network-only',
       variables: {
-        organizationId: 1,
         subjectType: 'LOCATION'
       }
     }).pipe(map(({
@@ -355,7 +352,6 @@ export class NewLocationService {
       query: GET_PAGED_LEAF_LOCATIONS,
       variables: {
         input: {
-          organizationId: 1,
           pageNumber,
           pageSize,
           ...filter,
