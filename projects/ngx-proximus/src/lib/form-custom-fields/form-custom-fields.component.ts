@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { IField, IFieldLabel } from './../../../../../src/app/models/field.model';
+import { IField, IFieldLabel, ICustomField } from './../../../../../src/app/models/field.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -9,10 +9,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class FormCustomFieldsComponent implements OnInit {
 
-  public customFieldsValue;
-
   @Input() fields: IField [];
-  @Input() customFields: {};
+  @Input() customFields: ICustomField[] = [];
   @Output() customFieldsChange: EventEmitter<{}> = new EventEmitter<{}>();
 
   constructor(
@@ -20,6 +18,23 @@ export class FormCustomFieldsComponent implements OnInit {
   ) { }
 
   ngOnInit() {}
+
+  getValue(id: string): string {
+    return ((this.customFields || []).find(x => x.keyId === id) || {}).value || '';
+  }
+
+  setValue(id: string, value: string) {
+
+    const index = (this.customFields || []).findIndex(x => x.keyId === id);
+    if (index < 0) {
+      this.customFields.push({
+        keyId: id,
+        value
+      });
+    } else {
+      this.customFields[index].value = value;
+    }
+  }
 
   getLabelName(label: IFieldLabel ) {
     const langs = ['en', 'fr', 'nl'];

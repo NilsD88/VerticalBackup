@@ -11,7 +11,7 @@ export class PopupConfirmationComponent {
 
   constructor(
     public dialogRef: MatDialogRef<PopupConfirmationComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {title: string, content: string}
+    @Inject(MAT_DIALOG_DATA) public data: {title: string, content: string, hideContinue?: boolean}
   ) {}
 
   cancel(): void {

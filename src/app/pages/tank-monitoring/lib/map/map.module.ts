@@ -1,3 +1,5 @@
+import { MapDialogComponent } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
+import { MapDialogModule } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.module';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,7 +14,7 @@ import { createCustomElement } from '@angular/elements';
 @NgModule({
   declarations: [
     TankMonitoringMapComponent,
-    TankMonitoringMapPopupComponent
+    TankMonitoringMapPopupComponent,
   ],
   imports: [
     CommonModule,
@@ -22,6 +24,7 @@ import { createCustomElement } from '@angular/elements';
     MatButtonModule,
     IconModule,
     MatSnackBarModule,
+    MapDialogModule,
     MatDialogModule
   ],
   exports: [
@@ -29,7 +32,8 @@ import { createCustomElement } from '@angular/elements';
     TankMonitoringMapPopupComponent
   ],
   entryComponents: [
-    TankMonitoringMapPopupComponent
+    TankMonitoringMapPopupComponent,
+    MapDialogComponent
   ]
 })
 export class TankMonitoringMapModule {

@@ -100,6 +100,7 @@ export class ListThingsComponent implements OnInit {
       minWidth: '320px',
       maxWidth: '400px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         sensor,
         thingName

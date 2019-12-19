@@ -1,4 +1,4 @@
-import { WalkingTrailAssetService } from './../../../services/walkingtrail/asset.service';
+import { NewSensorService } from 'src/app/services/new-sensor.service';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IThing } from 'src/app/models/g-thing.model';
@@ -11,6 +11,8 @@ import { IAsset } from 'src/app/models/g-asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { IField } from 'src/app/models/field.model';
+import { ISensorType } from 'src/app/models/g-sensor-type.model';
+import { NewAssetService } from 'src/app/services/new-asset.service';
 
 @Component({
   selector: 'pvf-walkingtrail-asset-wizard',
@@ -24,36 +26,34 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
   public asset: IAsset;
   public originalAsset: IAsset;
   public editMode = false;
+  public compatibleSensorTypes: ISensorType[];
 
   public displayLocationExplorer = true;
   public displayThresholdTemplateList = true;
 
   public descriptionFormGroup: FormGroup;
 
-  public fields: IField[] = [];
+  public fields: IField[];
+  public isSavingOrUpdating: boolean;
+  public showCancel = true;
 
   constructor(
     public formBuilder: FormBuilder,
     public dialog: MatDialog,
-    public assetService: WalkingTrailAssetService,
+    public assetService: NewAssetService,
+    public sensorService: NewSensorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {
   }
 
   async ngOnInit() {
-    this.descriptionFormGroup = this.formBuilder.group({
-      NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
-      DescriptionCtrl: ['', null],
-    });
-
-    this.fields = await this.assetService.getCustomFields().toPromise();
-
+    this.init();
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
         this.asset = await this.assetService.getAssetById(assetId).toPromise();
-        if (this.asset.module !== this.assetService.MODULE_NAME) {
+        if (this.asset.module.indexOf('PEOPLE_COUNTING') < 0) {
           this.router.navigate(['/error/404']);
         }
         this.editMode = true;
@@ -68,6 +68,15 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
     }
   }
 
+  public async init() {
+    this.descriptionFormGroup = this.formBuilder.group({
+      NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
+      DescriptionCtrl: ['', null],
+    });
+
+    this.fields = await this.assetService.getCustomFields().toPromise();
+    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule(this.asset.module).toPromise();
+  }
 
 
   public selectedThingsChange(thing: IThing) {
@@ -107,7 +116,10 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
       const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
       if (!compatibleThresholdTemplate) {
         const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-          width: '250px',
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
           data: {
             title: 'Warning',
             content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -122,12 +134,44 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
     }
   }
 
+  public checkThings() {
+    if (this.oneThingCompatibleWithModule()) {
+      this.stepper.next();
+    } else {
+      this.dialog.open(PopupConfirmationComponent, {
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+        data: {
+          title: 'Warning',
+          content: 'You can an only add an asset with at least one thing defined for tank monitoring',
+          hideContinue: true,
+        }
+      });
+    }
+  }
+
+  public oneThingCompatibleWithModule(): boolean {
+    for (const thing of this.asset.things) {
+      for (const sensor of thing.sensors) {
+        if (this.compatibleSensorTypes.findIndex( x => x.id === sensor.sensorType.id) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public wantToSaveAsset() {
     console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -144,13 +188,10 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
   }
 
   public submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
 
-      console.log(this.asset);
-      console.log(this.originalAsset);
-
-      // TODO: check differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {
@@ -170,9 +211,21 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
         }
       }
 
-      this.assetService.updateAsset(asset).subscribe((result) => {
-        //this.dialogRef.close(this.asset);
-      });
+      this.assetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.router.navigateByUrl('/private/admin/manage-assets');
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
+
+  public cancelWizard() {
+    this.router.navigateByUrl('private/admin/manage-assets');
+  }
+
 }

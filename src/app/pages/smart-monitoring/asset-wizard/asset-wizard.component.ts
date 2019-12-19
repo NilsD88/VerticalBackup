@@ -35,7 +35,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public fields: IField[] = [];
+  public fields: IField[];
+  public isSavingOrUpdating: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -55,7 +56,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     });
 
     this.fields = await this.newAssetService.getCustomFields().toPromise();
-
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
@@ -78,7 +78,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       locationId: null,
       things: [],
       thresholdTemplate: null,
-      customFields: {}
+      customFields: []
     };
   }
 
@@ -127,32 +127,15 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
     }
   }
 
-  public checkThresholdTemplate(event) {
-    if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
-      const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
-      if (!compatibleThresholdTemplate) {
-        const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-          width: '250px',
-          data: {
-            title: 'Warning',
-            content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (!result) {
-            this.stepper.selectedIndex = 1;
-          }
-        });
-      }
-    }
-  }
 
   public wantToSaveAsset() {
-    console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -169,13 +152,9 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   }
 
   private submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
-
-      console.log(this.asset);
-      console.log(this.originalAsset);
-
-      // TODO: check differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {
@@ -195,13 +174,27 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
         }
       }
 
-      this.newAssetService.updateAsset(asset).subscribe((result) => {
-        this.goToInventory();
-      });
+      this.newAssetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.goToInventory();
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     } else {
-      this.newAssetService.createAsset(this.asset).subscribe((result) => {
-        this.goToInventory();
-      });
+      this.newAssetService.createAsset(this.asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.goToInventory();
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
 
@@ -216,8 +209,9 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '400px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
       }
@@ -229,6 +223,10 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       this.asset.location = result;
       this.displayLocationExplorer = true;
     }
+  }
+
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/smartmonitoring/inventory');
   }
 
   public async openAddThresholdTemplate() {

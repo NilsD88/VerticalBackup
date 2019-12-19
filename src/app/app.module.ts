@@ -4,7 +4,7 @@ import {AppComponent} from './app.component';
 import {PrivateLayoutComponent} from './layout/private.layout.component';
 import {PublicLayoutComponent} from './layout/public.layout.component';
 import {RouterModule} from '@angular/router';
-import {AdminAuthGuard, AppRoutes, PublicAuthGuard, UserAuthGuard} from './app.routing';
+import {AdminAuthGuard, AppRoutes, PublicAuthGuard, UserAuthGuard, HomeUserAuthGuard} from './app.routing';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MenuItemModule} from 'projects/ngx-proximus/src/lib/menu-item/menu-item.module';
 import {TopMenuModule} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.module';
@@ -59,6 +59,7 @@ export function createTranslateLoader(http: HttpClient) {
     PublicAuthGuard,
     UserAuthGuard,
     AdminAuthGuard,
+    HomeUserAuthGuard,
   ],
   bootstrap: [AppComponent],
 })

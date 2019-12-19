@@ -22,12 +22,14 @@ export class LocationWizardComponent implements OnInit {
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   private originalLocation: ILocation;
-
   public descriptionFormGroup: FormGroup;
   public location: ILocation;
   public editMode = false;
   public canLoadLocationExplorer = false;
-  public fields: IField[] = [];
+  public fields: IField[];
+  public isSavingOrUpdating: boolean;
+  private parentIdParam: string;
+  public showCancel = true;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -41,7 +43,7 @@ export class LocationWizardComponent implements OnInit {
   async ngOnInit() {
 
     const locationId = this.activatedRoute.snapshot.params.id;
-    const parentId =  this.getParentId();
+    this.parentIdParam = this.getParentId();
 
     this.descriptionFormGroup = this.formBuilder.group({
       NameCtrl: ['', Validators.required],
@@ -49,17 +51,16 @@ export class LocationWizardComponent implements OnInit {
     });
 
     this.fields = await this.newLocationService.getCustomFields().toPromise();
-
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
         this.location = await this.newLocationService.getLocationById(locationId).toPromise();
         this.editMode = true;
         this.originalLocation = cloneDeep(this.location);
       } catch (err) {
-        await this.resetLocation(parentId);
+        await this.resetLocation(this.parentIdParam);
       }
     } else {
-      await this.resetLocation(parentId);
+      await this.resetLocation(this.parentIdParam);
     }
     this.canLoadLocationExplorer = true;
   }
@@ -67,7 +68,6 @@ export class LocationWizardComponent implements OnInit {
   getParentId() {
     return this.activatedRoute.snapshot.params.parentId;
   }
-
 
   private async resetLocation(parentId) {
     this.location = {
@@ -78,15 +78,15 @@ export class LocationWizardComponent implements OnInit {
       name: null,
       image: null,
       geolocation: null,
-      customFields: {}
+      customFields: []
     };
-    if (!isNullOrUndefined(parentId)) {
+    if (!isNullOrUndefined(parentId) && parentId !== 'root') {
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
+      this.changeDetectorRef.detectChanges();
+      this.parentIdParam = null;
+      this.stepper.next();
     }
-    this.fields.forEach(field => {
-      this.location.customFields[field.id] = null;
-    });
   }
 
   updateLocation(location: ILocation) {
@@ -106,13 +106,18 @@ export class LocationWizardComponent implements OnInit {
     if (oldParentId !== this.location.parent.id) {
       this.location.geolocation = null;
     }
+
+    if (!isNullOrUndefined(this.parentIdParam)) {
+      this.changeDetectorRef.detectChanges();
+      this.parentIdParam = null;
+      this.stepper.next();
+    }
   }
 
   public submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
-
-      // TODO: check differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image'];
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 
       const location: ILocation = {
@@ -123,9 +128,19 @@ export class LocationWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe(() => {
-        this.goToManageLocation();
-      });
+      this.newLocationService.updateLocation(location).subscribe(
+        (updatedLocation: ILocation | null) => {
+          this.isSavingOrUpdating = false;
+          if (updatedLocation) {
+            this.goToManageLocation();
+          }
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
     } else {
      this.createLocation();
     }
@@ -134,11 +149,13 @@ export class LocationWizardComponent implements OnInit {
   public createLocation() {
     this.newLocationService.createLocation(this.location).subscribe(
       (location: ILocation | null) => {
+        this.isSavingOrUpdating = false;
         if (location) {
           this.goToManageLocation();
         }
       },
       (error) => {
+        this.isSavingOrUpdating = false;
         console.error(error);
         this.checkIfNameAlreadyExistAndDisplayDialog(error);
       }
@@ -170,10 +187,18 @@ export class LocationWizardComponent implements OnInit {
           data: {
             title: `${nameAlreadyUsed} already exist`,
             message: 'Please choose an other location name to be able to save it'
-          }
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
         });
       }
     }
+  }
+
+  public cancelWizard() {
+    this.router.navigateByUrl('private/admin/manage-locations');
   }
 
 }

@@ -1,3 +1,4 @@
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { FormCustomFieldsModule } from 'projects/ngx-proximus/src/lib/form-custom-fields/form-custom-fields.module';
 import { LocationWizardDialogModule } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.module';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
@@ -49,7 +50,8 @@ import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-
   ],
   entryComponents: [
     PeopleCountingAssetWizardDialogComponent,
-    LocationWizardDialogComponent
+    LocationWizardDialogComponent,
+    DialogComponent
   ]
 })
 

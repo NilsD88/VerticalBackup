@@ -1,5 +1,6 @@
+import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
+import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { ILocation } from 'src/app/models/g-location.model';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject } from '@angular/core';
@@ -10,13 +11,15 @@ import { NewLocationService } from 'src/app/services/new-location.service';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, compact } from 'lodash';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IAsset } from 'src/app/models/g-asset.model';
 import { IField } from 'src/app/models/field.model';
 import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.component';
+import { GraphQLError } from 'graphql/error';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 @Component({
   selector: 'pvf-trail-wizard',
@@ -36,8 +39,10 @@ export class TrailWizardComponent implements OnInit {
   public location: IPeopleCountingLocation;
   public editMode = false;
   public displayLocationExplorer = false;
-  public fields: IField[] = [];
+  public fields: IField[];
   public assets = [];
+
+  public isSavingOrUpdating: boolean;
 
 
   constructor(
@@ -45,7 +50,8 @@ export class TrailWizardComponent implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
     public newLocationService: NewLocationService,
-    public assetService: NewAssetService,
+    public walkingTrailLocationService: WalkingTrailLocationService,
+    public assetService: WalkingTrailAssetService,
     public dialog: MatDialog,
     public router: Router,
   ) {}
@@ -72,10 +78,14 @@ export class TrailWizardComponent implements OnInit {
 
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
-        this.location = await this.newLocationService.getLocationById(locationId).toPromise();
+        this.location = await this.walkingTrailLocationService.getLocationById(locationId).toPromise();
         this.assetsRequest$.next();
         this.editMode = true;
         this.originalLocation = cloneDeep(this.location);
+        this.walkingTrailLocationService.getImageCollectionById(locationId).subscribe(location => {
+          this.location.images = location.images.slice(0);
+          this.originalLocation.images = location.images.slice(0);
+        });
       } catch (err) {
         await this.resetLocation(parentId);
       }
@@ -100,8 +110,8 @@ export class TrailWizardComponent implements OnInit {
       image: null,
       images: [],
       geolocation: null,
-      customFields: {},
-      module: 'WALKING_TRAIL'
+      customFields: [],
+      module: 'PEOPLE_COUNTING_WALKING_TRAIL'
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
@@ -129,9 +139,10 @@ export class TrailWizardComponent implements OnInit {
   }
 
   public submitAndContinue() {
+    this.isSavingOrUpdating = true;
+    this.cleanImageCollection();
     if (this.editMode || !isNullOrUndefined(this.location.id)) {
-
-      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images'];
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
 
       const location: IPeopleCountingLocation = {
@@ -142,23 +153,74 @@ export class TrailWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe(() => {
-        this.originalLocation = cloneDeep(location);
-        this.stepper.next();
-      });
+      this.walkingTrailLocationService.updateLocation(location).subscribe(
+        (updatedLocation: ILocation | null) => {
+          if (updatedLocation) {
+            this.originalLocation = cloneDeep(location);
+            this.stepper.next();
+          }
+          this.isSavingOrUpdating = false;
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          this.isSavingOrUpdating = false;
+        }
+      );
     } else {
-      this.newLocationService.createLocation(this.location).subscribe((location: IPeopleCountingLocation | null) => {
-        this.location.id = location.id;
-        this.originalLocation = cloneDeep(location);
-        this.changeDetectorRef.detectChanges();
-        this.stepper.next();
-        console.log(this.location);
-      });
+      this.walkingTrailLocationService.createLocation(this.location).subscribe(
+        (location: IPeopleCountingLocation | null) => {
+          this.location.id = location.id;
+          this.originalLocation = cloneDeep(location);
+          this.changeDetectorRef.detectChanges();
+          this.stepper.next();
+          console.log(this.location);
+          this.isSavingOrUpdating = false;
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          this.isSavingOrUpdating = false;
+        }
+      );
     }
   }
 
+  private cleanImageCollection() {
+    this.location.images = compact(this.location.images);
+  }
+
   public done() {
-    this.goToTrailPage(this.location.id);
+    if (this.editMode) {
+      this.isSavingOrUpdating = true;
+      this.cleanImageCollection();
+      const includeProperties = ['name', 'description', 'geolocation', 'parentId', 'image', 'images', 'customFields'];
+      const differences = compareTwoObjectOnSpecificProperties(this.location, this.originalLocation, includeProperties);
+
+      const location: IPeopleCountingLocation = {
+        id: this.location.id,
+      };
+
+      for (const difference of differences) {
+        location[difference] = this.location[difference];
+      }
+
+      this.walkingTrailLocationService.updateLocation(location).subscribe(
+        (updatedLocation: ILocation | null) => {
+          if (updatedLocation) {
+            this.goToTrailPage(this.location.id);
+          }
+          this.isSavingOrUpdating = false;
+        },
+        (error) => {
+          console.error(error);
+          this.isSavingOrUpdating = false;
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
+    } else {
+      this.goToTrailPage(this.location.id);
+    }
   }
 
 
@@ -187,6 +249,7 @@ export class TrailWizardComponent implements OnInit {
       maxHeight: '80vh',
       data: {
         location: this.location,
+        module: 'PEOPLE_COUNTING_WALKING_TRAIL'
       }
     });
     const result: IPeopleCountingAsset = await dialogRef.afterClosed().toPromise();
@@ -213,6 +276,31 @@ export class TrailWizardComponent implements OnInit {
       this.location.parent = result;
       this.displayLocationExplorer = true;
     }
+  }
+
+  private checkIfNameAlreadyExistAndDisplayDialog(error) {
+    const graphQLErrors: GraphQLError = error.graphQLErrors;
+    const errorExtensions = graphQLErrors[0].extensions;
+    if (errorExtensions) {
+      const nameAlreadyUsed = errorExtensions.locationNameNotUnique;
+      if (nameAlreadyUsed) {
+        console.log('nameAlreadyUsed');
+        this.dialog.open(DialogComponent, {
+          data: {
+            title: `${nameAlreadyUsed} already exist`,
+            message: 'Please choose an other location name to be able to save it'
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
+        });
+      }
+    }
+  }
+
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/walkingtrail/dashboard');
   }
 
 

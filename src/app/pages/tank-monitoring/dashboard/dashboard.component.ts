@@ -7,6 +7,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
+import { ILocation } from 'src/app/models/g-location.model';
+import { TankMonitoringLocationService } from 'src/app/services/tankmonitoring/location.service';
 
 interface IRange {
   min: number;
@@ -30,6 +32,7 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
 
+  public rootLocation: ILocation;
   public assets: ITankMonitoringAsset[] = [];
   public selectedAssets: ITankMonitoringAsset[];
 
@@ -46,7 +49,7 @@ export class DashboardComponent implements OnInit {
       min: 0,
       max: 100
     },
-    statuses: ['EMPTY', 'LOW', 'OK'],
+    statuses: ['EMPTY', 'LOW', 'OK', 'UNKNOW'],
     name: '',
   };
 
@@ -67,6 +70,7 @@ export class DashboardComponent implements OnInit {
     'rgba(204, 0, 0, 0.7)',
     'rgba(255, 204, 51, 1)',
     'rgba(102, 204, 0, 0.7)',
+    'rgba(100, 100, 100, 0.7)',
   ];
 
   displayedColumns: string[] = ['name', 'thing', 'location.name', 'fuel', 'battery', 'actions'];
@@ -74,22 +78,39 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private assetService: TankMonitoringAssetService,
+    private locationService: TankMonitoringLocationService
   ) {}
 
   async ngOnInit() {
     this.isLoading = true;
+    this.rootLocation = {
+      id: null,
+      parentId: null,
+      geolocation: null,
+      image: null,
+      name: 'Locations',
+      description: null,
+      children: await this.locationService.getLocationsTree().toPromise()
+    };
     this.assets = await this.assetService.getAssets().toPromise();
     this.assets.forEach((asset) => {
-      const VALUE = asset.things[0].sensors[0].value;
-      if (VALUE < 10) {
-        asset.status = 'EMPTY';
-      } else if (VALUE < 20) {
-        asset.status = 'LOW';
+      if ((asset.things || []).length) {
+        const VALUE = asset.things[0].sensors[0].value;
+        if (VALUE) {
+          if (VALUE < 10) {
+            asset.status = 'EMPTY';
+          } else if (VALUE < 20) {
+            asset.status = 'LOW';
+          } else {
+            asset.status = 'OK';
+          }
+        } else {
+          asset.status = 'UNKNOW';
+        }
       } else {
-        asset.status = 'OK';
+        asset.status = 'UNKNOW';
       }
     });
-    console.log(this.assets);
     this.updateDataSourceWithFilteredAssets(this.assets);
     this.isLoading = false;
     filteredAssetsObs(this.filterFE$).subscribe(() => { this.updateFilterdAssets(); });
@@ -114,7 +135,7 @@ export class DashboardComponent implements OnInit {
 
       if (this.filterFE.batteryLevel && result) {
         const {min, max} = this.filterFE.batteryLevel;
-        const batteryLevel = asset.things[0].batteryPercentage;
+        const batteryLevel = (asset.things.length) ? asset.things[0].batteryPercentage : null;
         if (min === 0 && max === 100) {
           result = true;
         } else {
@@ -128,7 +149,7 @@ export class DashboardComponent implements OnInit {
 
       if (this.filterFE.fuelLevel && result) {
         const {min, max} = this.filterFE.fuelLevel;
-        const fuelLevel = asset.things[0].sensors[0].value;
+        const fuelLevel =  (asset.things.length) ? asset.things[0].sensors[0].value : null;
         if (min === 0 && max === 100) {
           result = true;
         } else {
@@ -179,6 +200,7 @@ export class DashboardComponent implements OnInit {
       EMPTY: [],
       LOW: [],
       OK: [],
+      UNKNOW: [],
     };
 
     assets.forEach((asset) => {

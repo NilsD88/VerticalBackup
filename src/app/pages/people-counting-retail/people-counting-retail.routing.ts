@@ -14,11 +14,23 @@ export const PeopleCountingRetailRoutes: Routes = [
     }]
   },
   {
+    path: 'store/new',
+    loadChildren: () => import('./store-wizard/store-wizard.module').then(m => m.StoreWizardModule)
+  },
+  {
+    path: 'store/update/:id',
+    loadChildren: () => import('./store-wizard/store-wizard.module').then(m => m.StoreWizardModule)
+  },
+  {
     path: 'store/:id',
     children: [{
       path: '',
       loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
     }]
+  },
+  {
+    path: 'detail/:id',
+    loadChildren: () => import('src/app/shared/people-counting/detail/detail.module').then(m => m.PeopleCountingDetailModule)
   },
   {
     path: 'overview',

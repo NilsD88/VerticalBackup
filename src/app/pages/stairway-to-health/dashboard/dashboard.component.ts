@@ -1,3 +1,4 @@
+import { PeopleCountingAssetService } from './../../../services/peoplecounting/asset.service';
 import {
   cloneDeep
 } from 'lodash';
@@ -10,7 +11,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {
-  findLeaftsLocation
+  findLeafLocations
 } from '../../walking-trail/utils';
 import {
   generateLeafColors,
@@ -55,7 +56,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.rootLocation = {
-      id: 'xXx',
+      id: null,
       parentId: null,
       geolocation: null,
       image: null,
@@ -85,7 +86,7 @@ export class DashboardComponent implements OnInit {
 
   public changeLocation(location: IPeopleCountingLocation) {
     const leafs = [];
-    findLeaftsLocation(location, leafs);
+    findLeafLocations(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
 
     // Generate colors of trails

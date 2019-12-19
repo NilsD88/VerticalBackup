@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef
 } from '@angular/core';
 import {
-  findLeaftsLocation
+  findLeafLocations
 } from '../utils';
 import {
   generateLeafColors,
@@ -25,7 +25,6 @@ import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {
   IPeopleCountingLocation,
-  IPeopleCountingLocationSerie
 } from 'src/app/models/peoplecounting/location.model';
 
 
@@ -55,7 +54,7 @@ export class DashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.rootLocation = {
-      id: 'xXx',
+      id: null,
       parentId: null,
       geolocation: null,
       image: null,
@@ -83,72 +82,54 @@ export class DashboardComponent implements OnInit {
 
   public changeLocation(location: IPeopleCountingLocation) {
     const leafs: IPeopleCountingLocation[] = [];
-    findLeaftsLocation(location, leafs);
+    findLeafLocations(location, leafs);
     const lastYearLeafs = cloneDeep(leafs);
-
-    // Generate colors of trails
     this.leafColors = generateLeafColors(leafs);
 
-    // Generate past week data
-    // TODO: get the past week data with day interval for each location (location.series)
+    // Get the past week data with day interval for each leafs
     this.locationService.getLocationsDataByIds(
       leafs.map(leaf => leaf.id),
-      'WEEKLY',
+      'DAILY',
+      moment().startOf('isoWeek').subtract(1, 'week').valueOf(),
       moment().startOf('isoWeek').valueOf(),
-      moment().startOf('isoWeek').add(7, 'days').valueOf(),
     ).subscribe(
       (result) => {
-        leafs.forEach((leaf, index) => {
-          leaf.series = result[index] as IPeopleCountingLocationSerie[];
+        console.log(result);
+        leafs.forEach(leaf => {
+          const leafIndex = result.findIndex((x => x.id === leaf.id));
+          if (leafIndex > -1) {
+            leaf.series = result[leafIndex].series;
+          } else {
+            leaf.series = [];
+          }
         });
+        this.leafs = leafs;
+        this.currentLeafs = cloneDeep(this.leafs);
+        console.log(this.currentLeafs);
+        this.changeDetectorRef.detectChanges();
       }
     );
 
-    generatePastWeekOfData(leafs);
-    this.leafs = leafs;
-
-    // Generate past year data
-    generatePastYearOfData(lastYearLeafs);
-    // TODO: get the past year data with month interval for each location(location.series)
-    this.lastYearLeafs = lastYearLeafs;
-
-    this.currentLeafs = cloneDeep(this.leafs);
-    this.changeDetectorRef.detectChanges();
+    // Get the past year data with month interval for each leafs
+    this.locationService.getLocationsDataByIds(
+      leafs.map(leaf => leaf.id),
+      'MONTHLY',
+      moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    ).subscribe(
+      (result) => {
+        lastYearLeafs.forEach(leaf => {
+          const leafIndex = result.findIndex((x => x.id === leaf.id));
+          if (leafIndex > -1) {
+            leaf.series = result[leafIndex].series;
+          } else {
+            leaf.series = [];
+          }
+        });
+        this.lastYearLeafs = lastYearLeafs;
+        this.changeDetectorRef.detectChanges();
+      }
+    );
   }
-
 }
 
-
-function generatePastWeekOfData(leafs: IPeopleCountingLocation[]) {
-  leafs.forEach(element => {
-    element.series = generatePastWeekOfDataSeries();
-  });
-}
-
-function generatePastYearOfData(leafs: IPeopleCountingLocation[]) {
-  leafs.forEach(element => {
-    element.series = generatePastYearOfDataSeries();
-  });
-}
-
-function generatePastWeekOfDataSeries(): IPeopleCountingLocationSerie[] {
-  const dataSeries: IPeopleCountingLocationSerie[] = [];
-  for (let index = 0; index < 7; index++) {
-    dataSeries.push({
-      timestamp: moment().startOf('isoWeek').add(index, 'day').valueOf(),
-      valueIn: Math.floor(Math.random() * 101)
-    });
-  }
-  return dataSeries;
-}
-
-function generatePastYearOfDataSeries(): IPeopleCountingLocationSerie[] {
-  const dataSeries: IPeopleCountingLocationSerie[] = [];
-  for (let index = 0; index < 12; index++) {
-    dataSeries.push({
-      timestamp: moment().subtract(12 - index, 'months').valueOf(),
-      valueIn: Math.floor(Math.random() * 1001)
-    });
-  }
-  return dataSeries;
-}

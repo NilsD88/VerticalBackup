@@ -28,13 +28,10 @@ const assetIconTankMonitoringEmptyFuel = divIcon({
 
 
 export function generateAssetIcon(mode: string = null, asset: IAsset = null) {
-    console.log('generateAssetIcon', mode);
     switch (mode) {
         case 'TANK_MONITORING':
-            console.log('TANK_MONITORING');
             switch (asset.test) {
                 case 'EMPTY':
-                    console.log('TANK_MONITORING-EMPTY');
                     return assetIconTankMonitoringEmptyFuel;
                 case 'LOW':
                     return assetIconTankMonitoringLowFuel;

@@ -72,7 +72,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
         marginBottom: 30,
         zoomType: 'x'
       },
-      title: '',
+      title: 'Last year',
       exporting: {
         csv: {
           dateFormat: '%d-%m-%Y %H:%M:%S',
@@ -152,7 +152,6 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
 
     const data = [];
     const xAxisCategories = [];
-
     for (const leaf of this.leafs) {
       data.push({
         name: leaf.name,

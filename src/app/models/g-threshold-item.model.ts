@@ -30,7 +30,6 @@ export class ThresholdItem {
                 }
             }
         }
-        console.log(this);
     }
 }
 

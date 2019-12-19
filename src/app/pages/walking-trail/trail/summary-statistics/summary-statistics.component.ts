@@ -1,6 +1,8 @@
+import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import * as moment from 'moment';
 
 
 interface IData {
@@ -28,18 +30,56 @@ export class SummaryStatisticsComponent implements OnInit {
   public dataSource: MatTableDataSource<IData>;
   public displayedColumns: string[];
 
-  constructor() { }
+  constructor(
+    private locationService: WalkingTrailLocationService
+  ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.displayedColumns = ['totalWeek', 'totalDay', 'avgWeek', 'avgDay'];
 
-    // TODO: get these data from the backend
+    // TODO: uncomment those lines when the backend is ready
+    console.log(this.leaf);
+    const leafs = await this.locationService.getLocationsDataByIds(
+      this.leaf.parent.children.map(location => location.id),
+      'DAILY',
+      moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      moment().valueOf()
+    ).toPromise();
+
+    if ((leafs || []).length) {
+      console.log(leafs);
+      const leaf = leafs.find(x => x.id === this.leaf.id) || {series: []};
+      const series = leaf.series;
+      this.data = {
+        totalWeek: (series.length) ? series.reduce((a, b) => a + b.valueIn, 0) : null,
+        totalDay:  (series.length) ? series[series.length - 1].valueIn : null,
+        avgWeek: leafs.reduce(
+          (a, b) => {
+            return a + b.series.reduce((c, d) => c + d.valueIn, 0);
+          }, 0
+        ) / leafs.length,
+        avgDay: leafs.reduce(
+          (a, b) => {
+            const valueIn = (b.series.length) ? b.series[b.series.length - 1].valueIn : 0;
+            return a + valueIn;
+          }, 0
+        ) / leafs.length,
+      };
+    }
+
+
+    // TODO: remove those lines when the backend is ready
+    /*
+    // MOCK DATA
     this.data = {
       totalWeek: Math.floor(Math.random() * 101 * 7),
       totalDay: Math.floor(Math.random() * 101),
       avgWeek: Math.floor(Math.random() * 101 * 7),
       avgDay: Math.floor(Math.random() * 101)
     };
+    */
+
+
 
     this.updateDataSource(this.data);
     this.isLoading = false;

@@ -35,8 +35,6 @@ export class ThresholdTemplatesDetailItemCounterComponent implements OnInit {
       }
     }
 
-    console.log(sensorType);
-
     const coef = 100 / (sensorType.max - sensorType.min);
     const indicators = new Map <number, number> ();
     const min = sensorType.min;

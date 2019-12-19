@@ -18,6 +18,7 @@ import { IThing } from '../models/g-thing.model';
 import { Observable } from 'rxjs';
 import { IField } from '../models/field.model';
 import { MOCK_ASSETS_CUSTOM_FIELDS } from '../mocks/newasset';
+import { MOCK_NEW_CHART_TANK_DATA } from '../mocks/chart';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,9 @@ export class NewAssetService {
           geolocation: asset.geolocation,
           image: asset.image,
           thresholdTemplateId: (asset.thresholdTemplate) ? asset.thresholdTemplate.id : null,
-          thingIds: asset.things.map((thing) => thing.id)
+          thingIds: asset.things.map((thing) => thing.id),
+          customFields: asset.customFields,
+          module: asset.module || 'SMART_MONITORING'
         }
       }
     }).pipe(
@@ -74,7 +77,8 @@ export class NewAssetService {
           thresholdTemplate {
               id,
               name
-          }
+          },
+          module
         }
       }
     `;
@@ -94,13 +98,14 @@ export class NewAssetService {
   }
 
   public getAssetById(id: string): Observable < IAsset > {
-
+    console.log('getAssetById SM');
     const GET_ASSET_BY_ID = gql `
             query findAssetById($id: Long!) {
                 asset: findAssetById(id: $id) {
                     id,
                     name,
                     description,
+                    module,
                     geolocation {
                       lat,
                       lng
@@ -128,7 +133,11 @@ export class NewAssetService {
                       id,
                       name
                     },
-                    image
+                    image,
+                    customFields {
+                      keyId,
+                      value
+                    }
                 }
             }
         `;
@@ -238,14 +247,18 @@ export class NewAssetService {
     }) => data.asset));
   }
 
-  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
-    return this.http.get < IThing [] > (`${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`);
+  public getAssetDataById(id: string, interval: string, from: number, to: number, moduleName: string = null): Observable < IThing[] > {
+    let url = `${environment.baseUrl}/asset/${id}/data?interval=${interval}&from=${from}&to=${to}`;
+    if (moduleName) {
+      url += `&module=${moduleName}`;
+    }
+    return this.http.get < IThing [] > (url);
   }
 
-  public getAssetsByLocationId(locationId: string): Observable < IAsset[] > {
+  public getAssetsByLocationId(locationId: string, moduleName: string = null): Observable < IAsset[] > {
     const GET_ASSETS_BY_LOCATION_ID = gql `
-      query FindAssetsByLocation($locationId: Long!) {
-        assets: findAssetsByLocation(locationId: $locationId) {
+      query FindAssetsByLocation($input: AssetFindByLocationInput!) {
+        assets: findAssetsByLocation(input: $input) {
             id,
             name,
             description,
@@ -269,7 +282,10 @@ export class NewAssetService {
       query: GET_ASSETS_BY_LOCATION_ID,
       fetchPolicy: 'network-only',
       variables: {
-        locationId,
+        input: {
+          locationId,
+          moduleName
+        }
       }
     }).pipe(map(({
       data
@@ -332,7 +348,7 @@ export class NewAssetService {
     }) => data.asset));
   }
 
-  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedAssets > {
+  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}, moduleName: string = null): Observable < IPagedAssets > {
     const GET_PAGED_ASSETS = gql `
       query findAssetsByFilterPaged($input: PagedAssetFindByFilterInput!) {
         pagedAssets: findAssetsByFilterPaged(input: $input) {
@@ -365,7 +381,8 @@ export class NewAssetService {
           organizationId: 1,
           pageNumber,
           pageSize,
-          ...filter
+          ...filter,
+          module: moduleName
         }
       },
       fetchPolicy: 'network-only'
@@ -413,9 +430,6 @@ export class NewAssetService {
       response: boolean;
     }
 
-    console.log(`[UPDATE] ASSET:`);
-    console.log(asset);
-
     return this.apollo.mutate < UpdateAssetResponse > ({
       mutation: UPDATE_ASSET,
       variables: {
@@ -454,12 +468,35 @@ export class NewAssetService {
   }
 
   public getCustomFields(): Observable < IField [] > {
-    return new Observable < IField [] > (
-      observer => {
-        observer.next(MOCK_ASSETS_CUSTOM_FIELDS);
-        observer.complete();
+    const GET_CUSTOM_FIELDS = gql `
+      query findFields($organizationId: Long!, $subjectType: String!) {
+          fields: getKeysByOrganizationAndSubjectType(organizationId: $organizationId, subjectType: $subjectType) {
+            id,
+            label {
+              fr,
+              en,
+              nl
+            }
+            type,
+            options
+          }
       }
-    );
+    `;
+
+    interface GetCustomFieldsResponse {
+      fields: IField[];
+    }
+
+    return this.apollo.query < GetCustomFieldsResponse > ({
+      query: GET_CUSTOM_FIELDS,
+      fetchPolicy: 'network-only',
+      variables: {
+        organizationId: 1,
+        subjectType: 'ASSET'
+      }
+    }).pipe(map(({
+      data,
+    }) => data.fields));
   }
 
 }

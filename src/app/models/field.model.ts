@@ -11,4 +11,9 @@ export interface IFieldLabel {
     nl?: string;
 }
 
+export interface ICustomField {
+    keyId?: string;
+    value?: string;
+}
+
 export type FieldType = 'text' | 'list' | 'boolean';

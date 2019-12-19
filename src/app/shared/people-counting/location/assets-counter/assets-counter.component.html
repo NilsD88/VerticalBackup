@@ -1,0 +1,43 @@
+<div style="overflow-x: scroll">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 datatable"
+    [ngClass]="{'loading': isLoading }">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+      <td mat-cell *matCellDef="let element">
+        <div>
+          <a [routerLink]="[assetUrl+element.id]" routerLinkActive="router-link-active" >{{element.name}}</a>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Day Column -->
+    <ng-container matColumnDef="today">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Today </th>
+      <td mat-cell *matCellDef="let element">
+        <div>
+          {{element.today}}
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Week Column -->
+    <ng-container matColumnDef="week">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Week </th>
+      <td mat-cell *matCellDef="let element">
+        <div>
+          {{element.week}}
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+</div>
+<mat-card *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; border-radius: 0;">
+  <mat-progress-spinner color="primary" mode="indeterminate">
+  </mat-progress-spinner>
+</mat-card>

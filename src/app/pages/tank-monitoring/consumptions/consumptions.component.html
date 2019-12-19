@@ -5,9 +5,8 @@
       <div class="col-12">
         <pvf-tankmonitoring-chart
           *ngIf="asset"
-          style="display: flex; height: 100%;"
+          style="display: flex;"
           [loading]="chartLoading"
-          [height]="400"
           [title]="'Consumption'"
           [chartData]="chartData"
           (updateChartData)="updateChartData($event)"

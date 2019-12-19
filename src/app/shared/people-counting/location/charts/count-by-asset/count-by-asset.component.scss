@@ -1,0 +1,9 @@
+#count-by-asset-chart-container{
+    width: 100%;
+    height: 300px;
+}
+
+:host{
+    display: flex;
+    flex-direction: column;
+}

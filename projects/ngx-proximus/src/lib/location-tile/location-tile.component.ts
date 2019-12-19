@@ -31,8 +31,8 @@ export class LocationTileComponent implements OnInit, OnDestroy {
       })
     );
     this.subscriptions.push(
-      this.locationService.getCoverOfLocationById(this.location.id).subscribe(cover => {
-        this.location.cover = cover;
+      this.locationService.getCoverOfLocationById(this.location.id).subscribe(images => {
+        this.location.images = images;
         this.coverIsLoading = false;
       })
     );

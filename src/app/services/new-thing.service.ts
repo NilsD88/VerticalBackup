@@ -30,6 +30,7 @@ export class NewThingService {
                             id,
                             name,
                             postfix,
+                            type,
                             min,
                             max
                         },
@@ -39,6 +40,7 @@ export class NewThingService {
                             useOnChart,
                             chartType,
                             useOnNotification,
+                            inOutType,
                             aggregatedValues {
                                 min,
                                 max,

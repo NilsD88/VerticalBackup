@@ -36,7 +36,6 @@ export class ListThresholdTemplatesComponent implements OnInit {
     ) {}
 
   async ngOnInit() {
-    console.log('ngOnInit list threshold template');
     if (this.admin) {
       this.displayedColumns = ['name', 'thresholds', 'actions'];
     } else {
@@ -107,6 +106,7 @@ export class ListThresholdTemplatesComponent implements OnInit {
       minWidth: '320px',
       maxWidth: '600px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         thresholdTemplate
       }

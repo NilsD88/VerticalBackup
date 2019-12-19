@@ -34,14 +34,9 @@ export class SummaryComponent implements OnInit, OnChanges {
 
 
 
-  constructor(private translateService: TranslateService) {
-
-
-
-  }
+  constructor(private translateService: TranslateService) {}
 
   ngOnInit() {
-
     this.locale = this.translateService.currentLang;
     moment.locale(this.locale + '-be');
     window.moment = moment;
@@ -69,23 +64,14 @@ export class SummaryComponent implements OnInit, OnChanges {
 
   public getTotalCountYesterday() {
     this.totalCountYesterDay = 0;
-    let yesterdayDate = moment().subtract(1, 'days').startOf('day');
-
-
+    const yesterdayDate = moment().subtract(1, 'days').startOf('day');
     this.leaf.assets.forEach(asset => {
       asset.series.forEach(serie => {
-
         if (moment(serie.timestamp).startOf('day').isSame(yesterdayDate)) {
           this.totalCountYesterDay += serie.valueIn;
-
         }
-
-      })
-
+      });
     });
-
-
-
   }
 
   public getTotalSameDayLastWeek() {
@@ -95,82 +81,55 @@ export class SummaryComponent implements OnInit, OnChanges {
 
     this.leaf.assets.forEach(asset => {
       asset.series.forEach(serie => {
-
         if (moment(serie.timestamp).startOf('day').isSame(sameDayLastWeek)) {
           totalCountSameDayLastWeek += serie.valueIn;
-
         }
-
-      })
-
+      });
     });
-
     return totalCountSameDayLastWeek;
-
   }
 
   public getTotalCountLastWeek() {
     this.totalLastWeek = 0;
-    let lastWeekStartDate = moment().subtract(1, 'weeks').startOf('isoWeek');
-    let lastWeekEndDate = moment().subtract(1, 'weeks').endOf('isoWeek');
-
-
+    const lastWeekStartDate = moment().subtract(1, 'weeks').startOf('isoWeek');
+    const lastWeekEndDate = moment().subtract(1, 'weeks').endOf('isoWeek');
     this.leaf.assets.forEach(asset => {
       asset.series.forEach(serie => {
-
         if (moment(serie.timestamp).startOf('day').isSameOrAfter(lastWeekStartDate) && moment(serie.timestamp).startOf('day').isSameOrBefore(lastWeekEndDate)) {
-
           this.totalLastWeek += serie.valueIn;
-
         }
-
-      })
-
+      });
     });
-
-
-
   }
 
   public getTotalCountWeekBeforeLastWeek(): number {
-
-    let totalCountWeekBeforeLastWeek: number = 0;
-    let WeekBeforelastWeekStartDate = moment().subtract(2, 'weeks').startOf('isoWeek');
-    let WeekBeforelastWeekEndDate = moment().subtract(2, 'weeks').endOf('isoWeek');
-
-
-    this.leaf.assets.forEach(asset => {
-      asset.series.forEach(serie => {
-
-
-        if (moment(serie.timestamp).startOf('day').isSameOrAfter(WeekBeforelastWeekStartDate) && moment(serie.timestamp).startOf('day').isSameOrBefore(WeekBeforelastWeekEndDate)) {
-          totalCountWeekBeforeLastWeek += serie.valueIn;
-        }
-      })
-    });
-
+    let totalCountWeekBeforeLastWeek = 0;
+    const WeekBeforelastWeekStartDate = moment().subtract(2, 'weeks').startOf('isoWeek');
+    const WeekBeforelastWeekEndDate = moment().subtract(2, 'weeks').endOf('isoWeek');
+    if ((this.leaf.assets || []).length) {
+      this.leaf.assets.forEach(asset => {
+        asset.series.forEach(serie => {
+          if (moment(serie.timestamp).startOf('day').isSameOrAfter(WeekBeforelastWeekStartDate) && moment(serie.timestamp).startOf('day').isSameOrBefore(WeekBeforelastWeekEndDate)) {
+            totalCountWeekBeforeLastWeek += serie.valueIn;
+          }
+        });
+      });
+    }
     return totalCountWeekBeforeLastWeek;
-
-
   }
+
   public getTempCountToday(): number {
-    let TempCountToday: number = 0;
-    let currentDate = moment().startOf('day');
-
-
+    let tempCountToday = 0;
+    const currentDate = moment().startOf('day');
     this.leaf.assets.forEach(asset => {
       asset.series.forEach(serie => {
-
         if (moment(serie.timestamp).startOf('day').isSame(currentDate)) {
-          TempCountToday += serie.valueIn;
+          tempCountToday += serie.valueIn;
 
         }
-
-      })
-
+      });
     });
-    return TempCountToday;
-
+    return tempCountToday;
   }
 
   public getDifferenceLastWeekAndWeekBefore(): string {
@@ -184,11 +143,7 @@ export class SummaryComponent implements OnInit, OnChanges {
   }
 
   private generateDummyData() {
-
-
-
     this.leaf.assets.forEach(element => {
-
       element.series = [];
       element.series.push({
           valueIn: 10,
@@ -248,16 +203,8 @@ export class SummaryComponent implements OnInit, OnChanges {
           valueIn: 16,
           timestamp: moment().subtract(7, 'months').valueOf()
         }
-
-
-
-
-      )
-    })
-
-
-
-
+      );
+    });
   }
 
 }

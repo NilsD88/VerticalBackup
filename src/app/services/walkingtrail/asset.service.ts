@@ -1,5 +1,9 @@
-import { PeopleCountingAssetService } from './../peoplecounting/asset.service';
-import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
+import {
+  PeopleCountingAssetService
+} from './../peoplecounting/asset.service';
+import {
+  IPeopleCountingAsset
+} from 'src/app/models/peoplecounting/asset.model';
 import {
   Injectable
 } from '@angular/core';
@@ -12,10 +16,14 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {
+  Intervals
+} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import gql from 'graphql-tag';
+import { map } from 'rxjs/operators';
 
 
+const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,17 +38,59 @@ export class WalkingTrailAssetService extends PeopleCountingAssetService {
     );
   }
 
-  public MODULE_NAME = 'WALKING_TRAIL';
+  public getAssets(): Observable < IPeopleCountingAsset[] > {
+
+    const GET_ASSETS_BY_MODULE = gql `
+        query FindAssetsByModule($input: AssetFindByModuleInput!) {
+          assets: findAssetsByModule(input: $input) {
+            id,
+            name,
+            things {
+              devEui,
+              batteryPercentage,
+              sensors {
+                sensorType {
+                  id,
+                  name
+                }
+                value,
+                timestamp
+              }
+            }
+          }
+        }
+      `;
+
+    interface GetAssetsWalkingTrailResponse {
+      assets: IPeopleCountingAsset[];
+    }
+
+    return this.apollo.query < GetAssetsWalkingTrailResponse > ({
+      query: GET_ASSETS_BY_MODULE,
+      fetchPolicy: 'network-only',
+      variables: {
+        input: {
+          moduleName: MODULE_NAME
+        }
+      }
+    }).pipe(map(({
+      data
+    }) => data.assets));
+
+  }
 
   public getAssetsDataByIds(ids: string[], interval: Intervals, from: number, to: number): Observable < IPeopleCountingAsset[] > {
-    let idsParams = `ids=${ids[0]}`;
-    if (ids.length > 1) {
-      for (let index = 1; index < ids.length; index++) {
-        idsParams += `&ids=${ids[index]}`;
-      }
-    }
-    return this.http.get < IPeopleCountingAsset [] >
-      (`${environment.baseUrl}/assets/data?${idsParams}&module=${this.MODULE_NAME}&interval=${interval}&from=${from}&to=${to}`);
+    return super.getAssetsDataByIds(
+      ids,
+      interval,
+      from,
+      to,
+      MODULE_NAME
+    );
+  }
+
+  public getAssetsByLocationId(locationId: string): Observable < IPeopleCountingAsset[] > {
+    return super.getAssetsByLocationId(locationId, MODULE_NAME);
   }
 
 

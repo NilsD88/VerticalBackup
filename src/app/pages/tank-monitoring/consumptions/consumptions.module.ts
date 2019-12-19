@@ -1,3 +1,4 @@
+import { DialogModule } from './../../../../../projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { LastAlertsModule } from 'projects/ngx-proximus/src/lib/last-alerts/last-alerts.module';
 import { NoDataModule } from 'projects/ngx-proximus/src/lib/no-data/no-data.module';
 import { DetailHeaderModule } from './../lib/detail-header/detail-header.module';
@@ -24,7 +25,8 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     LinkedThingsModule,
     ChartModule,
     NoDataModule,
-    LastAlertsModule
+    LastAlertsModule,
+    DialogModule
   ]
 })
 export class ConsumptionsModule { }

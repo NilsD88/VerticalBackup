@@ -1,5 +1,7 @@
+import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { ISensorType } from './../../../models/g-sensor-type.model';
+import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -35,13 +37,16 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
   public descriptionFormGroup: FormGroup;
 
-  public fields: IField[] = [];
+  public fields: IField[];
+  public compatibleSensorTypes: ISensorType[];
+  public isSavingOrUpdating: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
-    private newAssetService: NewAssetService,
+    private tankMonitoringAssetService: TankMonitoringAssetService,
+    private sensorService: NewSensorService,
     private router: Router,
     public activatedRoute: ActivatedRoute
   ) {
@@ -54,14 +59,16 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       DescriptionCtrl: ['', null],
     });
 
-    this.fields = await this.newAssetService.getCustomFields().toPromise();
+    this.fields = await this.tankMonitoringAssetService.getCustomFields().toPromise();
+    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule('TANK_MONITORING').toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
-        this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
+        this.asset = await this.tankMonitoringAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
+        this.originalAsset.locationId = this.originalAsset.location.id;
       } catch (err) {
         this.asset = this.emptyAsset();
       }
@@ -77,8 +84,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       locationId: null,
       things: [],
       thresholdTemplate: null,
-      customFields: {},
-      module: 'TANK_MONITORING'
+      customFields: [],
     };
   }
 
@@ -104,7 +110,36 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
     }
   }
 
-  public thresholdTemplateIsCompatibleWithThings() {
+  public checkThings() {
+    if (this.oneThingCompatibleWithModule()) {
+      this.stepper.next();
+    } else {
+      this.dialog.open(PopupConfirmationComponent, {
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+        data: {
+          title: 'Warning',
+          content: 'You can an only add an asset with at least one thing defined for tank monitoring',
+          hideContinue: true,
+        }
+      });
+    }
+  }
+
+  public oneThingCompatibleWithModule(): boolean {
+    for (const thing of this.asset.things) {
+      for (const sensor of thing.sensors) {
+        if (this.compatibleSensorTypes.findIndex( x => x.id === sensor.sensorType.id) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public thresholdTemplateIsCompatibleWithThings(): boolean {
     const thresholdTemplate = this.asset.thresholdTemplate;
     if (thresholdTemplate && thresholdTemplate.thresholds) {
       for (const threshold of thresholdTemplate.thresholds) {
@@ -127,32 +162,14 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
     }
   }
 
-  public checkThresholdTemplate(event) {
-    if (event.previouslySelectedIndex <= 1 && event.selectedIndex >= 2) {
-      const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
-      if (!compatibleThresholdTemplate) {
-        const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-          width: '250px',
-          data: {
-            title: 'Warning',
-            content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
-          }
-        });
-        dialogRef.afterClosed().subscribe(result => {
-          if (!result) {
-            this.stepper.selectedIndex = 1;
-          }
-        });
-      }
-    }
-  }
-
   public wantToSaveAsset() {
-    console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {
-        width: '250px',
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
         data: {
           title: 'Warning',
           content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
@@ -169,15 +186,10 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   }
 
   private submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
-
-      console.log(this.asset);
-      console.log(this.originalAsset);
-      
-      // TODO: check the differences between customFields object
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
-
       const asset: IAsset = {
         id: this.asset.id,
       };
@@ -195,18 +207,32 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
         }
       }
 
-      this.newAssetService.updateAsset(asset).subscribe((result) => {
-        this.goToInventory();
-      });
+      this.tankMonitoringAssetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.goToInventory();
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     } else {
-      this.newAssetService.createAsset(this.asset).subscribe((result) => {
-        this.goToInventory();
-      });
+      this.tankMonitoringAssetService.createAsset(this.asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.goToInventory();
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
 
   private goToInventory() {
-    this.router.navigateByUrl('/private/smartmonitoring/inventory');
+    this.router.navigateByUrl('/private/tankmonitoring/inventory');
   }
 
 
@@ -216,8 +242,9 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '600px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
       }
@@ -234,8 +261,9 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
   public async openAddThresholdTemplate() {
     const dialogRef = this.dialog.open(ManageThresholdTemplatesDialogComponent, {
       minWidth: '320px',
-      maxWidth: '1024px',
+      maxWidth: '600px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
         fromPopup: true,
@@ -248,6 +276,11 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
       this.asset.thresholdTemplate = result;
       this.displayThresholdTemplateList = true;
     }
+  }
+
+
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/tankmonitoring/dashboard');
   }
 
 }

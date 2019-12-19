@@ -1,3 +1,5 @@
+import { MapDialogComponent } from './../map-dialog/map-dialog.component';
+import { MapDialogModule } from './../map-dialog/map-dialog.module';
 import {NgModule, Injector} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { MapComponent } from './map.component';
@@ -7,7 +9,6 @@ import { IconModule } from '../icon/icon.module';
 import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/material';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { MapDialogComponent } from './map-dialog.component';
 import { MapPopupComponent } from './popup/popup.component';
 import { createCustomElement } from '@angular/elements';
 import { RouterModule } from '@angular/router';
@@ -15,7 +16,6 @@ import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     MapComponent,
-    MapDialogComponent,
     MapPopupComponent
   ],
   imports: [
@@ -26,7 +26,8 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     IconModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MapDialogModule
   ],
   exports: [MapComponent],
   providers: [
@@ -34,8 +35,8 @@ import { RouterModule } from '@angular/router';
     NewLocationService
   ],
   entryComponents: [
-    MapDialogComponent,
-    MapPopupComponent
+    MapPopupComponent,
+    MapDialogComponent
   ]
 })
 export class MapModule {

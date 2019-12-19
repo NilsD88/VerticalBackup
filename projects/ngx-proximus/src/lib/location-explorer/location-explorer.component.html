@@ -1,12 +1,14 @@
-<mat-form-field>
-  <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
-    (ngModelChange)="onFilterChange()">
-</mat-form-field>
-<mat-autocomplete #auto="matAutocomplete">
-  <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
-    {{ option.name }}
-  </mat-option>
-</mat-autocomplete>
+<div *ngIf="searchBar">
+  <mat-form-field>
+    <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
+      (ngModelChange)="onFilterChange()">
+  </mat-form-field>
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
+      {{ option.name }}
+    </mat-option>
+  </mat-autocomplete>
+</div>
 
 <div>
   <mat-progress-spinner *ngIf="isDownloading" style="margin:0 auto;" color="primary" mode="indeterminate">
@@ -23,14 +25,16 @@
             <pxs-icon icon="globe" class="location"></pxs-icon>
             {{location.name}}
             <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent">
-              <pxs-icon *ngIf="location.module === 'WALKING_TRAIL'" icon="edit"
+              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
                 [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
-              <pxs-icon *ngIf="!location.module" icon="edit"
+              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_RETAIL'" icon="edit"
+                [routerLink]="['/private/peoplecounting/store/update/'+location.id]"></pxs-icon>
+              <pxs-icon *ngIf="location.module === 'SMART_MONITORING'" icon="edit"
                 [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
             </button>
             <button *ngIf="admin && (location.children.length === 0 || !location.children)" mat-icon-button
               matTooltip="Delete location" color="warn">
-              <pxs-icon icon="trash" (click)="deleteLocation(location.id)"></pxs-icon>
+              <pxs-icon icon="trash" (click)="wantToDeleteLocation(location.id)"></pxs-icon>
             </button>
           </div>
           <div *ngIf="location.id !== ghostLocationId">
@@ -46,7 +50,7 @@
           </div>
         </div>
         <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)"
-          [routerLink]="['/private/admin/manage-locations/new/']">
+          [routerLink]="['/private/admin/manage-locations/new/'+'root']">
           <div>
             <pxs-icon icon="plus-o"></pxs-icon> Add new location
           </div>

@@ -18,18 +18,10 @@
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
               [(ngModel)]="asset.description" maxlength="255"></textarea>
           </mat-form-field>
-          <pxs-form-custom-fields *ngIf="asset.customFields" [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="asset.customFields"></pxs-form-custom-fields>
         </div>
       </div>
-
-      <!--
-      <pxs-form-keyvalue *ngIf="descriptionFormGroup" [parentFormGroup]="descriptionFormGroup"></pxs-form-keyvalue>  
-      <p>Form value: {{ descriptionFormGroup.value | json }}</p>
-      <p>Form status: {{ descriptionFormGroup.status | json }}</p>
-      -->
-
-      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
-
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="asset.location">
@@ -47,7 +39,7 @@
           <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
         </div>
       </div>
-      <pxs-stepper-next [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step>
@@ -57,7 +49,7 @@
         *ngIf="asset.location && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
         [location]="asset.location" (notify)="asset.geolocation=$event" [geolocation]="asset.geolocation">
       </pxs-form-geolocation>
-      <pxs-stepper-next [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="asset.location" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="asset.things.length > 0">
@@ -70,7 +62,7 @@
             </pxs-list-things>
           </div>
         </div>
-        <pxs-stepper-next [completed]="asset.things.length > 0" (next)="stepper.next()"></pxs-stepper-next>
+        <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>
@@ -92,7 +84,7 @@
               template</button>
           </div>
         </div>
-        <pxs-stepper-next text="Save" [completed]="asset.things.length" (next)="wantToSaveAsset()"></pxs-stepper-next>
+        <pxs-stepper-next [loading]="isSavingOrUpdating" text="Save" [completed]="asset.things.length" (next)="wantToSaveAsset()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>

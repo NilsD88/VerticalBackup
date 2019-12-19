@@ -7,14 +7,15 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { Observable, Subject} from 'rxjs';
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { Observable, Subject, of} from 'rxjs';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { NewAlertService } from 'src/app/services/new-alert.service';
 import {formatDate} from '@angular/common';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -43,20 +44,21 @@ export class ConsumptionsComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private newAssetService: NewAssetService,
     private tankMonitoringAssetService: TankMonitoringAssetService,
     private newAlertService: NewAlertService,
     private sharedService: SharedService,
     private translateService: TranslateService,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
-        this.newAssetService.getAssetDetailById(params.id).subscribe(
+        this.tankMonitoringAssetService.getAssetDetailById(params.id).subscribe(
           (asset) => {
+            console.log(asset);
             this.asset = asset;
             this.changeDetectorRef.detectChanges();
             this.init();
@@ -73,7 +75,6 @@ export class ConsumptionsComponent implements OnInit {
   private init() {
     this.getLastAlerts();
     this.getChartData(this.chartData$).subscribe(async things => {
-      console.log('sucribe');
       const chartData = [];
       // Get the translation of each label
       for (const thing of things) {
@@ -229,7 +230,21 @@ export class ConsumptionsComponent implements OnInit {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
-        return this.tankMonitoringAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to);
+        return this.tankMonitoringAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to).pipe(
+          catchError(() => {
+            this.dialog.open(DialogComponent, {
+              data: {
+                title: 'Sorry, an error has occured!',
+                message: 'An error has occured during getting the sensor data'
+              },
+              minWidth: '320px',
+              maxWidth: '400px',
+              width: '100vw',
+              maxHeight: '80vh',
+            });
+            return of([]);
+          })
+        );
       })
     );
   }

@@ -52,6 +52,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
       dialog,
       router
     );
+    this.showCancel = false;
   }
 
   getParentId() {

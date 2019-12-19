@@ -1,3 +1,4 @@
+import { NewAssetService } from 'src/app/services/new-asset.service';
 import {Component, OnInit, Optional, Inject} from '@angular/core';
 import {FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -7,7 +8,7 @@ import { IAsset } from 'src/app/models/g-asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { PeopleCountingAssetWizardComponent } from './asset-wizard.component';
-import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
+import { NewSensorService } from 'src/app/services/new-sensor.service';
 
 @Component({
   selector: 'pvf-walkingtrail-asset-wizard',
@@ -21,7 +22,8 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
     @Optional() public dialogRef: MatDialogRef < PeopleCountingAssetWizardComponent >,
     public formBuilder: FormBuilder,
     public dialog: MatDialog,
-    public assetService: WalkingTrailAssetService,
+    public assetService: NewAssetService,
+    public sensorService: NewSensorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {
@@ -29,19 +31,15 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         formBuilder,
         dialog,
         assetService,
+        sensorService,
         activatedRoute,
         router
       );
+      this.showCancel = false;
   }
 
   async ngOnInit() {
-    this.descriptionFormGroup = this.formBuilder.group({
-      NameCtrl: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
-      DescriptionCtrl: ['', null],
-    });
-
-    this.fields = await this.assetService.getCustomFields().toPromise();
-
+    super.init();
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
@@ -64,20 +62,17 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
       locationId: this.data.location.id,
       things: [],
       thresholdTemplate: null,
-      customFields: {},
-      module: 'WALKING_TRAIL'
+      customFields: [],
+      module: this.data.module
     };
   }
 
 
 
   public submit() {
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
 
-      console.log(this.asset);
-      console.log(this.originalAsset);
-
-      // TODO: check differences between customFields object
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
@@ -98,13 +93,27 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         }
       }
 
-      this.assetService.updateAsset(asset).subscribe((result) => {
-        this.dialogRef.close(this.asset);
-      });
+      this.assetService.updateAsset(asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.dialogRef.close(this.asset);
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     } else {
-      this.assetService.createAsset(this.asset).subscribe((result) => {
-        this.dialogRef.close(this.asset);
-      });
+      this.assetService.createAsset(this.asset).subscribe(
+        (result) => {
+          this.isSavingOrUpdating = false;
+          this.dialogRef.close(this.asset);
+        },
+        (error) => {
+          this.isSavingOrUpdating = false;
+          console.error(error);
+        }
+      );
     }
   }
 }

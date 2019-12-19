@@ -1,5 +1,5 @@
 <!-- TODO: LINEAR TO TRUE -->
-<mat-horizontal-stepper [linear]="false" #stepper *ngIf="location">
+<mat-horizontal-stepper [linear]="true" #stepper *ngIf="location">
   <mat-step [completed]="location.parent">
     <form>
       <ng-template matStepLabel>Parent</ng-template>
@@ -19,7 +19,7 @@
           <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
         </div>
       </div>
-      <pxs-stepper-next [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
     </form>
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
@@ -33,10 +33,10 @@
           <mat-form-field>
             <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
           </mat-form-field>
-          <pxs-form-custom-fields *ngIf="location.customFields" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
-      <pxs-stepper-next [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation">
@@ -48,7 +48,7 @@
         (notify)="location.geolocation=$event"
         [geolocation]="location.geolocation"
       ></pxs-form-geolocation>
-      <pxs-stepper-next [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
     </form>
   </mat-step>
   <mat-step>
@@ -64,7 +64,7 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [completed]="true" (next)="stepper.next()"></pxs-stepper-next> 
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="true" (next)="stepper.next()"></pxs-stepper-next> 
   </mat-step>
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
     <ng-template matStepLabel>Floor plan</ng-template>
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+    <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
   <mat-step>
       <ng-template matStepLabel>Assets</ng-template>
@@ -95,6 +95,6 @@
           <button mat-button color="primary" (click)="openAddAsset()">Create a new asset</button>
         </div>
       </div>
-      <pxs-stepper-next [completed]="location.geolocation" [text]="'Done!'" [color]="'success'" (next)="done()"></pxs-stepper-next> 
+      <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Done!'" [color]="'success'" (next)="done()"></pxs-stepper-next> 
     </mat-step>
 </mat-horizontal-stepper>

@@ -1,4 +1,4 @@
-import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
+import { WalkingTrailLocationService } from '../../../../services/walkingtrail/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InventoryLocationsComponent } from '../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component';
@@ -23,7 +23,7 @@ export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLo
       locationService,
       activatedRoute
     );
-    this.leafUrl = 'private/peoplecounting/store/';
+    this.leafUrl = 'private/stairwaytohealth/place/';
   }
 
   async ngOnInit() {

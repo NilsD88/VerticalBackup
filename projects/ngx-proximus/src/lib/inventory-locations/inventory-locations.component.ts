@@ -76,8 +76,6 @@ export class InventoryLocationsComponent implements OnInit {
         this.selectedLocation = {id: params.id};
       }
     });
-
-    console.log(this.leafUrl);
   }
 
   public changeFilterBE() {

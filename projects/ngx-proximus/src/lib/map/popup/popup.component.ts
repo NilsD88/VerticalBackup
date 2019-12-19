@@ -1,10 +1,12 @@
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, Observable, of } from 'rxjs';
 import { NewAssetService } from './../../../../../../src/app/services/new-asset.service';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ILocation } from 'src/app/models/g-location.model';
 import { IAlert } from 'src/app/models/g-alert.model';
 import { IAsset } from 'src/app/models/g-asset.model';
+import { Marker } from 'leaflet';
+import { debounceTime, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'pxs-map-popup',
@@ -18,40 +20,88 @@ export class MapPopupComponent implements OnInit, OnDestroy {
   @Input() leafUrl: string;
   @Input() goToChild;
 
+  @Input() marker: Marker;
+
+  private mouseIsOver = false;
+
   public lastAlert: IAlert;
-  private subscription: Subscription;
+  public subscriptions: Subscription[] = [];
+  public subject$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    private assetService: NewAssetService,
-    private router: Router
+    public assetService: NewAssetService,
+    public router: Router,
+    public elementRef: ElementRef
   ) {}
 
   ngOnInit() {
+    const div = this.elementRef.nativeElement;
+
+    div.onmouseover = () => {
+      this.mouseIsOver = true;
+      this.subject$.next();
+    };
+    div.onmouseout = () => {
+      this.mouseIsOver = false;
+      this.subject$.next();
+    };
+
     if (this.asset) {
-      this.subscription = this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
-        this.asset = {
-          ...this.asset,
-          ...asset
-        };
-      });
+      this.getAssetPopupDetail();
     }
+
+    if (this.marker) {
+      this.marker.on('mouseout', () => {
+        if (!this.mouseIsOver) {
+          this.subject$.next();
+        }
+      });
+      this.subscriptions.push(this.closePopupOrNot(this.subject$).subscribe((result: boolean) => {
+        if (result) {
+          this.marker.closePopup();
+        }
+      }));
+    }
+
   }
 
+  getAssetPopupDetail() {
+    this.subscriptions.push(this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
+      this.asset = {
+        ...this.asset,
+        ...asset
+      };
+    }));
+  }
+
+  private closePopupOrNot(value: Observable <boolean>) {
+    return value.pipe(
+      debounceTime(500),
+      switchMap(() => {
+        if (this.mouseIsOver) {
+          return of(false);
+        } else {
+          return of(true);
+        }
+      })
+    );
+  }
+
+
+
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.subscriptions) {
+      this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
+    const div = this.elementRef.nativeElement;
+    div.onmouseover = null;
+    div.onmouseout = null;
   }
 
   openLocation() {
-    console.log('openLocation');
-    console.log((this.location.children || []).length);
-    console.log(this.leafUrl);
     if (!(this.location.children || []).length && this.leafUrl) {
-      console.log('navigateByUrl: ', `${this.leafUrl}${this.location.id}`);
       this.router.navigateByUrl(`${this.leafUrl}${this.location.id}`);
     } else {
-      console.log('goToCHid');
       this.goToChild(this.location);
     }
   }
