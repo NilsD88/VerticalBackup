@@ -67,7 +67,6 @@ export class CountByAssetComponent implements OnInit, OnChanges {
         plotBorderWidth: null,
         plotShadow: false,
         type: 'pie',
-        height: '300'
       },
       title: {
         text: 'Count by asset'

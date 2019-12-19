@@ -226,7 +226,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
   }
 
   public cancelWizard() {
-    this.router.navigateByUrl('/private/smartmonitoring/');
+    this.router.navigateByUrl('/private/smartmonitoring/inventory');
   }
 
   public async openAddThresholdTemplate() {

@@ -280,7 +280,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
 
   public cancelWizard() {
-    this.router.navigateByUrl('/private/tankmonitoring/');
+    this.router.navigateByUrl('/private/tankmonitoring/dashboard');
   }
 
 }

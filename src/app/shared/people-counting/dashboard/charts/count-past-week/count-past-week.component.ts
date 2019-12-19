@@ -60,9 +60,13 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     private router: Router,
   ) {}
 
+
   ngOnChanges(changes: SimpleChanges) {
-    if (this.chart) {
-      this.updateChart();
+    if (changes.leafs) {
+      console.log(changes.leaf);
+      if (changes.leafs.currentValue && changes.leafs.currentValue !== changes.leafs.previousValue) {
+        this.updateChart();
+      }
     }
   }
 
@@ -73,7 +77,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     mTZ();
     this.initChartOptions();
     this.initChart();
-    this.updateChart();
   }
 
   private initChartOptions() {
@@ -90,13 +93,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     this.chartOptions = {
       time: {
         timezone: 'Europe/Brussels'
-      },
-      chart: {
-        zoomType: 'xy',
-        height: 400,
-      },
-      title: {
-        text: 'Last week'
       },
       exporting: {
         csv: {
@@ -126,7 +122,12 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         crosshairs: true,
         shared: true,
       },
-      yAxis: [],
+      yAxis: [{
+        title: {
+          text: ''
+        },
+        visible: true
+      }],
       xAxis: {
         type: 'datetime',
         dateTimeLabelFormats: {
@@ -169,7 +170,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
   }
 
   private updateChart() {
-    this.chartOptions.yAxis = [];
     this.chartOptions.series = [];
     this.chartOptions.legend = {};
 
@@ -177,21 +177,15 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
       return;
     }
 
-    let counter = 0;
+    console.log(this.leafs);
+
     for (const leaf of this.leafs) {
-      this.chartOptions.yAxis.push({
-        title: {
-          text: 'Trail'
-        },
-        visible: true
-      });
       const color = (this.leafColors.find(element => element.id === leaf.id) || {})['color'] || randomColor();
       this.chartOptions.series.push({
         name: leaf.name,
         id: !(leaf.children || []).length ? leaf.id : null,
         color,
         type: 'spline',
-        yAxis: counter++,
         data: leaf.series.map((serie) => {
           return [serie.timestamp, parseFloat(serie.valueIn.toFixed(2))];
         })
@@ -201,7 +195,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     try {
       this.chart = Highcharts.chart('count-past-week-chart-container', this.chartOptions);
     } catch (error) {
-      this.chartOptions.yAxis = [];
       this.chartOptions.series = [];
       this.chartOptions.legend = {};
       this.chart = Highcharts.chart('count-past-week-chart-container', this.chartOptions);

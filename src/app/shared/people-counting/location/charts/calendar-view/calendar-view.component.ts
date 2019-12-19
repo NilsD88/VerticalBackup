@@ -124,7 +124,6 @@ export class CalendarViewComponent implements OnInit {
       chart: {
         type: 'heatmap',
         plotBorderWidth: 0,
-        height: 250,
         marginTop: 50,
         marginBottom: 40,
         events: {
@@ -270,12 +269,6 @@ export class CalendarViewComponent implements OnInit {
   }
 
   private updateChart(series: IPeopleCountingLocationSerie[]) {
-
-    console.log('~~~~~~~~~~');
-    console.log(this.currentFilter.from, new Date(this.currentFilter.from));
-    console.log(this.currentFilter.to, new Date(this.currentFilter.to));
-    console.log('~~~~~~~~~~');
-
     this.chartOptions.series = [];
     this.startMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.endMonth = moment(this.currentFilter.to).subtract(1, 'day').format('MMMM YY');
