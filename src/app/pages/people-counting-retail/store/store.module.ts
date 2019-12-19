@@ -1,3 +1,4 @@
+import { StackedColumnModule } from './chart/stacked-column/stacked-column.module';
 import { LocationExplorerModule } from './../../../../../projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { AssetsCounterModule } from 'src/app/shared/people-counting/location/assets-counter/assets-counter.module';
 import { CountByAssetModule } from 'src/app/shared/people-counting/location/charts/count-by-asset/count-by-asset.module';
@@ -26,7 +27,8 @@ import { SummaryModule } from './chart/summary/summary.module';
     AssetsCounterModule,
     MapModule,
     SummaryModule,
-    LocationExplorerModule
+    LocationExplorerModule,
+    StackedColumnModule
   ],
   exports: [StoreComponent]
 })

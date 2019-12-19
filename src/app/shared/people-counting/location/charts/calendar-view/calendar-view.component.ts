@@ -25,6 +25,7 @@ import { MatDialog } from '@angular/material';
 import { debounceTime, switchMap, catchError, timestamp } from 'rxjs/operators';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import {uniqBy, orderBy} from 'lodash';
+import { allIntervalBetween } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -359,18 +360,4 @@ export class CalendarViewComponent implements OnInit {
     );
   }
 
-}
-
-function allIntervalBetween(from: number, to: number, interval: moment.unitOfTime.DurationConstructor): IPeopleCountingLocationSerie[] {
-  let currentTimestamp: number = from;
-  const emptySeries: IPeopleCountingLocationSerie[] = [];
-  do {
-    emptySeries.push({
-      timestamp: currentTimestamp,
-      valueIn: null,
-      valueOut: null
-    });
-    currentTimestamp = moment(currentTimestamp).add(1, interval).valueOf();
-  } while (currentTimestamp <= to);
-  return emptySeries;
 }

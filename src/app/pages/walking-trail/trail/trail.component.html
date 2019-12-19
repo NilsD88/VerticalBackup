@@ -9,12 +9,12 @@
     </div>
   </div>
 </div>
-<pvf-peoplecounting-month-view [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
+<pvf-peoplecounting-month-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
 <pvf-trails-benchmark [parentLocation]="parentLocation"></pvf-trails-benchmark>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-sm-12">
-      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
+      <pvf-peoplecounting-count-by-asset [assetColors]="assetColors" [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
     <div class="col-md-6 col-sm-12">
       <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-assets-counter>

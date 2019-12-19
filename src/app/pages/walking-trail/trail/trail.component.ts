@@ -6,8 +6,7 @@ import { WalkingTrailLocationService } from './../../../services/walkingtrail/lo
 import { Component, OnInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-
-
+import * as randomColor from 'randomcolor';
 
 
 @Component({
@@ -24,6 +23,7 @@ export class TrailComponent implements OnInit {
   public imageSources: string[] | IImage[];
   public locale: string;
   public assetUrl = '/private/walkingtrail/detail/';
+  public assetColors: string[];
 
   constructor(
     private locationService: WalkingTrailLocationService,
@@ -34,6 +34,9 @@ export class TrailComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
       this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      this.assetColors = randomColor({
+        count: 100 // TODO: should be number of assets, but we don't know at this level
+      });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
       const rootLocation = {
         id: null,

@@ -2,12 +2,10 @@ import { PeopleCountingRetailAssetService } from './../../../services/peoplecoun
 import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import { findLocationById } from 'src/app/shared/utils';
 import { ActivatedRoute } from '@angular/router';
-import { PeopleCountingLocationService } from './../../../services/peoplecounting/location.service';
 import { Component, OnInit } from '@angular/core';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-
-import * as moment from 'moment';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
+import * as randomColor from 'randomcolor';
 
 @Component({
   selector: 'pvf-store',
@@ -21,10 +19,10 @@ export class StoreComponent implements OnInit {
   public parentLocation: IPeopleCountingLocation;
   public assets: IPeopleCountingAsset[];
   public assetUrl = '/private/peoplecounting/detail/';
+  public assetColors: string[];
   public locale: string;
 
   constructor(
-   
     public locationService: PeopleCountingRetailLocationService,
     public assetService: PeopleCountingRetailAssetService,
     private activatedRoute: ActivatedRoute,
@@ -34,6 +32,9 @@ export class StoreComponent implements OnInit {
 
     this.activatedRoute.params.subscribe(async (params) => {
       this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      this.assetColors = randomColor({
+        count: 100 // TODO: should be number of assets, but we don't know at this level
+      });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
       const rootLocation = {
         id: null,
