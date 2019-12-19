@@ -48,7 +48,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
         height: 400,
       },
       title: {
-        text: 'Last week'
+        text: ''
       },
       exporting: {
         csv: {

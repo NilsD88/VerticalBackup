@@ -72,7 +72,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
         marginBottom: 30,
         zoomType: 'x'
       },
-      title: '',
+      title: 'Last year',
       exporting: {
         csv: {
           dateFormat: '%d-%m-%Y %H:%M:%S',
