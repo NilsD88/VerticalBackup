@@ -1,6 +1,6 @@
 import { findLocationById } from 'src/app/shared/utils';
 import { ActivatedRoute } from '@angular/router';
-import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
+import { PeopleCountingLocationService } from './../../../services/peoplecounting/location.service';
 import { Component, OnInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
@@ -21,7 +21,7 @@ export class StoreComponent implements OnInit {
   public locale: string;
 
   constructor(
-    private locationService: WalkingTrailLocationService,
+    private locationService: PeopleCountingLocationService,
     private activatedRoute: ActivatedRoute,
   ) { }
 

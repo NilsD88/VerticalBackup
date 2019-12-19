@@ -1,9 +1,4 @@
-import {
-  element
-} from 'protractor';
-import {
-  MonthViewComponent
-} from './../../../../../shared/people-counting/detail/charts/month-view/month-view.component';
+
 import {
   Component,
   OnInit,
@@ -55,17 +50,6 @@ exportData(Highcharts);
 export class StackedChartComponent implements OnChanges, OnInit {
 
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    //console.log("changes")
-
-    /* this.chart = Highcharts.chart('stacked-chart', this.chartOptions, function(chart){
-       console.log(this.series[0].points[3].shapeArgs.height);
-       chart.renderer.image('https://www.highcharts.com/samples/graphics/sun.png',((chart.series[0].data[3].plotX)+(chart.plotLeft)), 370 , 30, 30)
-   .add();
-       
-   });*/
-  }
 
 
 
@@ -239,6 +223,9 @@ export class StackedChartComponent implements OnChanges, OnInit {
           }
         }
       },
+      credits: {
+        enabled: false
+    },
       legend: {
         align: 'right',
         x: -30,

@@ -90,7 +90,6 @@ export class SummaryComponent implements OnInit, OnChanges {
 
   public getTotalSameDayLastWeek() {
     let totalCountSameDayLastWeek = 0;
-    let currentDate = moment().startOf('day');
     let sameDayLastWeek = moment().subtract(1, 'weeks').startOf('day');
 
 
