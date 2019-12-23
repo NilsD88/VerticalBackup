@@ -3,7 +3,8 @@ import { ILocation } from 'src/app/models/g-location.model';
 import { ILeafColors } from './people-counting/dashboard/leaf.model';
 
 import * as randomColor from 'randomcolor';
-import { IPeopleCountingLocation } from '../models/peoplecounting/location.model';
+import { IPeopleCountingLocation, IPeopleCountingLocationSerie } from '../models/peoplecounting/location.model';
+import * as moment from 'moment';
 
 function findLocationById(location: ILocation, id: string, path: ILocation[] = []): {location: ILocation, path: ILocation []} {
     if (location && location.id === id) {
@@ -110,6 +111,20 @@ function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
 
 
 
+function allIntervalBetween(from: number, to: number, interval: moment.unitOfTime.DurationConstructor): IPeopleCountingLocationSerie[] {
+  let currentTimestamp: number = from;
+  const emptySeries: IPeopleCountingLocationSerie[] = [];
+  do {
+    emptySeries.push({
+      timestamp: currentTimestamp,
+      valueIn: null,
+      valueOut: null
+    });
+    currentTimestamp = moment(currentTimestamp).add(1, interval).valueOf();
+  } while (currentTimestamp <= to);
+  return emptySeries;
+}
+
 export {
     findLocationById,
     compareTwoObjectOnSpecificProperties,
@@ -117,5 +132,8 @@ export {
     decreaseLeafs,
     increaseLeafs,
     generateLeafColors,
+    allIntervalBetween
 };
+
+
 

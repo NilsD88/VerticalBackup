@@ -1,19 +1,19 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-7">
-      <pvf-peoplecountingretail-stacked-chart [leaf]="leaf"></pvf-peoplecountingretail-stacked-chart>
+      <pvf-peoplecounting-stacked-column [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-stacked-column>
     </div>
     <div class="col-md-5">
      <pvf-summary [leaf]="leaf" ></pvf-summary>
     </div>
   </div>
 </div>
-<pvf-peoplecounting-month-view [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
+<pvf-peoplecounting-month-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
 <pvf-peoplecounting-calendar-view [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-calendar-view>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-sm-12">
-      <pvf-peoplecounting-count-by-asset [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
+      <pvf-peoplecounting-count-by-asset [assetColors]="assetColors" [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
     <div class="col-md-6 col-sm-12">
       <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-assets-counter>

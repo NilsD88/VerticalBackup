@@ -37,8 +37,6 @@ export class SummaryStatisticsComponent implements OnInit {
   async ngOnInit() {
     this.displayedColumns = ['totalWeek', 'totalDay', 'avgWeek', 'avgDay'];
 
-    // TODO: uncomment those lines when the backend is ready
-    console.log(this.leaf);
     const leafs = await this.locationService.getLocationsDataByIds(
       this.leaf.parent.children.map(location => location.id),
       'DAILY',
@@ -47,7 +45,6 @@ export class SummaryStatisticsComponent implements OnInit {
     ).toPromise();
 
     if ((leafs || []).length) {
-      console.log(leafs);
       const leaf = leafs.find(x => x.id === this.leaf.id) || {series: []};
       const series = leaf.series;
       this.data = {
@@ -66,20 +63,6 @@ export class SummaryStatisticsComponent implements OnInit {
         ) / leafs.length,
       };
     }
-
-
-    // TODO: remove those lines when the backend is ready
-    /*
-    // MOCK DATA
-    this.data = {
-      totalWeek: Math.floor(Math.random() * 101 * 7),
-      totalDay: Math.floor(Math.random() * 101),
-      avgWeek: Math.floor(Math.random() * 101 * 7),
-      avgDay: Math.floor(Math.random() * 101)
-    };
-    */
-
-
 
     this.updateDataSource(this.data);
     this.isLoading = false;

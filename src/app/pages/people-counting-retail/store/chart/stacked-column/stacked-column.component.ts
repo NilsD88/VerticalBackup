@@ -1,3 +1,4 @@
+import { IPeopleCountingLocationSerie } from './../../../../../models/peoplecounting/location.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
   cloneDeep
@@ -25,6 +26,8 @@ import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { allIntervalBetween } from 'src/app/shared/utils';
+import {uniqBy, orderBy} from 'lodash';
 
 declare global {
   interface Window {
@@ -41,11 +44,11 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 
 @Component({
-  selector: 'pvf-peoplecounting-month-view',
-  templateUrl: './month-view.component.html',
-  styleUrls: ['./month-view.component.scss']
+  selector: 'pvf-peoplecounting-stacked-column',
+  templateUrl: './stacked-column.component.html',
+  styleUrls: ['./stacked-column.component.scss']
 })
-export class MonthViewComponent implements OnInit, OnChanges {
+export class StackedColumnComponent implements OnInit, OnChanges {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
@@ -59,12 +62,13 @@ export class MonthViewComponent implements OnInit, OnChanges {
   public chartOptions: any;
   public locale: string;
 
-  public currentMonth;
+  public periodValue = 'day';
   public currentFilter: IFilterChartData = {
-    interval: 'DAILY',
-    from: moment().subtract(1, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    to: moment().date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    interval: 'HOURLY',
+    from: moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
   };
+
 
   constructor(
     private translateService: TranslateService,
@@ -89,13 +93,74 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   }
 
+  public periodOnChange(event = null) {
+    const value = (event || {}).value || null;
+    this.periodValue = value || 'day';
+    switch (value) {
+      case 'day':
+        this.getDayValue();
+        break;
+      case 'week':
+        this.getWeekValue();
+        break;
+      case 'month':
+        this.getMonthValues();
+        break;
+      case 'year':
+        this.getYearValues();
+        break;
+      default:
+        this.getDayValue();
+        break;
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes.assets) {
       if (changes.assets.currentValue && changes.assets.currentValue !== changes.assets.previousValue) {
-        this.chartData$.next(this.currentFilter);
+        this.periodOnChange();
       }
     }
   }
+
+
+  getYearValues() {
+    this.currentFilter = {
+      interval: 'MONTHLY',
+      from: moment().subtract(1, 'years').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      to: moment().add(1, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    };
+    this.chartData$.next(this.currentFilter);
+  }
+
+  getMonthValues() {
+    this.currentFilter = {
+      interval: 'DAILY',
+      from: moment().subtract(1, 'months').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    };
+    this.chartData$.next(this.currentFilter);
+  }
+
+  getWeekValue() {
+    this.currentFilter = {
+      interval: 'DAILY',
+      from: moment().subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    };
+    this.chartData$.next(this.currentFilter);
+  }
+
+  getDayValue() {
+    this.currentFilter = {
+      interval: 'HOURLY',
+      from: moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    };
+    this.chartData$.next(this.currentFilter);
+  }
+
+
 
   private initChartOptions() {
     Highcharts.setOptions({
@@ -108,7 +173,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     this.chartOptions = {
       chart: {
         type: 'column',
-        marginBottom: 30,
+        marginBottom: 100,
         zoomType: 'x'
       },
       title: '',
@@ -142,93 +207,68 @@ export class MonthViewComponent implements OnInit, OnChanges {
         }
       },
       series: [],
-      legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'top',
-        y: 50,
-        padding: 3,
-        itemMarginTop: 5,
-        itemMarginBottom: 5,
-        itemStyle: {
-          lineHeight: '14px'
-        }
-      },
     };
   }
 
   private initChart() {
     try {
-      this.chart = Highcharts.chart('month-view-chart-container', this.chartOptions);
+      this.chart = Highcharts.chart('store-stacked-column-counter', this.chartOptions);
     } catch (error) {
       console.log(error);
     }
   }
 
   private updateChart(assets: IPeopleCountingAsset[]) {
-
-    this.currentMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
-
     const categories = [];
     const series = [];
 
-    // Setting the categories
-    for (let index = 0; index < 7; index++) {
-      categories.push(moment().startOf('isoWeek').add(index, 'days').format('dddd'));
+    let allIntervals: IPeopleCountingLocationSerie[];
+    switch (this.currentFilter.interval) {
+      case 'DAILY':
+        allIntervals = allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'days');
+        allIntervals.forEach(serie => {
+          categories.push(moment(serie.timestamp).format('DD/MM/YY'));
+        });
+        break;
+      case 'HOURLY':
+        allIntervals = allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'hours');
+        allIntervals.forEach(serie => {
+          categories.push(moment(serie.timestamp).format('HH:MM'));
+        });
+        break;
+      case 'MONTHLY':
+        allIntervals = allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'months');
+        allIntervals.forEach(serie => {
+          categories.push(moment(serie.timestamp).format('MMM YY'));
+        });
+        break;
+      default:
+        allIntervals = allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'days');
+        allIntervals.forEach(serie => {
+          categories.push(moment(serie.timestamp).format('DD/MM/YY'));
+        });
+        break;
     }
 
-    // Creating a dictionary between date and weekday/weeknumber
-    const dateToWeek = [];
-    const initialValue = [];
-    let weekNumber = 1;
-    let oldWeekday = 1;
-    const daysInMonth = moment().subtract(1, 'months').date(1).daysInMonth();
-    for (let index = 0; index < daysInMonth; index++) {
-      initialValue.push(null);
-      const weekDay = moment().subtract(1, 'months').date(index + 1).isoWeekday();
-      if (weekDay < oldWeekday) {
-        weekNumber++;
-      }
-      dateToWeek.push({
-        weekNumber,
-        weekDay,
-        date: index + 1
-      });
-      oldWeekday = weekDay;
-    }
+    const assetColors = this.assetColors || randomColor({
+      count: assets.length
+    });
 
     if ((assets || []).length) {
-      // Generating asset colors
-      const assetColors = this.assetColors || randomColor({
-        count: assets.length
-      });
-
-      // Creating the data series by asset
       assets.forEach((asset, assetIndex) => {
-        const assetName = asset.name;
-        const assetValues = cloneDeep(initialValue);
+        // TODO: remove these lines when the backend will send all the timestamp between the period
+        const rawSeries = asset.series;
+        const concat = rawSeries.concat(allIntervals);
+        const uniq = uniqBy(concat, (serie) => serie.timestamp);
+        const allSeries = orderBy(uniq, ['timestamp'], ['asc']);
 
-        for (const serie of asset.series) {
-          const date = moment(serie.timestamp).date();
-          assetValues[date + 1] = serie.valueIn;
-        }
-
-        for (let index = 1; index <= weekNumber; index++) {
-          const weekValues = [null, null, null, null, null, null, null];
-          const dateToAdd = dateToWeek.filter(date => date.weekNumber === index);
-          for (const date of dateToAdd) {
-            weekValues[date.weekDay - 1] = assetValues[date.date];
-          }
-          series.push({
-            name: `Week ${index} - ${assetName}`,
-            color: assetColors[assetIndex],
-            id: asset.id,
-            data: weekValues,
-            stack: 'W' + index,
-          });
-        }
+        series.push({
+          name: asset.name,
+          data: allSeries.map(x => x.valueIn),
+          color: assetColors[assetIndex],
+        });
       });
     }
 
@@ -237,21 +277,15 @@ export class MonthViewComponent implements OnInit, OnChanges {
     this.chartLoading = false;
 
     try {
-      this.chart = Highcharts.chart('month-view-chart-container', this.chartOptions);
+      this.chart = Highcharts.chart('store-stacked-column-counter', this.chartOptions);
     } catch (error) {
       this.chartOptions.series = [];
       this.chartOptions.xAxis.categories = [];
-      this.chart = Highcharts.chart('month-view-chart-container', this.chartOptions);
+      this.chart = Highcharts.chart('store-stacked-column-counter', this.chartOptions);
       console.log(error);
     }
   }
 
-
-  public swapPeriod(direction: boolean) {
-    this.currentFilter.from = moment(this.currentFilter.from).subtract((direction) ? -1 : 1, 'months').valueOf();
-    this.currentFilter.to = moment(this.currentFilter.to).subtract((direction) ? -1 : 1, 'months').valueOf();
-    this.chartData$.next(this.currentFilter);
-  }
 
   private getChartData(request: Observable<IFilterChartData>): Observable<IPeopleCountingAsset[]> {
     return request.pipe(
@@ -259,24 +293,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
-
-        // MOCK DATA
-        /*
-        return new Observable <IPeopleCountingAsset[]> ((observer) => {
-          const assets: IPeopleCountingAsset[] = [];
-          this.leaf.assets.forEach(asset => {
-              const durationInMonths = moment.duration(moment().diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
-              assets.push({
-                id: asset.id,
-                name: asset.name,
-                series: generateMonthOfDataSeries(
-                  +durationInMonths
-                )
-              });
-          });
-          observer.next(assets);
-        });
-        */
 
         // REAL DATA
         return this.assetService.getAssetsDataByIds(
@@ -298,23 +314,5 @@ export class MonthViewComponent implements OnInit, OnChanges {
       })
     );
   }
-
-
 }
 
-
-
-
-function generateMonthOfDataSeries(monthIndex: number): IPeopleCountingAssetSerie[] {
-  const dataSeries: IPeopleCountingAssetSerie[] = [];
-  const daysInMonth = moment().subtract(monthIndex, 'months').date(1).daysInMonth();
-  for (let index = 0; index < daysInMonth; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().subtract(monthIndex, 'months').date(1).add(index, 'days').valueOf(),
-        valueIn: Math.floor(Math.random() * 101)
-      }
-    );
-  }
-  return dataSeries;
-}
