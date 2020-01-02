@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { IPeopleCountingLocationSerie } from './../../../../../models/peoplecounting/location.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
@@ -9,7 +10,8 @@ import {
   Input,
   OnChanges,
   ChangeDetectorRef,
-  SimpleChanges
+  SimpleChanges,
+  OnDestroy
 } from '@angular/core';
 import {
   TranslateService
@@ -48,7 +50,7 @@ require('highcharts/modules/export-data')(Highcharts);
   templateUrl: './stacked-column.component.html',
   styleUrls: ['./stacked-column.component.scss']
 })
-export class StackedColumnComponent implements OnInit, OnChanges {
+export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
@@ -69,6 +71,7 @@ export class StackedColumnComponent implements OnInit, OnChanges {
     to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
   };
 
+  private subs = new SubSink();
 
   constructor(
     private translateService: TranslateService,
@@ -85,7 +88,7 @@ export class StackedColumnComponent implements OnInit, OnChanges {
 
     this.initChartOptions();
     this.initChart();
-    this.getChartData(this.chartData$).subscribe(
+    this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (assets: IPeopleCountingAsset[]) => {
         this.updateChart(assets);
       }
@@ -313,6 +316,10 @@ export class StackedColumnComponent implements OnInit, OnChanges {
         }));
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
 

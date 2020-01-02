@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { WalkingTrailLocationService } from './../../../../../services/walkingtrail/location.service';
 import {
   isNullOrUndefined
@@ -10,7 +11,8 @@ import {
   Component,
   OnInit,
   Input,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 
 import * as moment from 'moment';
@@ -58,7 +60,7 @@ require('highcharts/modules/series-label')(Highcharts);
   templateUrl: './calendar-view.component.html',
   styleUrls: ['./calendar-view.component.scss']
 })
-export class CalendarViewComponent implements OnInit {
+export class CalendarViewComponent implements OnInit, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() locationService: WalkingTrailLocationService;
@@ -68,12 +70,12 @@ export class CalendarViewComponent implements OnInit {
   public chart: any;
   public chartOptions: any;
   public locale: string;
-
   public startMonth: string;
   public endMonth: string;
 
   private svgElements: Highcharts.SVGElement [] = [];
   private numberOfMonths = 4;
+  private subs = new SubSink();
 
   public currentFilter: IFilterChartData = {
     interval: 'DAILY',
@@ -96,7 +98,7 @@ export class CalendarViewComponent implements OnInit {
 
     this.initChartOptions();
     this.initChart();
-    this.getChartData(this.chartData$).subscribe(
+    this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (locations: IPeopleCountingLocation[]) => {
         this.updateChart((locations[0] || {}).series);
       }
@@ -360,4 +362,7 @@ export class CalendarViewComponent implements OnInit {
     );
   }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

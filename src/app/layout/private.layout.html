@@ -71,7 +71,7 @@
   <pxs-menu-item [label]="'Asset tracking'" *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
   <pxs-menu-item [label]="'People counting'" [mat-menu-trigger-for]="peopleCounting" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"></pxs-menu-item>
-  <pxs-menu-item [label]="'Stairway to health'" [mat-menu-trigger-for]="stairwayToHealth" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
+  <pxs-menu-item [label]="'Stairway to health'" [mat-menu-trigger-for]="stairwayToHealth" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN')"></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
     label: numberOfUnreadAlerts,
     class: 'red-badge'

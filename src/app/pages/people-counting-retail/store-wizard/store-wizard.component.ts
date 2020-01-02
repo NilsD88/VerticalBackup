@@ -1,9 +1,10 @@
+import { SubSink } from 'subsink';
 import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { ILocation } from 'src/app/models/g-location.model';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,15 +27,11 @@ import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.com
   templateUrl: './store-wizard.component.html',
   styleUrls: ['./store-wizard.component.scss']
 })
-export class StoreWizardComponent implements OnInit {
+export class StoreWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  private originalLocation: IPeopleCountingLocation;
-  private assetsRequest$ = new Subject();
-
   public isNullOrUndefined = isNullOrUndefined;
-
   public descriptionFormGroup: FormGroup;
   public location: IPeopleCountingLocation;
   public editMode = false;
@@ -42,6 +39,10 @@ export class StoreWizardComponent implements OnInit {
   public fields: IField[];
   public assets = [];
   public isSavingOrUpdating: boolean;
+
+  private originalLocation: IPeopleCountingLocation;
+  private assetsRequest$ = new Subject();
+  private subs = new SubSink();
 
 
   constructor(
@@ -66,14 +67,16 @@ export class StoreWizardComponent implements OnInit {
 
     this.fields = await this.newLocationService.getCustomFields().toPromise();
 
-    this.assetsRequest$.pipe(
-      switchMap(() => {
-        return this.assetService.getAssetsByLocationId(this.location.id);
+    this.subs.add(
+      this.assetsRequest$.pipe(
+        switchMap(() => {
+          return this.assetService.getAssetsByLocationId(this.location.id);
+        })
+      ).subscribe((assets: IAsset[]) => {
+        this.location.assets = assets;
+        this.changeDetectorRef.detectChanges();
       })
-    ).subscribe((assets: IAsset[]) => {
-      this.location.assets = assets;
-      this.changeDetectorRef.detectChanges();
-    });
+    );
 
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
@@ -146,35 +149,39 @@ export class StoreWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
-        (updatedLocation: ILocation | null) => {
-          if (updatedLocation) {
-            this.originalLocation = cloneDeep(location);
-            this.stepper.next();
+      this.subs.add(
+        this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
+          (updatedLocation: ILocation | null) => {
+            if (updatedLocation) {
+              this.originalLocation = cloneDeep(location);
+              this.stepper.next();
+            }
+            this.isSavingOrUpdating = false;
+          },
+          (error) => {
+            console.error(error);
+            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+            this.isSavingOrUpdating = false;
           }
-          this.isSavingOrUpdating = false;
-        },
-        (error) => {
-          console.error(error);
-          this.checkIfNameAlreadyExistAndDisplayDialog(error);
-          this.isSavingOrUpdating = false;
-        }
+        )
       );
     } else {
-      this.peopleCountingRetailLocationService.createLocation(this.location).subscribe(
-        (location: IPeopleCountingLocation | null) => {
-          this.location.id = location.id;
-          this.originalLocation = cloneDeep(location);
-          this.changeDetectorRef.detectChanges();
-          this.stepper.next();
-          console.log(this.location);
-          this.isSavingOrUpdating = false;
-        },
-        (error) => {
-          console.error(error);
-          this.checkIfNameAlreadyExistAndDisplayDialog(error);
-          this.isSavingOrUpdating = false;
-        }
+      this.subs.add(
+        this.peopleCountingRetailLocationService.createLocation(this.location).subscribe(
+          (location: IPeopleCountingLocation | null) => {
+            this.location.id = location.id;
+            this.originalLocation = cloneDeep(location);
+            this.changeDetectorRef.detectChanges();
+            this.stepper.next();
+            console.log(this.location);
+            this.isSavingOrUpdating = false;
+          },
+          (error) => {
+            console.error(error);
+            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+            this.isSavingOrUpdating = false;
+          }
+        )
       );
     }
   }
@@ -193,18 +200,20 @@ export class StoreWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
-        (updatedLocation: ILocation | null) => {
-          if (updatedLocation) {
-            this.goToStorePage(this.location.id);
+      this.subs.add(
+        this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
+          (updatedLocation: ILocation | null) => {
+            if (updatedLocation) {
+              this.goToStorePage(this.location.id);
+            }
+            this.isSavingOrUpdating = false;
+          },
+          (error) => {
+            console.error(error);
+            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+            this.isSavingOrUpdating = false;
           }
-          this.isSavingOrUpdating = false;
-        },
-        (error) => {
-          console.error(error);
-          this.checkIfNameAlreadyExistAndDisplayDialog(error);
-          this.isSavingOrUpdating = false;
-        }
+        )
       );
     } else {
       this.goToStorePage(this.location.id);
@@ -291,5 +300,7 @@ export class StoreWizardComponent implements OnInit {
     this.router.navigateByUrl('/private/peoplecounting/dashboard');
   }
 
-
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

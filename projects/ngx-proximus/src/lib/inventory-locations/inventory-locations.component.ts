@@ -1,4 +1,5 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { SubSink } from 'subsink';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
@@ -15,7 +16,9 @@ export interface IInventoryFilterBE {
   styleUrls: ['./inventory-locations.component.scss']
 })
 
-export class InventoryLocationsComponent implements OnInit {
+export class InventoryLocationsComponent implements OnInit, OnDestroy {
+
+  private subs = new SubSink();
 
   public filterBE$ = new Subject<IInventoryFilterBE>();
   public filterBE: IInventoryFilterBE = {
@@ -49,33 +52,40 @@ export class InventoryLocationsComponent implements OnInit {
 
   async ngOnInit() {
     this.getPagedLocations();
-    this.locationService.getLocationsTree().subscribe((locations: IPeopleCountingLocation[]) => {
-      this.rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children: locations,
-      };
-      if (locations.length === 1) {
-        this.selectedLocation = this.rootLocation.children[0];
-      }
-    });
 
-    this.searchLocationsByFilter(this.filterBE$).subscribe((pagedLocations: IPagedPeopleCountingLocations) => {
-      this.locations = pagedLocations.locations;
-      this.totalItems = pagedLocations.totalElements;
-      this.locationsLoading = false;
-    });
+    this.subs.add(
+      this.locationService.getLocationsTree().subscribe((locations: IPeopleCountingLocation[]) => {
+        this.rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children: locations,
+        };
+        if (locations.length === 1) {
+          this.selectedLocation = this.rootLocation.children[0];
+        }
+      })
+    );
 
-    this.activatedRoute.params.subscribe(async (params) => {
-      if (params.id) {
-        this.listStyleValue = 'map';
-        this.selectedLocation = {id: params.id};
-      }
-    });
+    this.subs.add(
+      this.searchLocationsByFilter(this.filterBE$).subscribe((pagedLocations: IPagedPeopleCountingLocations) => {
+        this.locations = pagedLocations.locations;
+        this.totalItems = pagedLocations.totalElements;
+        this.locationsLoading = false;
+      })
+    );
+
+    this.subs.add(
+      this.activatedRoute.params.subscribe(async (params) => {
+        if (params.id) {
+          this.listStyleValue = 'map';
+          this.selectedLocation = {id: params.id};
+        }
+      })
+    );
   }
 
   public changeFilterBE() {
@@ -119,5 +129,9 @@ export class InventoryLocationsComponent implements OnInit {
         return this.locationService.getPagedLeafLocations(this.pageNumber, this.pageSize, this.filterBE);
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

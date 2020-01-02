@@ -1,5 +1,6 @@
+import { SubSink } from 'subsink';
 import { NewSensorService } from 'src/app/services/new-sensor.service';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { IThing } from 'src/app/models/g-thing.model';
 import { MatStepper } from '@angular/material/stepper';
@@ -19,7 +20,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })
-export class PeopleCountingAssetWizardComponent implements OnInit {
+export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -27,15 +28,13 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
   public originalAsset: IAsset;
   public editMode = false;
   public compatibleSensorTypes: ISensorType[];
-
   public displayLocationExplorer = true;
   public displayThresholdTemplateList = true;
-
   public descriptionFormGroup: FormGroup;
-
   public fields: IField[];
   public isSavingOrUpdating: boolean;
   public showCancel = true;
+  public subs = new SubSink();
 
   constructor(
     public formBuilder: FormBuilder,
@@ -211,8 +210,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
         }
       }
 
-      this.assetService.updateAsset(asset).subscribe(
-        (result) => {
+      this.subs.sink = this.assetService.updateAsset(asset).subscribe(
+        () => {
           this.isSavingOrUpdating = false;
           this.router.navigateByUrl('/private/admin/manage-assets');
         },
@@ -226,6 +225,10 @@ export class PeopleCountingAssetWizardComponent implements OnInit {
 
   public cancelWizard() {
     this.router.navigateByUrl('private/admin/manage-assets');
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

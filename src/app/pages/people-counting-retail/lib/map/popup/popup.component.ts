@@ -24,7 +24,7 @@ export class PeopleCountingRetailMapPopupComponent extends MapPopupComponent imp
   }
 
   getAssetPopupDetail() {
-    this.subscriptions.push(this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
+    this.subs.add(this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
       this.asset = {
         ...this.asset,
         ...asset
@@ -38,6 +38,10 @@ export class PeopleCountingRetailMapPopupComponent extends MapPopupComponent imp
     } else {
       this.router.navigateByUrl(`/private/peoplecounting/store/${this.location.id}`);
     }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
   }
 }
 

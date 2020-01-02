@@ -1,5 +1,6 @@
+import { SubSink } from 'subsink';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
 import { Subject, Observable } from 'rxjs';
@@ -20,7 +21,7 @@ export interface IInventoryFilterBE {
   styleUrls: ['./inventory.component.scss']
 })
 
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
 
   public filterBE$ = new Subject<IInventoryFilterBE>();
   public filterBE: IInventoryFilterBE = {
@@ -48,6 +49,8 @@ export class InventoryComponent implements OnInit {
   public rootLocation: ILocation;
   public selectedLocation: ILocation;
 
+  private subs = new SubSink();
+
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     public assetService: NewAssetService,
@@ -59,33 +62,39 @@ export class InventoryComponent implements OnInit {
   async ngOnInit() {
     this.getPagedAssets();
     this.filterOptions.thresholdTemplateOptions = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
-    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-      this.rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children: locations,
-      };
-      if (locations.length === 1) {
-        this.selectedLocation = this.rootLocation.children[0];
-      }
-    });
+    this.subs.add(
+      this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+        this.rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children: locations,
+        };
+        if (locations.length === 1) {
+          this.selectedLocation = this.rootLocation.children[0];
+        }
+      })
+    );
 
-    this.searchAssetsByFilter(this.filterBE$).subscribe((pagedAssets: IPagedAssets) => {
-      this.assets = pagedAssets.assets;
-      this.totalItems = pagedAssets.totalElements;
-      this.assetsLoading = false;
-    });
+    this.subs.add(
+      this.searchAssetsByFilter(this.filterBE$).subscribe((pagedAssets: IPagedAssets) => {
+        this.assets = pagedAssets.assets;
+        this.totalItems = pagedAssets.totalElements;
+        this.assetsLoading = false;
+      })
+    );
 
-    this.activatedRoute.params.subscribe(async (params) => {
-      if (params.id) {
-        this.listStyleValue = 'map';
-        this.selectedLocation = {id: params.id};
-      }
-    });
+    this.subs.add(
+      this.activatedRoute.params.subscribe(async (params) => {
+        if (params.id) {
+          this.listStyleValue = 'map';
+          this.selectedLocation = {id: params.id};
+        }
+      })
+    );
   }
 
   public changeFilterBE() {
@@ -130,5 +139,9 @@ export class InventoryComponent implements OnInit {
         return this.assetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE);
       })
     );
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

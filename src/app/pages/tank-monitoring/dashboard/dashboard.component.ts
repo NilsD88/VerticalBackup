@@ -1,7 +1,8 @@
+import { SubSink } from 'subsink';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { cloneDeep } from 'lodash';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { MatPaginator } from '@angular/material';
@@ -27,7 +28,7 @@ interface IFilterFE {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -73,8 +74,10 @@ export class DashboardComponent implements OnInit {
     'rgba(100, 100, 100, 0.7)',
   ];
 
-  displayedColumns: string[] = ['name', 'thing', 'location.name', 'fuel', 'battery', 'actions'];
+  public displayedColumns: string[] = ['name', 'thing', 'location.name', 'fuel', 'battery', 'actions'];
   public filterFE$ = new Subject<IFilterFE>();
+
+  private subs = new SubSink();
 
   constructor(
     private assetService: TankMonitoringAssetService,
@@ -113,7 +116,7 @@ export class DashboardComponent implements OnInit {
     });
     this.updateDataSourceWithFilteredAssets(this.assets);
     this.isLoading = false;
-    filteredAssetsObs(this.filterFE$).subscribe(() => { this.updateFilterdAssets(); });
+    this.subs.sink = filteredAssetsObs(this.filterFE$).subscribe(() => { this.updateFilterdAssets(); });
     this.changeFilterFE();
   }
 
@@ -243,6 +246,10 @@ export class DashboardComponent implements OnInit {
       max: event[1]
     };
     this.changeFilterFE();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }
