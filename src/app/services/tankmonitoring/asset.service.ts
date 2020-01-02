@@ -91,7 +91,43 @@ export class TankMonitoringAssetService extends NewAssetService {
   }
 
   public getAssetPopupDetail(id: string): Observable < ITankMonitoringAsset > {
-    return super.getAssetPopupDetail(id);
+    const GET_ASSET_POPUP_DETAIL_BY_ID = gql `
+            query findAssetById($id: Long!) {
+                asset: findAssetById(id: $id) {
+                    id,
+                    name,
+                    description,
+                    image,
+                    lastRefill {
+                      timestamp
+                    },
+                    location {
+                      name,
+                    },
+                    things {
+                     devEui,
+                     batteryPercentage,
+                     sensors {
+                       value
+                     }
+                    }
+                }
+            }
+        `;
+
+    interface GetAssetDetailByIdResponse {
+      asset: ITankMonitoringAsset;
+    }
+
+    return this.apollo.query < GetAssetDetailByIdResponse > ({
+      query: GET_ASSET_POPUP_DETAIL_BY_ID,
+      fetchPolicy: 'network-only',
+      variables: {
+        id,
+      }
+    }).pipe(map(({
+      data
+    }) => data.asset));
   }
 
   public getAssetDetailById(id: string): Observable < ITankMonitoringAsset > {
