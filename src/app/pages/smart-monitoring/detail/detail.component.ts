@@ -1,9 +1,10 @@
+import { SubSink } from 'subsink';
 import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { LogsService } from './../../../services/logs.service';
 import {cloneDeep} from 'lodash';
 import {NewAssetService} from 'src/app/services/new-asset.service';
 import {SharedService} from 'src/app/services/shared.service';
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
@@ -27,7 +28,7 @@ const canvg = require('canvg');
   styleUrls: ['./detail.component.scss']
 })
 
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('myChart', {static: false}) myChart;
   @ViewChild('myAggregatedValues', {static: false}) myAggregatedValues;
@@ -50,6 +51,8 @@ export class DetailComponent implements OnInit {
     value: number;
   }[] = [];
 
+  private subs = new SubSink();
+
   constructor(
     public activeRoute: ActivatedRoute,
     private translateService: TranslateService,
@@ -66,16 +69,18 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
-        this.newAssetService.getAssetDetailById(params.id).subscribe(
-          (asset) => {
-            this.asset = asset;
-            this.changeDetectorRef.detectChanges();
-            this.init();
-          },
-          (error) => {
-            console.log(error);
-            this.router.navigate(['/error/404']);
-          }
+        this.subs.add(
+          this.newAssetService.getAssetDetailById(params.id).subscribe(
+            (asset) => {
+              this.asset = asset;
+              this.changeDetectorRef.detectChanges();
+              this.init();
+            },
+            (error) => {
+              console.log(error);
+              this.router.navigate(['/error/404']);
+            }
+          )
         );
       }
     });
@@ -83,75 +88,79 @@ export class DetailComponent implements OnInit {
 
   private init() {
     this.getLastAlerts();
-    this.getChartData(this.chartData$).subscribe(
-      async things => {
-        const chartData = [];
-        const aggregatedValues = [];
-
-        // Get the translation of each label
-        for (const thing of things) {
-          for (const sensor of thing.sensors) {
-
-            let labelTranslation;
-            if ((sensor.sensorDefinition || {}).name) {
-              labelTranslation = sensor.sensorDefinition.name;
-            } else {
-              labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
-              if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-                labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
-              }
-            }
-
-            // START STANDARD DEVIATION
-            if (this.currentFilter.interval !== 'ALL') {
-              const filter = {
-                deveui: thing.devEui,
-                sensortypeid: sensor.sensorType.id,
-                from: this.currentFilter.from,
-                to: this.currentFilter.to,
-                interval: this.currentFilter.interval,
-              };
-              try {
-                const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
-                aggregatedValues.push({
-                    label: labelTranslation,
-                    series: sensor.series,
-                    standardDeviation: (standardDeviation) ? standardDeviation.value : null,
-                    postfix: sensor.sensorType.postfix
-                });
-              } catch (error) {
-                console.log(error);
-              }
-            }
-            // END STANDARD DEVIATION
-
-            if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
-              continue;
-            }
-
-            chartData.push({
-              label: labelTranslation,
-              sensorId: sensor.id,
-              sensorTypeId: sensor.sensorType.id,
-              sensorDefinition: sensor.sensorDefinition,
-              series: sensor.series,
-            });
-          }
+    this.subs.add(
+      this.getChartData(this.chartData$).subscribe(
+        this.afterGetChartData,
+        error => {
+          this.chartData = [];
+          this.myAggregatedValues = [];
+          this.chartLoading = false;
+          this.changeDetectorRef.detectChanges();
         }
-        this.chartData = chartData;
-        this.chartLoading = false;
-        this.changeDetectorRef.detectChanges();
-        // STANDARD DEVIATIONS
-        this.aggregatedValues = aggregatedValues;
-      },
-      error => {
-        this.chartData = [];
-        this.myAggregatedValues = [];
-        this.chartLoading = false;
-        this.changeDetectorRef.detectChanges();
-      }
+      )
     );
     this.chartData$.next(this.currentFilter);
+  }
+
+  public async afterGetChartData(things) {
+      const chartData = [];
+      const aggregatedValues = [];
+
+      // Get the translation of each label
+      for (const thing of things) {
+        for (const sensor of thing.sensors) {
+
+          let labelTranslation;
+          if ((sensor.sensorDefinition || {}).name) {
+            labelTranslation = sensor.sensorDefinition.name;
+          } else {
+            labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
+            if (labelTranslation.indexOf('SENSORTYPES') > -1) {
+              labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+            }
+          }
+
+          // START STANDARD DEVIATION
+          if (this.currentFilter.interval !== 'ALL') {
+            const filter = {
+              deveui: thing.devEui,
+              sensortypeid: sensor.sensorType.id,
+              from: this.currentFilter.from,
+              to: this.currentFilter.to,
+              interval: this.currentFilter.interval,
+            };
+            try {
+              const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
+              aggregatedValues.push({
+                  label: labelTranslation,
+                  series: sensor.series,
+                  standardDeviation: (standardDeviation) ? standardDeviation.value : null,
+                  postfix: sensor.sensorType.postfix
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          }
+          // END STANDARD DEVIATION
+
+          if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
+            continue;
+          }
+
+          chartData.push({
+            label: labelTranslation,
+            sensorId: sensor.id,
+            sensorTypeId: sensor.sensorType.id,
+            sensorDefinition: sensor.sensorDefinition,
+            series: sensor.series,
+          });
+        }
+      }
+      this.chartData = chartData;
+      this.chartLoading = false;
+      this.changeDetectorRef.detectChanges();
+      // STANDARD DEVIATIONS
+      this.aggregatedValues = aggregatedValues;
   }
 
 
@@ -283,9 +292,11 @@ export class DetailComponent implements OnInit {
   }
 
   private getLastAlerts() {
-    this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
-      this.asset.alerts = alerts;
-    });
+    this.subs.add(
+      this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
+        this.asset.alerts = alerts;
+      })
+    );
   }
 
   private getChartData(request: Observable<any>) {
@@ -317,6 +328,10 @@ export class DetailComponent implements OnInit {
 
   private async getTranslation(label: string) {
     return await (this.translateService.get(label).toPromise());
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

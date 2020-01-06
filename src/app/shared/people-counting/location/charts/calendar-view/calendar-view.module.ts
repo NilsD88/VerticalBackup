@@ -1,3 +1,4 @@
+import { DataErrorModule } from './../../../../../../../projects/ngx-proximus/src/lib/data-error/data-error.module';
 import { DialogModule } from './../../../../../../../projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import { NgModule } from '@angular/core';
@@ -16,7 +17,8 @@ import { MatButtonModule, MatDialogModule } from '@angular/material';
     MatButtonModule,
     MatDialogModule,
     DialogModule,
-    IconModule
+    IconModule,
+    DataErrorModule
   ],
   exports: [CalendarViewComponent]
 })

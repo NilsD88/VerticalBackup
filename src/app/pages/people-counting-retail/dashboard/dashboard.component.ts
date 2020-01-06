@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import { PeopleCountingLocationService } from './../../../services/peoplecounting/location.service';
 import {
@@ -6,7 +7,8 @@ import {
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 import {
   findLeafLocations
@@ -37,7 +39,7 @@ mTZ();
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   public rootLocation: IPeopleCountingLocation;
   public leafs: IPeopleCountingLocation[];
@@ -46,6 +48,8 @@ export class DashboardComponent implements OnInit {
   public currentLeafs: IPeopleCountingLocation[];
   public listStyleValue = 'map';
   public leafUrl = '/private/peoplecounting/store';
+
+  private subs = new SubSink();
 
   constructor(
     private locationService: PeopleCountingRetailLocationService,
@@ -86,48 +90,53 @@ export class DashboardComponent implements OnInit {
     const lastYearLeafs = cloneDeep(leafs);
     this.leafColors = generateLeafColors(leafs);
 
-    // Get the past week data with day interval for each leafs
-    this.locationService.getLocationsDataByIds(
-      leafs.map(leaf => leaf.id),
-      'DAILY',
-      moment().startOf('isoWeek').subtract(1, 'week').valueOf(),
-      moment().startOf('isoWeek').valueOf(),
-    ).subscribe(
-      (result) => {
-        leafs.forEach(leaf => {
-          const leafIndex = result.findIndex((x => x.id === leaf.id));
-          if (leafIndex > -1) {
-            leaf.series = result[leafIndex].series;
-          } else {
-            leaf.series = [];
-          }
-        });
-        this.leafs = leafs;
-        this.currentLeafs = cloneDeep(this.leafs);
-        this.changeDetectorRef.detectChanges();
-      }
+    this.subs.add(
+      // Get the past week data with day interval for each leafs
+      this.locationService.getLocationsDataByIds(
+        leafs.map(leaf => leaf.id),
+        'DAILY',
+        moment().startOf('isoWeek').subtract(1, 'week').valueOf(),
+        moment().startOf('isoWeek').valueOf(),
+      ).subscribe(
+        (result) => {
+          leafs.forEach(leaf => {
+            const leafIndex = result.findIndex((x => x.id === leaf.id));
+            if (leafIndex > -1) {
+              leaf.series = result[leafIndex].series;
+            } else {
+              leaf.series = [];
+            }
+          });
+          this.leafs = leafs;
+          this.currentLeafs = cloneDeep(this.leafs);
+          this.changeDetectorRef.detectChanges();
+        }
+      ),
+      // Get the past year data with month interval for each leafs
+      this.locationService.getLocationsDataByIds(
+        leafs.map(leaf => leaf.id),
+        'MONTHLY',
+        moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      ).subscribe(
+        (result) => {
+          lastYearLeafs.forEach(leaf => {
+            const leafIndex = result.findIndex((x => x.id === leaf.id));
+            if (leafIndex > -1) {
+              leaf.series = result[leafIndex].series;
+            } else {
+              leaf.series = [];
+            }
+          });
+          this.lastYearLeafs = lastYearLeafs;
+          this.changeDetectorRef.detectChanges();
+        }
+      )
     );
+  }
 
-    // Get the past year data with month interval for each leafs
-    this.locationService.getLocationsDataByIds(
-      leafs.map(leaf => leaf.id),
-      'MONTHLY',
-      moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    ).subscribe(
-      (result) => {
-        lastYearLeafs.forEach(leaf => {
-          const leafIndex = result.findIndex((x => x.id === leaf.id));
-          if (leafIndex > -1) {
-            leaf.series = result[leafIndex].series;
-          } else {
-            leaf.series = [];
-          }
-        });
-        this.lastYearLeafs = lastYearLeafs;
-        this.changeDetectorRef.detectChanges();
-      }
-    );
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

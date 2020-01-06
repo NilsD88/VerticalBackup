@@ -1,6 +1,7 @@
+import { SubSink } from 'subsink';
 import { cloneDeep } from 'lodash';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
@@ -12,7 +13,7 @@ import { findItemsWithTermOnKey } from 'src/app/shared/utils';
   templateUrl: './list-threshold-templates.component.html',
   styleUrls: ['./list-threshold-templates.component.scss']
 })
-export class ListThresholdTemplatesComponent implements OnInit {
+export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
 
   @Input() admin = false;
   @Input() selectedThresholdTemplate: IThresholdTemplate;
@@ -28,6 +29,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
   public isLoading = false;
   public dataSource: MatTableDataSource<IThresholdTemplate>;
   public displayedColumns: string[];
+
+  private subs = new SubSink();
 
   constructor(
     public newThresholdTemplateService: NewThresholdTemplateService,
@@ -90,8 +93,8 @@ export class ListThresholdTemplatesComponent implements OnInit {
   }
 
 
-  public async deleteThresholdTemplate(thresholdTemplateId: string) {
-    this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
+  public deleteThresholdTemplate(thresholdTemplateId: string) {
+    this.subs.sink = this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
       () => {
         this.thresholdTemplates = null;
         this.changeDetectorRef.detectChanges();
@@ -111,6 +114,10 @@ export class ListThresholdTemplatesComponent implements OnInit {
         thresholdTemplate
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

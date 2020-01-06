@@ -1,4 +1,4 @@
-import { WalkingTrailLocationService } from '../../../../services/walkingtrail/location.service';
+import { StairwayToHealthLocationService } from './../../../../services/stairway-to-health/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InventoryLocationsComponent } from '../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component';
@@ -11,11 +11,11 @@ export interface IInventoryFilterBE {
   templateUrl: './../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component.scss']
 })
-export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLocationsComponent implements OnInit {
+export class StairwayToHealthInventoryLocationsComponent extends InventoryLocationsComponent implements OnInit {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public locationService: WalkingTrailLocationService,
+    public locationService: StairwayToHealthLocationService,
     public activatedRoute: ActivatedRoute,
   ) {
     super(

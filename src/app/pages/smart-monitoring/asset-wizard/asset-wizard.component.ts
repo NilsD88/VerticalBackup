@@ -1,6 +1,7 @@
+import { SubSink } from 'subsink';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/g-location.model';
 import { IThing } from 'src/app/models/g-thing.model';
@@ -22,12 +23,11 @@ import { IField } from 'src/app/models/field.model';
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })
-export class SmartMonitoringAssetWizardComponent implements OnInit {
+export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   public asset: IAsset;
-  private originalAsset: IAsset;
   public editMode = false;
 
   public displayLocationExplorer = true;
@@ -37,6 +37,9 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
 
   public fields: IField[];
   public isSavingOrUpdating: boolean;
+
+  private originalAsset: IAsset;
+  private subs = new SubSink();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -174,26 +177,30 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
         }
       }
 
-      this.newAssetService.updateAsset(asset).subscribe(
-        (result) => {
-          this.isSavingOrUpdating = false;
-          this.goToInventory();
-        },
-        (error) => {
-          this.isSavingOrUpdating = false;
-          console.error(error);
-        }
+      this.subs.add(
+        this.newAssetService.updateAsset(asset).subscribe(
+          () => {
+            this.isSavingOrUpdating = false;
+            this.goToInventory();
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+          }
+        )
       );
     } else {
-      this.newAssetService.createAsset(this.asset).subscribe(
-        (result) => {
-          this.isSavingOrUpdating = false;
-          this.goToInventory();
-        },
-        (error) => {
-          this.isSavingOrUpdating = false;
-          console.error(error);
-        }
+      this.subs.add(
+        this.newAssetService.createAsset(this.asset).subscribe(
+          () => {
+            this.isSavingOrUpdating = false;
+            this.goToInventory();
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+          }
+        )
       );
     }
   }
@@ -246,6 +253,10 @@ export class SmartMonitoringAssetWizardComponent implements OnInit {
       this.asset.thresholdTemplate = result;
       this.displayThresholdTemplateList = true;
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

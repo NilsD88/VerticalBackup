@@ -9,7 +9,7 @@ import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.compone
   selector: 'pvf-layout',
   templateUrl: './public.layout.html'
 })
-export class PublicLayoutComponent implements OnInit, OnDestroy {
+export class PublicLayoutComponent implements OnInit {
 
   public topMenuConfig: TopMenuConfig;
   public menuItems: { label: string; url: string; badge?: { label: string; class: string; } }[] = [
@@ -37,10 +37,6 @@ export class PublicLayoutComponent implements OnInit, OnDestroy {
       }
     };
     this.footerConfig = await this.layoutService.getFooterTranslations();
-  }
-
-  ngOnDestroy(): void {
-    // this.router.unsubscribe();
   }
 
   navigateTo(url: string) {

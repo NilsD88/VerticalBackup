@@ -1,7 +1,8 @@
+import { SubSink } from 'subsink';
 import { NewSensorService } from 'src/app/services/new-sensor.service';
 import { cloneDeep } from 'lodash';
 import { IPagedAlerts } from 'src/app/models/g-alert.model';
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
@@ -38,7 +39,7 @@ enum SeverityLevel {
   templateUrl: './alerts.component.html',
   styleUrls: ['./alerts.component.scss']
 })
-export class AlertsComponent implements OnInit {
+export class AlertsComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -76,6 +77,8 @@ export class AlertsComponent implements OnInit {
 
   public sensorTypesLoading = false;
 
+  private subs = new SubSink();
+
   constructor(
     private newSensorService: NewSensorService,
     private sharedService: SharedService,
@@ -86,16 +89,18 @@ export class AlertsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.getSensorTypesOptions();
-    this.newAlertService.getAlertsByDateRangeOBS(this.filterBE$).subscribe(
-      (alerts) => {
-        this.alerts = alerts;
-        this.filteredAlerts = cloneDeep(this.alerts);
-        this.postFilteredAlerts = cloneDeep(this.filteredAlerts);
-        this.updateDataSourceWithAlerts(this.filteredAlerts);
-        this.isLoading = false;
-      }
+    this.subs.add(
+      this.newAlertService.getAlertsByDateRangeOBS(this.filterBE$).subscribe(
+        (alerts) => {
+          this.alerts = alerts;
+          this.filteredAlerts = cloneDeep(this.alerts);
+          this.postFilteredAlerts = cloneDeep(this.filteredAlerts);
+          this.updateDataSourceWithAlerts(this.filteredAlerts);
+          this.isLoading = false;
+        }
+      ),
+      filteredAlertsObs(this.filterFE$).subscribe(() => { this.updateFilterdAlerts(); })
     );
-    filteredAlertsObs(this.filterFE$).subscribe(() => { this.updateFilterdAlerts(); });
   }
 
   public updateFilterdAlerts() {
@@ -222,24 +227,26 @@ export class AlertsComponent implements OnInit {
       this.postFilteredAlerts[indexP].read = true;
     });
 
-    this.newAlertService.readByAlertIds(this.selectedAlerts).subscribe(
-      result => {
-        if (result) {
-          this.getNumberOfAlerts();
-          return true;
+    this.subs.add(
+      this.newAlertService.readByAlertIds(this.selectedAlerts).subscribe(
+        result => {
+          if (result) {
+            this.getNumberOfAlerts();
+            return true;
+          }
+        },
+        error => {
+          this.snackBar.open(`Failed to read the alerts`, null, {
+            duration: 2000,
+          });
+          console.log(error);
+          this.alerts = oldA;
+          this.filteredAlerts = oldF;
+          this.postFilteredAlerts = oldP;
+          this.updateDataSourceWithAlerts(this.postFilteredAlerts);
+          this.selectedAlerts = oldSelectedAlerts;
         }
-      },
-      error => {
-        this.snackBar.open(`Failed to read the alerts`, null, {
-          duration: 2000,
-        });
-        console.log(error);
-        this.alerts = oldA;
-        this.filteredAlerts = oldF;
-        this.postFilteredAlerts = oldP;
-        this.updateDataSourceWithAlerts(this.postFilteredAlerts);
-        this.selectedAlerts = oldSelectedAlerts;
-      }
+      )
     );
   }
 
@@ -258,41 +265,33 @@ export class AlertsComponent implements OnInit {
       this.postFilteredAlerts[indexP].read = false;
     });
 
-    this.newAlertService.unreadByAlertIds(this.selectedAlerts).subscribe(
-      result => {
-        if (result) {
-          this.getNumberOfAlerts();
-          return true;
+    this.subs.add(
+      this.newAlertService.unreadByAlertIds(this.selectedAlerts).subscribe(
+        result => {
+          if (result) {
+            this.getNumberOfAlerts();
+            return true;
+          }
+        },
+        error => {
+          this.snackBar.open(`Failed to unread the alerts`, null, {
+            duration: 2000,
+          });
+          console.log(error);
+          this.alerts = oldA;
+          this.filteredAlerts = oldF;
+          this.postFilteredAlerts = oldP;
+          this.updateDataSourceWithAlerts(this.postFilteredAlerts);
+          this.selectedAlerts = oldSelectedAlerts;
         }
-      },
-      error => {
-        this.snackBar.open(`Failed to unread the alerts`, null, {
-          duration: 2000,
-        });
-        console.log(error);
-        this.alerts = oldA;
-        this.filteredAlerts = oldF;
-        this.postFilteredAlerts = oldP;
-        this.updateDataSourceWithAlerts(this.postFilteredAlerts);
-        this.selectedAlerts = oldSelectedAlerts;
-      }
+      )
     );
   }
 
   private getNumberOfAlerts() {
-    this.newAlertService.getNumberOfUnreadAlerts().subscribe();
-  }
-
-  public pageChange(event) {
-    this.getPagedAlerts();
-  }
-
-  public async getPagedAlerts() {
-    this.selectedAlerts = [];
-    const pagedAlerts: IPagedAlerts = await this.newAlertService.getPagedAlerts(
-      this.paginator.pageIndex,
-      this.paginator.pageSize
-    ).toPromise();
+    this.subs.add(
+      this.newAlertService.getNumberOfUnreadAlerts().subscribe()
+    );
   }
 
   public downloadSelectedAlertsCSV() {
@@ -364,6 +363,10 @@ export class AlertsComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
     this.filterBE.dateRange = dateRange;
     this.filterBE$.next(this.filterBE);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }
 

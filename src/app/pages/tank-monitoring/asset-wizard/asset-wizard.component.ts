@@ -1,8 +1,9 @@
+import { SubSink } from 'subsink';
 import { NewSensorService } from 'src/app/services/new-sensor.service';
 import { ISensorType } from './../../../models/g-sensor-type.model';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import {Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/g-location.model';
 import { IThing } from 'src/app/models/g-thing.model';
@@ -24,22 +25,21 @@ import { IField } from 'src/app/models/field.model';
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })
-export class TankMonitoringAssetWizardComponent implements OnInit {
+export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   public asset: IAsset;
-  private originalAsset: IAsset;
   public editMode = false;
-
   public displayLocationExplorer = true;
   public displayThresholdTemplateList = true;
-
   public descriptionFormGroup: FormGroup;
-
   public fields: IField[];
   public compatibleSensorTypes: ISensorType[];
   public isSavingOrUpdating: boolean;
+
+  private originalAsset: IAsset;
+  private subs = new SubSink();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -207,26 +207,30 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
         }
       }
 
-      this.tankMonitoringAssetService.updateAsset(asset).subscribe(
-        (result) => {
-          this.isSavingOrUpdating = false;
-          this.goToInventory();
-        },
-        (error) => {
-          this.isSavingOrUpdating = false;
-          console.error(error);
-        }
+      this.subs.add(
+        this.tankMonitoringAssetService.updateAsset(asset).subscribe(
+          () => {
+            this.isSavingOrUpdating = false;
+            this.goToInventory();
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+          }
+        )
       );
     } else {
-      this.tankMonitoringAssetService.createAsset(this.asset).subscribe(
-        (result) => {
-          this.isSavingOrUpdating = false;
-          this.goToInventory();
-        },
-        (error) => {
-          this.isSavingOrUpdating = false;
-          console.error(error);
-        }
+      this.subs.add(
+        this.tankMonitoringAssetService.createAsset(this.asset).subscribe(
+          () => {
+            this.isSavingOrUpdating = false;
+            this.goToInventory();
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+          }
+        )
       );
     }
   }
@@ -281,6 +285,10 @@ export class TankMonitoringAssetWizardComponent implements OnInit {
 
   public cancelWizard() {
     this.router.navigateByUrl('/private/tankmonitoring/dashboard');
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

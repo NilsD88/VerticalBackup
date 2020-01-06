@@ -75,7 +75,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
                     customFields {
                       keyId,
                       value
-                    }
+                    },
                 }
             }
         `;

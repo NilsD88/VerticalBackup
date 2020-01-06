@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { Router } from '@angular/router';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
@@ -5,14 +6,19 @@ import {
   Component,
   OnInit,
   OnChanges,
-  Input
+  Input,
+  ChangeDetectorRef,
+  SimpleChanges,
+  OnDestroy
 } from '@angular/core';
 
 
 import * as Highcharts from 'highcharts';
-import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import * as moment from 'moment';
 import * as randomColor from 'randomcolor';
+import { Subject, Observable, of } from 'rxjs';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 
 declare global {
   interface Window {
@@ -32,7 +38,7 @@ require('highcharts/modules/export-data')(Highcharts);
   templateUrl: './count-by-asset.component.html',
   styleUrls: ['./count-by-asset.component.scss']
 })
-export class CountByAssetComponent implements OnInit, OnChanges {
+export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
@@ -40,16 +46,27 @@ export class CountByAssetComponent implements OnInit, OnChanges {
   @Input() assetService: WalkingTrailAssetService;
   @Input() assetColors: string[];
 
+  public chartData$ = new Subject<any>();
   public chart: any;
   public chartOptions: any;
+  public chartLoading = false;
+  public loadingError = false;
+
+  private subs = new SubSink();
 
   constructor(
-    private router: Router
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnChanges() {
-    if (this.chart) {
-      this.updateChart();
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if (changes.assets) {
+      if (changes.assets.currentValue && changes.assets.currentValue !== changes.assets.previousValue) {
+        if ((this.assets || []).length) {
+          this.chartData$.next();
+        }
+      }
     }
   }
 
@@ -59,7 +76,16 @@ export class CountByAssetComponent implements OnInit, OnChanges {
     }
     this.initChartOptions();
     this.initChart();
-    this.updateChart();
+    this.subs.sink = this.getChartData(this.chartData$).subscribe(
+      (assets: IPeopleCountingAsset[]) => {
+        if (!this.loadingError) {
+          this.updateChart(assets);
+        }
+      },
+    );
+    if ((this.assets || []).length) {
+      this.chartData$.next();
+    }
   }
 
   private initChartOptions() {
@@ -116,18 +142,12 @@ export class CountByAssetComponent implements OnInit, OnChanges {
     }
   }
 
-  private async updateChart() {
-    if ((this.assets || []).length) {
+  private async updateChart(assets: IPeopleCountingAsset[]) {
+    if ((assets || []).length) {
       const data = [];
       const assetColors = this.assetColors || randomColor({
         count: this.assets.length
       });
-      const assets = await this.assetService.getAssetsDataByIds(
-        this.assets.map(asset => asset.id),
-        'DAILY',
-        moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().valueOf(),
-      ).toPromise();
       assets.forEach((asset, assetIndex) => {
         const series = asset.series || [];
         data.push({
@@ -139,6 +159,7 @@ export class CountByAssetComponent implements OnInit, OnChanges {
       });
       this.chartOptions.series[0].data = data;
     }
+    this.chartLoading = false;
 
     try {
       this.chart = Highcharts.chart('count-by-asset-chart-container', this.chartOptions);
@@ -149,17 +170,37 @@ export class CountByAssetComponent implements OnInit, OnChanges {
     }
   }
 
+  private getChartData(request: Observable<null>): Observable<IPeopleCountingAsset[]> {
+    return request.pipe(
+      debounceTime(500),
+      switchMap(() => {
+        this.chartLoading = true;
+        this.loadingError = false;
+        this.changeDetectorRef.detectChanges();
+        // REAL DATA
+        return this.assetService.getAssetsDataByIds(
+          this.assets.map(asset => asset.id),
+          'DAILY',
+          moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+          moment().valueOf(),
+        ).pipe(catchError(() => {
+          this.chartLoading = false;
+          this.loadingError = true;
+          return of([]);
+        }));
+      })
+    );
+  }
+
+  public tryAgain() {
+    this.chartData$.next();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
+
 
 }
 
-function generateTodayDataSeries(): IPeopleCountingAssetSerie[] {
-  const dataSeries: IPeopleCountingAssetSerie[] = [];
-  dataSeries.push(
-    {
-      timestamp: moment().startOf('day').valueOf(),
-      valueIn: Math.floor(Math.random() * 101)
-    }
-  );
-  return dataSeries;
-}
 

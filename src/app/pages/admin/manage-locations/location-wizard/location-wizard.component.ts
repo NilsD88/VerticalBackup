@@ -1,6 +1,7 @@
+import { SubSink } from 'subsink';
 import { IField } from './../../../../models/field.model';
 import { ILocation } from 'src/app/models/g-location.model';
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,19 +18,21 @@ import { MatDialog } from '@angular/material';
   templateUrl: './location-wizard.component.html',
   styleUrls: ['./location-wizard.component.scss']
 })
-export class LocationWizardComponent implements OnInit {
+export class LocationWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
-  private originalLocation: ILocation;
   public descriptionFormGroup: FormGroup;
   public location: ILocation;
   public editMode = false;
   public canLoadLocationExplorer = false;
   public fields: IField[];
   public isSavingOrUpdating: boolean;
-  private parentIdParam: string;
   public showCancel = true;
+  public subs = new SubSink();
+
+  private parentIdParam: string;
+  private originalLocation: ILocation;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -128,10 +131,32 @@ export class LocationWizardComponent implements OnInit {
         location[difference] = this.location[difference];
       }
 
-      this.newLocationService.updateLocation(location).subscribe(
-        (updatedLocation: ILocation | null) => {
+      this.subs.add(
+        this.newLocationService.updateLocation(location).subscribe(
+          (updatedLocation: ILocation | null) => {
+            this.isSavingOrUpdating = false;
+            if (updatedLocation) {
+              this.goToManageLocation();
+            }
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          }
+        )
+      );
+    } else {
+     this.createLocation();
+    }
+  }
+
+  public createLocation() {
+    this.subs.add(
+      this.newLocationService.createLocation(this.location).subscribe(
+        (location: ILocation | null) => {
           this.isSavingOrUpdating = false;
-          if (updatedLocation) {
+          if (location) {
             this.goToManageLocation();
           }
         },
@@ -140,25 +165,7 @@ export class LocationWizardComponent implements OnInit {
           console.error(error);
           this.checkIfNameAlreadyExistAndDisplayDialog(error);
         }
-      );
-    } else {
-     this.createLocation();
-    }
-  }
-
-  public createLocation() {
-    this.newLocationService.createLocation(this.location).subscribe(
-      (location: ILocation | null) => {
-        this.isSavingOrUpdating = false;
-        if (location) {
-          this.goToManageLocation();
-        }
-      },
-      (error) => {
-        this.isSavingOrUpdating = false;
-        console.error(error);
-        this.checkIfNameAlreadyExistAndDisplayDialog(error);
-      }
+      )
     );
   }
 
@@ -200,5 +207,10 @@ export class LocationWizardComponent implements OnInit {
   public cancelWizard() {
     this.router.navigateByUrl('private/admin/manage-locations');
   }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
+
 
 }

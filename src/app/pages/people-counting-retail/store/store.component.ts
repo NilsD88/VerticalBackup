@@ -33,7 +33,7 @@ export class StoreComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
       this.leaf = await this.locationService.getLocationById(params.id).toPromise();
       this.assetColors = randomColor({
-        count: 100 // TODO: should be number of assets, but we don't know at this level
+        count: this.leaf.assets.length
       });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
       const rootLocation = {

@@ -1,2 +1,3 @@
-<div [hidden]="!assets" id="count-by-asset-chart-container"></div>
-<pxs-loader *ngIf="!assets"></pxs-loader>
+<div [hidden]="loadingError || chartLoading" id="count-by-asset-chart-container"></div>
+<pxs-loader *ngIf="chartLoading"></pxs-loader>
+<pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>

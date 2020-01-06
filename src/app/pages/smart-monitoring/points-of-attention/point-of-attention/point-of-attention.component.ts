@@ -1,7 +1,8 @@
+import { SubSink } from 'subsink';
 import { cloneDeep } from 'lodash';
 import { PointOfAttentionService } from './../../../../services/point-of-attention.service';
 import { IPointOfAttention } from './../../../../models/point-of-attention.model';
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { IFilterChartData, Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import * as moment from 'moment';
@@ -20,7 +21,7 @@ const canvg = require('canvg');
   templateUrl: './point-of-attention.component.html',
   styleUrls: ['./point-of-attention.component.scss']
 })
-export class PointOfAttentionComponent implements OnInit {
+export class PointOfAttentionComponent implements OnInit, OnDestroy {
 
   @ViewChild('myChart', {static: false}) myChart;
 
@@ -35,6 +36,8 @@ export class PointOfAttentionComponent implements OnInit {
     to: moment().toDate().getTime(),
   };
 
+  private subs = new SubSink();
+
   constructor(
     public activeRoute: ActivatedRoute,
     private translateService: TranslateService,
@@ -48,50 +51,56 @@ export class PointOfAttentionComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
-        this.pointOfAttentionService.getPointOfAttentionDetailById(params.id).subscribe(
-          (pointOfAttention) => {
-            this.pointOfAttention = pointOfAttention;
-            this.changeDetectorRef.detectChanges();
-            this.init();
-          },
-          (error) => {
-            console.log(error);
-            this.router.navigate(['/error/404']);
-          }
+        this.subs.add(
+          this.pointOfAttentionService.getPointOfAttentionDetailById(params.id).subscribe(
+            (pointOfAttention) => {
+              this.pointOfAttention = pointOfAttention;
+              this.changeDetectorRef.detectChanges();
+              this.init();
+            },
+            (error) => {
+              console.log(error);
+              this.router.navigate(['/error/404']);
+            }
+          )
         );
       }
     });
   }
 
   private init() {
-    this.getChartData(this.chartData$).subscribe(
-      async items => {
-        const chartData = [];
-
-        // Get the translation of each label
-        for (const item of items) {
-          let labelTranslation;
-          labelTranslation = await this.translateService.get('SENSORTYPES.' + item.sensorType.name).toPromise();
-          if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-            labelTranslation = this.upperCaseFirst(item.sensorType.name);
-          }
-
-          chartData.push({
-            label: item.name,
-            series: item.series,
-          });
+    this.subs.add(
+      this.getChartData(this.chartData$).subscribe(
+        this.afterGetChartData,
+        (error) => {
+          this.chartData = [0];
+          this.chartLoading = false;
+          this.changeDetectorRef.detectChanges();
+          console.error(error);
         }
-        this.chartData = chartData;
-        this.chartLoading = false;
-        this.changeDetectorRef.detectChanges();
-      },
-      error => {
-        this.chartData = [0];
-        this.chartLoading = false;
-        this.changeDetectorRef.detectChanges();
-      }
+      )
     );
     this.chartData$.next(this.currentFilter);
+  }
+
+  private async afterGetChartData(items) {
+    const chartData = [];
+    // Get the translation of each label
+    for (const item of items) {
+      let labelTranslation;
+      labelTranslation = await this.translateService.get('SENSORTYPES.' + item.sensorType.name).toPromise();
+      if (labelTranslation.indexOf('SENSORTYPES') > -1) {
+        labelTranslation = this.upperCaseFirst(item.sensorType.name);
+      }
+
+      chartData.push({
+        label: item.name,
+        series: item.series,
+      });
+    }
+    this.chartData = chartData;
+    this.chartLoading = false;
+    this.changeDetectorRef.detectChanges();
   }
 
 
@@ -204,6 +213,10 @@ export class PointOfAttentionComponent implements OnInit {
 
   private async getTranslation(label: string) {
     return await (this.translateService.get(label).toPromise());
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }
