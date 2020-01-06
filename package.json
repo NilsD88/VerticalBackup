@@ -82,6 +82,7 @@
     "numeral": "^2.0.6",
     "randomcolor": "^0.5.4",
     "rxjs": "~6.5.3",
+    "subsink": "^1.0.0",
     "tslib": "^1.10.0",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.9.1"

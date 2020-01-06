@@ -1,5 +1,5 @@
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import {Component, OnInit, Optional, Inject} from '@angular/core';
+import {Component, OnInit, Optional, Inject, OnDestroy} from '@angular/core';
 import {FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Router} from '@angular/router';
@@ -15,7 +15,7 @@ import { NewSensorService } from 'src/app/services/new-sensor.service';
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })
-export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAssetWizardComponent implements OnInit {
+export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -93,27 +93,35 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         }
       }
 
-      this.assetService.updateAsset(asset).subscribe(
-        (result) => {
-          this.isSavingOrUpdating = false;
-          this.dialogRef.close(this.asset);
-        },
-        (error) => {
-          this.isSavingOrUpdating = false;
-          console.error(error);
-        }
+      this.subs.add(
+        this.assetService.updateAsset(asset).subscribe(
+          () => {
+            this.isSavingOrUpdating = false;
+            this.dialogRef.close(this.asset);
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+          }
+        )
       );
     } else {
-      this.assetService.createAsset(this.asset).subscribe(
-        (result) => {
-          this.isSavingOrUpdating = false;
-          this.dialogRef.close(this.asset);
-        },
-        (error) => {
-          this.isSavingOrUpdating = false;
-          console.error(error);
-        }
+      this.subs.add(
+        this.assetService.createAsset(this.asset).subscribe(
+          () => {
+            this.isSavingOrUpdating = false;
+            this.dialogRef.close(this.asset);
+          },
+          (error) => {
+            this.isSavingOrUpdating = false;
+            console.error(error);
+          }
+        )
       );
     }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
   }
 }

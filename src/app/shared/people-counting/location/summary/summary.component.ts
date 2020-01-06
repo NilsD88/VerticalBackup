@@ -1,4 +1,3 @@
-import { PeopleCountingRetailLocationService } from './../../../../../services/peoplecounting-retail/location.service';
 import {
   Component,
   OnInit,
@@ -14,6 +13,8 @@ import {
 } from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
+import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
+import { PeopleCountingRetailLocationService } from 'src/app/services/peoplecounting-retail/location.service';
 
 
 interface IData {
@@ -24,24 +25,20 @@ interface IData {
 }
 
 @Component({
-  selector: 'pvf-summary',
+  selector: 'pvf-peoplecounting-summary',
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent implements OnInit, OnChanges {
 
-
-
   @Input() leaf: IPeopleCountingLocation;
+  @Input() locationService: PeopleCountingRetailLocationService | StairwayToHealthLocationService;
 
   public data: IData;
   public locale: string;
 
-
-
   constructor(
-    private translateService: TranslateService,
-    private locationService: PeopleCountingRetailLocationService
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -62,6 +59,8 @@ export class SummaryComponent implements OnInit, OnChanges {
 
 
   async getAllData() {
+    console.log('this.leaf.id');
+    console.log(this.leaf.id);
     const totalYesterday = await this.locationService.getLocationsDataByIds(
       [this.leaf.id],
       'DAILY',
@@ -93,11 +92,11 @@ export class SummaryComponent implements OnInit, OnChanges {
     const totalToday = today.length ? today[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
     const totalTodayLastWeek = todayLastWeek.length ? todayLastWeek[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
 
-    const totalLastWeek =  totalTwoLastWeeks.length ? totalTwoLastWeeks[0].series[1].valueIn : null;
-    const totalBeforeLastWeek = totalTwoLastWeeks.length ? totalTwoLastWeeks[0].series[0].valueIn : null;
+    const totalLastWeek =  totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[1].valueIn : null) : null;
+    const totalBeforeLastWeek = totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[0].valueIn : null) : null;
 
     this.data = {
-      totalYesterday: totalYesterday.length ? totalYesterday[0].series[0].valueIn : null,
+      totalYesterday: totalYesterday.length ? (totalYesterday[0].series.length ? totalYesterday[0].series[0].valueIn : null) : null,
       totalLastWeek,
       differenceLastWeek: totalLastWeek - totalBeforeLastWeek,
       differenceToday: totalToday - totalTodayLastWeek

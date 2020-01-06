@@ -17,8 +17,6 @@ import {
 import { IThing } from '../models/g-thing.model';
 import { Observable } from 'rxjs';
 import { IField } from '../models/field.model';
-import { MOCK_ASSETS_CUSTOM_FIELDS } from '../mocks/newasset';
-import { MOCK_NEW_CHART_TANK_DATA } from '../mocks/chart';
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +96,6 @@ export class NewAssetService {
   }
 
   public getAssetById(id: string): Observable < IAsset > {
-    console.log('getAssetById SM');
     const GET_ASSET_BY_ID = gql `
             query findAssetById($id: Long!) {
                 asset: findAssetById(id: $id) {

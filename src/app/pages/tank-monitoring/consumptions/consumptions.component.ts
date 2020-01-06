@@ -1,9 +1,10 @@
+import { SubSink } from 'subsink';
 import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 import { cloneDeep } from 'lodash';
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IAsset } from 'src/app/models/g-asset.model';
@@ -25,7 +26,7 @@ const canvg = require('canvg');
   templateUrl: './consumptions.component.html',
   styleUrls: ['./consumptions.component.scss']
 })
-export class ConsumptionsComponent implements OnInit {
+export class ConsumptionsComponent implements OnInit, OnDestroy {
 
   @ViewChild('myChart', {static: false}) myChart;
 
@@ -41,6 +42,7 @@ export class ConsumptionsComponent implements OnInit {
     to: moment().toDate().getTime(),
   };
 
+  private subs = new SubSink();
 
   constructor(
     private activeRoute: ActivatedRoute,
@@ -56,17 +58,19 @@ export class ConsumptionsComponent implements OnInit {
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
-        this.tankMonitoringAssetService.getAssetDetailById(params.id).subscribe(
-          (asset) => {
-            console.log(asset);
-            this.asset = asset;
-            this.changeDetectorRef.detectChanges();
-            this.init();
-          },
-          (error) => {
-            console.log(error);
-            this.router.navigate(['/error/404']);
-          }
+        this.subs.add(
+          this.tankMonitoringAssetService.getAssetDetailById(params.id).subscribe(
+            (asset) => {
+              console.log(asset);
+              this.asset = asset;
+              this.changeDetectorRef.detectChanges();
+              this.init();
+            },
+            (error) => {
+              console.log(error);
+              this.router.navigate(['/error/404']);
+            }
+          )
         );
       }
     });
@@ -74,28 +78,32 @@ export class ConsumptionsComponent implements OnInit {
 
   private init() {
     this.getLastAlerts();
-    this.getChartData(this.chartData$).subscribe(async things => {
-      const chartData = [];
-      // Get the translation of each label
-      for (const thing of things) {
-        for (const sensor of thing.sensors) {
-          chartData.push({
-            label: await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise(),
-            series: sensor.series
-          });
+    this.subs.add(
+      this.getChartData(this.chartData$).subscribe(async things => {
+        const chartData = [];
+        // Get the translation of each label
+        for (const thing of things) {
+          for (const sensor of thing.sensors) {
+            chartData.push({
+              label: await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise(),
+              series: sensor.series
+            });
+          }
         }
-      }
-      this.chartData = chartData;
-      this.chartLoading = false;
-      this.changeDetectorRef.detectChanges();
-    });
+        this.chartData = chartData;
+        this.chartLoading = false;
+        this.changeDetectorRef.detectChanges();
+      })
+    );
     this.chartData$.next(this.currentFilter);
   }
 
   private getLastAlerts() {
-    this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
-      this.asset.alerts = alerts;
-    });
+    this.subs.add(
+      this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
+        this.asset.alerts = alerts;
+      })
+    );
   }
 
 
@@ -251,6 +259,10 @@ export class ConsumptionsComponent implements OnInit {
 
   private async getTranslation(label: string) {
     return await (this.translateService.get(label).toPromise());
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

@@ -1,4 +1,5 @@
-import { WalkingTrailLocationService } from './../../../../../services/walkingtrail/location.service';
+import { PeopleCountingRetailLocationService } from './../../../../../services/peoplecounting-retail/location.service';
+import { SubSink } from 'subsink';
 import {
   isNullOrUndefined
 } from 'util';
@@ -10,7 +11,8 @@ import {
   Component,
   OnInit,
   Input,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 
 import * as moment from 'moment';
@@ -18,14 +20,12 @@ import * as mTZ from 'moment-timezone';
 import {
   TranslateService
 } from '@ngx-translate/core';
-import { svg } from 'leaflet';
 import { Subject, Observable, of } from 'rxjs';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { MatDialog } from '@angular/material';
-import { debounceTime, switchMap, catchError, timestamp } from 'rxjs/operators';
-import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import {uniqBy, orderBy} from 'lodash';
 import { allIntervalBetween } from 'src/app/shared/utils';
+import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
 
 declare global {
   interface Window {
@@ -58,22 +58,23 @@ require('highcharts/modules/series-label')(Highcharts);
   templateUrl: './calendar-view.component.html',
   styleUrls: ['./calendar-view.component.scss']
 })
-export class CalendarViewComponent implements OnInit {
+export class CalendarViewComponent implements OnInit, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
-  @Input() locationService: WalkingTrailLocationService;
+  @Input() locationService: PeopleCountingRetailLocationService | StairwayToHealthLocationService;
 
   public chartData$ = new Subject<any>();
   public chartLoading = false;
+  public loadingError = false;
   public chart: any;
   public chartOptions: any;
   public locale: string;
-
   public startMonth: string;
   public endMonth: string;
 
   private svgElements: Highcharts.SVGElement [] = [];
   private numberOfMonths = 4;
+  private subs = new SubSink();
 
   public currentFilter: IFilterChartData = {
     interval: 'DAILY',
@@ -83,7 +84,6 @@ export class CalendarViewComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService,
-    private dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
@@ -96,9 +96,12 @@ export class CalendarViewComponent implements OnInit {
 
     this.initChartOptions();
     this.initChart();
-    this.getChartData(this.chartData$).subscribe(
+    this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (locations: IPeopleCountingLocation[]) => {
-        this.updateChart((locations[0] || {}).series);
+        console.log('getChartData subscribe')
+        if (!this.loadingError) {
+          this.updateChart((locations[0] || {}).series);
+        }
       }
     );
     this.chartData$.next(this.currentFilter);
@@ -337,27 +340,26 @@ export class CalendarViewComponent implements OnInit {
       debounceTime(500),
       switchMap(filter => {
         this.chartLoading = true;
+        this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-
         // REAL DATA
         return this.locationService.getLocationsDataByIds(
           [this.leaf.id],
           filter.interval, filter.from, filter.to
         ).pipe(catchError(() => {
-          this.dialog.open(DialogComponent, {
-            data: {
-              title: 'Sorry, an error has occured!',
-              message: 'An error has occured during getting the sensor data'
-            },
-            minWidth: '320px',
-            maxWidth: '400px',
-            width: '100vw',
-            maxHeight: '80vh',
-          });
+          this.chartLoading = false;
+          this.loadingError = true;
           return of([]);
         }));
       })
     );
   }
 
+  public tryAgain() {
+    this.chartData$.next(this.currentFilter);
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { SharedService } from 'src/app/services/shared.service';
 import { GlobaleSearchService } from 'src/app/services/global-search.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
@@ -28,6 +29,8 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   public searchTerm$ = new Subject<string>();
   public numberOfUnreadAlerts = null;
 
+  private subs = new SubSink();
+
   constructor(
     private router: Router,
     private translateService: TranslateService,
@@ -35,19 +38,20 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     private globaleSearchService: GlobaleSearchService,
     public sharedService: SharedService,
     public newAlertService: NewAlertService) {
-      this.globaleSearchService.searchTerm(this.searchTerm$)
-      .subscribe(result => {
-        const results = [];
-        result.forEach((array, index) => {
-          const type = (index === 0) ? 'asset' : 'location';
-          if (array.length > 0) {
-            for (const item of array) {
-              results.push({...item, type});
+      this.subs.add(
+        this.globaleSearchService.searchTerm(this.searchTerm$).subscribe(result => {
+          const results = [];
+          result.forEach((array, index) => {
+            const type = (index === 0) ? 'asset' : 'location';
+            if (array.length > 0) {
+              for (const item of array) {
+                results.push({...item, type});
+              }
             }
-          }
-        });
-        this.searchResults = results;
-      });
+          });
+          this.searchResults = results;
+        })
+      );
   }
 
   async ngOnInit(): Promise<void> {
@@ -66,14 +70,15 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     };
     this.footerConfig = await this.layoutService.getFooterTranslations();
 
-    this.newAlertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
-      this.numberOfUnreadAlerts = (numberOfUnreadAlerts > 0) ? ((numberOfUnreadAlerts > 99) ? '99+' : numberOfUnreadAlerts ) : null;
-    });
-
+    this.subs.add(
+      this.newAlertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
+        this.numberOfUnreadAlerts = (numberOfUnreadAlerts > 0) ? ((numberOfUnreadAlerts > 99) ? '99+' : numberOfUnreadAlerts ) : null;
+      })
+    );
   }
 
   ngOnDestroy(): void {
-    // this.router.unsubscribe();
+    this.subs.unsubscribe();
   }
 
   navigateTo(url: string[]) {

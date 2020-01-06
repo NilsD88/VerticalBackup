@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
   cloneDeep
@@ -8,7 +9,8 @@ import {
   Input,
   OnChanges,
   ChangeDetectorRef,
-  SimpleChanges
+  SimpleChanges,
+  OnDestroy
 } from '@angular/core';
 import {
   TranslateService
@@ -19,11 +21,9 @@ import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
-import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 declare global {
@@ -45,7 +45,7 @@ require('highcharts/modules/export-data')(Highcharts);
   templateUrl: './month-view.component.html',
   styleUrls: ['./month-view.component.scss']
 })
-export class MonthViewComponent implements OnInit, OnChanges {
+export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
@@ -55,21 +55,23 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   public chartData$ = new Subject<any>();
   public chartLoading = false;
+  public loadingError = false;
   public chart: any;
   public chartOptions: any;
   public locale: string;
-
   public currentMonth;
+
   public currentFilter: IFilterChartData = {
     interval: 'DAILY',
     from: moment().subtract(1, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
     to: moment().date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
   };
 
+  private subs = new SubSink();
+
   constructor(
     private translateService: TranslateService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
 
@@ -81,9 +83,11 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     this.initChartOptions();
     this.initChart();
-    this.getChartData(this.chartData$).subscribe(
+    this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (assets: IPeopleCountingAsset[]) => {
-        this.updateChart(assets);
+        if (!this.loadingError) {
+          this.updateChart(assets);
+        }
       }
     );
 
@@ -167,6 +171,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   private updateChart(assets: IPeopleCountingAsset[]) {
 
+    console.log(assets);
     this.currentMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
@@ -258,63 +263,25 @@ export class MonthViewComponent implements OnInit, OnChanges {
       debounceTime(500),
       switchMap(filter => {
         this.chartLoading = true;
+        this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-
-        // MOCK DATA
-        /*
-        return new Observable <IPeopleCountingAsset[]> ((observer) => {
-          const assets: IPeopleCountingAsset[] = [];
-          this.leaf.assets.forEach(asset => {
-              const durationInMonths = moment.duration(moment().diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
-              assets.push({
-                id: asset.id,
-                name: asset.name,
-                series: generateMonthOfDataSeries(
-                  +durationInMonths
-                )
-              });
-          });
-          observer.next(assets);
-        });
-        */
-
-        // REAL DATA
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError(() => {
-          this.dialog.open(DialogComponent, {
-            data: {
-              title: 'Sorry, an error has occured!',
-              message: 'An error has occured during getting the sensor data'
-            },
-            minWidth: '320px',
-            maxWidth: '400px',
-            width: '100vw',
-            maxHeight: '80vh',
-          });
+          this.chartLoading = false;
+          this.loadingError = true;
           return of([]);
         }));
       })
     );
   }
 
-
-}
-
-
-
-
-function generateMonthOfDataSeries(monthIndex: number): IPeopleCountingAssetSerie[] {
-  const dataSeries: IPeopleCountingAssetSerie[] = [];
-  const daysInMonth = moment().subtract(monthIndex, 'months').date(1).daysInMonth();
-  for (let index = 0; index < daysInMonth; index++) {
-    dataSeries.push(
-      {
-        timestamp: moment().subtract(monthIndex, 'months').date(1).add(index, 'days').valueOf(),
-        valueIn: Math.floor(Math.random() * 101)
-      }
-    );
+  public tryAgain() {
+    this.chartData$.next(this.currentFilter);
   }
-  return dataSeries;
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
 }

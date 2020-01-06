@@ -1,5 +1,6 @@
+import { SubSink } from 'subsink';
 import { Router } from '@angular/router';
-import { Subscription, Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { NewAssetService } from './../../../../../../src/app/services/new-asset.service';
 import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ILocation } from 'src/app/models/g-location.model';
@@ -23,9 +24,9 @@ export class MapPopupComponent implements OnInit, OnDestroy {
   @Input() marker: Marker;
 
   private mouseIsOver = false;
+  public subs = new SubSink();
 
   public lastAlert: IAlert;
-  public subscriptions: Subscription[] = [];
   public subject$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -56,22 +57,26 @@ export class MapPopupComponent implements OnInit, OnDestroy {
           this.subject$.next();
         }
       });
-      this.subscriptions.push(this.closePopupOrNot(this.subject$).subscribe((result: boolean) => {
-        if (result) {
-          this.marker.closePopup();
-        }
-      }));
+      this.subs.add(
+        this.closePopupOrNot(this.subject$).subscribe((result: boolean) => {
+          if (result) {
+            this.marker.closePopup();
+          }
+        })
+      );
     }
 
   }
 
   getAssetPopupDetail() {
-    this.subscriptions.push(this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
-      this.asset = {
-        ...this.asset,
-        ...asset
-      };
-    }));
+    this.subs.add(
+      this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
+        this.asset = {
+          ...this.asset,
+          ...asset
+        };
+      })
+    );
   }
 
   private closePopupOrNot(value: Observable <boolean>) {
@@ -90,9 +95,7 @@ export class MapPopupComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    if (this.subscriptions) {
-      this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    }
+    this.subs.unsubscribe();
     const div = this.elementRef.nativeElement;
     div.onmouseover = null;
     div.onmouseout = null;

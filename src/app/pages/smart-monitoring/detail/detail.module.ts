@@ -7,7 +7,7 @@ import {CommonModule} from '@angular/common';
 import {DetailComponent} from './detail.component';
 import {RouterModule} from '@angular/router';
 import {DetailRoutes} from './detail.routing';
-import {TranslateModule} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatDividerModule, MatExpansionModule, MatTooltipModule, MatCardModule } from '@angular/material';
 import {HighchartsChartModule} from 'highcharts-angular';
 import {ChartModule} from '../lib/chart/chart.module';
@@ -42,7 +42,7 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     LastAlertsModule,
     NoDataModule,
     DialogModule
-  ]
+  ],
 })
 export class DetailModule {
 }
