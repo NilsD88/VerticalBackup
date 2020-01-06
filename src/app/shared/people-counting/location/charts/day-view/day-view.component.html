@@ -6,5 +6,6 @@
         <mat-button-toggle value="year">Year</mat-button-toggle>
     </mat-button-toggle-group>
 </div>
-<div [hidden]="!assets?.length || chartLoading" id="store-stacked-column-counter"></div>
-<pxs-loader *ngIf="!assets?.length || chartLoading"></pxs-loader>
+<div [hidden]="chartLoading || loadingError" id="day-view-chart-container"></div>
+<pxs-loader *ngIf="chartLoading"></pxs-loader>
+<pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>

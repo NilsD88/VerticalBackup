@@ -15,8 +15,8 @@ export class StairwayPieChartComponent implements OnInit {
   @Input() leaf: IPeopleCountingLocation;
   public titleDay='Day'
   public seriesDay=[];
-  public titleMonth='Month'
-  public seriesMonth=[];
+  public titleWeek='Month'
+  public seriesWeek=[];
   public titleAll='All'
   public seriesAll =[];
   public height = '400';
@@ -36,7 +36,7 @@ export class StairwayPieChartComponent implements OnInit {
     if(this.leaf){
     this.generateDummyData();
     this.getDataForToday();
-    this.getDataForMonth();
+    this.getDataForWeek();
     this.getAllData();
     }
   }
@@ -74,12 +74,12 @@ export class StairwayPieChartComponent implements OnInit {
 
   }
 
-  getDataForMonth(){
+  getDataForWeek(){
 
-    let startMonth = moment().startOf('month');
+    let startWeek = moment().startOf('isoWeek');
     let currentTimeStamp = moment();
    
-    this.seriesMonth = [];
+    this.seriesWeek = [];
      
 
 
@@ -89,14 +89,14 @@ export class StairwayPieChartComponent implements OnInit {
     
       asset.series.forEach(serie => {
         
-        if (moment(serie.timestamp).isSameOrAfter(startMonth)&& moment(serie.timestamp).isSameOrBefore(currentTimeStamp) ) {
+        if (moment(serie.timestamp).isSameOrAfter(startWeek)&& moment(serie.timestamp).isSameOrBefore(currentTimeStamp) ) {
 
          tempCount+=serie.valueIn;
          
         }
 
       })
-      this.seriesMonth.push({name: asset.name, y: tempCount})
+      this.seriesWeek.push({name: asset.name, y: tempCount})
       
       });
 

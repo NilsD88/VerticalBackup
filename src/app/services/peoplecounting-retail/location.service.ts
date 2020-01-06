@@ -27,7 +27,7 @@ export class PeopleCountingRetailLocationService extends PeopleCountingLocationS
       const url = `${environment.baseUrl}/location/locationtrees?org_id=1&module=${MODULE_NAME}`;
       return this.http.get < IPeopleCountingLocation[] > (url);
     }
-    
+
     public getLocationById(id: string): Observable < IPeopleCountingLocation > {
       const GET_LOCATION_BY_ID = gql `
               query findLocationById($id: Long!) {

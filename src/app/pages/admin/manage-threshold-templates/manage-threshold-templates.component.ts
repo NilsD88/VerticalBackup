@@ -1,4 +1,5 @@
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { SubSink } from 'subsink';
+import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {isNullOrUndefined} from 'util';
@@ -16,7 +17,7 @@ import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.com
   templateUrl: './manage-threshold-templates.component.html',
   styleUrls: ['./manage-threshold-templates.component.scss']
 })
-export class ManageThresholdTemplatesComponent implements OnInit {
+export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
 
   public thresholdTemplateFormGroup: FormGroup;
   public thresholdTemplate: IThresholdTemplate;
@@ -24,6 +25,7 @@ export class ManageThresholdTemplatesComponent implements OnInit {
   public editMode = false;
   public fromPopup = false;
 
+  private subs = new SubSink();
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
@@ -228,24 +230,28 @@ export class ManageThresholdTemplatesComponent implements OnInit {
 
   public saveThresholdTemplate() {
     if (this.editMode) {
-      this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
-        (data) => {
-          this.goToManageThresholdTemplate();
-        },
-        (error) => {
-          console.error(error);
-          this.checkIfNameAlreadyExistAndDisplayDialog(error);
-        }
+      this.subs.add(
+        this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
+          () => {
+            this.goToManageThresholdTemplate();
+          },
+          (error) => {
+            console.error(error);
+            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          }
+        )
       );
     } else {
-      this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
-        (result) => {
-          this.createThresholdTemplateCallback(result);
-        },
-        (error) => {
-          console.error(error);
-          this.checkIfNameAlreadyExistAndDisplayDialog(error);
-        }
+      this.subs.add(
+        this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
+          (result) => {
+            this.createThresholdTemplateCallback(result);
+          },
+          (error) => {
+            console.error(error);
+            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          }
+        )
       );
     }
   }
@@ -277,6 +283,10 @@ export class ManageThresholdTemplatesComponent implements OnInit {
         });
       }
     }
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

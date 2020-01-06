@@ -2,8 +2,8 @@ import { InventoryLocationsModule } from './../../../../../../projects/ngx-proxi
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
-import { PeopleCountingRetailInventoryLocationsRoutes } from './inventory-locations.routing';
-import { PeopleCountingRetailInventoryLocationsComponent } from './inventory-locations.component';
+import { StairwayToHealthInventoryLocationsRoutes } from './inventory-locations.routing';
+import { StairwayToHealthInventoryLocationsComponent } from './inventory-locations.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMatDrpModule } from 'ngx-mat-daterange-picker';
 import { TranslateModule } from '@ngx-translate/core';
@@ -18,7 +18,7 @@ import { LocationTileModule } from 'projects/ngx-proximus/src/lib/location-tile/
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(PeopleCountingRetailInventoryLocationsRoutes),
+    RouterModule.forChild(StairwayToHealthInventoryLocationsRoutes),
     FormsModule,
     ReactiveFormsModule,
     NgxMatDrpModule,
@@ -40,8 +40,8 @@ import { LocationTileModule } from 'projects/ngx-proximus/src/lib/location-tile/
     MapModule,
     LocationTileModule
   ],
-  declarations: [PeopleCountingRetailInventoryLocationsComponent],
-  exports: [PeopleCountingRetailInventoryLocationsComponent]
+  declarations: [StairwayToHealthInventoryLocationsComponent],
+  exports: [StairwayToHealthInventoryLocationsComponent]
 })
-export class PeopleCountingRetailInventoryLocationsModule {
+export class StairwayToHealthInventoryLocationsModule {
 }

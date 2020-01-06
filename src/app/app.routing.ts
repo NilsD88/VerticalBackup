@@ -20,13 +20,14 @@ export class PublicAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
     });
     return true;
     */
+
     try {
       this.sharedService.user = new User(await this.authService.isLoggedIn());
       if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
@@ -53,7 +54,7 @@ export class UserAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
@@ -99,13 +100,14 @@ export class HomeUserAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
     });
     return true;
     */
+    
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       const modules = this.sharedService.user.modules;
@@ -165,7 +167,7 @@ export class AdminAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
@@ -309,7 +311,6 @@ export const AppRoutes: Routes = [
         path: 'stairwaytohealth',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
-        
       },
       {
         path: 'admin',

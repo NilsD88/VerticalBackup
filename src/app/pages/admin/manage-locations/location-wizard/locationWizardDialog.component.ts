@@ -6,7 +6,8 @@ import {
   OnInit,
   ChangeDetectorRef,
   Inject,
-  Optional
+  Optional,
+  OnDestroy
 } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
@@ -24,7 +25,6 @@ import {
   NewLocationService
 } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -33,7 +33,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./location-wizard.component.scss']
 })
 
-export class LocationWizardDialogComponent extends LocationWizardComponent implements OnInit {
+export class LocationWizardDialogComponent extends LocationWizardComponent implements OnInit, OnDestroy {
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     @Optional() public dialogRef: MatDialogRef < LocationWizardComponent > ,
@@ -64,10 +64,16 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
   }
 
    createLocation() {
-    this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
-      if (location) {
-        this.dialogRef.close(location);
-      }
-    });
+    this.subs.add(
+      this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
+        if (location) {
+          this.dialogRef.close(location);
+        }
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
   }
 }

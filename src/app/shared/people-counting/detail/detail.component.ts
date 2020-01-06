@@ -1,9 +1,10 @@
+import { SubSink } from 'subsink';
 import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { LogsService } from './../../../services/logs.service';
 import {cloneDeep} from 'lodash';
 import {NewAssetService} from 'src/app/services/new-asset.service';
 import {SharedService} from 'src/app/services/shared.service';
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
@@ -25,14 +26,12 @@ const canvg = require('canvg');
   styleUrls: ['./detail.component.scss']
 })
 
-export class PeopleCountingDetailComponent implements OnInit {
+export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('myChart', {static: false}) myChart;
   @ViewChild('myAggregatedValues', {static: false}) myAggregatedValues;
 
   public asset: IAsset;
-  private moduleName: string;
-
   public chartLoading = false;
   public chartData$ = new Subject<any>();
   public chartData = [];
@@ -48,6 +47,9 @@ export class PeopleCountingDetailComponent implements OnInit {
     sensorType: string;
     value: number;
   }[] = [];
+
+  private moduleName: string;
+  private subs = new SubSink();
 
   constructor(
     public activeRoute: ActivatedRoute,
@@ -78,16 +80,18 @@ export class PeopleCountingDetailComponent implements OnInit {
 
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
-        this.newAssetService.getAssetDetailById(params.id).subscribe(
-          (asset) => {
-            this.asset = asset;
-            this.changeDetectorRef.detectChanges();
-            this.init();
-          },
-          (error) => {
-            console.log(error);
-            this.router.navigate(['/error/404']);
-          }
+        this.subs.add(
+          this.newAssetService.getAssetDetailById(params.id).subscribe(
+            (asset) => {
+              this.asset = asset;
+              this.changeDetectorRef.detectChanges();
+              this.init();
+            },
+            (error) => {
+              console.log(error);
+              this.router.navigate(['/error/404']);
+            }
+          )
         );
       }
     });
@@ -95,74 +99,78 @@ export class PeopleCountingDetailComponent implements OnInit {
 
   private init() {
     this.getLastAlerts();
-    this.getChartData(this.chartData$).subscribe(
-      async things => {
-        console.log('subscri');
-        const chartData = [];
-        const aggregatedValues = [];
-
-        // Get the translation of each label
-        for (const thing of things) {
-          for (const sensor of thing.sensors) {
-
-            let labelTranslation;
-            if ((sensor.sensorDefinition || {}).name) {
-              labelTranslation = sensor.sensorDefinition.name;
-            } else {
-              labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
-              if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-                labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
-              }
-            }
-
-            // START STANDARD DEVIATION
-            if (this.currentFilter.interval !== 'ALL') {
-              const filter = {
-                deveui: thing.devEui,
-                sensortypeid: sensor.sensorType.id,
-                from: this.currentFilter.from,
-                to: this.currentFilter.to,
-                interval: this.currentFilter.interval,
-              };
-              try {
-                const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
-                aggregatedValues.push({
-                    label: labelTranslation,
-                    series: sensor.series,
-                    standardDeviation: (standardDeviation) ? standardDeviation.value : null,
-                    postfix: sensor.sensorType.postfix
-                });
-              } catch (error) {
-                console.log(error);
-              }
-            }
-            // END STANDARD DEVIATION
-
-            chartData.push({
-              label: labelTranslation,
-              sensorId: sensor.id,
-              sensorTypeId: sensor.sensorType.id,
-              sensorDefinition: sensor.sensorDefinition,
-              series: sensor.series,
-            });
-          }
+    this.subs.add(
+      this.getChartData(this.chartData$).subscribe(
+        this.afterGetChartData,
+        error => {
+          this.chartData = [0];
+          this.myAggregatedValues = [0];
+          this.chartLoading = false;
+          this.changeDetectorRef.detectChanges();
+          console.error(error);
         }
-        this.chartData = chartData;
-        this.chartLoading = false;
-        this.changeDetectorRef.detectChanges();
-        // STANDARD DEVIATIONS
-        this.aggregatedValues = aggregatedValues;
-      },
-      error => {
-        this.chartData = [0];
-        this.myAggregatedValues = [0];
-        this.chartLoading = false;
-        this.changeDetectorRef.detectChanges();
-      }
+      )
     );
     this.chartData$.next(this.currentFilter);
   }
 
+
+  private async afterGetChartData(things) {
+    const chartData = [];
+    const aggregatedValues = [];
+
+    // Get the translation of each label
+    for (const thing of things) {
+      for (const sensor of thing.sensors) {
+
+        let labelTranslation;
+        if ((sensor.sensorDefinition || {}).name) {
+          labelTranslation = sensor.sensorDefinition.name;
+        } else {
+          labelTranslation = await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise();
+          if (labelTranslation.indexOf('SENSORTYPES') > -1) {
+            labelTranslation = this.upperCaseFirst(sensor.sensorType.name);
+          }
+        }
+
+        // START STANDARD DEVIATION
+        if (this.currentFilter.interval !== 'ALL') {
+          const filter = {
+            deveui: thing.devEui,
+            sensortypeid: sensor.sensorType.id,
+            from: this.currentFilter.from,
+            to: this.currentFilter.to,
+            interval: this.currentFilter.interval,
+          };
+          try {
+            const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
+            aggregatedValues.push({
+                label: labelTranslation,
+                series: sensor.series,
+                standardDeviation: (standardDeviation) ? standardDeviation.value : null,
+                postfix: sensor.sensorType.postfix
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        // END STANDARD DEVIATION
+
+        chartData.push({
+          label: labelTranslation,
+          sensorId: sensor.id,
+          sensorTypeId: sensor.sensorType.id,
+          sensorDefinition: sensor.sensorDefinition,
+          series: sensor.series,
+        });
+      }
+    }
+    this.chartData = chartData;
+    this.chartLoading = false;
+    this.changeDetectorRef.detectChanges();
+    // STANDARD DEVIATIONS
+    this.aggregatedValues = aggregatedValues;
+  }
 
   public updateChartData(options: { interval?: string; from?: number; to?: number; }) {
     const interval = options.interval ? options.interval as Intervals : this.currentFilter.interval as Intervals;
@@ -292,9 +300,11 @@ export class PeopleCountingDetailComponent implements OnInit {
   }
 
   private getLastAlerts() {
-    this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
-      this.asset.alerts = alerts;
-    });
+    this.subs.add(
+      this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
+        this.asset.alerts = alerts;
+      })
+    );
   }
 
   private getChartData(request: Observable<any>) {
@@ -320,6 +330,10 @@ export class PeopleCountingDetailComponent implements OnInit {
 
   private async getTranslation(label: string) {
     return await (this.translateService.get(label).toPromise());
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

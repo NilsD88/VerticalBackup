@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NewLocationService } from 'src/app/services/new-location.service';
@@ -8,7 +9,7 @@ import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon
 import { GeoJsonObject } from 'geojson';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
-import { Subject, of, Subscription } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { findLocationById } from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
@@ -34,7 +35,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
-  private subscriptions: Subscription[] = [];
+  private subs = new SubSink();
 
   currentMap: Map;
   center: IGeolocation;
@@ -84,12 +85,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       })
     );
 
-    this.subscriptions.push(assetsRequestSourcePipe.subscribe(
-      (data: IAsset[]) => {
-        this.markers = [];
-        this.assets = data;
-        this.populateMarkersWithAssets();
-      })
+    this.subs.add(
+      assetsRequestSourcePipe.subscribe(
+        (data: IAsset[]) => {
+          this.markers = [];
+          this.assets = data;
+          this.populateMarkersWithAssets();
+        }
+      )
     );
 
     // By default, center with Proximus location
@@ -119,7 +122,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     if (this.rootLocation) {
       this.checkIfSelectedLocation();
     } else {
-      this.subscriptions.push(
+      this.subs.add(
         this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
           this.rootLocation = {
             id: null,
@@ -404,6 +407,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subs.unsubscribe();
   }
 }

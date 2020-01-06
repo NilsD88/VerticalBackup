@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
-import {PeopleCountingRetailInventoryLocationsComponent} from './inventory-locations.component';
+import {StairwayToHealthInventoryLocationsComponent} from './inventory-locations.component';
 
 
-export const PeopleCountingRetailInventoryLocationsRoutes: Routes = [
+export const StairwayToHealthInventoryLocationsRoutes: Routes = [
   {
     path: '',
-    component: PeopleCountingRetailInventoryLocationsComponent
+    component: StairwayToHealthInventoryLocationsComponent
   },
 ];
