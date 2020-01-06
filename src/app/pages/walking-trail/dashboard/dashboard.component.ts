@@ -99,7 +99,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         moment().startOf('isoWeek').valueOf(),
       ).subscribe(
         (result) => {
-          console.log(result);
           leafs.forEach(leaf => {
             const leafIndex = result.findIndex((x => x.id === leaf.id));
             if (leafIndex > -1) {
@@ -110,7 +109,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
           });
           this.leafs = leafs;
           this.currentLeafs = cloneDeep(this.leafs);
-          console.log(this.currentLeafs);
           this.changeDetectorRef.detectChanges();
         }
       ),

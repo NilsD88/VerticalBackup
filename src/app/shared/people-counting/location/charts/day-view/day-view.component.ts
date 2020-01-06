@@ -1,9 +1,7 @@
+import { StairwayToHealthAssetService } from './../../../../../services/stairway-to-health/asset.service';
+import { PeopleCountingRetailAssetService } from './../../../../../services/peoplecounting-retail/asset.service';
 import { SubSink } from 'subsink';
 import { IPeopleCountingLocationSerie } from './../../../../../models/peoplecounting/location.model';
-import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
-import {
-  cloneDeep
-} from 'lodash';
 import {
   Component,
   OnInit,
@@ -22,11 +20,9 @@ import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
-import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { allIntervalBetween } from 'src/app/shared/utils';
 import {uniqBy, orderBy} from 'lodash';
@@ -46,20 +42,21 @@ require('highcharts/modules/exporting')(Highcharts);
 require('highcharts/modules/export-data')(Highcharts);
 
 @Component({
-  selector: 'pvf-peoplecounting-stacked-column',
-  templateUrl: './stacked-column.component.html',
-  styleUrls: ['./stacked-column.component.scss']
+  selector: 'pvf-peoplecounting-day-view',
+  templateUrl: './day-view.component.html',
+  styleUrls: ['./day-view.component.scss']
 })
-export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
+export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
   @Input() assetUrl: string;
-  @Input() assetService: WalkingTrailAssetService ;
+  @Input() assetService: PeopleCountingRetailAssetService | StairwayToHealthAssetService;
   @Input() assetColors: string[];
 
   public chartData$ = new Subject<any>();
   public chartLoading = false;
+  public loadingError = false;
   public chart: any;
   public chartOptions: any;
   public locale: string;
@@ -76,7 +73,6 @@ export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private translateService: TranslateService,
     private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog,
   ) {}
 
 
@@ -90,10 +86,11 @@ export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
     this.initChart();
     this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (assets: IPeopleCountingAsset[]) => {
-        this.updateChart(assets);
-      }
+        if (!this.loadingError) {
+          this.updateChart(assets);
+        }
+      },
     );
-
   }
 
   public periodOnChange(event = null) {
@@ -215,7 +212,7 @@ export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
 
   private initChart() {
     try {
-      this.chart = Highcharts.chart('store-stacked-column-counter', this.chartOptions);
+      this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
     } catch (error) {
       console.log(error);
     }
@@ -279,12 +276,14 @@ export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
     this.chartOptions.xAxis.categories = categories;
     this.chartLoading = false;
 
+
+
     try {
-      this.chart = Highcharts.chart('store-stacked-column-counter', this.chartOptions);
+      this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
     } catch (error) {
       this.chartOptions.series = [];
       this.chartOptions.xAxis.categories = [];
-      this.chart = Highcharts.chart('store-stacked-column-counter', this.chartOptions);
+      this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
       console.log(error);
     }
   }
@@ -295,27 +294,24 @@ export class StackedColumnComponent implements OnInit, OnChanges, OnDestroy {
       debounceTime(500),
       switchMap(filter => {
         this.chartLoading = true;
+        this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-
         // REAL DATA
+        console.log(this.assets.map(asset => asset.id));
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError(() => {
-          this.dialog.open(DialogComponent, {
-            data: {
-              title: 'Sorry, an error has occured!',
-              message: 'An error has occured during getting the sensor data'
-            },
-            minWidth: '320px',
-            maxWidth: '400px',
-            width: '100vw',
-            maxHeight: '80vh',
-          });
+          this.chartLoading = false;
+          this.loadingError = true;
           return of([]);
         }));
       })
     );
+  }
+
+  public tryAgain() {
+    this.chartData$.next(this.currentFilter);
   }
 
   ngOnDestroy() {

@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-7">
-      <pvf-peoplecounting-stacked-column [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-stacked-column>
+      <pvf-peoplecounting-day-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-day-view>
     </div>
     <div class="col-md-5">
-     <pvf-summary [leaf]="leaf" ></pvf-summary>
+     <pvf-peoplecounting-summary [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-summary>
     </div>
   </div>
 </div>

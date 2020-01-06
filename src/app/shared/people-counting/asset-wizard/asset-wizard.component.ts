@@ -47,7 +47,6 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    this.init();
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
@@ -55,6 +54,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
         if (this.asset.module.indexOf('PEOPLE_COUNTING') < 0) {
           this.router.navigate(['/error/404']);
         }
+        this.init();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
       } catch (err) {

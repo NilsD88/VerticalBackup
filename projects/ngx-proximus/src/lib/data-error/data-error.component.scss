@@ -1,0 +1,10 @@
+@import "variables.scss";
+
+.container {
+    margin-top: 1em;
+    text-align: center;
+    color: $sub;
+    button {
+        margin-top: 10px;
+    }
+}

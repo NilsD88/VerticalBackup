@@ -21,11 +21,9 @@ import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { IPeopleCountingAsset, IPeopleCountingAssetSerie } from 'src/app/models/peoplecounting/asset.model';
+import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
-import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
 declare global {
@@ -57,6 +55,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
   public chartData$ = new Subject<any>();
   public chartLoading = false;
+  public loadingError = false;
   public chart: any;
   public chartOptions: any;
   public locale: string;
@@ -72,8 +71,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private translateService: TranslateService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
 
@@ -87,7 +85,9 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
     this.initChart();
     this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (assets: IPeopleCountingAsset[]) => {
-        this.updateChart(assets);
+        if (!this.loadingError) {
+          this.updateChart(assets);
+        }
       }
     );
 
@@ -171,6 +171,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateChart(assets: IPeopleCountingAsset[]) {
 
+    console.log(assets);
     this.currentMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
@@ -262,25 +263,22 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
       debounceTime(500),
       switchMap(filter => {
         this.chartLoading = true;
+        this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError(() => {
-          this.dialog.open(DialogComponent, {
-            data: {
-              title: 'Sorry, an error has occured!',
-              message: 'An error has occured during getting the sensor data'
-            },
-            minWidth: '320px',
-            maxWidth: '400px',
-            width: '100vw',
-            maxHeight: '80vh',
-          });
+          this.chartLoading = false;
+          this.loadingError = true;
           return of([]);
         }));
       })
     );
+  }
+
+  public tryAgain() {
+    this.chartData$.next(this.currentFilter);
   }
 
   ngOnDestroy() {

@@ -1,5 +1,6 @@
+import { SubSink } from 'subsink';
 import { WalkingTrailLocationService } from './../../../../../services/walkingtrail/location.service';
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {uniq} from 'lodash';
 
@@ -13,6 +14,8 @@ import { findLeafLocations } from '../../../utils';
 import { 
   IPeopleCountingLocation,
 } from 'src/app/models/peoplecounting/location.model';
+import { Subject, Observable, of } from 'rxjs';
+import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 
 declare global {
   interface Window {
@@ -35,20 +38,27 @@ require('highcharts/modules/export-data')(Highcharts);
   templateUrl: './trails-benchmark.component.html',
   styleUrls: ['./trails-benchmark.component.scss']
 })
-export class TrailsBenchmarkComponent implements OnInit, OnChanges {
+export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() parentLocation: IPeopleCountingLocation;
 
-  public leafs: IPeopleCountingLocation[];
+  public leafs: IPeopleCountingLocation[] = [];
   public chart: any;
   public chartOptions: any;
   public locale: string;
+
+  public chartData$ = new Subject<any>();
+  public chartLoading = false;
+  public loadingError = false;
+
+  private subs = new SubSink();
 
   constructor(
     private translateService: TranslateService,
     private locationService: WalkingTrailLocationService,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
 
@@ -67,12 +77,30 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
 
     this.initChartOptions();
     this.initChart();
+    this.subs.sink = this.getChartData(this.chartData$).subscribe(
+      (locations: IPeopleCountingLocation[]) => {
+        if (!this.loadingError) {
+          console.log('trails bench has no error getting data');
+          this.updateChart(locations);
+        } else {
+          console.log('trails bench has an error getting data');
+        }
+      }
+    );
+    if ((this.leafs || []).length) {
+      this.chartData$.next();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.parentLocation) {
       if (changes.parentLocation.currentValue !== changes.parentLocation.previousValue) {
-        this.updateChart();
+        const leafs: IPeopleCountingLocation[] = [];
+        findLeafLocations(this.parentLocation, leafs);
+        this.leafs = leafs;
+        if ((this.leafs || []).length) {
+          this.chartData$.next();
+        }
       }
     }
   }
@@ -161,49 +189,37 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
     }
   }
 
-  private async updateChart() {
+  private async updateChart(locations: IPeopleCountingLocation[]) {
 
     if (!this.parentLocation) {
+      this.chartLoading = false;
       return;
     }
-
-    const leafs: IPeopleCountingLocation[] = [];
-    findLeafLocations(this.parentLocation, leafs);
-
-    this.leafs = await this.locationService.getLocationsDataByIds(
-      leafs.map(leaf => leaf.id),
-      'HOURLY',
-      moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
-      moment().startOf('isoWeek').valueOf()
-    ).toPromise();
 
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
-    if ((this.leafs || []).length < 1) {
-      return;
-    }
-
-    const colors = randomColor({count: this.leafs.length});
+    const colors = randomColor({count: locations.length});
     const data = [];
     const xAxisCategories = [];
     this.chartOptions.colors = [];
 
-    for (const leaf of this.leafs) {
+    for (const location of locations) {
       data.push({
-        name: leaf.name,
-        id: leaf.id,
-        data: leaf.series.map(element => element.valueIn)
+        name: location.name,
+        id: location.id,
+        data: location.series.map(element => element.valueIn)
       });
 
       xAxisCategories.push(
-        ...leaf.series.map(element => this.datePipe.transform(element.timestamp, 'EEEE HH:mm', null, this.locale))
+        ...location.series.map(element => this.datePipe.transform(element.timestamp, 'EEEE HH:mm', null, this.locale))
       );
     }
 
     this.chartOptions.series = data;
     this.chartOptions.xAxis.categories = uniq(xAxisCategories);
     this.chartOptions.colors = colors;
+    this.chartLoading = false;
 
     try {
       this.chart = Highcharts.chart('trails-benchmark-chart-container', this.chartOptions);
@@ -214,6 +230,37 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges {
       this.chart = Highcharts.chart('trails-benchmark-chart-container', this.chartOptions);
       console.log(error);
     }
+  }
+
+  private getChartData(request: Observable<null>): Observable<IPeopleCountingLocation[]> {
+    return request.pipe(
+      debounceTime(500),
+      switchMap(() => {
+        this.chartLoading = true;
+        this.loadingError = false;
+        this.changeDetectorRef.detectChanges();
+        // REAL DATA
+        return this.locationService.getLocationsDataByIds(
+          this.leafs.map(leaf => leaf.id),
+          'HOURLY',
+          moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
+          moment().startOf('isoWeek').valueOf()
+        ).pipe(catchError(() => {
+          console.log('trails bench error getting data');
+          this.chartLoading = false;
+          this.loadingError = true;
+          return of([]);
+        }));
+      })
+    );
+  }
+
+  public tryAgain() {
+    this.chartData$.next();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

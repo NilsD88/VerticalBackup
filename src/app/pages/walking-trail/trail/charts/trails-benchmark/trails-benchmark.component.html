@@ -1,3 +1,4 @@
 <h2 style="text-align: center;">Benchmark of the last week</h2>
-<div [hidden]="!leafs" id="trails-benchmark-chart-container"></div>
-<pxs-loader *ngIf="!leafs"></pxs-loader>
+<div [hidden]="chartLoading || loadingError" id="trails-benchmark-chart-container"></div>
+<pxs-loader *ngIf="chartLoading"></pxs-loader>
+<pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>

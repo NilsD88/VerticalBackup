@@ -7,5 +7,6 @@
         <pxs-icon icon="chevron-right"></pxs-icon>
     </button>    
 </div>
-<div [hidden]="!leaf" id="calendar-view-chart-container"></div>
-<pxs-loader *ngIf="!leaf"></pxs-loader>
+<div [hidden]="chartLoading || loadingError" id="calendar-view-chart-container"></div>
+<pxs-loader *ngIf="chartLoading"></pxs-loader>
+<pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>

@@ -9,12 +9,12 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
-const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH';
 
 @Injectable({
     providedIn: 'root'
 })
-export class PeopleCountingRetailLocationService extends PeopleCountingLocationService {
+export class StairwayToHealthLocationService extends PeopleCountingLocationService {
 
     constructor(public http: HttpClient, public apollo: Apollo) {
         super(

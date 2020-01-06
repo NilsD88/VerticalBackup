@@ -24,12 +24,14 @@
           <div>
             <pxs-icon icon="globe" class="location"></pxs-icon>
             {{location.name}}
-            <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent">
-              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
+            <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent" [ngSwitch]="location.module">
+              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
                 [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
-              <pxs-icon *ngIf="location.module === 'PEOPLE_COUNTING_RETAIL'" icon="edit"
+              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_RETAIL'" icon="edit"
                 [routerLink]="['/private/peoplecounting/store/update/'+location.id]"></pxs-icon>
-              <pxs-icon *ngIf="location.module === 'SMART_MONITORING'" icon="edit"
+              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'" icon="edit"
+                [routerLink]="['/private/peoplecounting/store/update/'+location.id]"></pxs-icon>
+              <pxs-icon *ngSwitchCase="'SMART_MONITORING'" icon="edit"
                 [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
             </button>
             <button *ngIf="admin && (location.children.length === 0 || !location.children)" mat-icon-button
