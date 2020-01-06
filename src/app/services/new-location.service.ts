@@ -25,7 +25,6 @@ import gql from 'graphql-tag';
 import {
   environment
 } from 'src/environments/environment';
-import { MOCK_LOCATIONS_CUSTOM_FIELDS } from '../mocks/newlocations';
 
 
 @Injectable({
@@ -33,7 +32,10 @@ import { MOCK_LOCATIONS_CUSTOM_FIELDS } from '../mocks/newlocations';
 })
 export class NewLocationService {
 
-  constructor(public http: HttpClient, public apollo: Apollo) {}
+  constructor(
+    public http: HttpClient,
+    public apollo: Apollo,
+  ) {}
 
 
   // START APOLLO
@@ -369,9 +371,10 @@ export class NewLocationService {
   // END APOLLO
 
   public getLocationsTree(): Observable < ILocation[] > {
-    const url = `${environment.baseUrl}/location/locationtrees?org_id=1`;
+    const url = `${environment.baseUrl}/location/locationtrees`;
     return this.http.get < ILocation[] > (url);
   }
+
 
   /*
   public getLocations(filter: any = null): Observable<ILocation[]>  {
