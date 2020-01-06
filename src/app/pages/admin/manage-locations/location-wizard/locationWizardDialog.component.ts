@@ -25,7 +25,6 @@ import {
   NewLocationService
 } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
