@@ -1,5 +1,6 @@
 
 
+
 import { Routes } from '@angular/router';
 
 export const StairwayToHealth: Routes = [
@@ -12,7 +13,7 @@ export const StairwayToHealth: Routes = [
     path: 'dashboard',
     children: [{
       path: '',
-      loadChildren: () => import('./stairway/chart/stairway-pie-chart/stairway-pie-chart.module').then(m => m.StairwayPieChartModule)
+      loadChildren: () => import('./stairway/chart/stairway-count-chart/stairway-count-chart.module').then(m => m.StairwayCountChartModule)
     }]
   },
   
