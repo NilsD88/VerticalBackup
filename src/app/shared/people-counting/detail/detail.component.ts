@@ -101,7 +101,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
     this.getLastAlerts();
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(
-        this.afterGetChartData,
+        (things) => this.afterGetChartData(things),
         error => {
           this.chartData = [0];
           this.myAggregatedValues = [0];
