@@ -13,7 +13,7 @@ export const StairwayToHealth: Routes = [
     path: 'dashboard',
     children: [{
       path: '',
-      loadChildren: () => import('./stairway/chart/stairway-count-chart/stairway-count-chart.module').then(m => m.StairwayCountChartModule)
+      loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
     }]
   },
   {

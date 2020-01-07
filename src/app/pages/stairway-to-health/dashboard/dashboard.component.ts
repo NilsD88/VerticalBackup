@@ -1,3 +1,4 @@
+import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
 import { PeopleCountingAssetService } from './../../../services/peoplecounting/asset.service';
 import {
   cloneDeep
@@ -8,7 +9,8 @@ import {
 import {
   Component,
   OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnDestroy
 } from '@angular/core';
 import {
   findLeafLocations
@@ -28,6 +30,7 @@ import {
   IPeopleCountingLocation,
   IPeopleCountingLocationSerie
 } from 'src/app/models/peoplecounting/location.model';
+import { SubSink } from 'subsink';
 
 
 moment.locale('nl-be');
@@ -39,7 +42,7 @@ mTZ();
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   public rootLocation: IPeopleCountingLocation;
   public leafs: IPeopleCountingLocation[];
@@ -47,10 +50,12 @@ export class DashboardComponent implements OnInit {
   public lastYearLeafs: IPeopleCountingLocation[];
   public currentLeafs: IPeopleCountingLocation[];
   public listStyleValue = 'map';
-  public leafUrl = '/private/peoplecounting/store';
+  public leafUrl = '/private/stairwaytohealth/place';
+
+  private subs = new SubSink();
 
   constructor(
-    private locationService: PeopleCountingLocationService,
+    private locationService: StairwayToHealthLocationService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
@@ -65,8 +70,6 @@ export class DashboardComponent implements OnInit {
       children: await this.locationService.getLocationsTree().toPromise()
     };
     this.changeLocation(this.rootLocation);
-
-    const oiazej = 2;
   }
 
   public decrease() {
@@ -85,60 +88,36 @@ export class DashboardComponent implements OnInit {
   }
 
   public changeLocation(location: IPeopleCountingLocation) {
-    const leafs = [];
-    findLeafLocations(location, leafs);
+    const leafs: IPeopleCountingLocation[] = location.children || [];
     const lastYearLeafs = cloneDeep(leafs);
-
-    // Generate colors of trails
     this.leafColors = generateLeafColors(leafs);
 
-    // Generate past week data
-    // TODO: get the past week data with day interval for each location (location.series)
-    generatePastWeekOfData(leafs);
-    this.leafs = leafs;
-
-    // Generate past year data
-    generatePastYearOfData(lastYearLeafs);
-    // TODO: get the past year data with month interval for each location(location.series)
-    this.lastYearLeafs = lastYearLeafs;
-
-    this.currentLeafs = cloneDeep(this.leafs);
-    this.changeDetectorRef.detectChanges();
+    this.subs.add(
+      // Get the past year data with month interval for each leafs
+      this.locationService.getLocationsDataByIds(
+        leafs.map(leaf => leaf.id),
+        'MONTHLY',
+        moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      ).subscribe(
+        (result) => {
+          lastYearLeafs.forEach(leaf => {
+            const leafIndex = result.findIndex((x => x.id === leaf.id));
+            if (leafIndex > -1) {
+              leaf.series = result[leafIndex].series;
+            } else {
+              leaf.series = [];
+            }
+          });
+          this.lastYearLeafs = lastYearLeafs;
+          this.changeDetectorRef.detectChanges();
+        }
+      )
+    );
   }
 
-}
-
-
-function generatePastWeekOfData(leafs: IPeopleCountingLocation[]) {
-  leafs.forEach(element => {
-    element.series = generatePastWeekOfDataSeries();
-  });
-}
-
-function generatePastYearOfData(leafs: IPeopleCountingLocation[]) {
-  leafs.forEach(element => {
-    element.series = generatePastYearOfDataSeries();
-  });
-}
-
-function generatePastWeekOfDataSeries(): IPeopleCountingLocationSerie[] {
-  const dataSeries: IPeopleCountingLocationSerie[] = [];
-  for (let index = 0; index < 7; index++) {
-    dataSeries.push({
-      timestamp: moment().startOf('isoWeek').add(index, 'day').valueOf(),
-      valueIn: Math.floor(Math.random() * 101)
-    });
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
-  return dataSeries;
-}
 
-function generatePastYearOfDataSeries(): IPeopleCountingLocationSerie[] {
-  const dataSeries: IPeopleCountingLocationSerie[] = [];
-  for (let index = 0; index < 12; index++) {
-    dataSeries.push({
-      timestamp: moment().subtract(12 - index, 'months').valueOf(),
-      valueIn: Math.floor(Math.random() * 1001)
-    });
-  }
-  return dataSeries;
 }
