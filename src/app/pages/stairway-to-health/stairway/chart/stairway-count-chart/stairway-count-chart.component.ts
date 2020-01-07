@@ -48,12 +48,6 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() chartData: IPeopleCountingLocation[];
- // @Input() filter: IFilterChartData;
- // @Input() loading: boolean;
-
-
-  
- // @Output() updateChartData = new EventEmitter<IFilterChartData>();
   @Output() download = new EventEmitter();
 
   public chart: any;
@@ -68,6 +62,8 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
   }
 
   constructor(private translateService: TranslateService) { 
+
+    //remove this to work with real data
   this.leaf = this.tempTestData;
 
   }
@@ -270,14 +266,8 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
       asset.series.forEach(serie => {
         var timestamp = new Date(serie.timestamp);
         if (moment(serie.timestamp).isSameOrBefore(to) && moment(serie.timestamp).isSameOrAfter(from)) {
-   
-             
-        /* if (this.categoriesX.includes(new Date(moment(serie.timestamp).toDate()).toLocaleTimeString()) && dataArr[this.categoriesX.indexOf(new Date(moment(serie.timestamp).toDate()).toLocaleTimeString())] != undefined)
-            dataArr[this.categoriesX.indexOf(new Date(moment(serie.timestamp).toDate()).toLocaleTimeString())] += serie.valueIn;
-          else*/
             dataArr.push(serie.valueIn);
           this.categoriesX.push(new Date(moment(serie.timestamp).toDate()).toLocaleTimeString());
-          //this.categoriesX = this.categoriesX.filter((item, index) => this.categoriesX.indexOf(item) === index)
         }
 
       })
@@ -419,36 +409,37 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
 
     public intervalChanged(event) {
-     /* this.updateChartData.emit({
-        interval: event.value
-      });
-        */
-
-
+  
         this.updateChartData({
          interval: event.value
-      });
+       });
+
+     
+      
+       switch (this.filter.interval) {
+          case 'MONTHLY':
+             this.getDataByMonth();
+        break;
+          case 'WEEKLY':
+            this.getDataByWeek();
+        break;
+          case 'DAILY':
+            this.getDataByDay();
+        break;
+          case 'HOURLY':
+            this.getDataByHour()
+        break;
+          case 'YEARLY':
+            this.getDataByYear();
+        break;
+    
+}
+
+      
 
 
 
 
-      if(this.filter.interval === 'MONTHLY')
-      {
-        this.getDataByMonth();
-      }
-      else if(this.filter.interval === 'WEEKLY'){
-        this.getDataByWeek();
-
-      }
-      else if(this.filter.interval === 'DAILY'){
-        this.getDataByDay();
-      }
-      else if(this.filter.interval === 'HOURLY'){
-        this.getDataByHour()
-      }
-      else if(this.filter.interval === 'YEARLY'){
-        this.getDataByYear();
-      }
       this.initChartOptions();
       this.initChart();
 
@@ -465,39 +456,32 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
   
     public dateRangeChanged(periodicDuration: PeriodicDuration) {
-    /*  const {
-        interval,
-        from,
-        to
-      } = periodicDuration;
-      this.updateChartData.emit({
-        interval,
-        from,
-        to
-      });*/
-
+   
 
     
 
 
       this.updateChartData(periodicDuration);
-      if(this.filter.interval === 'MONTHLY')
-      {
-        this.getDataByMonth();
-      }
-      else if(this.filter.interval === 'WEEKLY'){
-        this.getDataByWeek();
 
-      }
-      else if(this.filter.interval === 'DAILY'){
-        this.getDataByDay();
-      }
-      else if(this.filter.interval === 'HOURLY'){
-        this.getDataByHour()
-      }
-      else if(this.filter.interval === 'YEARLY'){
-        this.getDataByYear();
-      }
+      switch (this.filter.interval) {
+        case 'MONTHLY':
+           this.getDataByMonth();
+      break;
+        case 'WEEKLY':
+          this.getDataByWeek();
+      break;
+        case 'DAILY':
+          this.getDataByDay();
+      break;
+        case 'HOURLY':
+          this.getDataByHour()
+      break;
+        case 'YEARLY':
+          this.getDataByYear();
+      break;
+  
+}
+
       this.initChartOptions();
       this.initChart();
 
@@ -537,5 +521,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     }
   }
 
+
+  
 
 }
