@@ -20,7 +20,7 @@ export class PublicAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
@@ -54,7 +54,7 @@ export class UserAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
@@ -100,7 +100,7 @@ export class HomeUserAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
@@ -167,7 +167,7 @@ export class AdminAuthGuard implements CanActivate {
       email: 'nicolas.ancel@ordina.be',
       firstName: 'Nicolas',
       lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEAVEN'],
+      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
       roles: ['pxs:iot:localadmin'],
       orgName: 'Ordina',
       impersonation: false
