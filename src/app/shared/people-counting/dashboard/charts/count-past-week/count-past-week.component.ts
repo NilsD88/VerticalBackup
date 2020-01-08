@@ -63,7 +63,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.leafs) {
-      console.log(changes.leaf);
       if (changes.leafs.currentValue && changes.leafs.currentValue !== changes.leafs.previousValue) {
         this.updateChart();
       }
@@ -177,8 +176,6 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
       return;
     }
 
-    console.log(this.leafs);
-
     for (const leaf of this.leafs) {
       const color = (this.leafColors.find(element => element.id === leaf.id) || {})['color'] || randomColor();
       this.chartOptions.series.push({
@@ -187,7 +184,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         color,
         type: 'spline',
         data: leaf.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.valueIn.toFixed(2))];
+          return [serie.timestamp, serie.valueIn ? parseFloat(serie.valueIn.toFixed(2)) : null];
         })
       });
     }

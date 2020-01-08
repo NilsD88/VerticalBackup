@@ -7,14 +7,14 @@ import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/ma
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { RouterModule } from '@angular/router';
 import { createCustomElement } from '@angular/elements';
-import { PeopleCountingRetailMapComponent } from './map.component';
-import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
+import { StairwayToHealthMapComponent } from './map.component';
+import { StairwayToHealthMapPopupComponent } from './popup/popup.component';
 import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
 
 @NgModule({
   declarations: [
-    PeopleCountingRetailMapComponent,
-    PeopleCountingRetailMapPopupComponent
+    StairwayToHealthMapComponent,
+    StairwayToHealthMapPopupComponent
   ],
   imports: [
     CommonModule,
@@ -25,22 +25,21 @@ import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map
     IconModule,
     MatSnackBarModule,
     MatDialogModule,
-    MapDialogModule
   ],
   exports: [
-    PeopleCountingRetailMapComponent,
-    PeopleCountingRetailMapPopupComponent
+    StairwayToHealthMapComponent,
+    StairwayToHealthMapPopupComponent
   ],
   entryComponents: [
-    PeopleCountingRetailMapPopupComponent,
+    StairwayToHealthMapPopupComponent,
     MapDialogComponent
   ]
 })
-export class PeopleCountingRetailMapModule {
+export class StairwayToHealthMapModule {
   constructor(private injector: Injector) {
-    if (!customElements.get('peoplecountingretail-map-popup-element')) {
-      const PeopleCountingRetailMapPopupElement = createCustomElement(PeopleCountingRetailMapPopupComponent, {injector});
-      customElements.define('peoplecountingretail-map-popup-element', PeopleCountingRetailMapPopupElement);
+    if (!customElements.get('stairwaytohealth-map-popup-element')) {
+      const StairwayToHealthMapPopupElement = createCustomElement(StairwayToHealthMapPopupComponent, {injector});
+      customElements.define('stairwaytohealth-map-popup-element', StairwayToHealthMapPopupElement);
     }
   }
 }

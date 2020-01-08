@@ -1,7 +1,8 @@
+import { SubSink } from 'subsink';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { IPointOfAttention } from './../../../../models/point-of-attention.model';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import {cloneDeep} from 'lodash';
@@ -17,14 +18,15 @@ import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.com
   templateUrl: './point-of-attention-wizard.component.html',
   styleUrls: ['./point-of-attention-wizard.component.scss']
 })
-export class PointOfAttentionWizardComponent implements OnInit {
+export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
 
   public pointOfAttention: IPointOfAttention;
-  private originalPointOfAttention: IPointOfAttention;
   public editMode = false;
   public descriptionFormGroup: FormGroup;
-
   public displayLocationExplorer = true;
+
+  private originalPointOfAttention: IPointOfAttention;
+  private subs = new SubSink();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -106,8 +108,8 @@ export class PointOfAttentionWizardComponent implements OnInit {
 
       pointOfAttention.items = this.pointOfAttention.items;
 
-      this.pointOfAttentionService.updatePointOfAttention(pointOfAttention).subscribe(
-        (data) => {
+      this.subs.sink = this.pointOfAttentionService.updatePointOfAttention(pointOfAttention).subscribe(
+        () => {
           this.goToManagePointsOfAttention();
         },
         (error) => {
@@ -145,6 +147,10 @@ export class PointOfAttentionWizardComponent implements OnInit {
 
   public cancelWizard() {
     this.router.navigateByUrl('private/admin/manage-points-of-attention');
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

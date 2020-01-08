@@ -1,22 +1,25 @@
 import { NewSensorService } from './../../../../../../src/app/services/new-sensor.service';
 import { chartTypes, aggregatedValues, InOutValues } from 'src/app/models/g-sensor-definition.model';
-import {Component, OnInit, Optional, Inject} from '@angular/core';
+import { Component, OnInit, Optional, Inject, OnDestroy } from '@angular/core';
 import {MatDialogRef, MatCheckboxChange, MatSnackBar} from '@angular/material';
 import { ISensorDefinition } from 'src/app/models/g-sensor-definition.model';
 import {MAT_DIALOG_DATA} from '@angular/material';
+import { SubSink } from 'subsink';
 
 @Component({
     selector: 'pxs-edit-sensor-popup',
     templateUrl: './edit-sensor-popup.component.html',
     styleUrls: ['./edit-sensor-popup.component.scss']
 })
-export class EditSensorPopupComponent implements OnInit {
+export class EditSensorPopupComponent implements OnInit, OnDestroy {
 
     public chartTypes = chartTypes;
     public aggregatedValues = aggregatedValues;
     public sensorDefinition: ISensorDefinition;
     public loading = false;
     public inOutValues = InOutValues;
+
+    private subs = new SubSink();
 
     constructor(
         @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -70,7 +73,7 @@ export class EditSensorPopupComponent implements OnInit {
     submit() {
         this.loading = true;
         delete (this.sensorDefinition).id;
-        this.newSensorService.updateSensorDefinition(this.data.sensor.id, this.sensorDefinition).subscribe(
+        this.subs.sink = this.newSensorService.updateSensorDefinition(this.data.sensor.id, this.sensorDefinition).subscribe(
             (result) => {
                 this.loading = false;
                 if (result) {
@@ -90,5 +93,9 @@ export class EditSensorPopupComponent implements OnInit {
 
     cancel() {
         this.dialogRef.close(null);
+    }
+
+    ngOnDestroy() {
+        this.subs.unsubscribe();
     }
 }

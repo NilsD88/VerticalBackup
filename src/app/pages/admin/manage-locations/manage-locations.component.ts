@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import { SubSink } from 'subsink';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import { NewLocationService } from 'src/app/services/new-location.service';
 import { ILocation } from 'src/app/models/g-location.model';
 import { ActivatedRoute } from '@angular/router';
@@ -9,10 +10,12 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './manage-locations.component.html',
   styleUrls: ['./manage-locations.component.scss'],
 })
-export class ManageLocationsComponent implements OnInit {
+export class ManageLocationsComponent implements OnInit, OnDestroy{
 
   public rootLocation: ILocation;
   public selectedLocation: ILocation;
+
+  private subs = new SubSink();
 
   constructor(
     private newLocationService: NewLocationService,
@@ -20,13 +23,16 @@ export class ManageLocationsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.activedRoute.params.subscribe(async (params) => {
+    this.subs.sink = this.activedRoute.params.subscribe(async (params) => {
       const selectedLocationId = params.selectedLocationId;
       if (selectedLocationId) {
         this.selectedLocation = await this.newLocationService.getLocationById(selectedLocationId).toPromise();
       }
     });
+  }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

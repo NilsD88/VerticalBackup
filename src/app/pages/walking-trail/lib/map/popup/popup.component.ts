@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
@@ -10,6 +11,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
   styleUrls: ['./popup.component.scss']
 })
 export class WalkingTrailMapPopupComponent extends MapPopupComponent implements OnInit, OnDestroy {
+
   constructor(
     public assetService: NewAssetService,
     public router: Router,
@@ -23,12 +25,14 @@ export class WalkingTrailMapPopupComponent extends MapPopupComponent implements 
   }
 
   getAssetPopupDetail() {
-    this.subscriptions.push(this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
-      this.asset = {
-        ...this.asset,
-        ...asset
-      };
-    }));
+    this.subs.add(
+      this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: IAsset) => {
+        this.asset = {
+          ...this.asset,
+          ...asset
+        };
+      })
+    );
   }
 
   openLocation() {
@@ -37,6 +41,10 @@ export class WalkingTrailMapPopupComponent extends MapPopupComponent implements 
     } else {
       this.router.navigateByUrl(`/private/walkingtrail/trail/${this.location.id}`);
     }
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
   }
 }
 

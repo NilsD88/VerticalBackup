@@ -145,7 +145,7 @@
   </div>
 </mat-menu>
 
-<mat-menu #peopleCounting="matMenu" style="margin-top: 80px;">
+<mat-menu #peopleCounting="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
     <a mat-menu-item [routerLink]="['/private','peoplecounting', 'dashboard']" routerLinkActive="router-link-active">
       Dashboard
@@ -164,7 +164,7 @@
   </div>
 </mat-menu>
 
-<mat-menu #stairwayToHealth="matMenu" style="margin-top: 80px;">
+<mat-menu #stairwayToHealth="matMenu"  class="main-menu-dropdown">
   <div mat-menu-item>
     <a mat-menu-item [routerLink]="['/private','stairwaytohealth', 'dashboard']" routerLinkActive="router-link-active">
       Dashboard
@@ -176,24 +176,10 @@
     </button>
   </div>
   <div mat-menu-item>
-    <a mat-menu-item>
+    <a mat-menu-item [routerLink]="['/private','stairwaytohealth', 'place', 'new']" routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New place</span>
     </a>
-  </div>
-</mat-menu>
-
-<mat-menu #stairwaytohealth="matMenu" style="margin-top: 80px;">
-  <div mat-menu-item>
-    <button mat-menu-item (click)="navigateTo(['/private','stairwaytohealth', 'dashboard'])">
-      Dashboard
-    </button>
-  </div>
-  <div mat-menu-item>
-    <button mat-menu-item>
-      <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">New store</span>
-    </button>
   </div>
 </mat-menu>
 

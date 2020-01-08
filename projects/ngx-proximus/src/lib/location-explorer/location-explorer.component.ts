@@ -1,3 +1,4 @@
+import { SubSink } from 'subsink';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
 import { DeleteConfirmationPopupComponent } from './delete-confirmation-popup/delete-confirmation-popup.component';
@@ -9,7 +10,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
 import { IAsset } from 'src/app/models/g-asset.model';
-import { Subject, Subscription, of } from 'rxjs';
+import { Subject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
@@ -59,7 +60,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   private assetsRequestSource = new Subject();
   private pointsOfAttentionRequestSource = new Subject();
 
-  private subscriptions: Subscription[] = [];
+  private subs = new SubSink();
 
   constructor(
     private newAssetService: NewAssetService,
@@ -98,7 +99,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.subscriptions.push(
+    this.subs.add(
       assetsRequestSourcePipe.subscribe((data: IAsset[]) => {
         this.loadingAssets = false;
         this.currentLocation.assets = data;
@@ -111,7 +112,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
     this.initLocationTree();
 
-    this.subscriptions.push(
+    this.subs.add(
       this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: ILocation[]) => {
         this.searchResults = locations;
       })
@@ -133,7 +134,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   getLocations() {
     this.isDownloading = true;
-    this.subscriptions.push(
+    this.subs.add(
       this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
         this.rootLocation = {
           id: null,
@@ -179,12 +180,14 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   }
 
   private deleteLocation(locationId: string, locationIdToTransferAssets: string = null) {
-    this.newLocationService.deleteLocation(locationId, locationIdToTransferAssets).subscribe((result: boolean) => {
-      this.rootLocation = null;
-      this.selectedLocation = this.currentLocation;
-      this.changeDetectorRef.detectChanges();
-      this.getLocations();
-    });
+    this.subs.add(
+      this.newLocationService.deleteLocation(locationId, locationIdToTransferAssets).subscribe((result: boolean) => {
+        this.rootLocation = null;
+        this.selectedLocation = this.currentLocation;
+        this.changeDetectorRef.detectChanges();
+        this.getLocations();
+      })
+    );
   }
 
 
@@ -290,7 +293,9 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
       leftId,
     };
 
-    this.newLocationService.reorderLocation(location).subscribe();
+    this.subs.add(
+      this.newLocationService.reorderLocation(location).subscribe()
+    );
   }
 
   public onFilterChange() {
@@ -319,7 +324,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subs.unsubscribe();
   }
 
 }

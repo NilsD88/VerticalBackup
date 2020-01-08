@@ -1,5 +1,6 @@
+import { SubSink } from 'subsink';
 import { EditSensorPopupComponent } from './edit-sensor-popup/edit-sensor-popup.component';
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { IThing } from 'src/app/models/g-thing.model';
 import { ISensor } from 'src/app/models/g-sensor.model';
 import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar, MatDialog } from '@angular/material';
@@ -21,7 +22,7 @@ interface IThingEditing extends IThing {
   templateUrl: './list-things.component.html',
   styleUrls: ['./list-things.component.scss']
 })
-export class ListThingsComponent implements OnInit {
+export class ListThingsComponent implements OnInit, OnDestroy {
 
   @Input() admin = true;
   @Input() selectedThings: IThing[];
@@ -42,6 +43,8 @@ export class ListThingsComponent implements OnInit {
   public displayedColumns: string[];
 
   public isLoading = false;
+
+  private subs = new SubSink();
 
   constructor(
     private newThingService: NewThingService,
@@ -119,7 +122,7 @@ export class ListThingsComponent implements OnInit {
     delete thing.editing;
     delete thing.tempName;
 
-    this.newThingService.updateThing(thing).subscribe(
+    this.subs.sink = this.newThingService.updateThing(thing).subscribe(
       res => {
         console.log('HTTP response', res);
       },
@@ -144,5 +147,9 @@ export class ListThingsComponent implements OnInit {
     ];
 
     this.updateDataSource(uniqBy(filterThings, 'id'));
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

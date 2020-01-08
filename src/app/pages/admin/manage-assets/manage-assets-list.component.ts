@@ -1,4 +1,5 @@
-import {Component, OnInit, ViewChild, ChangeDetectorRef} from '@angular/core';
+import { SubSink } from 'subsink';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -12,7 +13,7 @@ import { MatPaginator } from '@angular/material';
   templateUrl: './manage-assets-list.component.html',
   styleUrls: ['./manage-assets-list.component.scss']
 })
-export class ManageAssetsListComponent implements OnInit {
+export class ManageAssetsListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
@@ -27,6 +28,7 @@ export class ManageAssetsListComponent implements OnInit {
   };
 
   public easterEgg = false;
+  private subs = new SubSink();
 
   constructor(
     public newAssetService: NewAssetService,
@@ -73,10 +75,14 @@ export class ManageAssetsListComponent implements OnInit {
   }
 
   public async deleteAsset(id: string) {
-    this.newAssetService.deleteAsset(id).subscribe((result) => {
+    this.subs.sink = this.newAssetService.deleteAsset(id).subscribe((result) => {
       this.assets = null;
       this.changeDetectorRef.detectChanges();
       this.getAssets();
     });
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 }

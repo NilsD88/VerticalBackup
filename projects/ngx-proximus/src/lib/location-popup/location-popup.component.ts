@@ -1,5 +1,6 @@
+import { SubSink } from 'subsink';
 import { ILocation } from 'src/app/models/g-location.model';
-import { Component, OnInit, Optional, Inject } from '@angular/core';
+import { Component, OnInit, Optional, Inject, OnDestroy } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { NewLocationService } from 'src/app/services/new-location.service';
 
@@ -8,12 +9,14 @@ import { NewLocationService } from 'src/app/services/new-location.service';
   templateUrl: './location-popup.component.html',
   styleUrls: ['./location-popup.component.scss']
 })
-export class LocationPopupComponent implements OnInit {
+export class LocationPopupComponent implements OnInit, OnDestroy {
 
   public viewAs = 'list';
   public displayAssets = true;
   public selectedLocation: ILocation;
   public rootLocation: ILocation;
+
+  private subs = new SubSink();
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
@@ -22,7 +25,7 @@ export class LocationPopupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+    this.subs.sink = this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,
@@ -49,6 +52,10 @@ export class LocationPopupComponent implements OnInit {
 
   public assetClicked() {
     this.dialogRef.close();
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }

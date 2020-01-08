@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StackedChartComponent } from './stacked-chart.component';
+import { PlaceComponent } from './place.component';
 
-describe('StackedChartComponent', () => {
-  let component: StackedChartComponent;
-  let fixture: ComponentFixture<StackedChartComponent>;
+describe('PlaceComponent', () => {
+  let component: PlaceComponent;
+  let fixture: ComponentFixture<PlaceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StackedChartComponent ]
+      declarations: [ PlaceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(StackedChartComponent);
+    fixture = TestBed.createComponent(PlaceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
