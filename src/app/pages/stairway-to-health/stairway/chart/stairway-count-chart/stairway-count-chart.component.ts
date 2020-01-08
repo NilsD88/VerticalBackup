@@ -46,7 +46,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     to: moment().toDate().getTime(),
   };
 
-  @Input() leaf: IPeopleCountingLocation;
+  @Input() leafs: IPeopleCountingLocation[];
   @Input() chartData: IPeopleCountingLocation[];
   @Output() download = new EventEmitter();
 
@@ -55,16 +55,20 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
   public categoriesX: any[];
   public series: any[];
   public locale: string;
-  public tempTestData: IPeopleCountingLocation= {
-    assets:[{name: 'test', series:[]},{name: 'test1', series:[]},{name: 'test2', series:[]}]
+  public tempTestData: IPeopleCountingLocation[]= [
+    {assets:[{name: 'test', series:[]},{name: 'test1', series:[]},{name: 'test2', series:[]}]},
+    {assets:[{name: 'test3', series:[]},{name: 'test4', series:[]},{name: 'test5', series:[]}]},
+    {assets:[{name: 'test6', series:[]},{name: 'test7', series:[]},{name: 'test8', series:[]}]},
 
 
-  }
+  ];
+
+  
 
   constructor(private translateService: TranslateService) { 
 
     //remove this to work with real data
-  this.leaf = this.tempTestData;
+  this.leafs = this.tempTestData;
 
   }
 
@@ -77,6 +81,10 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     window.moment = moment;
     mTZ();
     this.getDataByMonth();
+
+
+    console.log(this.categoriesX);
+    console.log(this.series)
     this.initChartOptions();
     this.initChart();
   }
@@ -130,7 +138,10 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {
+
+    this.leafs.forEach(leaf=>{
+
+    leaf.assets.forEach(asset => {
       dataArr = [];
 
       asset.series.forEach(serie => {
@@ -162,6 +173,8 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
     });
 
+  })
+
 
   }
 
@@ -177,7 +190,9 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {
+    this.leafs.forEach(leaf=>{
+
+      leaf.assets.forEach(asset => {
       dataArr = [];
 
       asset.series.forEach(serie => {
@@ -202,6 +217,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
 
     });
+  })
 
 
   }
@@ -219,7 +235,9 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {
+    this.leafs.forEach(leaf=>{
+
+      leaf.assets.forEach(asset => {
       dataArr = [];
 
       asset.series.forEach(serie => {
@@ -245,6 +263,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
     });
 
+  })
 
   }
 
@@ -260,7 +279,9 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {
+    this.leafs.forEach(leaf=>{
+
+      leaf.assets.forEach(asset => {
       dataArr = [];
 
       asset.series.forEach(serie => {
@@ -279,6 +300,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
 
     });
+  })
 
 
   }
@@ -296,7 +318,9 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
     
 
     this.filterData();
-    this.leaf.assets.forEach(asset => {
+    this.leafs.forEach(leaf=>{
+
+      leaf.assets.forEach(asset => {
       dataArr = [];
 
       asset.series.forEach(serie => {
@@ -322,89 +346,102 @@ export class StairwayCountChartComponent implements OnInit, OnChanges {
 
     });
 
+  })
+
 
   }
 
 
   private generateDummyData() {
 
-    this.leaf.assets.forEach(element => {
-      element.series = [];
-      element.series.push({
-          valueIn: 10,
-          timestamp: moment().subtract(1,'hours').valueOf()
-        }, {
-          valueIn: 20,
-          timestamp: moment().subtract(2,'hours').valueOf()
-        }, {
-          valueIn: 30,
-          timestamp: moment().subtract(1, 'days').valueOf()
-        }, {
-          valueIn: 40,
-          timestamp: moment().subtract(2, 'days').valueOf()
-        }, {
-          valueIn: 40,
-          timestamp: moment().subtract(3, 'days').valueOf()
-        }, {
-          valueIn: 50,
-          timestamp: moment().subtract(4, 'days').valueOf()
-        }, {
-          valueIn: 25,
-          timestamp: moment().subtract(5, 'days').valueOf()
-        }, {
-          valueIn: 35,
-          timestamp: moment().subtract(5, 'days').valueOf()
-        }, {
-          valueIn: 45,
-          timestamp: moment().subtract(5, 'days').valueOf()
-        }, {
-          valueIn: 55,
-          timestamp: moment().subtract(6, 'days').valueOf()
-        }, {
-          valueIn: 12,
-          timestamp: moment().subtract(7, 'days').valueOf()
-        }, {
-          valueIn: 22,
-          timestamp: moment().subtract(14, 'days').valueOf()
-        }, {
-          valueIn: 33,
-          timestamp: moment().subtract(15, 'days').valueOf()
-        }, {
-          valueIn: 44,
-          timestamp: moment().subtract(16, 'days').valueOf()
-        }, {
-          valueIn: 55,
-          timestamp: moment().subtract(17, 'days').valueOf()
-        }, {
-          valueIn: 6,
-          timestamp: moment().subtract(4, 'months').valueOf()
-        }, {
-          valueIn: 40,
-          timestamp: moment().subtract(5, 'months').valueOf()
-        }, {
-          valueIn: 27,
-          timestamp: moment().subtract(6, 'months').valueOf()
-        }, {
-          valueIn: 16,
-          timestamp: moment().subtract(7, 'months').valueOf()
-        },
-        
+    this.leafs.forEach(leaf=>{
+      leaf.assets.forEach(element => {
+        element.series = [];
+        element.series.push({
+            valueIn: 10,
+            timestamp: moment().subtract(1,'hours').valueOf()
+          }, {
+            valueIn: 20,
+            timestamp: moment().subtract(2,'hours').valueOf()
+          }, {
+            valueIn: 30,
+            timestamp: moment().subtract(1, 'days').valueOf()
+          }, {
+            valueIn: 40,
+            timestamp: moment().subtract(2, 'days').valueOf()
+          }, {
+            valueIn: 40,
+            timestamp: moment().subtract(3, 'days').valueOf()
+          }, {
+            valueIn: 50,
+            timestamp: moment().subtract(4, 'days').valueOf()
+          }, {
+            valueIn: 25,
+            timestamp: moment().subtract(5, 'days').valueOf()
+          }, {
+            valueIn: 35,
+            timestamp: moment().subtract(5, 'days').valueOf()
+          }, {
+            valueIn: 45,
+            timestamp: moment().subtract(5, 'days').valueOf()
+          }, {
+            valueIn: 55,
+            timestamp: moment().subtract(6, 'days').valueOf()
+          }, {
+            valueIn: 12,
+            timestamp: moment().subtract(7, 'days').valueOf()
+          }, {
+            valueIn: 22,
+            timestamp: moment().subtract(14, 'days').valueOf()
+          }, {
+            valueIn: 33,
+            timestamp: moment().subtract(15, 'days').valueOf()
+          }, {
+            valueIn: 44,
+            timestamp: moment().subtract(16, 'days').valueOf()
+          }, {
+            valueIn: 55,
+            timestamp: moment().subtract(17, 'days').valueOf()
+          }, {
+            valueIn: 6,
+            timestamp: moment().subtract(4, 'months').valueOf()
+          }, {
+            valueIn: 40,
+            timestamp: moment().subtract(5, 'months').valueOf()
+          }, {
+            valueIn: 27,
+            timestamp: moment().subtract(6, 'months').valueOf()
+          }, {
+            valueIn: 16,
+            timestamp: moment().subtract(7, 'months').valueOf()
+          },
+          
+  
+  
+  
+  
+        )
+      })
 
 
 
+    })
 
-      )
-    })}
+   }
 
 
     private filterData() {
 
+      this.leafs.forEach(leaf=>{
 
-      this.leaf.assets.forEach(asset => {
+
+      leaf.assets.forEach(asset => {
         asset.series.sort((x, y) => {
           return x.timestamp - y.timestamp;
         })
-      });
+      });})
+
+
     }
 
 
