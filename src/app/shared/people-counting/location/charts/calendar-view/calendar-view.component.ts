@@ -281,11 +281,6 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
       return this.displayChart();
     }
 
-    // TODO: remove these lines when the backend will send all the timestamp between the period
-    const concat = series.concat(allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'days'));
-    const uniq = uniqBy(concat, (serie) => serie.timestamp);
-    series = orderBy(uniq, ['timestamp'], ['asc']);
-
     const firstWeekNumber = moment(this.currentFilter.from).date(1).isoWeek();
     let biggestWeekNumber = firstWeekNumber;
     const durationInMonths = +moment.duration(moment(this.currentFilter.to).diff(moment(this.currentFilter.from))).asMonths().toFixed(0);

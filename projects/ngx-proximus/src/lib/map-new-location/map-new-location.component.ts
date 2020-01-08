@@ -205,5 +205,6 @@ export class MapNewLocationComponent implements OnInit {
 
   removeMarker() {
     this.markers = [];
+    this.sendNotifyEvent(null);
   }
 }
