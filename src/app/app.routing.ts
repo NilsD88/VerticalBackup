@@ -60,7 +60,7 @@ export class UserAuthGuard implements CanActivate {
     });
     return true;
     */
-    
+
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       return this.sharedService.user.isUser;
@@ -110,14 +110,14 @@ export class HomeUserAuthGuard implements CanActivate {
       this.sharedService.user = await this.authService.isLoggedIn();
       const modules = this.sharedService.user.modules;
       if (modules.length === 1) {
-        switch (modules[0]){
+        switch (modules[0]) {
           case 'TANK_MONITORING':
             this.router.navigate(['private/tankmonitoring/dashboard']);
             break;
           case 'PEOPLE_COUNTING_WALKING_TRAIL':
             this.router.navigate(['private/walkingtrail/dashboard']);
             break;
-          case 'PEOPLE_COUNTING_WALKING_RETAIL':
+          case 'PEOPLE_COUNTING_RETAIL':
             this.router.navigate(['private/peoplecounting/dashboard']);
             break;
           case 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH':
@@ -309,7 +309,7 @@ export const AppRoutes: Routes = [
         path: 'stairwaytohealth',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
-        
+
       },
       {
         path: 'admin',
