@@ -135,7 +135,6 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
       },
       yAxis: {
         allowDecimals: false,
-        min: 0,
         title: {
           text: '',
         }
@@ -213,26 +212,62 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
       // Creating the data series by asset
       assets.forEach((asset, assetIndex) => {
         const assetName = asset.name;
-        const assetValues = cloneDeep(initialValue);
+        const assetInValues = cloneDeep(initialValue);
+        const assetOutValues = cloneDeep(initialValue);
 
         for (const serie of asset.series) {
           const date = moment(serie.timestamp).date();
-          assetValues[date + 1] = serie.valueIn;
+          assetInValues[date + 1] = serie.valueIn;
+          assetOutValues[date + 1] = -serie.valueOut;
         }
 
         for (let index = 1; index <= weekNumber; index++) {
-          const weekValues = [null, null, null, null, null, null, null];
+          const weekInValues = [null, null, null, null, null, null, null];
+          const weekOutValues = [null, null, null, null, null, null, null];
           const dateToAdd = dateToWeek.filter(date => date.weekNumber === index);
           for (const date of dateToAdd) {
-            weekValues[date.weekDay - 1] = assetValues[date.date];
+            weekInValues[date.weekDay - 1] = assetInValues[date.date];
+            weekOutValues[date.weekDay - 1] = assetOutValues[date.date];
           }
-          series.push({
-            name: `Week ${index} - ${assetName}`,
-            color: assetColors[assetIndex],
-            id: asset.id,
-            data: weekValues,
-            stack: 'W' + index,
-          });
+
+          const NOT_DISPLAY_OUT = Math.abs(Math.min(...weekOutValues)) === 0;
+          const NOT_DISPLAY_IN = Math.abs(Math.max(...weekInValues)) === 0;
+
+          if (!NOT_DISPLAY_IN) {
+            if (!NOT_DISPLAY_OUT) {
+              series.push({
+                name: `Week ${index} - ${assetName}`,
+                color: assetColors[assetIndex],
+                id: asset.id,
+                data: weekInValues,
+                stack: 'W' + index,
+              });
+              series.push({
+                name: `Week ${index} - ${assetName} (OUT)`,
+                color: assetColors[assetIndex],
+                id: asset.id,
+                data: weekOutValues,
+                stack: 'W' + index,
+                linkedTo: ':previous',
+              });
+            } else {
+              series.push({
+                name: `Week ${index} - ${assetName}`,
+                color: assetColors[assetIndex],
+                id: asset.id,
+                data: weekInValues,
+                stack: 'W' + index,
+              });
+            }
+          } else {
+            series.push({
+              name: `Week ${index} - ${assetName}`,
+              color: assetColors[assetIndex],
+              id: asset.id,
+              data: weekOutValues,
+              stack: 'W' + index,
+            });
+          }
         }
       });
     }
