@@ -25,7 +25,9 @@ import { StairwayCountChartModule } from '../stairway/chart/stairway-count-chart
     StairwayToHealthMapModule,
     TotalCountPastYearModule,
     StairwayCountChartModule,
+    /*
     StairwayPieChartModule
+    */
   ]
 })
 export class DashboardModule { }
