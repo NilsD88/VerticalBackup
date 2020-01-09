@@ -303,7 +303,8 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
-        ).pipe(catchError(() => {
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);

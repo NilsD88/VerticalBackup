@@ -28,7 +28,7 @@ export class ChartControlsComponent implements OnInit {
   @Input() filter: IFilterChartData;
   @Input() chartDataIsLoading: boolean;
   @Input() chartDataLength: number;
-
+  @Input() showExportOptions = true;
 
   @Output() intervalChanged: EventEmitter<any> = new EventEmitter();
   @Output() dateRangeChanged: EventEmitter<PeriodicDuration> = new EventEmitter();

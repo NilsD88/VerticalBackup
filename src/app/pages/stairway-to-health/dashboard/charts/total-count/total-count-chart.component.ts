@@ -1,4 +1,3 @@
-import { IPeopleCountingLocationSerie } from './../../../../../models/peoplecounting/location.model';
 import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { SubSink } from 'subsink';
@@ -10,8 +9,6 @@ import {
   OnInit,
   OnChanges,
   Input,
-  Output,
-  EventEmitter,
   ViewChild,
   OnDestroy,
   ChangeDetectorRef,
@@ -37,6 +34,7 @@ import {
   Subject, Observable, of
 } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -57,11 +55,11 @@ exportData(Highcharts);
 
 
 @Component({
-  selector: 'pvf-stairway-count-chart',
-  templateUrl: './stairway-count-chart.component.html',
-  styleUrls: ['./stairway-count-chart.component.scss']
+  selector: 'pvf-stairwaytohealth-dashboard-total-count-chart',
+  templateUrl: './total-count-chart.component.html',
+  styleUrls: ['./total-count-chart.component.scss']
 })
-export class StairwayCountChartComponent implements OnInit, OnChanges, OnDestroy {
+export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('dataRangeSelection', {
     static: false
@@ -90,6 +88,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges, OnDestroy
     private translateService: TranslateService,
     private locationService: StairwayToHealthLocationService,
     private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -183,7 +182,8 @@ export class StairwayCountChartComponent implements OnInit, OnChanges, OnDestroy
         return this.locationService.getLocationsDataByIds(
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to
-        ).pipe(catchError(() => {
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);
@@ -206,6 +206,7 @@ export class StairwayCountChartComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private initChartOptions() {
+    const instance = this;
     this.chartOptions = {
       time: {
         timezone: 'Europe/Brussels'
@@ -233,6 +234,18 @@ export class StairwayCountChartComponent implements OnInit, OnChanges, OnDestroy
         allowDecimals: false,
         title: {
           text: '',
+        }
+      },
+      plotOptions: {
+        series: {
+          point: {
+            events: {
+              click: function (event) {
+                const locationId = this.series.userOptions.id;
+                instance.router.navigateByUrl(`/private/stairwaytohealth/place/${locationId}`);
+              }
+            }
+          }
         }
       },
       series: [],

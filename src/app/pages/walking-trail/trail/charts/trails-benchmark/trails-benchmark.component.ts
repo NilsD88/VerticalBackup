@@ -80,10 +80,8 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
     this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (locations: IPeopleCountingLocation[]) => {
         if (!this.loadingError) {
-          console.log('trails bench has no error getting data');
           this.updateChart(locations);
         } else {
-          console.log('trails bench has an error getting data');
         }
       }
     );
@@ -245,8 +243,8 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
           'HOURLY',
           moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
           moment().startOf('isoWeek').valueOf()
-        ).pipe(catchError(() => {
-          console.log('trails bench error getting data');
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);

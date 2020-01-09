@@ -1,0 +1,3 @@
+<div [hidden]="chartLoading || loadingError" id="stairway-count-chart" #chartContainer></div>
+ <pxs-loader *ngIf="chartLoading"></pxs-loader>  
+ <pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PieWeekChartComponent } from './pie-week-chart.component';
+import { TotalCountChartComponent } from './total-count-chart.component';
 
-describe('PieWeekChartComponent', () => {
-  let component: PieWeekChartComponent;
-  let fixture: ComponentFixture<PieWeekChartComponent>;
+describe('TotalCountChartComponent', () => {
+  let component: TotalCountChartComponent;
+  let fixture: ComponentFixture<TotalCountChartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PieWeekChartComponent ]
+      declarations: [ TotalCountChartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PieWeekChartComponent);
+    fixture = TestBed.createComponent(TotalCountChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

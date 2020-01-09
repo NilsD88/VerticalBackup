@@ -322,11 +322,11 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         // REAL DATA
-        console.log(this.assets.map(asset => asset.id));
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
-        ).pipe(catchError(() => {
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);

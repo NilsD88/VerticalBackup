@@ -1,11 +1,7 @@
 import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
-import { PeopleCountingAssetService } from './../../../services/peoplecounting/asset.service';
 import {
   cloneDeep
 } from 'lodash';
-import {
-  PeopleCountingLocationService
-} from './../../../services/peoplecounting/location.service';
 import {
   Component,
   OnInit,
@@ -13,12 +9,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import {
-  findLeafLocations
-} from '../../walking-trail/utils';
-import {
   generateLeafColors,
-  increaseLeafs,
-  decreaseLeafs
 } from 'src/app/shared/utils';
 import {
   ILeafColors
@@ -28,7 +19,6 @@ import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {
   IPeopleCountingLocation,
-  IPeopleCountingLocationSerie
 } from 'src/app/models/peoplecounting/location.model';
 import { SubSink } from 'subsink';
 

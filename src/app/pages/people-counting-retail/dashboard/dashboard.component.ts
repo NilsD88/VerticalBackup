@@ -26,7 +26,6 @@ import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {
   IPeopleCountingLocation,
-  IPeopleCountingLocationSerie
 } from 'src/app/models/peoplecounting/location.model';
 
 

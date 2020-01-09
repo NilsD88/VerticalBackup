@@ -59,8 +59,6 @@ export class SummaryComponent implements OnInit, OnChanges {
 
 
   async getAllData() {
-    console.log('this.leaf.id');
-    console.log(this.leaf.id);
     const totalYesterday = await this.locationService.getLocationsDataByIds(
       [this.leaf.id],
       'DAILY',

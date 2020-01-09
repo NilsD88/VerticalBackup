@@ -34,17 +34,17 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12" style="height:400px">
-            <pvf-stairway-count-chart [locations]="currentLocations" [locationColors]="locationColors" style="height:400px"></pvf-stairway-count-chart>
+            <pvf-stairwaytohealth-dashboard-total-count-chart [locations]="currentLocations" [locationColors]="locationColors" style="height:400px"></pvf-stairwaytohealth-dashboard-total-count-chart>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12" style="height:400px">
-            <pvf-peoplecounting-total-count-past-year [leafs]="lastYearLocations" [leafColors]="locationColors" style="height:400px"></pvf-peoplecounting-total-count-past-year>
+            <pvf-peoplecounting-total-count-past-year [leafs]="lastYearLocations" [leafColors]="locationColors" [leafUrl]="leafUrl" style="height:400px"></pvf-peoplecounting-total-count-past-year>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12" style="height:400px">
-            <!-- <pvf-stairway-pie-chart [leafs]="currentLocations" [leafColors]="locationColors" style="height:400px"></pvf-stairway-pie-chart> -->
+            <pvf-stairwaytohealth-dashboard-statistics [locations]="currentLocations" [locationColors]="locationColors" style="height:400px"></pvf-stairwaytohealth-dashboard-statistics>
         </div>
     </div>
 </div>

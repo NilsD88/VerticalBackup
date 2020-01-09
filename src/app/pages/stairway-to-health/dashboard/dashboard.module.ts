@@ -1,4 +1,4 @@
-import { StairwayPieChartModule } from './../stairway/chart/stairway-pie-chart/stairway-pie-chart.module';
+import { StairwayToHealthDashboardStatisticsModule } from './charts/statistics/statistics.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
@@ -8,10 +8,7 @@ import { MatButtonToggleModule, MatIconModule } from '@angular/material';
 import { LocationExplorerModule } from '../../../../../projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { TotalCountPastYearModule } from '../../../../../src/app/shared/people-counting/dashboard/charts/total-count-past-year/total-count-past-year.module';
 import { StairwayToHealthMapModule } from '../lib/map/map.module';
-import { StairwayCountChartModule } from '../stairway/chart/stairway-count-chart/stairway-count-chart.module';
-
-
-
+import { StairwayToHealthDashboardTotalCountModule } from './charts/total-count/total-count-chart.module';
 
 
 @NgModule({
@@ -24,10 +21,8 @@ import { StairwayCountChartModule } from '../stairway/chart/stairway-count-chart
     LocationExplorerModule,
     StairwayToHealthMapModule,
     TotalCountPastYearModule,
-    StairwayCountChartModule,
-    /*
-    StairwayPieChartModule
-    */
+    StairwayToHealthDashboardTotalCountModule,
+    StairwayToHealthDashboardStatisticsModule
   ]
 })
 export class DashboardModule { }
