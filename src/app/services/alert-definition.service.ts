@@ -4,7 +4,6 @@ import {MatSnackBar} from '@angular/material';
 import {SharedService} from './shared.service';
 import {environment} from 'src/environments/environment';
 import {AlertDefinition} from '../models/alert-definition.model';
-import {promise} from 'selenium-webdriver';
 
 @Injectable({
   providedIn: 'root'
@@ -54,14 +53,14 @@ export class AlertDefinitionService {
       this.http.put(`${environment.baseUrl}/alertdefinitions/${alertDefinition.id}`, alertDefinition)
         .subscribe((response: any) => {
           const snackBarRef = this.snackBar.open(
-            'Successfully updated alert definition sms settings.',
+            'Successfully updated alert definition settings.',
             null, {
               duration: 3000,
               panelClass: 'success-snackbar'
             });
           resolve(response);
         }, (err) => {
-          this.sharedService.rejectPromise('Error! Failed to update alert definition sms settings.', reject);
+          this.sharedService.rejectPromise('Error! Failed to update alert definition settings.', reject);
         });
     });
   }
@@ -72,14 +71,14 @@ export class AlertDefinitionService {
       this.http.put(`${environment.baseUrl}/alertdefinitions/${alertDefinition.id}`, alertDefinition)
         .subscribe((response: any) => {
           const snackBarRef = this.snackBar.open(
-            'Successfully updated alert definition email settings.',
+            'Successfully updated alert definition settings.',
             null, {
               duration: 3000,
               panelClass: 'success-snackbar'
             });
           resolve(response);
         }, (err) => {
-          this.sharedService.rejectPromise('Error! Failed to update alert definition email settings.', reject);
+          this.sharedService.rejectPromise('Error! Failed to update alert definition settings.', reject);
         });
     });
   }

@@ -36,8 +36,6 @@ export class SummaryStatisticsComponent implements OnInit {
 
   async ngOnInit() {
     this.displayedColumns = ['totalWeek', 'totalDay', 'avgWeek', 'avgDay'];
-    console.log(this.leaf.parent);
-    console.log(this.leaf.parent.children);
 
     const leafs = await this.locationService.getLocationsDataByIds(
       (this.leaf.parent.children || []).map(location => location.id),

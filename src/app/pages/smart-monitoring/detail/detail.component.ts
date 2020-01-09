@@ -77,7 +77,7 @@ export class DetailComponent implements OnInit, OnDestroy {
               this.init();
             },
             (error) => {
-              console.log(error);
+              console.error(error);
               this.router.navigate(['/error/404']);
             }
           )
@@ -90,12 +90,13 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.getLastAlerts();
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(
-        this.afterGetChartData,
+        things => this.afterGetChartData(things),
         error => {
           this.chartData = [];
           this.myAggregatedValues = [];
           this.chartLoading = false;
           this.changeDetectorRef.detectChanges();
+          console.error(error);
         }
       )
     );
@@ -191,7 +192,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   public async downloadPdfDetail() {
     const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF (210 x 297)
     pdf.setFontSize(10);
-    console.log(pdf);
 
     function setStyle(styleName) {
       switch (styleName) {

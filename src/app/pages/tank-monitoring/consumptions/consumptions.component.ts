@@ -61,7 +61,6 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
         this.subs.add(
           this.tankMonitoringAssetService.getAssetDetailById(params.id).subscribe(
             (asset) => {
-              console.log(asset);
               this.asset = asset;
               this.changeDetectorRef.detectChanges();
               this.init();

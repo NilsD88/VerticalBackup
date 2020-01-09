@@ -98,7 +98,6 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
     this.initChart();
     this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (locations: IPeopleCountingLocation[]) => {
-        console.log('getChartData subscribe')
         if (!this.loadingError) {
           this.updateChart((locations[0] || {}).series);
         }
@@ -281,11 +280,6 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
       return this.displayChart();
     }
 
-    // TODO: remove these lines when the backend will send all the timestamp between the period
-    const concat = series.concat(allIntervalBetween(this.currentFilter.from, this.currentFilter.to, 'days'));
-    const uniq = uniqBy(concat, (serie) => serie.timestamp);
-    series = orderBy(uniq, ['timestamp'], ['asc']);
-
     const firstWeekNumber = moment(this.currentFilter.from).date(1).isoWeek();
     let biggestWeekNumber = firstWeekNumber;
     const durationInMonths = +moment.duration(moment(this.currentFilter.to).diff(moment(this.currentFilter.from))).asMonths().toFixed(0);
@@ -346,7 +340,8 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
         return this.locationService.getLocationsDataByIds(
           [this.leaf.id],
           filter.interval, filter.from, filter.to
-        ).pipe(catchError(() => {
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);

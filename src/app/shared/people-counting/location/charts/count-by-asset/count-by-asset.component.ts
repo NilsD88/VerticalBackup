@@ -60,7 +60,6 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes.assets) {
       if (changes.assets.currentValue && changes.assets.currentValue !== changes.assets.previousValue) {
         if ((this.assets || []).length) {
@@ -183,7 +182,8 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
           'DAILY',
           moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
           moment().valueOf(),
-        ).pipe(catchError(() => {
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);
