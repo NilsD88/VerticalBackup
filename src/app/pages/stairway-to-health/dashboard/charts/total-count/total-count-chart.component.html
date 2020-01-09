@@ -1,0 +1,12 @@
+
+<pxs-chart-controls
+    [chartDataIsLoading]="chartLoading"
+    [filter]="filter"
+    (intervalChanged)="intervalChanged($event)"
+    (dateRangeChanged)="dateRangeChanged($event)"
+    [showExportOptions]="false"
+></pxs-chart-controls>
+<div [hidden]="chartLoading || loadingError" id="stairway-count-chart"></div>
+ <pxs-loader *ngIf="chartLoading"></pxs-loader>  
+ <pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>
+ 

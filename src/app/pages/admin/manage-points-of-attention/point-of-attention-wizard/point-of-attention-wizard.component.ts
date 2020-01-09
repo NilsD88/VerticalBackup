@@ -133,7 +133,7 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exist`,
+            title: `${nameAlreadyUsed} already exists`,
             message: 'Please choose an other threshold template name to be able to save it'
           },
           minWidth: '320px',

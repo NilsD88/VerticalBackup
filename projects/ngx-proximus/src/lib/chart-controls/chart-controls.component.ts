@@ -1,5 +1,5 @@
 import * as moment from 'moment';
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
 
 
@@ -28,7 +28,7 @@ export class ChartControlsComponent implements OnInit {
   @Input() filter: IFilterChartData;
   @Input() chartDataIsLoading: boolean;
   @Input() chartDataLength: number;
-
+  @Input() showExportOptions = true;
 
   @Output() intervalChanged: EventEmitter<any> = new EventEmitter();
   @Output() dateRangeChanged: EventEmitter<PeriodicDuration> = new EventEmitter();
@@ -38,7 +38,9 @@ export class ChartControlsComponent implements OnInit {
   public intervals: Intervals[] = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
   public drpOptions: NgxDrpOptions;
 
-  constructor() { }
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+  ) { }
 
   ngOnInit() {
     this.initDateFilterOptions(new Date(this.filter.from), new Date(this.filter.to));
@@ -103,7 +105,7 @@ export class ChartControlsComponent implements OnInit {
         }
       }
     }
-
+    this.changeDetectorRef.detectChanges();
     this.dateRangeChanged.emit({
       interval,
       from: fromDate.getTime(),

@@ -174,7 +174,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
       chart: {
         type: 'column',
         marginBottom: 100,
-        zoomType: 'x'
+        zoomType: 'x',
       },
       title: '',
       exporting: {
@@ -196,7 +196,6 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
       },
       yAxis: {
         allowDecimals: false,
-        min: 0,
         title: {
           text: '',
         }
@@ -258,17 +257,43 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
 
     if ((assets || []).length) {
       assets.forEach((asset, assetIndex) => {
-        // TODO: remove these lines when the backend will send all the timestamp between the period
-        const rawSeries = asset.series;
-        const concat = rawSeries.concat(allIntervals);
-        const uniq = uniqBy(concat, (serie) => serie.timestamp);
-        const allSeries = orderBy(uniq, ['timestamp'], ['asc']);
+        const assetName = asset.name;
+        const inValues = asset.series.map(x => x.valueIn);
+        const outValues = asset.series.map(x => -x.valueOut);
+        const NOT_DISPLAY_OUT = Math.abs(Math.min(...outValues)) === 0;
+        const NOT_DISPLAY_IN = Math.abs(Math.max(...inValues)) === 0;
 
-        series.push({
-          name: asset.name,
-          data: allSeries.map(x => x.valueIn),
-          color: assetColors[assetIndex],
-        });
+        if (!NOT_DISPLAY_IN) {
+          if (!NOT_DISPLAY_OUT) {
+            series.push({
+              name: `${assetName}`,
+              color: assetColors[assetIndex],
+              id: asset.id,
+              data: inValues,
+            });
+            series.push({
+              name: `${assetName} (OUT)`,
+              color: assetColors[assetIndex],
+              id: asset.id,
+              data: outValues,
+              linkedTo: ':previous',
+            });
+          } else {
+            series.push({
+              name: `${assetName}`,
+              color: assetColors[assetIndex],
+              id: asset.id,
+              data: inValues,
+            });
+          }
+        } else {
+          series.push({
+            name: `${assetName}`,
+            color: assetColors[assetIndex],
+            id: asset.id,
+            data: outValues,
+          });
+        }
       });
     }
 
@@ -297,11 +322,11 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         // REAL DATA
-        console.log(this.assets.map(asset => asset.id));
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           filter.interval, filter.from, filter.to
-        ).pipe(catchError(() => {
+        ).pipe(catchError((error) => {
+          console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
           return of([]);

@@ -192,7 +192,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exist`,
+            title: `${nameAlreadyUsed} already existss`,
             message: 'Please choose an other location name to be able to save it'
           },
           minWidth: '320px',

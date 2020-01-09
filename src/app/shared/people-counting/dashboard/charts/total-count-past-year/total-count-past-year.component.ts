@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import { cloneDeep, uniq } from 'lodash';
+import { uniq } from 'lodash';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
@@ -34,6 +34,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
 
   @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
+  @Input() leafUrl = '/private/walkingtrail/trail';
 
   public chart: any;
   public chartOptions: any;
@@ -112,8 +113,8 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
           point: {
             events: {
               click: function (event) {
-                const trailId = this.series.userOptions.id;
-                instance.router.navigateByUrl(`/private/walkingtrail/trail/${trailId}`);
+                const locationId = this.series.userOptions.id;
+                instance.router.navigateByUrl(`${instance.leafUrl}/${locationId}`);
               }
             }
           },

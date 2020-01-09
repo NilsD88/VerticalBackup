@@ -1,11 +1,7 @@
 import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
-import { PeopleCountingAssetService } from './../../../services/peoplecounting/asset.service';
 import {
   cloneDeep
 } from 'lodash';
-import {
-  PeopleCountingLocationService
-} from './../../../services/peoplecounting/location.service';
 import {
   Component,
   OnInit,
@@ -13,12 +9,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import {
-  findLeafLocations
-} from '../../walking-trail/utils';
-import {
   generateLeafColors,
-  increaseLeafs,
-  decreaseLeafs
 } from 'src/app/shared/utils';
 import {
   ILeafColors
@@ -28,7 +19,6 @@ import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {
   IPeopleCountingLocation,
-  IPeopleCountingLocationSerie
 } from 'src/app/models/peoplecounting/location.model';
 import { SubSink } from 'subsink';
 
@@ -45,10 +35,10 @@ mTZ();
 export class DashboardComponent implements OnInit, OnDestroy {
 
   public rootLocation: IPeopleCountingLocation;
-  public leafs: IPeopleCountingLocation[];
-  public leafColors: ILeafColors[];
-  public lastYearLeafs: IPeopleCountingLocation[];
-  public currentLeafs: IPeopleCountingLocation[];
+  public locations: IPeopleCountingLocation[];
+  public locationColors: ILeafColors[];
+  public lastYearLocations: IPeopleCountingLocation[];
+  public currentLocations: IPeopleCountingLocation[];
   public listStyleValue = 'map';
   public leafUrl = '/private/stairwaytohealth/place';
 
@@ -72,13 +62,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.changeLocation(this.rootLocation);
   }
 
-  public decrease() {
-    this.currentLeafs = decreaseLeafs(this.currentLeafs);
-  }
-
-  public increase() {
-    this.currentLeafs = increaseLeafs(this.currentLeafs);
-  }
 
   public listStyleOnChange(event) {
     const {
@@ -88,20 +71,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public changeLocation(location: IPeopleCountingLocation) {
-    const leafs: IPeopleCountingLocation[] = location.children || [];
-    const lastYearLeafs = cloneDeep(leafs);
-    this.leafColors = generateLeafColors(leafs);
+    const locations: IPeopleCountingLocation[] = location.children || [];
+    const lastYearLocations = cloneDeep(locations);
+    this.locationColors = generateLeafColors(locations);
+    this.currentLocations = locations;
 
     this.subs.add(
-      // Get the past year data with month interval for each leafs
+      // Get the past year data with month interval for each locations
       this.locationService.getLocationsDataByIds(
-        leafs.map(leaf => leaf.id),
+        locations.map(loc => loc.id),
         'MONTHLY',
         moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
         moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
       ).subscribe(
         (result) => {
-          lastYearLeafs.forEach(leaf => {
+          lastYearLocations.forEach(leaf => {
             const leafIndex = result.findIndex((x => x.id === leaf.id));
             if (leafIndex > -1) {
               leaf.series = result[leafIndex].series;
@@ -109,7 +93,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
               leaf.series = [];
             }
           });
-          this.lastYearLeafs = lastYearLeafs;
+          this.lastYearLocations = lastYearLocations;
           this.changeDetectorRef.detectChanges();
         }
       )

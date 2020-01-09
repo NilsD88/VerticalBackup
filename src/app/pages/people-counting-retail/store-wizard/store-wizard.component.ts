@@ -281,10 +281,10 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
     if (errorExtensions) {
       const nameAlreadyUsed = errorExtensions.locationNameNotUnique;
       if (nameAlreadyUsed) {
-        console.log('nameAlreadyUsed');
+        console.error('Store\'s name is already used');
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exist`,
+            title: `${nameAlreadyUsed} already exists`,
             message: 'Please choose an other location name to be able to save it'
           },
           minWidth: '320px',

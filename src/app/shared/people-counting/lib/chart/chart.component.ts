@@ -232,41 +232,56 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
       hue: ESensorColors[String(item.label).toUpperCase()]
     })
     if (this.filter.interval !== 'ALL') {
-        // AVERAGE
-        const avgId = item.sensorId + '_avg';
-        this.options.series.push({
-          id: avgId,
-          name: item.label,
-          color,
-          yAxis: this.getYAxisByLabel(item.label),
-          zIndex: 1,
-          type: 'column',
-          showInLegend: (item.series.length) ? true : false,
-          data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-          })
-        });
+        if ((item.sensorDefinition || {}).inOutType === 'BOTH') {
+          // IN: SUM
+          const inSumId = item.sensorId + 'in_sum';
+          this.options.series.push({
+            id: inSumId,
+            name: item.label + ' (IN)',
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'column',
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            })
+          });
 
-        // MIN AND MAX
-        const minMaxId = item.sensorId + '_min-max';
-        this.options.series.push({
-          id: minMaxId,
-          name: item.label + ' ' + this.rangeTranslation,
-          color,
-          type: 'arearange',
-          yAxis: this.getYAxisByLabel(item.label),
-          showInLegend: (item.series.length) ? true : false,
-          lineWidth: 0,
-          linkedTo: ':previous',
-          fillOpacity: 0.3,
-          zIndex: 0,
-          marker: {
-            enabled: false
-          },
-          data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-          })
-        });
+          // OUT: SUM
+          const outSumId = item.sensorId + 'out_sum';
+          this.options.series.push({
+            id: outSumId,
+            name: item.label + ' (OUT)',
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'column',
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            })
+          });
+        } else {
+
+          const direction = (item.sensorDefinition || {}).inOutType;
+
+          // SUM
+          const sumId = item.sensorId + '_sum';
+          this.options.series.push({
+            id: sumId,
+            name: direction ? `${item.label} (${direction})` : `${item.label}`,
+            color,
+            yAxis: this.getYAxisByLabel(item.label),
+            zIndex: 1,
+            type: 'column',
+            showInLegend: (item.series.length) ? true : false,
+            data: item.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            })
+          });
+        }
+        
     } else {
       // REAL VALUES
       const id = item.sensorId;
