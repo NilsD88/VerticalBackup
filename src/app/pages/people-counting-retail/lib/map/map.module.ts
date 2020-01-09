@@ -25,7 +25,6 @@ import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map
     IconModule,
     MatSnackBarModule,
     MatDialogModule,
-    MapDialogModule,
   ],
   exports: [
     PeopleCountingRetailMapComponent,
