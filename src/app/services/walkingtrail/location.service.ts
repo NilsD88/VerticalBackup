@@ -43,7 +43,7 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
   }
 
   public getLocationsTree(): Observable < IPeopleCountingLocation[] > {
-    const url = `${environment.baseUrl}/location/locationtrees?org_id=1&module=${MODULE_NAME}`;
+    const url = `${environment.baseUrl}/location/locationtrees?module=${MODULE_NAME}`;
     return this.http.get < IPeopleCountingLocation[] > (url);
   }
 
@@ -152,8 +152,6 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
       mutation: CREATE_LOCATION,
       variables: {
         input: {
-          // TODO: REMOVE ORG_ID
-          organizationId: 1,
           parentId: location.parentId,
           name: location.name,
           description: location.description,

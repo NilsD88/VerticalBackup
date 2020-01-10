@@ -216,7 +216,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
   public async openAddLocation() {
     const dialogRef = this.dialog.open(LocationWizardDialogComponent, {
       minWidth: '320px',
-      maxWidth: '400px',
+      maxWidth: '1024px',
       width: '100vw',
       maxHeight: '80vh',
       data: {

@@ -1,36 +1,45 @@
 <div class="container" *ngIf="asset">
+  <div *ngIf="asset.image" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.image + ')'}"></div>
   <div class="title">
     <a routerLink="/private/smartmonitoring/detail/{{asset.id}}">
       <h6>{{asset.name}}</h6>
     </a>
   </div>
+  <div class="devEui">
+    {{asset.things[0]?.devEui}}
+  </div>
   <div class="subtitle" *ngIf="asset.location">
     <b>{{asset.location?.name}}</b>
   </div>
   <div class="column">
-      <div *ngIf="asset.image" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.image + ')'}"></div>
       <ul *ngIf="asset.things">
-          <li *ngFor="let thing of asset.things" class="thing">
-            <strong>{{thing.name}}</strong>
+        <li class="thing">
+            <strong>{{asset?.things[0]?.name}}</strong>
             <ul>
               <li>
                 <b>Battery:</b>
-                <span [ngClass]="{'empty': thing?.batteryPercentage < 10, 'low': thing?.batteryPercentage >= 10 && thing?.batteryPercentage < 20, 'ok': thing?.batteryPercentage >= 20}">
-                  {{(thing.batteryPercentage) ? (thing.batteryPercentage+'%') : 'null'}}
+                <span [ngClass]="{'empty': asset?.things[0]?.batteryPercentage < 10, 'low': asset?.things[0]?.batteryPercentage >= 10 && asset?.things[0]?.batteryPercentage < 20, 'ok': asset?.things[0]?.batteryPercentage >= 20}">
+                  {{(asset?.things[0]?.batteryPercentage) ? (asset?.things[0]?.batteryPercentage+'%') : 'unknow'}}
                 </span>
               </li>
               <li>
-                <b>Fuel:</b>
-                <span [ngClass]="{'empty': thing?.sensors[0]?.value < 10, 'low': thing?.sensors[0]?.value >= 10 && thing?.sensors[0]?.value < 20, 'ok': thing?.sensors[0]?.value >= 20}">
-                  {{(thing?.sensors[0]?.value) ? (thing?.sensors[0]?.value+'%') : 'null'}}
+                <b>Fuel level:</b>
+                <span [ngClass]="{'empty': asset?.things[0]?.sensors[0]?.value < 10, 'low': asset?.things[0]?.sensors[0]?.value >= 10 && asset?.things[0]?.sensors[0]?.value < 20, 'ok': asset?.things[0]?.sensors[0]?.value >= 20}">
+                  {{(asset?.things[0]?.sensors[0]?.value) ? (asset?.things[0]?.sensors[0]?.value+'%') : 'unknow'}}
                 </span>
               </li>
               <li>
-                  <b>Description:</b> opzja opekaz eopazke opaz jufinueri fiuer fjoeijf eriojf eiorjf eiorjf eoirj fsljkfs lkjfsk ljfisoueorsdlhv s hiuh
+                <b>Last refill:</b>
+                <span>
+                  {{(asset?.lastRefill?.timestamp) ? (asset?.lastRefill?.timestamp | date) : 'unknow'}}
+                </span>
+              </li>
+              <li>
+                  <b>Description:</b> {{asset?.description}}
               </li>
             </ul>
-          </li>
-        </ul>
+        </li>
+      </ul>
   </div>
 </div>
 
