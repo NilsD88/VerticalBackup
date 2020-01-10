@@ -43,7 +43,6 @@ export class NewThresholdTemplateService {
             mutation: CREATE_THRESHOLD_TEMPLATE,
             variables: {
                 input: {
-                    organizationId: 1,
                     name: thresholdTemplate.name,
                     thresholds: createThresholsdInput(thresholdTemplate)
                 }
@@ -55,8 +54,8 @@ export class NewThresholdTemplateService {
 
     public getThresholdTemplates(): Observable<IThresholdTemplate[]> {
         const GET_THRESHOLD_TEMPLATES = gql`
-            query findThresholdTemplatesByOrganizationId($input: ThresholdTemplatesFindInput!) {
-                thresholdTemplates: findThresholdTemplatesByOrganizationId(input: $input) {
+            query findThresholdTemplates {
+                thresholdTemplates: findThresholdTemplates {
                     id,
                     name,
                     thresholds {
@@ -76,11 +75,6 @@ export class NewThresholdTemplateService {
         return this.apollo.query<GetThresholdTemplatesResponse>({
             query: GET_THRESHOLD_TEMPLATES,
             fetchPolicy: 'network-only',
-            variables: {
-                input: {
-                    organizationId: 1 // TODO: remove organizationId
-                }
-            },
         }).pipe(map(({data}) => {
             return data.thresholdTemplates;
         }));
