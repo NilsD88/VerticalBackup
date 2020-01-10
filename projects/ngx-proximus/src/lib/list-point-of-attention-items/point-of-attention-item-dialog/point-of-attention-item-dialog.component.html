@@ -18,7 +18,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-select [placeholder]="'FILTER.PLACEHOLDER_AGGREGATION' | translate" matInput
-        [(ngModel)]="pointOfAttentionItem.aggregation" formControlName="AggregationCtrl">
+        [(ngModel)]="pointOfAttentionItem.aggregationType" formControlName="AggregationCtrl">
         <mat-option *ngFor="let aggregation of aggregations" [value]="aggregation">{{aggregation}}</mat-option>
       </mat-select>
     </mat-form-field>

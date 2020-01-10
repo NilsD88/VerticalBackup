@@ -24,7 +24,7 @@ export interface IPointOfAttentionItem {
   id?: string;
   name?: string;
   sensorType?: ISensorType;
-  aggregation?: EAggregation;
+  aggregationType?: EAggregation;
   assets?: IAsset[];
   tempId?: number;
   series?: IPointOfAttentionItemData[];
@@ -46,7 +46,7 @@ export class PointOfAttentionItem implements IPointOfAttentionItem {
   id?: string;
   name?: string;
   sensorType?: ISensorType;
-  aggregation?: EAggregation;
+  aggregationType?: EAggregation;
   assets?: IAsset[] = [];
   series?: IPointOfAttentionItemData[] = [];
 
