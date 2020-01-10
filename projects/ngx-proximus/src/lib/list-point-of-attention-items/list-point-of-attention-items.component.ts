@@ -85,6 +85,7 @@ export class ListPointOfAttentionItemsComponent implements OnInit {
       width: '100vw',
       maxHeight: '80vh',
       data: {
+        pointOfAttentionId: this.pointOfAttention.id,
         location: this.pointOfAttention.location
       }
     }).afterClosed().subscribe((newItem: IPointOfAttentionItem) => {
