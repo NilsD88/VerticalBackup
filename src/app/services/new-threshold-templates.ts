@@ -106,7 +106,8 @@ export class NewThresholdTemplateService {
                                 web,
                                 mail,
                                 sms
-                            }
+                            },
+                            label
                         }
                     }
                 }
