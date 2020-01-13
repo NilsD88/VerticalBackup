@@ -106,8 +106,6 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
         pointOfAttention[difference] = this.pointOfAttention[difference];
       }
 
-      pointOfAttention.items = this.pointOfAttention.items;
-
       this.subs.sink = this.pointOfAttentionService.updatePointOfAttention(pointOfAttention).subscribe(
         () => {
           this.goToManagePointsOfAttention();

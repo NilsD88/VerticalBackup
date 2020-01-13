@@ -165,7 +165,7 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
     }
   }
 
-  public deleteThresholdItem(thresholdId, thresholdItemId) {
+  public deleteThresholdItem(thresholdId: string, thresholdItemId: string) {
     const findSensorIndex = this.thresholdTemplate.thresholds.findIndex((elt) => elt.sensorType.id === thresholdId);
     const findThresholdIndex = this.thresholdTemplate.thresholds[findSensorIndex].thresholdItems.findIndex((elt) => elt.id === thresholdItemId);
     this.thresholdTemplate.thresholds[findSensorIndex].thresholdItems.splice(findThresholdIndex, 1);

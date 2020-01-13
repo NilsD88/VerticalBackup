@@ -19,7 +19,7 @@ MOCK_POINTS_OF_ATTENTION = [{
       name: "asset",
     }],
     name: "Item",
-    aggregation: EAggregation.MAX,
+    aggregationType: EAggregation.MAX,
     sensorType: {
       id: "2",
       name: "humidity"
@@ -43,7 +43,7 @@ MOCK_POINTS_OF_ATTENTION = [{
           }
         ],
         name: "Item 1",
-        aggregation: EAggregation.MAX,
+        aggregationType: EAggregation.MAX,
         sensorType: {
           id: "2",
           name: "humidity"
@@ -64,7 +64,7 @@ MOCK_POINTS_OF_ATTENTION = [{
           }
         ],
         name: "Item 2",
-        aggregation: EAggregation.AVG,
+        aggregationType: EAggregation.AVG,
         sensorType: {
           id: "1",
           name: "temperature"
@@ -86,7 +86,7 @@ MOCK_POINTS_OF_ATTENTION = [{
           }
         ],
         name: "Item 3",
-        aggregation: EAggregation.MAX,
+        aggregationType: EAggregation.MAX,
         sensorType: {
           id: "1",
           name: "temperature"
@@ -108,7 +108,7 @@ MOCK_POINTS_OF_ATTENTION = [{
           }
         ],
         name: "Item 4",
-        aggregation: EAggregation.MIN,
+        aggregationType: EAggregation.MIN,
         sensorType: {
           id: "5",
           name: "battery"
@@ -130,7 +130,7 @@ MOCK_POINTS_OF_ATTENTION = [{
           }
         ],
         name: "Item 5",
-        aggregation: EAggregation.AVG,
+        aggregationType: EAggregation.AVG,
         sensorType: {
           id: "5",
           name: "battery"
