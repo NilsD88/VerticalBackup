@@ -94,9 +94,9 @@
       Inventory
     </a>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
     <a
-      mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" [routerLink]="['/private','smartmonitoring', 'assets', 'new']"
+      mat-menu-item [routerLink]="['/private','smartmonitoring', 'assets', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New asset</span>
@@ -108,9 +108,9 @@
       My points of attention
     </a>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
     <a
-      mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" [routerLink]="['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new']"
+      mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New point of attention</span>
@@ -129,9 +129,9 @@
       Tank inventory
     </a>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" [routerLink]="['/private', 'tankmonitoring', 'assets', 'new']"
+      mat-menu-item  [routerLink]="['/private', 'tankmonitoring', 'assets', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New tank</span>
@@ -150,9 +150,9 @@
       Trails overview
     </a>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" [routerLink]="['/private','walkingtrail', 'trail', 'new']"
+      mat-menu-item [routerLink]="['/private','walkingtrail', 'trail', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New trail</span>
@@ -171,9 +171,9 @@
       Stores overview
     </a>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" [routerLink]="['/private','peoplecounting', 'store', 'new']"
+      mat-menu-item [routerLink]="['/private','peoplecounting', 'store', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New store</span>
@@ -193,9 +193,9 @@
       Places overview
     </button>
   </div>
-  <div mat-menu-item>
+  <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" [routerLink]="['/private','stairwaytohealth', 'place', 'new']"
+      mat-menu-item [routerLink]="['/private','stairwaytohealth', 'place', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">New place</span>
