@@ -85,7 +85,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
         for (const thing of things) {
           for (const sensor of thing.sensors) {
             chartData.push({
-              label: this.getSensorTypeTranslation(sensor.sensorType.name),
+              label: await this.getSensorTypeTranslation(sensor.sensorType.name),
               series: sensor.series
             });
           }
@@ -98,7 +98,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     this.chartData$.next(this.currentFilter);
   }
 
-  private async getSensorTypeTranslation(name: string): Promise<String> {
+  private async getSensorTypeTranslation(name: string): Promise<string> {
     const translated = await this.translateService.get('SENSORTYPES.' + name).toPromise();
     if (translated.indexOf('SENSORTYPES') !== -1) {
       return this.upperCaseFirst(name);
