@@ -80,8 +80,8 @@ export class ChartControlsComponent implements OnInit {
     };
   }
 
-  public dateRangeChange(range: { fromDate: Date; toDate: Date; }, isSwaping: boolean) {
-    const {fromDate, toDate} = range;
+  public dateRangeChange(dateRange: { fromDate: Date; toDate: Date; }, isSwaping: boolean) {
+    const {fromDate, toDate} = dateRange;
     const duration = moment.duration(moment(toDate).diff(fromDate));
     const durationHours =  +duration.asHours().toFixed(0);
 
