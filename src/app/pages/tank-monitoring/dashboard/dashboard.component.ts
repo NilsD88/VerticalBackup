@@ -36,6 +36,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public rootLocation: ILocation;
   public assets: ITankMonitoringAsset[] = [];
   public selectedAssets: ITankMonitoringAsset[];
+  public assetUrl = '/private/tankmonitoring/consumptions/';
 
   public dataSource;
   public chartData: any[];

@@ -1,7 +1,7 @@
 <div class="container" *ngIf="asset">
   <div *ngIf="asset.image" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.image + ')'}"></div>
   <div class="title">
-    <a routerLink="/private/smartmonitoring/detail/{{asset.id}}">
+    <a routerLink="{{assetUrl+''+asset.id}}">
       <h6>{{asset.name}}</h6>
     </a>
   </div>

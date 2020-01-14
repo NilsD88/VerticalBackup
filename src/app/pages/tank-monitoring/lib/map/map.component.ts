@@ -82,6 +82,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     const popupEl: NgElement & WithProperties<TankMonitoringMapPopupComponent> =
     document.createElement('tankmonitoring-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+    popupEl.assetUrl = assetUrl;
     popupEl.asset = asset;
     popupEl.marker = marker;
     document.body.appendChild(popupEl);
