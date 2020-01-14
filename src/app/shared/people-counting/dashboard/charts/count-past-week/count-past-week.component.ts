@@ -48,8 +48,12 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
   @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
   @Input() leafUrl = '/private/walkingtrail/trail';
+  @Input() loading = false;
+  @Input() loadingError = false;
+
   @Output() decrease: EventEmitter <null> = new EventEmitter();
   @Output() increase: EventEmitter <null> = new EventEmitter();
+  @Output() wantTryAgain: EventEmitter <null> = new EventEmitter();
 
   public chart: any;
   public chartOptions: any;

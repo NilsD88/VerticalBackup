@@ -80,31 +80,35 @@ export class ChartControlsComponent implements OnInit {
     };
   }
 
-  public dateRangeChange(range: { fromDate: Date; toDate: Date; }) {
-    const {fromDate, toDate} = range;
+  public dateRangeChange(dateRange: { fromDate: Date; toDate: Date; }, isSwaping: boolean) {
+    const {fromDate, toDate} = dateRange;
     const duration = moment.duration(moment(toDate).diff(fromDate));
     const durationHours =  +duration.asHours().toFixed(0);
 
-    let interval: Intervals = 'ALL';
-    this.intervals = ['ALL', 'HOURLY', 'DAILY'];
-    if (durationHours > 24) {
-      this.intervals = ['HOURLY', 'DAILY', 'WEEKLY'];
-      interval = 'HOURLY';
-      const durationDays =  +duration.asDays().toFixed(0);
-      if (durationDays > 7) {
-        this.intervals = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY'];
-        interval = 'DAILY';
-        const durationWeeks =  +duration.asWeeks().toFixed(0);
-        if (durationWeeks > 8) {
-          this.intervals = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
-          interval = 'WEEKLY';
-          const durationMonths =  +duration.asMonths().toFixed(0);
-          if (durationMonths > 48) {
-            interval = 'YEARLY';
+    let interval: Intervals = this.filter.interval;
+    if (!isSwaping) {
+      interval = 'ALL';
+      this.intervals = ['ALL', 'HOURLY', 'DAILY'];
+      if (durationHours > 24) {
+        this.intervals = ['HOURLY', 'DAILY', 'WEEKLY'];
+        interval = 'HOURLY';
+        const durationDays =  +duration.asDays().toFixed(0);
+        if (durationDays > 7) {
+          this.intervals = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY'];
+          interval = 'DAILY';
+          const durationWeeks =  +duration.asWeeks().toFixed(0);
+          if (durationWeeks > 8) {
+            this.intervals = ['HOURLY', 'DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY'];
+            interval = 'WEEKLY';
+            const durationMonths =  +duration.asMonths().toFixed(0);
+            if (durationMonths > 48) {
+              interval = 'YEARLY';
+            }
           }
         }
       }
     }
+
     this.changeDetectorRef.detectChanges();
     this.dateRangeChanged.emit({
       interval,

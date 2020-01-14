@@ -21,6 +21,8 @@ import {
   IPeopleCountingLocation,
 } from 'src/app/models/peoplecounting/location.model';
 import { SubSink } from 'subsink';
+import { Subject, Observable, of } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
 
 
 moment.locale('nl-be');
@@ -37,10 +39,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public rootLocation: IPeopleCountingLocation;
   public locations: IPeopleCountingLocation[];
   public locationColors: ILeafColors[];
-  public lastYearLocations: IPeopleCountingLocation[];
   public currentLocations: IPeopleCountingLocation[];
   public listStyleValue = 'map';
   public leafUrl = '/private/stairwaytohealth/place';
+
+  public lastYearLocations$: Subject<null> = new Subject();
+  public lastYearLocations: IPeopleCountingLocation[];
+  public lastYearLocationsLoading = false;
+  public lastYearLocationsLoadingError = false;
 
   private subs = new SubSink();
 
@@ -59,6 +65,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
       description: null,
       children: await this.locationService.getLocationsTree().toPromise()
     };
+    this.subs.add(
+      this.getLastYearData(this.lastYearLocations$).subscribe(
+        (result) => {
+          if (!this.lastYearLocationsLoadingError) {
+            const leafs = cloneDeep(this.currentLocations);
+            leafs.forEach(leaf => {
+              const leafIndex = result.findIndex((x => x.id === leaf.id));
+              if (leafIndex > -1) {
+                leaf.series = result[leafIndex].series;
+              } else {
+                leaf.series = [];
+              }
+            });
+            this.lastYearLocations = leafs;
+            this.lastYearLocationsLoading = false;
+            this.changeDetectorRef.detectChanges();
+          }
+        }
+      ),
+    );
     this.changeLocation(this.rootLocation);
   }
 
@@ -72,31 +98,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public changeLocation(location: IPeopleCountingLocation) {
     const locations: IPeopleCountingLocation[] = location.children || [];
-    const lastYearLocations = cloneDeep(locations);
     this.locationColors = generateLeafColors(locations);
     this.currentLocations = locations;
+    this.lastYearLocations$.next();
+  }
 
-    this.subs.add(
-      // Get the past year data with month interval for each locations
-      this.locationService.getLocationsDataByIds(
-        locations.map(loc => loc.id),
-        'MONTHLY',
-        moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      ).subscribe(
-        (result) => {
-          lastYearLocations.forEach(leaf => {
-            const leafIndex = result.findIndex((x => x.id === leaf.id));
-            if (leafIndex > -1) {
-              leaf.series = result[leafIndex].series;
-            } else {
-              leaf.series = [];
-            }
-          });
-          this.lastYearLocations = lastYearLocations;
-          this.changeDetectorRef.detectChanges();
-        }
-      )
+  private getLastYearData(request: Observable <null>): Observable < IPeopleCountingLocation[] > {
+    return request.pipe(
+      switchMap(() => {
+        this.lastYearLocationsLoading = true;
+        this.lastYearLocationsLoadingError = false;
+        this.changeDetectorRef.detectChanges();
+        return this.locationService.getLocationsDataByIds(
+          this.currentLocations.map(leaf => leaf.id),
+          'MONTHLY',
+          moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+          moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        ).pipe(catchError((error) => {
+          console.error(error);
+          this.lastYearLocationsLoading = false;
+          this.lastYearLocationsLoadingError = true;
+          return of([]);
+        }));
+      })
     );
   }
 

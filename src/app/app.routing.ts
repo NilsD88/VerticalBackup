@@ -9,25 +9,13 @@ import {PrivateLayoutComponent} from './layout/private.layout.component';
 @Injectable()
 export class PublicAuthGuard implements CanActivate {
 
-  constructor(public authService: AuthService,
-              public sharedService: SharedService,
-              private router: Router) {
-  }
+  constructor(
+    public authService: AuthService,
+    public sharedService: SharedService,
+    private router: Router
+  ) {}
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    /*
-    this.sharedService.user = new User({
-      email: 'nicolas.ancel@ordina.be',
-      firstName: 'Nicolas',
-      lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
-      roles: ['pxs:iot:localadmin'],
-      orgName: 'Ordina',
-      impersonation: false
-    });
-    return true;
-    */
-
     try {
       this.sharedService.user = new User(await this.authService.isLoggedIn());
       if (!['/error/404', '/error/500', '/error/401', '/error/403'].includes(state.url)) {
@@ -35,7 +23,7 @@ export class PublicAuthGuard implements CanActivate {
       }
       return true;
     } catch (err) {
-      console.log('UserAuthGuard: ', err);
+      console.log(err);
       return true;
     }
   }
@@ -49,19 +37,6 @@ export class UserAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    /*
-    this.sharedService.user = new User({
-      email: 'nicolas.ancel@ordina.be',
-      firstName: 'Nicolas',
-      lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
-      roles: ['pxs:iot:localadmin'],
-      orgName: 'Ordina',
-      impersonation: false
-    });
-    return true;
-    */
-
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       return this.sharedService.user.isUser;
@@ -83,31 +58,19 @@ export class UserAuthGuard implements CanActivate {
       }
       return false;
     }
-    return true;
   }
 }
-
 
 @Injectable()
 export class HomeUserAuthGuard implements CanActivate {
 
-  constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
-  }
+  constructor(
+    public authService: AuthService,
+    public sharedService: SharedService,
+    private router: Router
+  ) {}
 
   async canActivate(): Promise<boolean> {
-    /*
-    this.sharedService.user = new User({
-      email: 'nicolas.ancel@ordina.be',
-      firstName: 'Nicolas',
-      lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
-      roles: ['pxs:iot:localadmin'],
-      orgName: 'Ordina',
-      impersonation: false
-    });
-    return true;
-    */
-    
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       const modules = this.sharedService.user.modules;
@@ -162,18 +125,6 @@ export class AdminAuthGuard implements CanActivate {
   }
 
   async canActivate(): Promise<boolean> {
-    /*
-    this.sharedService.user = new User({
-      email: 'nicolas.ancel@ordina.be',
-      firstName: 'Nicolas',
-      lastName: 'Ancel',
-      modules: ['TANK_MONITORING', 'PEOPLE_COUNTING_WALKING_TRAIL', 'PEOPLE_COUNTING_RETAIL', 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'],
-      roles: ['pxs:iot:localadmin'],
-      orgName: 'Ordina',
-      impersonation: false
-    });
-    return true;
-    */
     try {
       this.sharedService.user = await this.authService.isLoggedIn();
       if (this.sharedService.user.isUser && !this.sharedService.user.isAdmin) {
@@ -201,7 +152,6 @@ export class AdminAuthGuard implements CanActivate {
       return false;
     }
   }
-
 }
 
 

@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { uniq } from 'lodash';
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 
@@ -35,6 +35,10 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
   @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
   @Input() leafUrl = '/private/walkingtrail/trail';
+  @Input() loading = false;
+  @Input() loadingError = false;
+
+  @Output() wantTryAgain: EventEmitter <null> = new EventEmitter();
 
   public chart: any;
   public chartOptions: any;
