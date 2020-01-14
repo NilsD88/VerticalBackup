@@ -1,22 +1,22 @@
-import { SubSink } from 'subsink';
-import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { SharedService } from 'src/app/services/shared.service';
-import { TranslateService } from '@ngx-translate/core';
-import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
-import { cloneDeep } from 'lodash';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
-import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { Observable, Subject, of} from 'rxjs';
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-import { NewAlertService } from 'src/app/services/new-alert.service';
+import {SubSink} from 'subsink';
+import {Intervals} from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {SharedService} from 'src/app/services/shared.service';
+import {TranslateService} from '@ngx-translate/core';
+import {TankMonitoringAssetService} from 'src/app/services/tankmonitoring/asset.service';
+import {cloneDeep} from 'lodash';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IAsset} from 'src/app/models/g-asset.model';
+import {Observable, of, Subject} from 'rxjs';
+import {catchError, debounceTime, switchMap} from 'rxjs/operators';
+import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
+import {NewAlertService} from 'src/app/services/new-alert.service';
 import {formatDate} from '@angular/common';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
-import { MatDialog } from '@angular/material';
-import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import {MatDialog} from '@angular/material';
+import {DialogComponent} from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -53,7 +53,8 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.activeRoute.params.subscribe(async (params) => {
@@ -84,7 +85,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
         for (const thing of things) {
           for (const sensor of thing.sensors) {
             chartData.push({
-              label: await this.translateService.get('SENSORTYPES.' + sensor.sensorType.name).toPromise(),
+              label: this.getSensorTypeTranslation(sensor.sensorType.name),
               series: sensor.series
             });
           }
@@ -97,6 +98,20 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     this.chartData$.next(this.currentFilter);
   }
 
+  private async getSensorTypeTranslation(name: string): Promise<String> {
+    const translated = await this.translateService.get('SENSORTYPES.' + name).toPromise();
+    if (translated.indexOf('SENSORTYPES') !== -1) {
+      return this.upperCaseFirst(name);
+    } else {
+      return translated;
+    }
+
+  }
+
+  private upperCaseFirst(transform: string) {
+    return transform.charAt(0).toUpperCase() + transform.slice(1);
+  }
+
   private getLastAlerts() {
     this.subs.add(
       this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
@@ -107,11 +122,11 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
 
 
   public updateChartData(options: { interval?: string; from?: number; to?: number; }) {
-    const interval = options.interval ?  options.interval : this.currentFilter.interval;
-    const from = options.from ?  options.from : this.currentFilter.from;
-    const to = options.to ?  options.to : this.currentFilter.to;
+    const interval = options.interval ? options.interval : this.currentFilter.interval;
+    const from = options.from ? options.from : this.currentFilter.from;
+    const to = options.to ? options.to : this.currentFilter.to;
     const duration = moment.duration(moment(to).diff(from));
-    const durationInHours =  +duration.asHours().toFixed(0);
+    const durationInHours = +duration.asHours().toFixed(0);
     const originalFilter = cloneDeep(this.currentFilter);
 
     this.currentFilter = {
@@ -147,7 +162,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     }
 
     if (this.asset.image) {
-      pdf.addImage(this.asset.image, 'JPEG', 10 , 10, 30, 30);
+      pdf.addImage(this.asset.image, 'JPEG', 10, 10, 30, 30);
     }
 
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
@@ -158,7 +173,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     pdf.text(locationNameTranslation + ' : ' + this.asset.location.name, 45, 25);
 
     const options = this.myChart.options;
-    if ( options.series.length > 0) {
+    if (options.series.length > 0) {
       setStyle('title');
       const chartTitle = await this.getTranslation('PDF.CHART');
       pdf.text(chartTitle, 10, 50);
@@ -167,7 +182,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
       const measurePeriodTranslation = await this.getTranslation('PDF.MEASURE_PERIOD');
       const toTranslation = await this.getTranslation('PDF.TO');
 
-      const dateRange = this.myChart.range || {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)};
+      const dateRange = this.myChart.range || {fromDate: new Date(this.currentFilter.from), toDate: new Date(this.currentFilter.to)};
       const timePeriod: string = measurePeriodTranslation + ' ' + formatDate(dateRange.fromDate, 'dd/MM/yyyy HH:mm', 'en-US')
         + ' ' + toTranslation + ' ' + formatDate(dateRange.toDate, 'dd/MM/yyyy HH:mm', 'en-US');
       pdf.text(timePeriod, 10, 55);
@@ -208,15 +223,17 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
 
       let chart;
       for (const CHART of this.myChart.Highcharts.charts) {
-        if ( typeof CHART !== 'undefined') {
+        if (typeof CHART !== 'undefined') {
           chart = CHART;
         }
       }
 
-      const svgString = chart.getSVG({chart: {
-        width: 1400,
-        height: 600,
-      }});
+      const svgString = chart.getSVG({
+        chart: {
+          width: 1400,
+          height: 600,
+        }
+      });
 
       const canvas = document.createElement('canvas');
       canvas.width = 1400;
@@ -225,7 +242,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
       canvg(canvas, svgString);
 
       const canvasB64 = canvas.toDataURL();
-      pdf.addImage(canvasB64, 'PNG', 5 , 60, (1400 / 7), (600 / 7));
+      pdf.addImage(canvasB64, 'PNG', 5, 60, (1400 / 7), (600 / 7));
     }
 
     pdf.save(this.asset.name + '.pdf');
