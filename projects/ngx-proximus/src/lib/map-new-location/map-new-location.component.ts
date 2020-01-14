@@ -1,7 +1,7 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges} from '@angular/core';
 import { IGeolocation } from 'src/app/models/geolocation.model';
-import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS } from 'leaflet';
+import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS, Point } from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { ILocation } from 'src/app/models/g-location.model';
 import { isNullOrUndefined } from 'util';
@@ -102,7 +102,16 @@ export class MapNewLocationComponent implements OnInit {
   }
 
   onMapClick(event) {
-    if (event.layerPoint.y > 60) {
+    const containerPoint: Point = event.containerPoint;
+    let shouldAddMarker = false;
+    if (containerPoint.y < 50) {
+      if (containerPoint.x < 180 || containerPoint.x > 590) {
+        shouldAddMarker = true;
+      }
+    } else {
+      shouldAddMarker = true;
+    }
+    if (shouldAddMarker) {
       const { lat, lng } = event.latlng;
       this.addMarker({lat, lng});
     }
