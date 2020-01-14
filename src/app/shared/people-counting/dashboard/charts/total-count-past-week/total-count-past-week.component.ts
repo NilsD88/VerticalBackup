@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { cloneDeep } from 'lodash';
-import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import * as randomColor from 'randomcolor';
 
 import * as Highcharts from 'highcharts';
@@ -23,6 +23,10 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
   @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
   @Input() leafUrl: string;
+  @Input() loading = false;
+  @Input() loadingError = false;
+
+  @Output() wantTryAgain: EventEmitter <null> = new EventEmitter();
 
   public chart: any;
   public chartOptions: any;

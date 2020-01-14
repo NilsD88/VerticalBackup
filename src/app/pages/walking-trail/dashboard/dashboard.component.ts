@@ -28,6 +28,8 @@ import * as mTZ from 'moment-timezone';
 import {
   IPeopleCountingLocation,
 } from 'src/app/models/peoplecounting/location.model';
+import { catchError, switchMap } from 'rxjs/operators';
+import { of, Observable, Subject } from 'rxjs';
 
 
 moment.locale('nl-be');
@@ -44,10 +46,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public rootLocation: IPeopleCountingLocation;
   public leafs: IPeopleCountingLocation[];
   public leafColors: ILeafColors[];
-  public lastYearLeafs: IPeopleCountingLocation[];
-  public currentLeafs: IPeopleCountingLocation[];
   public listStyleValue = 'map';
   public leafUrl = '/private/walkingtrail/trail';
+
+  public lastYearLeafs$: Subject<null> = new Subject();
+  public lastYearLeafs: IPeopleCountingLocation[];
+  public lastYearLeafsLoading = false;
+  public lastYearLeafsLoadingError = false;
+
+  public lastWeekLeafs$: Subject<null> = new Subject();
+  public lastWeekLeafs: IPeopleCountingLocation[];
+  public lastWeekLeafsLoading = false;
+  public lastWeekLeafsLoadingError = false;
 
   private subs = new SubSink();
 
@@ -66,15 +76,53 @@ export class DashboardComponent implements OnInit, OnDestroy {
       description: null,
       children: await this.locationService.getLocationsTree().toPromise()
     };
+    this.subs.add(
+      this.getLastWeekData(this.lastWeekLeafs$).subscribe(
+        (result) => {
+          if (!this.lastWeekLeafsLoadingError) {
+            const leafs = cloneDeep(this.leafs);
+            leafs.forEach(leaf => {
+              const leafIndex = result.findIndex((x => x.id === leaf.id));
+              if (leafIndex > -1) {
+                leaf.series = result[leafIndex].series;
+              } else {
+                leaf.series = [];
+              }
+            });
+            this.lastWeekLeafs = leafs;
+            this.lastWeekLeafsLoading = false;
+            this.changeDetectorRef.detectChanges();
+          }
+        }
+      ),
+      this.getLastYearData(this.lastYearLeafs$).subscribe(
+        (result) => {
+          if (!this.lastYearLeafsLoadingError) {
+            const leafs = cloneDeep(this.leafs);
+            leafs.forEach(leaf => {
+              const leafIndex = result.findIndex((x => x.id === leaf.id));
+              if (leafIndex > -1) {
+                leaf.series = result[leafIndex].series;
+              } else {
+                leaf.series = [];
+              }
+            });
+            this.lastYearLeafs = leafs;
+            this.lastYearLeafsLoading = false;
+            this.changeDetectorRef.detectChanges();
+          }
+        }
+      ),
+    );
     this.changeLocation(this.rootLocation);
   }
 
   public decrease() {
-    this.currentLeafs = decreaseLeafs(this.currentLeafs);
+    this.lastWeekLeafs = decreaseLeafs(this.lastWeekLeafs);
   }
 
   public increase() {
-    this.currentLeafs = increaseLeafs(this.currentLeafs);
+    this.lastWeekLeafs = increaseLeafs(this.lastWeekLeafs);
   }
 
   public listStyleOnChange(event) {
@@ -87,51 +135,51 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public changeLocation(location: IPeopleCountingLocation) {
     const leafs: IPeopleCountingLocation[] = [];
     findLeafLocations(location, leafs);
-    const lastYearLeafs = cloneDeep(leafs);
     this.leafColors = generateLeafColors(leafs);
+    this.leafs = leafs;
+    this.lastWeekLeafs$.next();
+    this.lastYearLeafs$.next();
+  }
 
-    this.subs.add(
-      // Get the past week data with day interval for each leafs
-      this.locationService.getLocationsDataByIds(
-        leafs.map(leaf => leaf.id),
-        'DAILY',
-        moment().startOf('isoWeek').subtract(1, 'week').valueOf(),
-        moment().startOf('isoWeek').valueOf(),
-      ).subscribe(
-        (result) => {
-          leafs.forEach(leaf => {
-            const leafIndex = result.findIndex((x => x.id === leaf.id));
-            if (leafIndex > -1) {
-              leaf.series = result[leafIndex].series;
-            } else {
-              leaf.series = [];
-            }
-          });
-          this.leafs = leafs;
-          this.currentLeafs = cloneDeep(this.leafs);
-          this.changeDetectorRef.detectChanges();
-        }
-      ),
-      // Get the past year data with month interval for each leafs
-      this.locationService.getLocationsDataByIds(
-        leafs.map(leaf => leaf.id),
-        'MONTHLY',
-        moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      ).subscribe(
-        (result) => {
-          lastYearLeafs.forEach(leaf => {
-            const leafIndex = result.findIndex((x => x.id === leaf.id));
-            if (leafIndex > -1) {
-              leaf.series = result[leafIndex].series;
-            } else {
-              leaf.series = [];
-            }
-          });
-          this.lastYearLeafs = lastYearLeafs;
-          this.changeDetectorRef.detectChanges();
-        }
-      )
+  private getLastWeekData(request: Observable <null>): Observable < IPeopleCountingLocation[] > {
+    return request.pipe(
+      switchMap(() => {
+        this.lastWeekLeafsLoading = true;
+        this.lastWeekLeafsLoadingError = false;
+        this.changeDetectorRef.detectChanges();
+        return this.locationService.getLocationsDataByIds(
+          this.leafs.map(leaf => leaf.id),
+          'DAILY',
+          moment().startOf('isoWeek').subtract(1, 'week').valueOf(),
+          moment().startOf('isoWeek').valueOf(),
+        ).pipe(catchError((error) => {
+          console.error(error);
+          this.lastWeekLeafsLoading = false;
+          this.lastWeekLeafsLoadingError = true;
+          return of([]);
+        }));
+      })
+    );
+  }
+
+  private getLastYearData(request: Observable <null>): Observable < IPeopleCountingLocation[] > {
+    return request.pipe(
+      switchMap(() => {
+        this.lastYearLeafsLoading = true;
+        this.lastYearLeafsLoadingError = false;
+        this.changeDetectorRef.detectChanges();
+        return this.locationService.getLocationsDataByIds(
+          this.leafs.map(leaf => leaf.id),
+          'MONTHLY',
+          moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+          moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        ).pipe(catchError((error) => {
+          console.error(error);
+          this.lastYearLeafsLoading = false;
+          this.lastYearLeafsLoadingError = true;
+          return of([]);
+        }));
+      })
     );
   }
 
