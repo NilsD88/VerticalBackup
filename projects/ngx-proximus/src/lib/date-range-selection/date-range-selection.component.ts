@@ -19,9 +19,13 @@ export class DateRangeSelectionComponent implements OnInit {
   @Input() fromDate: Date;
   @Input() toDate: Date;
 
-  @Output() dateChange: EventEmitter<DateRange> = new EventEmitter();
+  @Output() dateChange: EventEmitter<{
+    dateRange: DateRange,
+    isSwaping: boolean
+  }> = new EventEmitter();
 
   public drpPresets: Array<PresetItem> = [];
+  public isSwaping = false;
 
   constructor() {
   }
@@ -35,6 +39,7 @@ export class DateRangeSelectionComponent implements OnInit {
   swapPeriod(direction: boolean) {
     const {_fromDate, _toDate } = this.dateRangePicker.rangeStoreService;
     const duration = moment.duration(moment(_toDate).diff(_fromDate));
+    this.isSwaping = true;
     if (direction) {
       this.dateRangePicker.resetDates({
         fromDate: new Date (moment(_fromDate).add(duration).valueOf()),
@@ -56,7 +61,11 @@ export class DateRangeSelectionComponent implements OnInit {
     if (durationInHours > 24) {
       dateRange.toDate = new Date(moment(dateRange.toDate).add(1, 'day').valueOf());
     }
-    this.dateChange.emit(dateRange);
+    this.dateChange.emit({
+      dateRange,
+      isSwaping: this.isSwaping
+    });
+    this.isSwaping = false;
   }
 }
 
