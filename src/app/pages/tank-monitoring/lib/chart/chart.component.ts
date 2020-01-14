@@ -112,7 +112,16 @@ export class ChartComponent implements OnInit, OnChanges {
         crosshairs: true,
         shared: true,
       },
-      yAxis: [],
+      yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: ''
+        },
+        labels: {
+            format: '{value}%',
+        }
+      },
       xAxis: {
         type: 'datetime'
       },
@@ -135,7 +144,6 @@ export class ChartComponent implements OnInit, OnChanges {
     for (const data of this.chartData) {
       const serieLength = (data.series || []).length;
       const {consumptions, average} = this.getConsumptionsAndAverage(data.series, serieLength);
-      this.addYAxisOption(serieLength, data.label, average);
       this.addYAxisValues(data, data.label, this.rangeTranslation, serieLength, consumptions);
     }
 
@@ -155,37 +163,6 @@ export class ChartComponent implements OnInit, OnChanges {
     return NaN;
   }
 
-  private addYAxisOption(lengthOfSerie: number, labelTranslation: string, average: number) {
-    const axisOpposite = this.options.yAxis.length % 2 > 0;
-    let shouldAddYAxis = false;
-
-    if (lengthOfSerie > 0) {
-      shouldAddYAxis = true;
-      if (this.options.yAxis.length > 0) {
-        shouldAddYAxis = !this.options.yAxis.some((e) => {
-          return e.title.text === labelTranslation;
-        });
-      }
-    }
-
-    if (shouldAddYAxis) {
-      this.options.yAxis.push({
-        min: 0,
-        max: 100,
-        opposite: axisOpposite,
-        showEmpty: false,
-        title: {
-          text: labelTranslation
-        },
-        plotLines: [{
-            color: '#3745AE',
-            value: average,
-            width: '1',
-            zIndex: 2 // To not get stuck below the regular plot lines
-        }]
-      });
-    }
-  }
 
   private addYAxisValues(item: IChartData, labelTranslation: string, rangeTranslation: string, serieLength: number, consumptions: number[]) {
     if (this.filter.durationInHours > 24) {
@@ -193,7 +170,6 @@ export class ChartComponent implements OnInit, OnChanges {
       this.options.series.push({
         name: labelTranslation,
         color: '#7A81E4',
-        yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
@@ -206,7 +182,6 @@ export class ChartComponent implements OnInit, OnChanges {
       this.options.series.push({
         name: labelTranslation + ' consumption',
         color: '#3745AE',
-        yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'column',
         showInLegend: (item.series.length) ? true : false,
@@ -220,7 +195,6 @@ export class ChartComponent implements OnInit, OnChanges {
       this.options.series.push({
         name: labelTranslation,
         color: '#7A81E4',
-        yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
@@ -233,7 +207,6 @@ export class ChartComponent implements OnInit, OnChanges {
       this.options.series.push({
         name: labelTranslation + ' consumption',
         color: '#3745AE',
-        yAxis: this.getYAxisByLabel(item.label),
         zIndex: 1,
         type: 'column',
         showInLegend: (item.series.length) ? true : false,
@@ -242,16 +215,6 @@ export class ChartComponent implements OnInit, OnChanges {
         })
       });
     }
-  }
-
-  getYAxisByLabel(label) {
-    let result;
-    for ( let i = 0; i < this.options.yAxis.length; i++) {
-      if ( this.options.yAxis[i].title.text.toUpperCase() === label.toUpperCase()) {
-        result = i;
-      }
-    }
-    return result;
   }
 
   public intervalChanged(event) {
