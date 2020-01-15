@@ -56,7 +56,6 @@ export class TrailMapComponent implements OnInit {
 
   ngOnInit() {
     this.center = new Geolocation();
-
     this.markerClusterOptions = {
       iconCreateFunction(cluster) {
         const childCount = cluster.getChildCount();
@@ -175,6 +174,8 @@ export class TrailMapComponent implements OnInit {
         });
         this.trailsLayer.push(newMarker);
       }
+      this.setTrailBounds(this.location);
+      this.fitBoundsAndZoomOnTrail();
     }
   }
 
@@ -302,13 +303,15 @@ export class TrailMapComponent implements OnInit {
           }
         }
       }
-    }
+    };
   }
 
   public resetMap() {
     this.selectedTrail = null;
     this.initMap();
+    /*
     this.setTrailBounds(this.location.parent);
     this.fitBoundsAndZoomOnTrail();
+    */
   }
 }
