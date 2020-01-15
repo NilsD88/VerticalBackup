@@ -24,8 +24,10 @@ export interface IPointOfAttentionItem {
   id?: string;
   name?: string;
   sensorType?: ISensorType;
+  sensorTypeId?: string;
   aggregationType?: EAggregation;
   assets?: IAsset[];
+  assetIds?: string[];
   tempId?: number;
   series?: IPointOfAttentionItemData[];
 }
