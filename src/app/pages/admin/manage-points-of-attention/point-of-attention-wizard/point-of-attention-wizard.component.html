@@ -46,7 +46,7 @@
               <pxs-list-point-of-attention-items [(pointOfAttention)]="pointOfAttention"></pxs-list-point-of-attention-items>
             </div>
           </div>
-          <pxs-stepper-next [completed]="pointOfAttention.location" [text]="'Save'" [color]="'success'" (next)="save()"></pxs-stepper-next>
+          <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="pointOfAttention.location" [text]="'Save'" [color]="'success'" (next)="save()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>
