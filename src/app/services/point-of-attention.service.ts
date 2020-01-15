@@ -68,6 +68,7 @@ export class PointOfAttentionService {
     const GET_POINT_OF_ATTENTION_BY_ID = gql `
             query findAssetGroupById($id: Long!) {
               assetGroup: findAssetGroupById(id: $id) {
+                id,
                 name,
                 description,
                 location {
@@ -81,7 +82,11 @@ export class PointOfAttentionService {
                     id,
                     name
                   },
-                  aggregationType
+                  aggregationType,
+                  assets {
+                    id,
+                    name
+                  }
                 }
               }
             }
@@ -302,27 +307,28 @@ export class PointOfAttentionService {
     }) => data.deleteAssetGroup));
   }
 
-  public updatePointOfAttentionItem(pointOfAttention: IPointOfAttention): Observable < boolean > {
-    const UPDATE_POINT_OF_ATTENTION = gql `
-        mutation updateAssetGroup($input: AssetGroupUpdateInput!) {
-          updateAssetGroup(input: $input)
+  public updatePointOfAttentionItem(pointOfAttentionItem: IPointOfAttentionItem): Observable < boolean > {
+
+    const UPDATE_POINT_OF_ATTENTION_ITEM = gql `
+        mutation updateAssetGroupItem($input: AssetGroupItemUpdateInput!) {
+          updateAssetGroupItem(input: $input)
         }
     `;
 
     interface UpdatePointOfAttentionResponse {
-      updateAssetGroup: boolean;
+      updateAssetGroupItem: boolean;
     }
 
     return this.apollo.mutate < UpdatePointOfAttentionResponse > ({
-      mutation: UPDATE_POINT_OF_ATTENTION,
+      mutation: UPDATE_POINT_OF_ATTENTION_ITEM,
       variables: {
         input: {
-          ...pointOfAttention
+          ...pointOfAttentionItem
         }
       }
     }).pipe(map(({
       data
-    }) => data.updateAssetGroup));
+    }) => data.updateAssetGroupItem));
   }
 
 

@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { SubSink } from 'subsink';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
@@ -8,7 +9,7 @@ import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
   templateUrl: './list-points-of-attention.component.html',
   styleUrls: ['./list-points-of-attention.component.scss']
 })
-export class ListPointsOfAttentionComponent implements OnInit {
+export class ListPointsOfAttentionComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
@@ -17,6 +18,8 @@ export class ListPointsOfAttentionComponent implements OnInit {
 
   public dataSource: MatTableDataSource<IPointOfAttention>;
   public displayedColumns: string[] = ['name', 'location', 'actions'];
+
+  private subs = new SubSink();
 
   constructor(
     private pointOfAttentionService: PointOfAttentionService
@@ -34,6 +37,16 @@ export class ListPointsOfAttentionComponent implements OnInit {
     this.updateDataSourceWithAssets(this.pointsOfAttention);
   }
 
+  public deletePointOfAttention(id: string) {
+    this.subs.add(
+      this.pointOfAttentionService.deletePointOfAttention(id).subscribe(
+        (result) => {
+          this.getPointsOfAttention();
+        }
+      )
+    );
+  }
+
   private updateDataSourceWithAssets(pointOfAttentions: IPointOfAttention[]) {
     this.dataSource = new MatTableDataSource(pointOfAttentions);
     this.dataSource.sortingDataAccessor = (pointOfAttention, property) => {
@@ -49,6 +62,10 @@ export class ListPointsOfAttentionComponent implements OnInit {
         return pointOfAttention[property].toLocaleLowerCase();
     };
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
 }
