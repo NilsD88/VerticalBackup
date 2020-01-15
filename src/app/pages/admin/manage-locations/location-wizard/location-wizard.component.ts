@@ -1,17 +1,17 @@
-import { SubSink } from 'subsink';
-import { IField } from './../../../../models/field.model';
-import { ILocation } from 'src/app/models/g-location.model';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { isNullOrUndefined } from 'util';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { MatStepper } from '@angular/material/stepper';
-import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-import { cloneDeep } from 'lodash';
-import { GraphQLError } from 'graphql';
-import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
-import { MatDialog } from '@angular/material';
+import {SubSink} from 'subsink';
+import {IField} from './../../../../models/field.model';
+import {ILocation} from 'src/app/models/g-location.model';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {isNullOrUndefined} from 'util';
+import {ActivatedRoute, Router} from '@angular/router';
+import {NewLocationService} from 'src/app/services/new-location.service';
+import {MatStepper} from '@angular/material/stepper';
+import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
+import {cloneDeep} from 'lodash';
+import {GraphQLError} from 'graphql';
+import {DialogComponent} from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'pvf-location-wizard',
@@ -41,7 +41,8 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
     public newLocationService: NewLocationService,
     public dialog: MatDialog,
     public router: Router,
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
 
@@ -85,7 +86,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
     };
     if (!isNullOrUndefined(parentId) && parentId !== 'root') {
       this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
-      this.location.parentId = this.location.parent.id || null;
+      this.location.parentId = this.location.parent.id || null;
       this.changeDetectorRef.detectChanges();
       this.parentIdParam = null;
       this.stepper.next();
@@ -147,7 +148,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
         )
       );
     } else {
-     this.createLocation();
+      this.createLocation();
     }
   }
 
@@ -192,7 +193,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already existss`,
+            title: `${nameAlreadyUsed} already exists`,
             message: 'Please choose an other location name to be able to save it'
           },
           minWidth: '320px',
