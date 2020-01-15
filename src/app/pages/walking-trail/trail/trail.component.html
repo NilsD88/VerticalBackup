@@ -5,7 +5,7 @@
     </div>
     <div class="col-md-6 col-sm-12">
       <pvf-trail-images [leaf]="leaf"></pvf-trail-images>
-      <pvf-summary-statistics *ngIf="leaf?.parent" [leaf]="leaf"></pvf-summary-statistics>
+      <pvf-summary-statistics *ngIf="parentLocation" [leaf]="leaf"></pvf-summary-statistics>
     </div>
   </div>
 </div>
