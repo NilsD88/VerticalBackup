@@ -1,7 +1,7 @@
 import { SubSink } from 'subsink';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { IPointOfAttention } from './../../../../models/point-of-attention.model';
+import { IPointOfAttention, IPointOfAttentionItem } from './../../../../models/point-of-attention.model';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
@@ -24,6 +24,7 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
   public editMode = false;
   public descriptionFormGroup: FormGroup;
   public displayLocationExplorer = true;
+  public isSavingOrUpdating: boolean;
 
   private originalPointOfAttention: IPointOfAttention;
   private subs = new SubSink();
@@ -95,7 +96,7 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
   }
 
   public save() {
-
+    this.isSavingOrUpdating = true;
     if (this.editMode) {
       const pointOfAttention: IPointOfAttention  = {
         id: this.pointOfAttention.id,
@@ -105,24 +106,37 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
       for (const difference of differences) {
         pointOfAttention[difference] = this.pointOfAttention[difference];
       }
+      pointOfAttention.items = this.pointOfAttention.items.map((item: IPointOfAttentionItem) => {
+        const cleanedItem: IPointOfAttentionItem = {
+          name: item.name,
+          sensorTypeId: item.sensorType.id,
+          aggregationType: item.aggregationType,
+          assetIds: item.assets.map(asset => asset.id)
+        };
+        return cleanedItem;
+      });
 
       this.subs.sink = this.pointOfAttentionService.updatePointOfAttention(pointOfAttention).subscribe(
         () => {
+          this.isSavingOrUpdating = false;
           this.goToManagePointsOfAttention();
         },
         (error) => {
           console.error(error);
           this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          this.isSavingOrUpdating = false;
         }
       );
     } else {
       this.subs.sink = this.pointOfAttentionService.createPointOfAttention(this.pointOfAttention).subscribe(
         () => {
+          this.isSavingOrUpdating = false;
           this.goToManagePointsOfAttention();
         },
         (error) => {
           console.error(error);
           this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          this.isSavingOrUpdating = false;
         }
       );
     }

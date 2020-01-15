@@ -87,47 +87,7 @@ export class PointOfAttentionItemDialogComponent implements OnInit {
   }
 
   save() {
-    if (this.data.item && this.data.item.id) {
-      const pointOfAttentionItem: IPointOfAttentionItem = {
-        id: this.pointOfAttentionItem.id,
-      };
-      const includeProperties = ['name', 'sensorType', 'aggregationType'];
-      const differences = compareTwoObjectOnSpecificProperties(this.pointOfAttentionItem, this.originalPointOfAttentionItem, includeProperties);
-      for (const difference of differences) {
-        pointOfAttentionItem[difference] = this.pointOfAttentionItem[difference];
-      }
-      pointOfAttentionItem.assets = this.pointOfAttentionItem.assets;
-      this.pointOfAttentionService.updatePointOfAttentionItem(pointOfAttentionItem).subscribe(
-        result => {
-          if (result) {
-            this.dialogRef.close(this.pointOfAttentionItem);
-          } else {
-            console.log('impossible to save the point of attention item');
-          }
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    } else if (this.data.pointOfAttentionId) {
-      this.pointOfAttentionService.createPointOfAttentionItem(
-        this.pointOfAttentionItem,
-        this.data.pointOfAttentionId
-      ).subscribe(
-        result => {
-          if (result) {
-            this.dialogRef.close(this.pointOfAttentionItem);
-          } else {
-            console.log('impossible to save the point of attention item');
-          }
-        },
-        error => {
-          console.error(error);
-        }
-      );
-    } else {
-      this.dialogRef.close(this.pointOfAttentionItem);
-    }
+    this.dialogRef.close(this.pointOfAttentionItem);
   }
 
 }

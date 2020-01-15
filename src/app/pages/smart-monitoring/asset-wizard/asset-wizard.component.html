@@ -84,7 +84,7 @@
               template</button>
           </div>
         </div>
-        <pxs-stepper-next [loading]="isSavingOrUpdating" text="Save" [completed]="asset.things.length" (next)="wantToSaveAsset()"></pxs-stepper-next>
+        <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [loading]="isSavingOrUpdating" text="Save" [completed]="asset.things.length" (next)="wantToSaveAsset()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>
