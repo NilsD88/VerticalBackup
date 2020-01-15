@@ -115,6 +115,16 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
           this.checkIfNameAlreadyExistAndDisplayDialog(error);
         }
       );
+    } else {
+      this.subs.sink = this.pointOfAttentionService.createPointOfAttention(this.pointOfAttention).subscribe(
+        () => {
+          this.goToManagePointsOfAttention();
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      );
     }
   }
 
