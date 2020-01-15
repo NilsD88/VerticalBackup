@@ -133,7 +133,7 @@ export class PointOfAttentionService {
 
   public createPointOfAttention(pointOfAttention: IPointOfAttention): Observable < boolean > {
     const CREATE_POINT_OF_ATTENTION = gql `
-        mutation createAssetGroup($input: AssetCreateInput!) {
+        mutation createAssetGroup($input: AssetGroupCreateInput!) {
           createAssetGroup(input: $input)
         }
     `;

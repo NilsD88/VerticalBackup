@@ -144,7 +144,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
         maxHeight: '80vh',
         data: {
           title: 'Warning',
-          content: 'You can an only add an asset with at least one thing defined for tank monitoring',
+          content: 'You can an only add an asset with at least one thing defined for your module',
           hideContinue: true,
         }
       });
