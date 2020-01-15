@@ -1,29 +1,12 @@
-import {
-  HttpClient
-} from '@angular/common/http';
-import {
-  IPointOfAttention,
-  IPointOfAttentionItem
-} from './../models/point-of-attention.model';
-import {
-  Injectable
-} from '@angular/core';
-import {
-  Apollo
-} from 'apollo-angular';
+import {HttpClient} from '@angular/common/http';
+import {IPointOfAttention, IPointOfAttentionItem} from './../models/point-of-attention.model';
+import {Injectable} from '@angular/core';
+import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import {
-  Observable
-} from 'rxjs';
-import {
-  MOCK_POINTS_OF_ATTENTION
-} from '../mocks/point-of-attention';
-import {
-  map
-} from 'rxjs/operators';
-import {
-  environment
-} from 'src/environments/environment';
+import {Observable} from 'rxjs';
+import {MOCK_POINTS_OF_ATTENTION} from '../mocks/point-of-attention';
+import {map} from 'rxjs/operators';
+import {environment} from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -133,7 +116,7 @@ export class PointOfAttentionService {
 
   public createPointOfAttention(pointOfAttention: IPointOfAttention): Observable < boolean > {
     const CREATE_POINT_OF_ATTENTION = gql `
-        mutation createAssetGroup($input: AssetCreateInput!) {
+        mutation createAssetGroup($input: AssetGroupCreateInput!) {
           createAssetGroup(input: $input)
         }
     `;
@@ -326,7 +309,7 @@ export class PointOfAttentionService {
   }
 
 
-  
+
 
 
 
