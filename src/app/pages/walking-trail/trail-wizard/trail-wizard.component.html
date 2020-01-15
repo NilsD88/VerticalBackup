@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
   <mat-step>
       <ng-template matStepLabel>Assets</ng-template>
