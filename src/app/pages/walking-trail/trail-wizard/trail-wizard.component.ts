@@ -239,6 +239,12 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
 
 
   public addImage() {
+    const length = this.location.images.length;
+    if (length) {
+      if (!this.location.images[length - 1]) {
+        return;
+      }
+    }
     this.location.images.push(null);
   }
 
