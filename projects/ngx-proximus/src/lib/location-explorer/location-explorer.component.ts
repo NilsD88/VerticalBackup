@@ -42,6 +42,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
   @Output() assetClicked: EventEmitter<IAsset> = new EventEmitter<IAsset>();
   @Output() pointOfAttentionClicked: EventEmitter<IPointOfAttention> = new EventEmitter<IPointOfAttention>();
+  @Output() selectedLocationTree: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
   tabs: {name: string, children: ILocation[]}[] = [];
   selectedIndex = 0;
@@ -197,9 +198,11 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     this.isDownloading = true;
     if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
       const { path } = findLocationById(this.rootLocation, this.selectedLocation.id);
-      for (const location of path) {
+      path.forEach(location => {
         this.goToChild(location);
-      }
+      });
+      this.selectedLocationTree.emit(this.currentLocation);
+      this.getAssetsBySelectedLocation();
     } else {
       this.changeLocation.emit(this.rootLocation);
     }
