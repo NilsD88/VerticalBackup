@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       min: 0,
       max: 100
     },
-    statuses: ['EMPTY', 'LOW', 'OK', 'UNKNOW'],
+    statuses: ['EMPTY', 'LOW', 'OK', 'UNKNOWN'],
     name: '',
   };
 
@@ -109,10 +109,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
             asset.status = 'OK';
           }
         } else {
-          asset.status = 'UNKNOW';
+          asset.status = 'UNKNOWN';
         }
       } else {
-        asset.status = 'UNKNOW';
+        asset.status = 'UNKNOWN';
       }
     });
     this.updateDataSourceWithFilteredAssets(this.assets);
@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       EMPTY: [],
       LOW: [],
       OK: [],
-      UNKNOW: [],
+      UNKNOWN: [],
     };
 
     assets.forEach((asset) => {

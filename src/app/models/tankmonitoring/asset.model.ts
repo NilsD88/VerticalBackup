@@ -9,4 +9,4 @@ export interface ITankMonitoringAsset extends IAsset {
     };
 }
 
-export type TTankMonitoringStatus = 'EMPTY' | 'LOW' | 'OK' | 'UNKNOW';
+export type TTankMonitoringStatus = 'EMPTY' | 'LOW' | 'OK' | 'UNKNOWN';

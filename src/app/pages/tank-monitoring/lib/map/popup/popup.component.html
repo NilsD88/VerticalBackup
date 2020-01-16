@@ -19,19 +19,19 @@
               <li>
                 <b>Battery:</b>
                 <span [ngClass]="{'empty': asset?.things[0]?.batteryPercentage < 10, 'low': asset?.things[0]?.batteryPercentage >= 10 && asset?.things[0]?.batteryPercentage < 20, 'ok': asset?.things[0]?.batteryPercentage >= 20}">
-                  {{(asset?.things[0]?.batteryPercentage) ? (asset?.things[0]?.batteryPercentage+'%') : 'unknow'}}
+                  {{(asset?.things[0]?.batteryPercentage) ? (asset?.things[0]?.batteryPercentage+'%') : 'unknown'}}
                 </span>
               </li>
               <li>
                 <b>Fuel level:</b>
                 <span [ngClass]="{'empty': asset?.things[0]?.sensors[0]?.value < 10, 'low': asset?.things[0]?.sensors[0]?.value >= 10 && asset?.things[0]?.sensors[0]?.value < 20, 'ok': asset?.things[0]?.sensors[0]?.value >= 20}">
-                  {{(asset?.things[0]?.sensors[0]?.value) ? (asset?.things[0]?.sensors[0]?.value+'%') : 'unknow'}}
+                  {{(asset?.things[0]?.sensors[0]?.value) ? (asset?.things[0]?.sensors[0]?.value+'%') : 'unknown'}}
                 </span>
               </li>
               <li>
                 <b>Last refill:</b>
                 <span>
-                  {{(asset?.lastRefill?.timestamp) ? (asset?.lastRefill?.timestamp | date) : 'unknow'}}
+                  {{(asset?.lastRefill?.timestamp) ? (asset?.lastRefill?.timestamp | date) : 'unknown'}}
                 </span>
               </li>
               <li>
