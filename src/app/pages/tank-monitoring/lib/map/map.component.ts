@@ -17,8 +17,8 @@ const assetIconTankMonitoring = divIcon({
   html: '<div><span class="pxi-map-marker"></span></div>'
 });
 
-const assetIconTankMonitoringUnknowFuel = divIcon({
-  className: 'map-marker-asset tank-monitoring unknow-fuel',
+const assetIconTankMonitoringUnknownFuel = divIcon({
+  className: 'map-marker-asset tank-monitoring unknown-fuel',
   iconSize: null,
   html: '<div><span class="pxi-map-marker"></span></div>'
 });
@@ -109,8 +109,8 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
         return assetIconTankMonitoringEmptyFuel;
       case 'LOW':
         return assetIconTankMonitoringLowFuel;
-      case 'UNKNOW':
-        return assetIconTankMonitoringUnknowFuel;
+      case 'UNKNOWN':
+        return assetIconTankMonitoringUnknownFuel;
       default:
         return assetIconTankMonitoring;
     }
