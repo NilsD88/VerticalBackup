@@ -3,6 +3,6 @@
   <p>{{data.content}}</p>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="cancel()">Go back</button>
-  <button *ngIf="!data.hideContinue" mat-button [mat-dialog-close]="true" cdkFocusInitial>Continue</button>
+  <button mat-button (click)="cancel()">{{data.cancelButton}}</button>
+  <button *ngIf="!data.hideContinue" mat-button [mat-dialog-close]="true" cdkFocusInitial>{{data.continueButton}}</button>
 </div>

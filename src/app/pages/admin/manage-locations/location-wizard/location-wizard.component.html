@@ -50,7 +50,7 @@
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
         <div class="location-image">
-          <pxs-editable-image (change)="location.image=$event" [image]="location.image"></pxs-editable-image>
+          <pxs-editable-image (change)="location.image=$event" [image]="location.image" [confirmationMessage]="editMode ? changeFloorPlanConfirmationMessage : null"></pxs-editable-image>
         </div>
       </div>
     </div>

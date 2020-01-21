@@ -12,6 +12,7 @@ import { cloneDeep } from 'lodash';
 import { GraphQLError } from 'graphql';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { MatDialog } from '@angular/material';
+import { IPopupConfirmation } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-location-wizard',
@@ -30,6 +31,13 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
   public isSavingOrUpdating: boolean;
   public showCancel = true;
   public subs = new SubSink();
+
+  public changeFloorPlanConfirmationMessage: IPopupConfirmation = {
+    title: 'Warning',
+    content: 'Pay attention if you replace the floor plan, the assets and will need to be re-positioned on the new floorplan image, do you want to proceed?',
+    continueButton: 'Yes',
+    cancelButton: 'No'
+  };
 
   private parentIdParam: string;
   private originalLocation: ILocation;
