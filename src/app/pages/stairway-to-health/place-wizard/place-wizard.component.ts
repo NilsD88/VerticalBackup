@@ -43,7 +43,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
 
   public changeFloorPlanConfirmationMessage: IPopupConfirmation = {
     title: 'Warning',
-    content: 'Pay attention if you replace the floor plan, the assets and will need to be re-positioned on the new floorplan image, do you want to proceed?',
+    content: 'Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?',
     continueButton: 'Yes',
     cancelButton: 'No'
   };
