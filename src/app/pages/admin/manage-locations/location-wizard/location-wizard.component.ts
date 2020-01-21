@@ -1,17 +1,18 @@
-import {SubSink} from 'subsink';
-import {IField} from './../../../../models/field.model';
-import {ILocation} from 'src/app/models/g-location.model';
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {isNullOrUndefined} from 'util';
-import {ActivatedRoute, Router} from '@angular/router';
-import {NewLocationService} from 'src/app/services/new-location.service';
-import {MatStepper} from '@angular/material/stepper';
-import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
-import {cloneDeep} from 'lodash';
-import {GraphQLError} from 'graphql';
-import {DialogComponent} from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
-import {MatDialog} from '@angular/material';
+import { SubSink } from 'subsink';
+import { IField } from './../../../../models/field.model';
+import { ILocation } from 'src/app/models/g-location.model';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { isNullOrUndefined } from 'util';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NewLocationService } from 'src/app/services/new-location.service';
+import { MatStepper } from '@angular/material/stepper';
+import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import { cloneDeep } from 'lodash';
+import { GraphQLError } from 'graphql';
+import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { MatDialog } from '@angular/material';
+import { IPopupConfirmation } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-location-wizard',
@@ -30,6 +31,13 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
   public isSavingOrUpdating: boolean;
   public showCancel = true;
   public subs = new SubSink();
+
+  public changeFloorPlanConfirmationMessage: IPopupConfirmation = {
+    title: 'Warning',
+    content: 'Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?',
+    continueButton: 'Yes',
+    cancelButton: 'No'
+  };
 
   private parentIdParam: string;
   private originalLocation: ILocation;

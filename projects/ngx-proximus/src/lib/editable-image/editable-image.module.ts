@@ -5,6 +5,8 @@ import {MatButtonModule, MatDialogModule, MatInputModule} from '@angular/materia
 import {EditImageDialogComponent} from './edit-image-dialog/edit-image-dialog.component';
 import {ImageEditorModule} from '../image-editor/image-editor.module';
 import {NgxImgModule} from 'ngx-img';
+import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmation.module';
+import { PopupConfirmationComponent } from '../popup-confirmation/popup-confirmation.component';
 
 @NgModule({
   declarations: [EditableImageComponent, EditImageDialogComponent],
@@ -14,10 +16,14 @@ import {NgxImgModule} from 'ngx-img';
     MatDialogModule,
     ImageEditorModule,
     MatInputModule,
-    NgxImgModule.forRoot()
+    NgxImgModule.forRoot(),
+    PopupConfirmationModule
   ],
   exports: [EditableImageComponent],
-  entryComponents: [EditImageDialogComponent]
+  entryComponents: [
+    EditImageDialogComponent,
+    PopupConfirmationComponent
+  ]
 })
 export class EditableImageModule {
 }

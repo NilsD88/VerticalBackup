@@ -21,6 +21,7 @@ import { IField } from 'src/app/models/field.model';
 import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.component';
 import { GraphQLError } from 'graphql/error';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { IPopupConfirmation } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-store-wizard',
@@ -39,6 +40,13 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
   public fields: IField[];
   public assets = [];
   public isSavingOrUpdating: boolean;
+
+  public changeFloorPlanConfirmationMessage: IPopupConfirmation = {
+    title: 'Warning',
+    content: 'Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?',
+    continueButton: 'Yes',
+    cancelButton: 'No'
+  };
 
   private originalLocation: IPeopleCountingLocation;
   private assetsRequest$ = new Subject();
