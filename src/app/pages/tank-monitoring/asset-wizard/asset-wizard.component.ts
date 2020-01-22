@@ -265,7 +265,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
   public async openAddThresholdTemplate() {
     const dialogRef = this.dialog.open(ManageThresholdTemplatesDialogComponent, {
       minWidth: '320px',
-      maxWidth: '600px',
+      maxWidth: '1024px',
       width: '100vw',
       maxHeight: '80vh',
       data: {
