@@ -1,7 +1,6 @@
 import { SubSink } from 'subsink';
 import { NewSensorService } from 'src/app/services/new-sensor.service';
 import { cloneDeep } from 'lodash';
-import { IPagedAlerts } from 'src/app/models/g-alert.model';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';

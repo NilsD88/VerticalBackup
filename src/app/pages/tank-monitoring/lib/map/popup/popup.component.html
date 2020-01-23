@@ -9,7 +9,7 @@
     {{asset.things[0]?.devEui}}
   </div>
   <div class="subtitle" *ngIf="asset.location">
-    <b>{{asset.location?.name}}</b>
+    <b>{{fullLocationName}}</b>
   </div>
   <div class="column">
       <ul *ngIf="asset.things">

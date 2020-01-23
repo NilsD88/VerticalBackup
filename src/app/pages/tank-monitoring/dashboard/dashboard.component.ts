@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { SubSink } from 'subsink';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { cloneDeep } from 'lodash';
@@ -10,6 +11,7 @@ import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ILocation } from 'src/app/models/g-location.model';
 import { TankMonitoringLocationService } from 'src/app/services/tankmonitoring/location.service';
+import * as moment from 'moment';
 
 interface IRange {
   min: number;
@@ -17,7 +19,8 @@ interface IRange {
 }
 
 interface IFilterFE {
-  name: string;
+  assetName: string;
+  locationName: string;
   statuses: string[];
   fuelLevel: IRange;
   batteryLevel: IRange;
@@ -52,7 +55,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       max: 100
     },
     statuses: ['EMPTY', 'LOW', 'OK', 'UNKNOWN'],
-    name: '',
+    assetName: '',
+    locationName: ''
   };
 
   public filter = {
@@ -82,7 +86,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private assetService: TankMonitoringAssetService,
-    private locationService: TankMonitoringLocationService
+    private locationService: TankMonitoringLocationService,
+    private sharedService: SharedService
   ) {}
 
   async ngOnInit() {
@@ -124,10 +129,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private updateFilterdAssets() {
     const filteredAssets = cloneDeep(this.assets).filter((asset: ITankMonitoringAsset) => {
       let result = true;
-      if (this.filterFE.name && result) {
+      if (this.filterFE.assetName && result) {
         if (asset.name) {
-          const TERM = this.filterFE.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+          const TERM = this.filterFE.assetName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
           result = asset.name.toLocaleUpperCase().includes(TERM);
+        } else {
+          result = false;
+        }
+      }
+
+      if (this.filterFE.locationName && result) {
+        if (asset.location) {
+          const TERM = this.filterFE.locationName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+          result = asset.location.name.toLocaleUpperCase().includes(TERM);
         } else {
           result = false;
         }
@@ -247,6 +261,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       max: event[1]
     };
     this.changeFilterFE();
+  }
+
+  public downloadSelectedAssetCSV() {
+    let csv = 'Name, Thing ID, Location, Fuel level, Battery level\n';
+    for (const asset of this.selectedAssets) {
+      const thing = ((asset.things || [])[0] || {});
+      csv += asset.name + ', ';
+      csv += thing.devEui + ', ';
+      csv += asset.location ? (asset.location.name + ', ') : ', ';
+      csv += ((thing.sensors || [])[0] || {}).value + '%, ';
+      csv += thing.batteryPercentage + '%';
+      csv += '\n';
+    }
+    this.sharedService.downloadCSV('TankMonitoring_' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
   }
 
   ngOnDestroy() {
