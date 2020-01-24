@@ -33,7 +33,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(AppRoutes),
+    RouterModule.forRoot(AppRoutes, {scrollPositionRestoration: 'enabled'}),
     BrowserAnimationsModule,
     HttpClientModule,
     MatMenuModule,
@@ -48,7 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
-      }
+      },
     }),
     MainMenuModule,
     IconModule,
