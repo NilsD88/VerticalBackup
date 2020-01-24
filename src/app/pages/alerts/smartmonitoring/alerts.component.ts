@@ -297,9 +297,10 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   public downloadSelectedAlertsCSV() {
     let csv = 'Asset, Location, Date, Message, Threshold template, Thing, Value, read\n';
+    console.log(this.selectedAlerts);
     this.selectedAlerts.map((alertId) => {
       const index = this.postFilteredAlerts.findIndex((alert) => alert.id === alertId);
-      if (index) {
+      if (index >= 0) {
         csv += (this.postFilteredAlerts[index].asset || {}).name + ', ';
         csv += ((this.postFilteredAlerts[index].asset || {}).location ||  {}).name + ', ';
         csv += moment(this.postFilteredAlerts[index].timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
