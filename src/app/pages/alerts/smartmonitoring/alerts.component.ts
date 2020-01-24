@@ -95,7 +95,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           this.filteredAlerts = cloneDeep(this.alerts);
           this.postFilteredAlerts = cloneDeep(this.filteredAlerts);
           this.updateDataSourceWithAlerts(this.filteredAlerts);
-          this.isLoading = false;
+          this.filterFE$.next();
         }
       ),
       filteredAlertsObs(this.filterFE$).subscribe(() => { this.updateFilterdAlerts(); })
@@ -103,6 +103,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
   }
 
   public updateFilterdAlerts() {
+    this.isLoading = true;
     this.filteredAlerts = cloneDeep(this.alerts).filter((alert: IAlert) => {
       let result = true;
 
@@ -135,6 +136,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
       return result;
     });
     this.changeReadFilter(this.filterOptions.readFilter);
+    this.isLoading = false;
   }
 
   public updateDataSourceWithAlerts(alerts: IAlert[]) {
