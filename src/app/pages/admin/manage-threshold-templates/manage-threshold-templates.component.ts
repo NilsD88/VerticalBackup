@@ -11,6 +11,7 @@ import { IThresholdItem, ThresholdItem, SeverityLevel } from 'src/app/models/g-t
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { GraphQLError } from 'graphql';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-manage-threshold-templates',
@@ -230,17 +231,26 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
 
   public saveThresholdTemplate() {
     if (this.editMode) {
-      this.subs.add(
-        this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
-          () => {
-            this.goToManageThresholdTemplate();
+      if (this.thresholdTemplate.hasAssetsAttached) {
+        this.dialog.open(PopupConfirmationComponent, {
+          data: {
+            title: `Warning`,
+            content: 'Are you sure you want to edit? Assets are using this template'
           },
-          (error) => {
-            console.error(error);
-            this.checkIfNameAlreadyExistAndDisplayDialog(error);
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
+        }).afterClosed().subscribe(
+          result => {
+            if (result) {
+              this.updateThresholdTemplate();
+            }
           }
-        )
-      );
+        );
+      } else {
+        this.updateThresholdTemplate();
+      }
     } else {
       this.subs.add(
         this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
@@ -254,6 +264,20 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
         )
       );
     }
+  }
+
+  private updateThresholdTemplate() {
+    this.subs.add(
+      this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
+        () => {
+          this.goToManageThresholdTemplate();
+        },
+        (error) => {
+          console.error(error);
+          this.checkIfNameAlreadyExistAndDisplayDialog(error);
+        }
+      )
+    );
   }
 
   createThresholdTemplateCallback(result) {
