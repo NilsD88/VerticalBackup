@@ -29,6 +29,7 @@ export class ChartControlsComponent implements OnInit {
   @Input() chartDataIsLoading: boolean;
   @Input() chartDataLength: number;
   @Input() showExportOptions = true;
+  @Input() minimumIntervals: Intervals[] = ['ALL', 'HOURLY'];
 
   @Output() intervalChanged: EventEmitter<any> = new EventEmitter();
   @Output() dateRangeChanged: EventEmitter<PeriodicDuration> = new EventEmitter();
@@ -86,8 +87,8 @@ export class ChartControlsComponent implements OnInit {
 
     let interval: Intervals = this.filter.interval;
     if (!isSwaping) {
-      interval = 'ALL';
-      this.intervals = ['ALL', 'HOURLY', 'DAILY'];
+      this.intervals = this.minimumIntervals;
+      interval = this.minimumIntervals[0];
       if (durationHours > 24) {
         this.intervals = ['HOURLY', 'DAILY', 'WEEKLY'];
         interval = 'HOURLY';
