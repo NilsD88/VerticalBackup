@@ -64,8 +64,8 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   public periodValue = 'day';
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
-    from: moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    from: moment().subtract(1, 'days').startOf('day').valueOf(),
+    to: moment().endOf('day').valueOf()
   };
 
   private subs = new SubSink();
@@ -127,8 +127,8 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   getYearValues() {
     this.currentFilter = {
       interval: 'MONTHLY',
-      from: moment().subtract(1, 'years').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      to: moment().add(1, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+      from: moment().subtract(1, 'years').startOf('month').valueOf(),
+      to: moment().endOf('month').valueOf()
     };
     this.chartData$.next(this.currentFilter);
   }
@@ -136,8 +136,8 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   getMonthValues() {
     this.currentFilter = {
       interval: 'DAILY',
-      from: moment().subtract(1, 'months').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+      from: moment().subtract(1, 'months').startOf('day').valueOf(),
+      to: moment().endOf('day').valueOf()
     };
     this.chartData$.next(this.currentFilter);
   }
@@ -145,8 +145,8 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   getWeekValue() {
     this.currentFilter = {
       interval: 'DAILY',
-      from: moment().subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+      from: moment().subtract(1, 'weeks').startOf('day').valueOf(),
+      to: moment().endOf('day').valueOf()
     };
     this.chartData$.next(this.currentFilter);
   }
@@ -154,8 +154,8 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   getDayValue() {
     this.currentFilter = {
       interval: 'HOURLY',
-      from: moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      to: moment().add(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+      from: moment().subtract(1, 'days').startOf('day').valueOf(),
+      to: moment().endOf('day').valueOf()
     };
     this.chartData$.next(this.currentFilter);
   }

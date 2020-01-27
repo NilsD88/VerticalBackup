@@ -453,7 +453,8 @@
     "CHART" : "CHART",
     "MEASURE_PERIOD" : "Measure period from",
     "TO" : "to",
-    "AGGREGATED_VALUES" : "AGGREGATED VALUES"
+    "AGGREGATED_VALUES" : "AGGREGATED VALUES",
+    "POINT_OF_ATTENTION": "Point of attention"
   },
   "DASHBOARD" : {
     "TANK_MONITORING": {

@@ -115,7 +115,7 @@
           </div>
           <div class="col-8">
             <small class="text-faded">{{'ALERT_DEF.BODY' | translate}}</small>
-            <textarea matInput [(ngModel)]="alertDefinitionModel.sms.body" [rows]="15"></textarea>
+            <textarea matInput [(ngModel)]="alertDefinitionModel.sms.body" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" maxlength="255"></textarea>
           </div>
           <div class="col-3">
             <small class="text-faded">{{'ALERT_DEF.PLACEHOLDERS' | translate}}</small>

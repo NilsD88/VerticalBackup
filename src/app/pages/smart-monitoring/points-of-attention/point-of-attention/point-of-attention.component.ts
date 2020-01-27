@@ -9,7 +9,6 @@ import * as moment from 'moment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SharedService } from 'src/app/services/shared.service';
-import { LogsService } from 'src/app/services/logs.service';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import * as jspdf from 'jspdf';
@@ -27,13 +26,13 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
 
   public pointOfAttention: IPointOfAttention;
   public chartLoading = false;
-  public chartData$ = new Subject<any>();
+  public chartData$ = new Subject < IFilterChartData > ();
   public chartData = [];
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
-    from: moment().subtract(1, 'week').toDate().getTime(),
-    to: moment().toDate().getTime(),
+    from: moment().subtract(1, 'week').startOf('day').toDate().getTime(),
+    to: moment().endOf('day').toDate().getTime(),
   };
 
   private subs = new SubSink();
@@ -71,7 +70,7 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
   private init() {
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(
-        this.afterGetChartData,
+        (pointOfAttention) => this.afterGetChartData(pointOfAttention),
         (error) => {
           this.chartData = [0];
           this.chartLoading = false;
@@ -83,19 +82,13 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
     this.chartData$.next(this.currentFilter);
   }
 
-  private async afterGetChartData(items) {
+  private afterGetChartData(pointOfAtention: IPointOfAttention) {
     const chartData = [];
-    // Get the translation of each label
-    for (const item of items) {
-      let labelTranslation;
-      labelTranslation = await this.translateService.get('SENSORTYPES.' + item.sensorType.name).toPromise();
-      if (labelTranslation.indexOf('SENSORTYPES') > -1) {
-        labelTranslation = this.upperCaseFirst(item.sensorType.name);
-      }
-
+    for (const item of pointOfAtention.items) {
       chartData.push({
         label: item.name,
         series: item.series,
+        sensorType: item.sensorType,
       });
     }
     this.chartData = chartData;
@@ -147,11 +140,11 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
     }
 
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
-    pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 45, 15);
+    pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 10, 15);
     const pointOfAttentionNameTranslation: string = await this.getTranslation('PDF.POINT_OF_ATTENTION_NAME');
-    pdf.text(pointOfAttentionNameTranslation + ' : ' + this.pointOfAttention.name, 45, 20);
+    pdf.text(pointOfAttentionNameTranslation + ' : ' + this.pointOfAttention.name, 10, 20);
     const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
-    pdf.text(locationNameTranslation + ' : ' + this.pointOfAttention.location.name, 45, 25);
+    pdf.text(locationNameTranslation + ' : ' + this.pointOfAttention.location.name, 10, 25);
 
     const options = this.myChart.options;
     if (options.series.length > 0) {
@@ -196,8 +189,8 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
   }
 
 
-  private getChartData(request: Observable<any>) {
-    return request.pipe(
+  private getChartData(chartFilter$: Observable < IFilterChartData >): Observable <IPointOfAttention> {
+    return chartFilter$.pipe(
       debounceTime(500),
       switchMap(filter => {
         this.chartLoading = true;
@@ -205,10 +198,6 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
         return this.pointOfAttentionService.getPointOfAttentionDataById(this.pointOfAttention.id, filter.interval, filter.from, filter.to);
       })
     );
-  }
-
-  private upperCaseFirst(input: string) {
-    return input.charAt(0).toUpperCase() + input.slice(1);
   }
 
   private async getTranslation(label: string) {

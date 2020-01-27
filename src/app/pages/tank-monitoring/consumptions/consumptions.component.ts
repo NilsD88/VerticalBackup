@@ -38,7 +38,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
-    from: moment().subtract(1, 'week').toDate().getTime(),
+    from: moment().subtract(1, 'week').startOf('day').toDate().getTime(),
     to: moment().toDate().getTime(),
   };
 
