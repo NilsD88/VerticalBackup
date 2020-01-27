@@ -70,8 +70,8 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
 
   public filter: IFilterChartData = {
     interval: 'DAILY',
-    from: moment().subtract(1, 'months').set({date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    to: moment().set({date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+    from: moment().subtract(1, 'months').startOf('month').valueOf(),
+    to: moment().startOf('month').valueOf(),
   };
 
 
