@@ -5,6 +5,7 @@ export interface IThresholdTemplate {
     id?: string;
     name?: string;
     thresholds?: IThreshold[];
+    hasAssetsAttached?: boolean;
 }
 
 export interface IThresholdTemplatePaged {

@@ -97,6 +97,9 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
       time: {
         timezone: 'Europe/Brussels'
       },
+      title: {
+        text: ''
+      },
       exporting: {
         csv: {
           dateFormat: '%d-%m-%Y %H:%M:%S',

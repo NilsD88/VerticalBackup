@@ -75,7 +75,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
 
   getAssetsByLocation() {
     const locationId = this.selectedLocation.id;
-    return of(this.tanks.filter(tank => tank.location.id === locationId));
+    return of(this.tanks.filter(tank => (tank.location || {}).id === locationId));
   }
 
   createAssetPopup(asset: ITankMonitoringAsset, assetUrl: string, marker: Marker): any {
@@ -84,6 +84,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.assetUrl = assetUrl;
     popupEl.asset = asset;
+    popupEl.asset.location = this.selectedLocation;
     popupEl.marker = marker;
     document.body.appendChild(popupEl);
     return popupEl;

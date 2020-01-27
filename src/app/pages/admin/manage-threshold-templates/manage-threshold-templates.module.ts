@@ -1,3 +1,4 @@
+import { PopupConfirmationModule } from './../../../../../projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
 import { DialogModule } from 'projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { ListThresholdTemplatesModule } from 'projects/ngx-proximus/src/lib/list-threshold-templates/list-threshold-templates.module';
 import {NgModule} from '@angular/core';
@@ -46,7 +47,8 @@ import { AddThresholdComponent } from './add-threshold/add-threshold.component';
     ListThresholdTemplatesModule,
     LoaderModule,
     RangeSliderModule,
-    DialogModule
+    DialogModule,
+    PopupConfirmationModule
   ],
   providers: [
     NewThresholdTemplateService,

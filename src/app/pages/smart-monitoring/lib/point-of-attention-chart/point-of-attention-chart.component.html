@@ -2,6 +2,7 @@
     [chartDataIsLoading]="loading"
     [chartDataLength]="chartData.length"
     [filter]="filter"
+    [minimumIntervals]="['HOURLY']"
     (intervalChanged)="intervalChanged($event)"
     (dateRangeChanged)="dateRangeChanged($event)"
     (downloadPDF)="download.emit()"

@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {PieChartModule} from 'projects/ngx-proximus/src/lib/pie-chart/pie-chart.module';
-import { MatTableModule, MatSortModule, MatInputModule, MatProgressSpinnerModule, MatCardModule, MatPaginatorModule, MatButtonModule } from '@angular/material';
+import { MatTableModule, MatSortModule, MatInputModule, MatProgressSpinnerModule, MatCardModule, MatPaginatorModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { RouterModule } from '@angular/router';
     TankMonitoringMapModule,
     MatTableModule,
     MatSortModule,
+    MatIconModule,
     MatInputModule,
     RangeSliderModule,
     MatProgressSpinnerModule,

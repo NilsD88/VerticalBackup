@@ -1,7 +1,6 @@
 import { SubSink } from 'subsink';
 import { NewSensorService } from 'src/app/services/new-sensor.service';
 import { cloneDeep } from 'lodash';
-import { IPagedAlerts } from 'src/app/models/g-alert.model';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
 import * as moment from 'moment';
@@ -96,7 +95,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           this.filteredAlerts = cloneDeep(this.alerts);
           this.postFilteredAlerts = cloneDeep(this.filteredAlerts);
           this.updateDataSourceWithAlerts(this.filteredAlerts);
-          this.isLoading = false;
+          this.filterFE$.next();
         }
       ),
       filteredAlertsObs(this.filterFE$).subscribe(() => { this.updateFilterdAlerts(); })
@@ -104,6 +103,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
   }
 
   public updateFilterdAlerts() {
+    this.isLoading = true;
     this.filteredAlerts = cloneDeep(this.alerts).filter((alert: IAlert) => {
       let result = true;
 
@@ -136,6 +136,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
       return result;
     });
     this.changeReadFilter(this.filterOptions.readFilter);
+    this.isLoading = false;
   }
 
   public updateDataSourceWithAlerts(alerts: IAlert[]) {
@@ -192,14 +193,14 @@ export class AlertsComponent implements OnInit, OnDestroy {
   }
 
   public checkAllAlerts() {
-    return this.selectedAlerts.join() === this.filteredAlerts.map((alert) => alert.id).join();
+    return this.selectedAlerts.join() === this.postFilteredAlerts.map((alert) => alert.id).join();
   }
 
   public selectAllAlerts() {
     if (this.checkAllAlerts()) {
       this.selectedAlerts = [];
     } else {
-      this.selectedAlerts = this.filteredAlerts.map((alert) => alert.id);
+      this.selectedAlerts = this.postFilteredAlerts.map((alert) => alert.id);
     }
   }
 
@@ -297,17 +298,17 @@ export class AlertsComponent implements OnInit, OnDestroy {
   public downloadSelectedAlertsCSV() {
     let csv = 'Asset, Location, Date, Message, Threshold template, Thing, Value, read\n';
     this.selectedAlerts.map((alertId) => {
-      const index = this.filteredAlerts.findIndex((alert) => alert.id === alertId);
-      if (index) {
-        csv += (this.filteredAlerts[index].asset || {}).name + ', ';
-        csv += ((this.filteredAlerts[index].asset || {}).location ||  {}).name + ', ';
-        csv += moment(this.filteredAlerts[index].timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
-        csv += (this.filteredAlerts[index].sensorType || {}).name + ' ' +
-          this.filteredAlerts[index].severity + ' ' + (this.filteredAlerts[index].label || '') + ', ';
-        csv += this.filteredAlerts[index].thresholdTemplateName + ', ';
-        csv += (this.filteredAlerts[index].thing || {}).name + ', ';
-        csv += this.filteredAlerts[index].value + (this.filteredAlerts[index].sensorType || {}).postfix + ', ';
-        csv += this.filteredAlerts[index].read;
+      const index = this.postFilteredAlerts.findIndex((alert) => alert.id === alertId);
+      if (index >= 0) {
+        csv += (this.postFilteredAlerts[index].asset || {}).name + ', ';
+        csv += ((this.postFilteredAlerts[index].asset || {}).location ||  {}).name + ', ';
+        csv += moment(this.postFilteredAlerts[index].timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
+        csv += (this.postFilteredAlerts[index].sensorType || {}).name + ' ' +
+          this.postFilteredAlerts[index].severity + ' ' + (this.postFilteredAlerts[index].label || '') + ', ';
+        csv += this.postFilteredAlerts[index].thresholdTemplateName + ', ';
+        csv += (this.postFilteredAlerts[index].thing || {}).name + ', ';
+        csv += this.postFilteredAlerts[index].value + (this.postFilteredAlerts[index].sensorType || {}).postfix + ', ';
+        csv += this.postFilteredAlerts[index].read;
         csv += '\n';
       }
     });
@@ -320,16 +321,16 @@ export class AlertsComponent implements OnInit, OnDestroy {
     const rows = [];
 
     this.selectedAlerts.map((alertId) => {
-      const index = this.filteredAlerts.findIndex((alert) => alert.id === alertId);
+      const index = this.postFilteredAlerts.findIndex((alert) => alert.id === alertId);
       const temp = [
-        `${(this.filteredAlerts[index].asset || {}).name}`,
-        `${((this.filteredAlerts[index].asset || {}).location ||  {}).name}`,
-        `${moment(this.filteredAlerts[index].timestamp).format('DD/MM/YYYY \n hh:mm:ss')}`,
-        `${(this.filteredAlerts[index].sensorType || {}).name + ' ' + this.filteredAlerts[index].severity + ' ' + (this.filteredAlerts[index].label || '')}`,
-        `${this.filteredAlerts[index].thresholdTemplateName}`,
-        `${(this.filteredAlerts[index].thing || {}).name}`,
-        `${this.filteredAlerts[index].value + (this.filteredAlerts[index].sensorType || {}).postfix}`,
-        `${this.filteredAlerts[index].read}`,
+        `${(this.postFilteredAlerts[index].asset || {}).name}`,
+        `${((this.postFilteredAlerts[index].asset || {}).location ||  {}).name}`,
+        `${moment(this.postFilteredAlerts[index].timestamp).format('DD/MM/YYYY \n hh:mm:ss')}`,
+        `${(this.postFilteredAlerts[index].sensorType || {}).name + ' ' + this.postFilteredAlerts[index].severity + ' ' + (this.postFilteredAlerts[index].label || '')}`,
+        `${this.postFilteredAlerts[index].thresholdTemplateName}`,
+        `${(this.postFilteredAlerts[index].thing || {}).name}`,
+        `${this.postFilteredAlerts[index].value + (this.postFilteredAlerts[index].sensorType || {}).postfix}`,
+        `${this.postFilteredAlerts[index].read}`,
       ];
       rows.push(temp);
     });

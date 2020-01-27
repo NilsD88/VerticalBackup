@@ -29,6 +29,7 @@ export class ChartControlsComponent implements OnInit {
   @Input() chartDataIsLoading: boolean;
   @Input() chartDataLength: number;
   @Input() showExportOptions = true;
+  @Input() minimumIntervals: Intervals[] = ['ALL', 'HOURLY'];
 
   @Output() intervalChanged: EventEmitter<any> = new EventEmitter();
   @Output() dateRangeChanged: EventEmitter<PeriodicDuration> = new EventEmitter();
@@ -47,22 +48,21 @@ export class ChartControlsComponent implements OnInit {
   }
 
   public initDateFilterOptions(fromDate: Date, toDate: Date) {
-    const today = new Date();
-    const fromMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const now = new Date();
+    const fromMax = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const toMax = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    const backDate = (numOfDays) => {
-      const tday = new Date();
-      return new Date(tday.setDate(tday.getDate() - numOfDays));
-    };
-
-    const minus7 = backDate(7);
-    const minus30 = backDate(30);
-
+    const today = moment().startOf('day').toDate();
     const drpPresets = [
-      {presetLabel: 'Last 24 hours', range: {fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()}},
-      {presetLabel: 'Last 7 Days', range: {fromDate: minus7, toDate: today}},
-      {presetLabel: 'Last 30 Days', range: {fromDate: minus30, toDate: today}}
+      {presetLabel: 'Last 24 hours', range: {
+        fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()
+      }},
+      {presetLabel: 'Last 7 Days', range: {
+        fromDate: moment().subtract(7, 'day').startOf('day').toDate(), toDate: today
+      }},
+      {presetLabel: 'Last 30 Days', range: {
+        fromDate: moment().subtract(30, 'day').startOf('day').toDate(), toDate: today
+      }}
     ];
 
     this.drpOptions = this.drpOptions || {
@@ -87,8 +87,8 @@ export class ChartControlsComponent implements OnInit {
 
     let interval: Intervals = this.filter.interval;
     if (!isSwaping) {
-      interval = 'ALL';
-      this.intervals = ['ALL', 'HOURLY', 'DAILY'];
+      this.intervals = this.minimumIntervals;
+      interval = this.minimumIntervals[0];
       if (durationHours > 24) {
         this.intervals = ['HOURLY', 'DAILY', 'WEEKLY'];
         interval = 'HOURLY';

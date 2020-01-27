@@ -1,3 +1,4 @@
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { SubSink } from 'subsink';
 import { cloneDeep } from 'lodash';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
@@ -7,6 +8,7 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/m
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { isUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'pxs-list-threshold-templates',
@@ -93,7 +95,30 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
   }
 
 
-  public deleteThresholdTemplate(thresholdTemplateId: string) {
+  public wantToDeleteThresholdTemplate(thresholdTemplate: IThresholdTemplate) {
+    if (thresholdTemplate.hasAssetsAttached) {
+      this.dialog.open(PopupConfirmationComponent, {
+        data: {
+          title: `Warning`,
+          content: 'Are you sure you want to delete? Assets are using this template'
+        },
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+      }).afterClosed().subscribe(
+        result => {
+          if (result) {
+            this.deleteThresholdTemplate(thresholdTemplate.id);
+          }
+        }
+      );
+    } else {
+      this.deleteThresholdTemplate(thresholdTemplate.id);
+    }
+  }
+
+  private deleteThresholdTemplate(thresholdTemplateId: string) {
     this.subs.sink = this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
       () => {
         this.thresholdTemplates = null;

@@ -54,15 +54,12 @@ export class DateRangeSelectionComponent implements OnInit {
   }
 
   updateDrp(dateRange: DateRange) {
-    // Make toDate inclusive
     const {fromDate, toDate } = dateRange;
-    const duration = moment.duration(moment(fromDate).diff(toDate));
-    const durationInHours = +duration.asHours().toFixed(0);
-    if (durationInHours > 24) {
-      dateRange.toDate = new Date(moment(dateRange.toDate).add(1, 'day').valueOf());
-    }
     this.dateChange.emit({
-      dateRange,
+      dateRange: {
+        fromDate,
+        toDate: toDate.getMilliseconds() > 0 ? toDate : moment(toDate).endOf('days').toDate()
+      },
       isSwaping: this.isSwaping
     });
     this.isSwaping = false;
@@ -70,34 +67,32 @@ export class DateRangeSelectionComponent implements OnInit {
 }
 
 
-function setupPresets(drpPresets) {
-  const backDate = (numOfDays) => {
-    const tday = new Date();
-    return new Date(tday.setDate(tday.getDate() - numOfDays));
-  };
-
-  const today = new Date();
-  const minus7 = backDate(7);
-  const minus30 = backDate(30);
-
+function setupPresets() {
+  const today = moment().startOf('day').toDate();
   return [
-    {presetLabel: 'Last 24 hours', range: {fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()}},
-    {presetLabel: 'Last 7 Days', range: {fromDate: minus7, toDate: today}},
-    {presetLabel: 'Last 30 Days', range: {fromDate: minus30, toDate: today}}
+    {presetLabel: 'Last 24 hours', range: {
+      fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()
+    }},
+    {presetLabel: 'Last 7 Days', range: {
+      fromDate: moment().subtract(7, 'day').startOf('day').toDate(), toDate: today
+    }},
+    {presetLabel: 'Last 30 Days', range: {
+      fromDate: moment().subtract(30, 'day').startOf('day').toDate(), toDate: today
+    }}
   ];
 }
 
 function initDateFilterOptions(
   drpPresets,
   drpOptions,
-  fromDate: Date = moment().subtract(1, 'day').toDate(),
-  toDate: Date = moment().toDate()
+  fromDate: Date = moment().subtract(1, 'day').startOf('day').toDate(),
+  toDate: Date = moment().startOf('day').toDate()
   ): {drpPresets, drpOptions} {
-  const today = new Date();
-  const fromMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const toMax = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const now = new Date();
+  const fromMax = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const toMax = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  drpPresets = setupPresets(drpPresets);
+  drpPresets = setupPresets();
   drpOptions = drpOptions || {
     presets: drpPresets,
     format: 'mediumDate',

@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
 import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
 import { ThresholdTemplatesDetailModule } from '../threshold-templates-detail/threshold-templates-detail.module';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
+import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmation.module';
 
 @NgModule({
   declarations: [ListThresholdTemplatesComponent],
@@ -30,6 +31,7 @@ import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail
     MatRadioModule,
     ThresholdTemplatesDetailModule,
     MatPaginatorModule,
+    PopupConfirmationModule
   ],
   entryComponents: [
     ThresholdTemplatesDetailComponent

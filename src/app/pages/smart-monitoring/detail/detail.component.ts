@@ -42,8 +42,8 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
-    from: moment().subtract(1, 'week').toDate().getTime(),
-    to: moment().toDate().getTime(),
+    from: moment().subtract(7, 'day').startOf('day').valueOf(),
+    to: moment().startOf('day').valueOf(),
   };
 
   public standardDeviations: {
