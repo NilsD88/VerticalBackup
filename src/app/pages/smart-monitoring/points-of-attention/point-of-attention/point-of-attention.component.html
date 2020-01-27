@@ -1,4 +1,12 @@
-<pvf-smartmonitoring-point-of-attention-chart *ngIf="pointOfAttention" style="display: flex;" [loading]="chartLoading"
-  [title]="'Data'" [chartData]="chartData" (updateChartData)="updateChartData($event)" [filter]="currentFilter"
-  (download)="downloadPdfDetail()" [pointOfAttention]="pointOfAttention" #myChart>
+<pvf-smartmonitoring-point-of-attention-chart 
+  *ngIf="pointOfAttention" 
+  [loading]="chartLoading" 
+  [chartData]="chartData"
+  [pointOfAttention]="pointOfAttention"
+  (updateChartData)="updateChartData($event)"
+  [filter]="currentFilter"
+  (download)="downloadPdfDetail()"
+  #myChart
+  style="display: flex;"
+  >
 </pvf-smartmonitoring-point-of-attention-chart>

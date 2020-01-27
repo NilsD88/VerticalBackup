@@ -221,38 +221,8 @@ export class PointOfAttentionService {
     return this.getPointOfAttentionById(id);
   }
 
-  public getPointOfAttentionDataById(id: string, interval: string, from: number, to: number): Observable < IPointOfAttentionItem[] > {
-    return new Observable < IPointOfAttentionItem[] > ((observer) => {
-      const pointOfAttention = MOCK_POINTS_OF_ATTENTION[0];
-      pointOfAttention.items[0].series = [{
-        timestamp: 1560819600000,
-        value: 96.0,
-      }, {
-        timestamp: 1560837600000,
-        value: 96.0,
-      }, {
-        timestamp: 1560859200000,
-        value: 94.0,
-      }, {
-        timestamp: 1560880800000,
-        value: 23.0,
-      }, {
-        timestamp: 1560902400000,
-        value: 23.0,
-      }, {
-        timestamp: 1560924000000,
-        value: 23.0,
-      }, {
-        timestamp: 1560949200000,
-        value: 23.0,
-      }, {
-        timestamp: 1560967200000,
-        value: 23.0,
-      }];
-      observer.next(pointOfAttention.items);
-      observer.complete();
-    });
-    return this.http.get < IPointOfAttentionItem[] > (`${environment.baseUrl}/point-of-attention/${id}/data?interval=${interval}&from=${from}&to=${to}`);
+  public getPointOfAttentionDataById(id: string, interval: string, from: number, to: number): Observable < IPointOfAttention > {
+    return this.http.get < IPointOfAttention > (`${environment.baseUrl}/assetGroup/${id}/data?interval=${interval}&from=${from}&to=${to}`);
   }
 
   public createPointOfAttentionItem(pointOfAttentionItem: IPointOfAttentionItem, pointOfAttentionId: string): Observable < boolean > {

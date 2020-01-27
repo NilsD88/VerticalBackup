@@ -6,8 +6,6 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 
-
-
 declare global {
   interface Window {
     moment: any;
@@ -75,7 +73,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
   @Input() chartData: IChartData[];
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
-  @Input() title = '';
   @Input() numeralValueFormatter = '';
   @Input() colors = [
     '#5C2D91', '#866C9D',
@@ -102,17 +99,13 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
     toDate: number
   };
   public Highcharts = Highcharts;
-  public rangeTranslation = 'range';
   public chartSettingsForPointOfAttention = {};
 
-  constructor(public translateService: TranslateService) {
-  }
+  constructor(
+    public translateService: TranslateService
+  ) {}
 
-  public ngOnInit() {
-    this.translateService.get('SENSORTYPES.range').subscribe((result: string) => {
-      this.rangeTranslation = result;
-    });
-  }
+  public ngOnInit() {}
 
   public ngOnChanges() {
     const filename = this.pointOfAttention ? (this.pointOfAttention.name) : 'Chart';
@@ -127,7 +120,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
         zoomType: 'xy',
       },
       title: {
-        text: this.title
+        text: filename
       },
       exporting: {
         csv: {
@@ -170,6 +163,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
           }
         },
         series: {
+          connectNulls: true,
           showInNavigator: true,
           marker: {
             enabled: false
@@ -197,12 +191,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
     }
   }
 
-  public filterInt(value: string) {
-    if (/^(-|\+)?(\d+|Infinity)$/.test(value)) {
-      return Number(value);
-    }
-    return NaN;
-  }
 
   private addYAxisOption(lengthOfSerie: number, label: string) {
     const axisOpposite = this.options.yAxis.length % 2 > 0;
@@ -229,6 +217,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData) {
+    console.log(item);
     const color = randomColor({
       hue: ESensorColors[String(item.label).toUpperCase()]
     });
@@ -237,11 +226,10 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
         name: item.label,
         color,
         yAxis: this.getYAxisByLabel(item.label),
-        zIndex: 1,
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+          return [serie.timestamp, serie.value ? parseFloat(serie.value.toFixed(2)) : null];
         })
       });
     }
