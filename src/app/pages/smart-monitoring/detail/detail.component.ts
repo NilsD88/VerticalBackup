@@ -73,6 +73,17 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.newAssetService.getAssetDetailById(params.id).subscribe(
             (asset) => {
               this.asset = asset;
+              for (const thing of this.asset.things) {
+                thing.sensors = thing.sensors.filter(
+                  filter => {
+                    if (filter.sensorDefinition) {
+                      return filter.sensorDefinition.useOnChart;
+                    } else {
+                      return true;
+                    }
+                  }
+                );
+              }
               this.changeDetectorRef.detectChanges();
               this.init();
             },
@@ -143,10 +154,6 @@ export class DetailComponent implements OnInit, OnDestroy {
             }
           }
           // END STANDARD DEVIATION
-
-          if (sensor.sensorDefinition && !sensor.sensorDefinition.useOnChart) {
-            continue;
-          }
 
           chartData.push({
             label: labelTranslation,

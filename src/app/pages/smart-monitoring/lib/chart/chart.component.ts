@@ -189,11 +189,6 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      if (!isNullOrUndefined(data.sensorDefinition)) {
-        if (!data.sensorDefinition.useOnChart) {
-          return;
-        }
-      }
       this.addYAxisOption((data.series || []).length, data.label);
       this.addYAxisValues(data);
     }

@@ -128,7 +128,12 @@ export class NewAssetService {
                     },
                     thresholdTemplate {
                       id,
-                      name
+                      name,
+                      thresholds {
+                        sensorType {
+                          id
+                        }
+                      }
                     },
                     image,
                     customFields {
