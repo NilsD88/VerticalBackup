@@ -131,6 +131,7 @@
                     style="color: #fff !important;"
                     class="w-100 mt-1"
                     *ngFor="let item of activePlaceholders"
+                    [disabled]="(alertDefinitionModel.sms.body + ' ' + item.value + ' ').length > 255"
                     (click)="addPlaceholder(item.value, 'sms')">{{item.label | translate}}
             </button>
           </div>
