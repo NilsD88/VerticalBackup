@@ -15,7 +15,7 @@
         [colors]="chartColors"></pxs-pie-chart>
     </div>
     <div class="col-md-9 col-xs-12" style="padding-left:0; min-height: 400px;">
-      <pvf-tankmonitoring-map *ngIf="rootLocation" [rootLocation]="rootLocation" [tanks]="assets" [assetUrl]="assetUrl"></pvf-tankmonitoring-map>
+      <pvf-tankmonitoring-map *ngIf="rootLocation" [rootLocation]="rootLocation" [tanks]="filteredAssetsOnMap" [assetUrl]="assetUrl"></pvf-tankmonitoring-map>
     </div>
   </div>
 </div>
@@ -32,7 +32,7 @@
       </mat-form-field>
     </div>
     <div class="col-xs-2 col-md-2 mx-auto" style="display: flex;">
-      <button mat-button (click)="downloadSelectedAssetCSV()" [disabled]="selectedAssets?.length < 1">
+      <button mat-button (click)="downloadSelectedAssetCSV()" [disabled]="filteredAssetsOnTable?.length < 1">
         <mat-icon>insert_drive_file</mat-icon>
         <span>Export CSV</span>
       </button>

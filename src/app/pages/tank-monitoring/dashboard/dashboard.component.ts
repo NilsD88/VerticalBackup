@@ -38,7 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public rootLocation: ILocation;
   public assets: ITankMonitoringAsset[] = [];
-  public selectedAssets: ITankMonitoringAsset[];
+  public filteredAssetsOnMap: ITankMonitoringAsset[];
+  public filteredAssetsOnTable: ITankMonitoringAsset[];
   public assetUrl = '/private/tankmonitoring/consumptions/';
 
   public dataSource;
@@ -57,19 +58,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     statuses: ['EMPTY', 'LOW', 'OK', 'UNKNOWN'],
     assetName: '',
     locationName: ''
-  };
-
-  public filter = {
-    name: '',
-    status: [],
-    batteryLevel: {
-      min: 0,
-      max: 100
-    },
-    fillLevel: {
-      min: 0,
-      max: 100
-    }
   };
 
   public chartColors = [
@@ -133,11 +121,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     this.updateDataSourceWithFilteredAssets(this.assets);
     this.isLoading = false;
-    this.subs.sink = filteredAssetsObs(this.filterFE$).subscribe(() => { this.updateFilterdAssets(); });
+    this.subs.sink = filteredAssetsObs(this.filterFE$).subscribe(() => { 
+      this.updateFilteredAssetsOnMap();
+      this.updateFilteredAssetsOnTable();
+    });
     this.changeFilterFE();
   }
 
-  private updateFilterdAssets() {
+ 
+
+  private updateFilteredAssetsOnTable() {
     const filteredAssets = cloneDeep(this.assets).filter((asset: ITankMonitoringAsset) => {
       let result = true;
       if (this.filterFE.assetName && result) {
@@ -195,8 +188,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.updateDataSourceWithFilteredAssets(filteredAssets);
   }
 
+  private updateFilteredAssetsOnMap() {
+    const filteredAssets = cloneDeep(this.assets).filter((asset: ITankMonitoringAsset) => {
+      let result = true;
+
+      if (this.filterFE.statuses.length && result) {
+        result = this.filterFE.statuses.includes(asset.status);
+      }
+
+      if (this.filterFE.batteryLevel && result) {
+        const {min, max} = this.filterFE.batteryLevel;
+        const batteryLevel = asset.batteryLevel;
+        if (min === 0 && max === 100) {
+          result = true;
+        } else {
+          if (batteryLevel >= min && batteryLevel <= max) {
+            result = true;
+          } else {
+            result = false;
+          }
+        }
+      }
+
+      if (this.filterFE.fillLevel && result) {
+        const {min, max} = this.filterFE.fillLevel;
+        const fillLevel = asset.fillLevel;
+        if (min === 0 && max === 100) {
+          result = true;
+        } else {
+          if (fillLevel >= min && fillLevel <= max) {
+            result = true;
+          } else {
+            result = false;
+          }
+        }
+      }
+
+      return result;
+    });
+    this.filteredAssetsOnMap = filteredAssets;
+  }
+
   public updateDataSourceWithFilteredAssets(assets: ITankMonitoringAsset[]) {
-    this.selectedAssets = assets;
+    this.filteredAssetsOnTable = assets;
     this.dataSource = new MatTableDataSource(assets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
@@ -278,7 +312,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public downloadSelectedAssetCSV() {
     let csv = 'Name, Thing ID, Location, Fill level, Battery level\n';
-    for (const asset of this.selectedAssets) {
+    for (const asset of this.filteredAssetsOnTable) {
       const thing = ((asset.things || [])[0] || {});
       csv += asset.name + ', ';
       csv += thing.devEui + ', ';
