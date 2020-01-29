@@ -41,7 +41,7 @@
     }
 
     .cdk-column-battery,
-    .cdk-column-fuel {
+    .cdk-column-fill {
       span {
         &.empty {
             color: $severity-critical;
@@ -51,6 +51,9 @@
         }
         &.ok {
             color: $severity-ok;            
+        }
+        &.unknown {
+          color: $sub;            
         }
       }
     }

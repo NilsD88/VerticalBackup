@@ -22,7 +22,7 @@ interface IFilterFE {
   assetName: string;
   locationName: string;
   statuses: string[];
-  fuelLevel: IRange;
+  fillLevel: IRange;
   batteryLevel: IRange;
 }
 
@@ -46,7 +46,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public isLoading = false;
 
   public filterFE: IFilterFE = {
-    fuelLevel: {
+    fillLevel: {
       min: 0,
       max: 100
     },
@@ -66,7 +66,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       min: 0,
       max: 100
     },
-    fuelLevel: {
+    fillLevel: {
       min: 0,
       max: 100
     }
@@ -79,7 +79,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     'rgba(100, 100, 100, 0.7)',
   ];
 
-  public displayedColumns: string[] = ['name', 'thing', 'location.name', 'fuel', 'battery', 'actions'];
+  public displayedColumns: string[] = ['name', 'thing', 'location.name', 'fill', 'battery', 'actions'];
   public filterFE$ = new Subject<IFilterFE>();
 
   private subs = new SubSink();
@@ -103,21 +103,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
     this.assets = await this.assetService.getAssets().toPromise();
     this.assets.forEach((asset) => {
-      if ((asset.things || []).length) {
-        const VALUE = asset.things[0].sensors[0].value;
-        if (VALUE) {
-          if (VALUE < 10) {
-            asset.status = 'EMPTY';
-          } else if (VALUE < 20) {
-            asset.status = 'LOW';
+      const THINGS = asset.things;
+      if ((THINGS || []).length) {
+        const SENSORS = THINGS[0].sensors;
+        const FILL_LEVEL = SENSORS.filter(sensor => sensor.sensorType.name === 'tank fill level')[0];
+        asset.batteryLevel =  THINGS[0].batteryPercentage;
+        if (FILL_LEVEL) {
+          const VALUE = FILL_LEVEL.value;
+          const TIMESTAMP = FILL_LEVEL.timestamp;
+          const HOURS = moment.duration(moment().diff(moment(TIMESTAMP))).asHours();
+          if (HOURS > 48) {
+            asset.status = 'UNKNOWN';
           } else {
-            asset.status = 'OK';
+            if (VALUE) {
+              if (VALUE < 10) {
+                asset.status = 'EMPTY';
+              } else if (VALUE < 20) {
+                asset.status = 'LOW';
+              } else {
+                asset.status = 'OK';
+              }
+            } else {
+              asset.status = 'UNKNOWN';
+            }
           }
-        } else {
-          asset.status = 'UNKNOWN';
+          asset.fillLevel = VALUE ? +VALUE : null;
         }
-      } else {
-        asset.status = 'UNKNOWN';
       }
     });
     this.updateDataSourceWithFilteredAssets(this.assets);
@@ -153,7 +164,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       if (this.filterFE.batteryLevel && result) {
         const {min, max} = this.filterFE.batteryLevel;
-        const batteryLevel = (asset.things.length) ? asset.things[0].batteryPercentage : null;
+        const batteryLevel = asset.batteryLevel;
         if (min === 0 && max === 100) {
           result = true;
         } else {
@@ -165,13 +176,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       }
 
-      if (this.filterFE.fuelLevel && result) {
-        const {min, max} = this.filterFE.fuelLevel;
-        const fuelLevel =  (asset.things.length) ? asset.things[0].sensors[0].value : null;
+      if (this.filterFE.fillLevel && result) {
+        const {min, max} = this.filterFE.fillLevel;
+        const fillLevel = asset.fillLevel;
         if (min === 0 && max === 100) {
           result = true;
         } else {
-          if (fuelLevel >= min && fuelLevel <= max) {
+          if (fillLevel >= min && fillLevel <= max) {
             result = true;
           } else {
             result = false;
@@ -199,10 +210,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
           }, asset);
         }
         switch (property) {
-          case 'fuel':
-            return ((asset.things[0] || {}).sensors[0] || {}).value;
+          case 'fill':
+            return asset.fillLevel;
           case 'battery':
-              return (asset.things[0] || {}).batteryPercentage;
+              return asset.batteryLevel;
+          case 'thing':
+              return asset.things[0].devEui.toLocaleLowerCase();
           default:
             return asset[property].toLocaleLowerCase();
         }
@@ -247,8 +260,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.filterFE$.next(this.filterFE);
   }
 
-  public updateFuelLevelFilter(event) {
-    this.filterFE.fuelLevel = {
+  public updateFillLevelFilter(event) {
+    this.filterFE.fillLevel = {
       min: event[0],
       max: event[1]
     };
@@ -264,7 +277,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public downloadSelectedAssetCSV() {
-    let csv = 'Name, Thing ID, Location, Fuel level, Battery level\n';
+    let csv = 'Name, Thing ID, Location, Fill level, Battery level\n';
     for (const asset of this.selectedAssets) {
       const thing = ((asset.things || [])[0] || {});
       csv += asset.name + ', ';

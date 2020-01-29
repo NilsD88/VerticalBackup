@@ -148,58 +148,58 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     if (this.chartData.length) {
-      const tankFillLevel = this.chartData[0];
-      const consumptionLevel = this.chartData[1];
+      const FILL_LEVEL = this.chartData.filter(data => data.label === 'tank fill level')[0];
+      const CONSUMPTION = this.chartData.filter(data => data.label === 'consumption')[0];
       if (this.filter.durationInHours > 24) {
         // AVG TANK FILL LEVEL
-        if (tankFillLevel) {
+        if (FILL_LEVEL) {
           this.options.series.push({
-            name: tankFillLevel.label,
+            name: FILL_LEVEL.label,
             color: '#7A81E4',
             zIndex: 1,
             type: 'spline',
-            showInLegend: (tankFillLevel.series.length) ? true : false,
-            data: tankFillLevel.series.map((serie) => {
+            showInLegend: (FILL_LEVEL.series.length) ? true : false,
+            data: FILL_LEVEL.series.map((serie) => {
               return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
             })
           });
         }
         // SUM CONSUMPTION LEVEL
-        if (consumptionLevel) {
+        if (CONSUMPTION) {
           this.options.series.push({
-            name: consumptionLevel.label,
+            name: CONSUMPTION.label,
             color: '#3745AE',
             zIndex: 1,
             type: 'column',
-            showInLegend: (consumptionLevel.series.length) ? true : false,
-            data: consumptionLevel.series.map((serie) => {
+            showInLegend: (CONSUMPTION.series.length) ? true : false,
+            data: CONSUMPTION.series.map((serie) => {
               return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
             })
           });
         }
       } else {
         // REAL TANK FILL LEVEL
-        if (tankFillLevel) {
+        if (FILL_LEVEL) {
           this.options.series.push({
-            name: tankFillLevel.label,
+            name: FILL_LEVEL.label,
             color: '#7A81E4',
             zIndex: 1,
             type: 'spline',
-            showInLegend: (tankFillLevel.series.length) ? true : false,
-            data: tankFillLevel.series.map((serie) => {
+            showInLegend: (FILL_LEVEL.series.length) ? true : false,
+            data: FILL_LEVEL.series.map((serie) => {
               return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
             })
           });
         }
         // REAL CONSUMPTION LEVEL
-        if (consumptionLevel) {
+        if (CONSUMPTION) {
           this.options.series.push({
-            name: consumptionLevel.label,
+            name: CONSUMPTION.label,
             color: '#3745AE',
             zIndex: 1,
             type: 'column',
-            showInLegend: (consumptionLevel.series.length) ? true : false,
-            data: consumptionLevel.series.map((serie) => {
+            showInLegend: (CONSUMPTION.series.length) ? true : false,
+            data: CONSUMPTION.series.map((serie) => {
               return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
             })
           });
