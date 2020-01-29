@@ -227,6 +227,13 @@ export class TankMonitoringAssetService extends NewAssetService {
     }) => data.asset));
   }
 
+  public getAssetsByLocationId(locationId: string): Observable < ITankMonitoringAsset[] > {
+    return super.getAssetsByLocationId(
+      locationId,
+      MODULE_NAME
+    );
+  }
+
   public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
     return super.getAssetDataById(
       id,
