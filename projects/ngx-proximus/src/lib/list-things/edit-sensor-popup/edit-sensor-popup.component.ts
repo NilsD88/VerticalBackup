@@ -5,6 +5,7 @@ import {MatDialogRef, MatCheckboxChange, MatSnackBar} from '@angular/material';
 import { ISensorDefinition } from 'src/app/models/g-sensor-definition.model';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import { SubSink } from 'subsink';
+import { LayoutService } from 'src/app/layout/layout.service';
 
 @Component({
     selector: 'pxs-edit-sensor-popup',
@@ -18,6 +19,7 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
     public sensorDefinition: ISensorDefinition;
     public loading = false;
     public inOutValues = InOutValues;
+    public hasPeopleCounting = false;
 
     private subs = new SubSink();
 
@@ -26,9 +28,11 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
         public dialogRef: MatDialogRef<EditSensorPopupComponent>,
         private newSensorService: NewSensorService,
         public snackBar: MatSnackBar,
+        private layoutService: LayoutService
     ) {}
 
     async ngOnInit() {
+        this.hasPeopleCounting = (this.layoutService.user.modules.findIndex(x => x.startsWith('PEOPLE_COUNTING')) >= 0);
         if (this.data.sensor.sensorDefinition) {
             this.sensorDefinition = this.data.sensor.sensorDefinition;
         } else {
