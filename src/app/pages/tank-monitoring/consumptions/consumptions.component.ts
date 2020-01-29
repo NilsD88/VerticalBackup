@@ -79,13 +79,13 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
   private init() {
     this.getLastAlerts();
     this.subs.add(
-      this.getChartData(this.chartData$).subscribe(async things => {
+      this.getChartData(this.chartData$).subscribe(things => {
         const chartData = [];
         // Get the translation of each label
         for (const thing of things) {
           for (const sensor of thing.sensors) {
             chartData.push({
-              label: await this.getSensorTypeTranslation(sensor.sensorType.name),
+              label: sensor.sensorType.name,
               series: sensor.series
             });
           }
@@ -187,39 +187,6 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
         + ' ' + toTranslation + ' ' + formatDate(dateRange.toDate, 'dd/MM/yyyy HH:mm', 'en-US');
       pdf.text(timePeriod, 10, 55);
 
-      /*
-      if (this.currentFilter.durationInHours > 24) {
-        const marginTop = 175;
-        setStyle('title');
-        const aggregatedTitle = await this.getTranslation('PDF.AGGREGATED_VALUES');
-        pdf.text(aggregatedTitle, 10, marginTop - 15);
-
-        // Header of table
-        setStyle(null);
-        const measurement = await this.getTranslation('DETAIL.AGGREGATED.MEASUREMENT');
-        pdf.text(measurement, 10, marginTop - 10);
-        const max = await this.getTranslation('DETAIL.AGGREGATED.MAX');
-        pdf.text(max, 70, marginTop - 10);
-        const min = await this.getTranslation('DETAIL.AGGREGATED.MIN');
-        pdf.text(min, 105, marginTop - 10);
-        const average = await this.getTranslation('DETAIL.AGGREGATED.AVERAGE');
-        pdf.text(average, 140, marginTop - 10);
-        const standardDeviation = await this.getTranslation('DETAIL.AGGREGATED.STANDARDDEVIATION');
-        pdf.text(standardDeviation, 175, marginTop - 10);
-
-        const aggregatedValues = this.myAggregatedValues.aggregatedValues;
-        pdf.setTextColor(120, 120, 120);
-        for ( let i = 0; i < aggregatedValues.length; i++) {
-          const aggregatedValue = aggregatedValues[i];
-          pdf.text((aggregatedValue.label) ? aggregatedValue.label.trunc(30) : '-', 10, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.max || '-', 70, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.min || '-', 105, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.average || '-', 140, marginTop + ( i * 10 ));
-          pdf.text(aggregatedValue.standardDeviation || '-', 175, marginTop + ( i * 10));
-          pdf.line(10, marginTop + (i * 10) + 5, 200, marginTop + (i * 10) + 5);
-        }
-      }
-      */
 
       let chart;
       for (const CHART of this.myChart.Highcharts.charts) {

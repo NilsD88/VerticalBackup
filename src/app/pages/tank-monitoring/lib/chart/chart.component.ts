@@ -47,6 +47,7 @@ interface IChartSerie {
   avg?: number;
   min?: number;
   max?: number;
+  sum?: number;
   value?: number;
 }
 
@@ -119,7 +120,13 @@ export class ChartComponent implements OnInit, OnChanges {
         },
         labels: {
             format: '{value}%',
-        }
+        },
+        plotLines: [{
+          color: 'red',
+          value: 10,
+          width: '1',
+          zIndex: 2
+        }]
       },
       xAxis: {
         type: 'datetime'
@@ -140,10 +147,64 @@ export class ChartComponent implements OnInit, OnChanges {
       series: []
     };
 
-    for (const data of this.chartData) {
-      const serieLength = (data.series || []).length;
-      const {consumptions, average} = this.getConsumptionsAndAverage(data.series, serieLength);
-      this.addYAxisValues(data, data.label, this.rangeTranslation, serieLength, consumptions);
+    if (this.chartData.length) {
+      const tankFillLevel = this.chartData[0];
+      const consumptionLevel = this.chartData[1];
+      if (this.filter.durationInHours > 24) {
+        // AVG TANK FILL LEVEL
+        if (tankFillLevel) {
+          this.options.series.push({
+            name: tankFillLevel.label,
+            color: '#7A81E4',
+            zIndex: 1,
+            type: 'spline',
+            showInLegend: (tankFillLevel.series.length) ? true : false,
+            data: tankFillLevel.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+            })
+          });
+        }
+        // SUM CONSUMPTION LEVEL
+        if (consumptionLevel) {
+          this.options.series.push({
+            name: consumptionLevel.label,
+            color: '#3745AE',
+            zIndex: 1,
+            type: 'column',
+            showInLegend: (consumptionLevel.series.length) ? true : false,
+            data: consumptionLevel.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+            })
+          });
+        }
+      } else {
+        // REAL TANK FILL LEVEL
+        if (tankFillLevel) {
+          this.options.series.push({
+            name: tankFillLevel.label,
+            color: '#7A81E4',
+            zIndex: 1,
+            type: 'spline',
+            showInLegend: (tankFillLevel.series.length) ? true : false,
+            data: tankFillLevel.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            })
+          });
+        }
+        // REAL CONSUMPTION LEVEL
+        if (consumptionLevel) {
+          this.options.series.push({
+            name: consumptionLevel.label,
+            color: '#3745AE',
+            zIndex: 1,
+            type: 'column',
+            showInLegend: (consumptionLevel.series.length) ? true : false,
+            data: consumptionLevel.series.map((serie) => {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            })
+          });
+        }
+      }
     }
 
     try {
@@ -160,60 +221,6 @@ export class ChartComponent implements OnInit, OnChanges {
       return Number(value);
     }
     return NaN;
-  }
-
-
-  private addYAxisValues(item: IChartData, labelTranslation: string, rangeTranslation: string, serieLength: number, consumptions: number[]) {
-    if (this.filter.durationInHours > 24) {
-      // AVERAGES
-      this.options.series.push({
-        name: labelTranslation,
-        color: '#7A81E4',
-        zIndex: 1,
-        type: 'spline',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-        })
-      });
-
-      // CONSUMPTIONS
-      this.options.series.push({
-        name: labelTranslation + ' consumption',
-        color: '#3745AE',
-        zIndex: 1,
-        type: 'column',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie, index) => {
-          return [serie.timestamp, consumptions[index]];
-        })
-      });
-
-    } else {
-      // REAL VALUES
-      this.options.series.push({
-        name: labelTranslation,
-        color: '#7A81E4',
-        zIndex: 1,
-        type: 'spline',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie) => {
-          return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
-        })
-      });
-
-      // CONSUMPTIONS
-      this.options.series.push({
-        name: labelTranslation + ' consumption',
-        color: '#3745AE',
-        zIndex: 1,
-        type: 'column',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie, index) => {
-          return [serie.timestamp, consumptions[index]];
-        })
-      });
-    }
   }
 
   public intervalChanged(event) {
