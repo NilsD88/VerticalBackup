@@ -16,4 +16,4 @@ export interface ICustomField {
     value?: string;
 }
 
-export type FieldType = 'text' | 'list' | 'boolean';
+export type FieldType = 'text' | 'number' | 'list' | 'boolean';
