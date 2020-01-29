@@ -5,8 +5,8 @@ import {DetailHeaderComponent} from './detail-header.component';
 import { MatTooltipModule, MatDialogModule } from '@angular/material';
 import {ImgFallbackModule} from 'ngx-img-fallback';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { LocationPopupModule } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.module';
-import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
+import { TankMonitoringLocationPopupModule } from '../location-popup/location-popup.module';
+import { TankMonitoringLocationPopupComponent } from '../location-popup/location-popup.component';
 
 @NgModule({
   declarations: [DetailHeaderComponent],
@@ -15,13 +15,13 @@ import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-p
     MatTooltipModule,
     ImgFallbackModule,
     MatDialogModule,
-    LocationPopupModule,
+    TankMonitoringLocationPopupModule,
     NgxSkeletonLoaderModule,
     IconModule
   ],
   exports: [DetailHeaderComponent],
   entryComponents: [
-    LocationPopupComponent,
+    TankMonitoringLocationPopupComponent,
   ]
 })
 export class DetailHeaderModule {

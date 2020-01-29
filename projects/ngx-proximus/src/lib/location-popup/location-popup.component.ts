@@ -1,6 +1,7 @@
+import { NewAssetService } from 'src/app/services/new-asset.service';
 import { SubSink } from 'subsink';
 import { ILocation } from 'src/app/models/g-location.model';
-import { Component, OnInit, Optional, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Optional, Inject, OnDestroy, Input } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { NewLocationService } from 'src/app/services/new-location.service';
 
@@ -15,13 +16,15 @@ export class LocationPopupComponent implements OnInit, OnDestroy {
   public displayAssets = true;
   public selectedLocation: ILocation;
   public rootLocation: ILocation;
+  public assetUrl = '/private/smartmonitoring/detail/';
 
   private subs = new SubSink();
 
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<LocationPopupComponent>,
-    private newLocationService: NewLocationService
+    public dialogRef: MatDialogRef<any>,
+    public newLocationService: NewLocationService,
+    public assetService: NewAssetService,
   ) { }
 
   ngOnInit() {

@@ -1,9 +1,9 @@
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import {Component, Input, OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
 import { SharedService } from 'src/app/services/shared.service';
 import { isNullOrUndefined } from 'util';
+import { TankMonitoringLocationPopupComponent } from '../location-popup/location-popup.component';
 
 @Component({
   selector: 'pvf-tankmonitoring-detail-header',
@@ -27,7 +27,7 @@ export class DetailHeaderComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialog.open(LocationPopupComponent, {
+    this.dialog.open(TankMonitoringLocationPopupComponent, {
       minWidth: '320px',
       maxWidth: '600px',
       width: '100vw',
@@ -42,5 +42,4 @@ export class DetailHeaderComponent implements OnInit {
   parseLastValue(value: number) {
     return parseFloat(value.toFixed(2));
   }
-
 }
