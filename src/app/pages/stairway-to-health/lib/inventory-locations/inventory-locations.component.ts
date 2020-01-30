@@ -23,7 +23,7 @@ export class StairwayToHealthInventoryLocationsComponent extends InventoryLocati
       locationService,
       activatedRoute
     );
-    this.leafUrl = 'private/stairwaytohealth/place/';
+    this.leafUrl = 'private/stairwaytohealth/place';
   }
 
   async ngOnInit() {

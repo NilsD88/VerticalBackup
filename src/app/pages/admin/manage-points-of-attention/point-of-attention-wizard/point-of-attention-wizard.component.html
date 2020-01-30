@@ -24,8 +24,13 @@
       <ng-template matStepLabel>Location</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
-          <pxs-location-explorer *ngIf="displayLocationExplorer" (changeLocation)="updateLocation($event)"
-            [selectedLocation]="pointOfAttention.location" (selectedLocationTree)="pointOfAttention.location = $event"></pxs-location-explorer>
+          <pxs-location-explorer
+            *ngIf="displayLocationExplorer"
+            [selectableLocation]="true"
+            [selectedLocation]="pointOfAttention.location"
+            (changeLocation)="updateLocation($event)"
+            (selectedLocationTree)="pointOfAttention.location = $event"
+          ></pxs-location-explorer>
         </div>
       </div>
       <div class="row">

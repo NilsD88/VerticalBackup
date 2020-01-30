@@ -20,8 +20,8 @@ import {
 } from '@angular/material';
 import {LoaderModule} from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
-import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
+import { AssetExplorerModule } from '../asset-explorer/asset-explorer.module';
 
 @NgModule({
   imports: [
@@ -42,7 +42,7 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
     MatInputModule,
     MatButtonModule,
     IconModule,
-    LocationExplorerModule,
+    AssetExplorerModule,
     MatButtonToggleModule,
     MatAutocompleteModule,
     MapModule,

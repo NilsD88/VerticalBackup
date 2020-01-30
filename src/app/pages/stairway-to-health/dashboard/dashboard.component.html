@@ -26,7 +26,12 @@
 <div class="container-fluid" *ngIf="listStyleValue === 'list'">
     <div class="row">
         <div class="col-md-12" style="min-height: 400px;">
-            <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" (changeLocation)="changeLocation($event)" [displayAssets]="false"></pxs-location-explorer>
+            <pxs-location-explorer
+                *ngIf="rootLocation"
+                [rootLocation]="rootLocation"
+                [leafUrl]="leafUrl"
+                (changeLocation)="changeLocation($event)"
+            ></pxs-location-explorer>
         </div>
     </div>
 </div>

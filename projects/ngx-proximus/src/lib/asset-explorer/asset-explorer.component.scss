@@ -1,0 +1,174 @@
+@import "variables.scss";
+
+:host > div {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  border: 1px solid $grey-light;
+  padding: 0;
+  background: white;
+}
+
+:host > mat-form-field {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;
+}
+
+::ng-deep .mat-tab-label-container {
+  background: $primary;
+
+  .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar{
+    background: none !important;
+  }
+
+  .mat-tab-label {
+    color: white;
+
+    &.mat-tab-label-active {
+      background: $dark-primary;
+    }
+  }
+}
+
+::ng-deep .dropList {
+    padding: 10px !important;
+    .dropListItem {
+        &.selected {
+          background-color: rgba($primary, .1);
+          border-color: $primary;
+          color: $primary;
+        }
+        &.ghost {
+          opacity: 0.2;
+          cursor: default !important;
+        }
+        cursor: pointer;
+        border: 1px solid #F5F5F5;
+        border-radius: 4px;
+        margin: 0 0 5px;
+        user-select: none;
+        background: white;
+        &:hover {
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
+
+
+.dropList{
+    width: 100%;
+    max-width: 100%;
+    min-height: 30px;
+    display: block;
+    //overflow: hidden;
+  }
+
+  hr {
+    line-height: 1em;
+    position: relative;
+    outline: 0;
+    border: 0;
+    color: black;
+    text-align: left;
+    height: 1.5em;
+    opacity: .5;
+    background: none;
+
+     &:after {
+      content: attr(data-content);
+      position: relative;
+      display: inline-block;
+      color: black;
+      background: white;
+      padding-right: 8px;
+     }
+
+     &:before {
+      content: '';
+      background: #808080;
+      position: absolute;
+      left: 0;
+      top: 33%;
+      width: 100%;
+      height: 1px;
+     }
+  }
+  
+  .dropListItem {
+    padding: 0 10px;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+    height: 60px;
+    margin: 5px 10px;
+
+    &.cdk-drag{
+      cursor: move;
+    }
+
+    >div,> a {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+      
+      > pxs-icon {
+        color: white;
+        padding: 2px;
+        border-radius: 2px;
+        display: inline-flex;
+        margin-right: 8px; 
+
+        &.location {
+          background: $primary;
+        }
+        &.asset {
+          background: $link;
+        }
+      }      
+    }
+
+    pxs-icon.chevron-right {
+      cursor: pointer;
+    }
+
+    &.newItem {
+      border: none;
+      cursor: pointer;
+      color: #888;
+      &:hover {
+        box-shadow:none;
+        color: $primary;
+      }
+    }
+  }
+  
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+                0 8px 10px 1px rgba(0, 0, 0, 0.14),
+                0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+  
+  .cdk-drag-placeholder {
+    opacity: 0;
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  
+  .dropList.cdk-drop-list-dragging .dropListItem:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  

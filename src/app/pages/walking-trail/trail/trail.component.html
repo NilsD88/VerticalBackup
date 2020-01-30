@@ -25,7 +25,12 @@
       <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
     </div>
     <div class="col-md-6 col-sm-12">
-      <pxs-location-explorer *ngIf="leaf" [displayAssets]="true" [rootLocation]="leaf" [customAssetService]="assetService" [searchBar]="false"></pxs-location-explorer>
+      <pxs-asset-explorer
+        *ngIf="leaf"
+        [rootLocation]="leaf"
+        [customAssetService]="assetService"
+        [searchBar]="false"
+      ></pxs-asset-explorer>
     </div>
   </div>
 </div>

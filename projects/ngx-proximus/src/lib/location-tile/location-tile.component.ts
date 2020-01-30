@@ -41,7 +41,7 @@ export class LocationTileComponent implements OnInit, OnDestroy {
   }
 
   openLocation() {
-    this.router.navigateByUrl(`${this.locationUrl}${this.location.id}`);
+    this.router.navigateByUrl(`${this.locationUrl}/${this.location.id}`);
   }
 
 }

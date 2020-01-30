@@ -1,7 +1,7 @@
-import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddAssetDialogComponent } from './add-asset-dialog.component';
+import { AssetExplorerModule } from '../../../asset-explorer/asset-explorer.module';
 
 
 
@@ -9,7 +9,7 @@ import { AddAssetDialogComponent } from './add-asset-dialog.component';
   declarations: [AddAssetDialogComponent],
   imports: [
     CommonModule,
-    LocationExplorerModule
+    AssetExplorerModule
   ],
   exports: [AddAssetDialogComponent]
 })
