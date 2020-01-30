@@ -141,17 +141,30 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
   public addThresholdItem(thresholdId: string) {
 
     const threshold = this.thresholdTemplate.thresholds.find((elt) => elt.sensorType.id === thresholdId);
-
-    const thresholdItem = new ThresholdItem({
-      id: new Date().getTime().toString(),
-      range: {from: threshold.sensorType.min, to: threshold.sensorType.max},
-      severity: SeverityLevel.LOW,
-      notification: {
-        web: false,
-        sms: false,
-        mail: false
-      }
-    });
+    let thresholdItem: IThresholdItem;
+    if (threshold.sensorType.type === 'BOOLEAN') {
+      thresholdItem = new ThresholdItem({
+        id: new Date().getTime().toString(),
+        range: {from: 1, to: 1},
+        severity: SeverityLevel.LOW,
+        notification: {
+          web: false,
+          sms: false,
+          mail: false
+        }
+      });
+    } else {
+      thresholdItem = new ThresholdItem({
+        id: new Date().getTime().toString(),
+        range: {from: threshold.sensorType.min, to: threshold.sensorType.max},
+        severity: SeverityLevel.LOW,
+        notification: {
+          web: false,
+          sms: false,
+          mail: false
+        }
+      });
+    }
     threshold.thresholdItems.push(thresholdItem);
     switch (threshold.sensorType.type) {
       case 'NUMBER':
@@ -230,6 +243,16 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
 
 
   public saveThresholdTemplate() {
+    for (const threshold of this.thresholdTemplate.thresholds) {
+      if (threshold.sensorType.type === 'BOOLEAN') {
+        for (const thresholdItem of threshold.thresholdItems) {
+          const value = +thresholdItem.range.to;
+          thresholdItem.range.from = value;
+          thresholdItem.range.to = value;
+        }
+      }
+    }
+
     if (this.editMode) {
       if (this.thresholdTemplate.hasAssetsAttached) {
         this.dialog.open(PopupConfirmationComponent, {
