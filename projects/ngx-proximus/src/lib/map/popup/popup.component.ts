@@ -103,7 +103,7 @@ export class MapPopupComponent implements OnInit, OnDestroy {
 
   openLocation() {
     if (!(this.location.children || []).length && this.leafUrl) {
-      this.router.navigateByUrl(`${this.leafUrl}${this.location.id}`);
+      this.router.navigateByUrl(`${this.leafUrl}/${this.location.id}`);
     } else {
       this.goToChild(this.location);
     }

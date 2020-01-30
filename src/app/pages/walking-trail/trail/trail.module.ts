@@ -1,5 +1,4 @@
 import { TrailImagesModule } from './trail-images/trail-images.module';
-import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { SummaryStatisticsModule } from './summary-statistics/summary-statistics.module';
 import { TrailMapModule } from './trail-map/trail-map.module';
@@ -12,6 +11,7 @@ import { TrailRoutes } from './trail.routing';
 import { MonthViewModule } from 'src/app/shared/people-counting/location/charts/month-view/month-view.module';
 import { CountByAssetModule } from 'src/app/shared/people-counting/location/charts/count-by-asset/count-by-asset.module';
 import { AssetsCounterModule } from 'src/app/shared/people-counting/location/assets-counter/assets-counter.module';
+import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explorer/asset-explorer.module';
 
 
 
@@ -27,7 +27,7 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/location/ass
     AssetsCounterModule,
     TrailMapModule,
     SummaryStatisticsModule,
-    LocationExplorerModule,
+    AssetExplorerModule,
     MapModule
   ],
   exports: [TrailComponent]

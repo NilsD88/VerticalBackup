@@ -6,9 +6,10 @@
         <div class="col-xs-12 col-md-6 mx-auto">
             <pxs-location-explorer
               *ngIf="canLoadLocationExplorer"
-              (changeLocation)="updateLocation($event)"
+              [selectableLocation]="true"
               [selectedLocation]="location.parent"
               [ghostLocationId]="location.id"
+              (changeLocation)="updateLocation($event)"
             ></pxs-location-explorer>
         </div>
       </div>

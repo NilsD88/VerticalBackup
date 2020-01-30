@@ -23,7 +23,7 @@ export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLo
       locationService,
       activatedRoute
     );
-    this.leafUrl = 'private/peoplecounting/store/';
+    this.leafUrl = 'private/peoplecounting/store';
   }
 
   async ngOnInit() {

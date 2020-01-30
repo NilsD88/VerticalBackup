@@ -16,7 +16,7 @@
   <mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex"
     (selectedIndexChange)="selectedIndexChange($event)">
     <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-      <div cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="!admin" class="dropList">
+      <div *ngIf="tab?.children?.length" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="!admin" class="dropList">
         <hr data-content="LOCATIONS">
         <div cdkDrag class="dropListItem" *ngFor="let location of tab.children"
           [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
@@ -55,47 +55,6 @@
           [routerLink]="['/private/admin/manage-locations/new/'+'root']">
           <div>
             <pxs-icon icon="plus-o"></pxs-icon> Add new location
-          </div>
-        </div>
-      </div>
-      <div *ngIf="displayAssets || assetPicker" class="dropList">
-        <div>
-          <hr data-content="ASSETS">
-          <mat-progress-spinner *ngIf="loadingAssets" style="margin:0 auto;" [diameter]="25" color="primary"
-            mode="indeterminate">
-          </mat-progress-spinner>
-          <div
-            *ngIf="currentLocation && !loadingAssets && (!currentLocation.assets ||currentLocation.assets.length < 1)">
-            No asset found at this location
-          </div>
-          <div *ngIf="currentLocation">
-            <div class="dropListItem" *ngFor="let asset of currentLocation.assets"
-              [ngClass]="{'selected': selectedAsset === asset}">
-              <a (click)="clickOnAsset(asset)">
-                <pxs-icon icon="document-img" class="asset"></pxs-icon>
-                {{asset.name}}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div *ngIf="displayPointsOfAttention" class="dropList">
-        <div>
-          <hr data-content="POINTS OF ATTENTION">
-          <mat-progress-spinner *ngIf="loadingPointsOfAttention" style="margin:0 auto;" [diameter]="25" color="primary"
-            mode="indeterminate">
-          </mat-progress-spinner>
-          <div
-            *ngIf="currentLocation && !loadingPointsOfAttention && (!currentLocation.pointsOfAttention ||currentLocation.pointsOfAttention.length < 1)">
-            No point of attention found at this location
-          </div>
-          <div *ngIf="currentLocation">
-            <div class="dropListItem" *ngFor="let pointOfAttention of currentLocation.pointsOfAttention">
-              <a (click)="clickOnPointOfAttention(pointOfAttention)">
-                <pxs-icon icon="document-img" class="asset"></pxs-icon>
-                {{pointOfAttention.name}}
-              </a>
-            </div>
           </div>
         </div>
       </div>

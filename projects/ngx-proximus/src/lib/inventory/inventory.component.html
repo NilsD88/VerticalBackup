@@ -69,9 +69,14 @@
 
 </div>
 <div *ngIf="listStyleValue === 'list'">
-  <pxs-location-explorer *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
-    (changeLocation)="changeLocation($event)" [customAssetService]="assetService" [assetUrl]="assetUrl"
-    [displayAssets]="true"></pxs-location-explorer>
+  <pxs-asset-explorer
+    *ngIf="rootLocation"
+    [rootLocation]="rootLocation"
+    [selectedLocation]="selectedLocation"
+    [customAssetService]="assetService"
+    [assetUrl]="assetUrl"
+    (changeLocation)="changeLocation($event)"
+  ></pxs-asset-explorer>
 </div>
 <div *ngIf="listStyleValue === 'map'" style="height: calc(100vh - 130px - 50px - 80px);">
   <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"

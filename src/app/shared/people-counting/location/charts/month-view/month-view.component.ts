@@ -169,8 +169,6 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateChart(assets: IPeopleCountingAsset[]) {
-
-    console.log(assets);
     this.currentMonth = moment(this.currentFilter.from).format('MMMM YY');
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
