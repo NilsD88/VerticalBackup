@@ -65,8 +65,9 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
         this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
-        this.originalAsset.locationId = this.originalAsset.location.id;
-      } catch (err) {
+        this.originalAsset.locationId = (this.originalAsset.location || {}).id;
+      } catch (error) {
+        console.error(error);
         this.asset = this.emptyAsset();
       }
     } else {
