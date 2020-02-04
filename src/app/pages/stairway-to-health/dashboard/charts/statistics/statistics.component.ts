@@ -70,7 +70,7 @@ export class StatisticsComponent implements OnInit, OnChanges, OnDestroy {
     },
     all: {
       interval: 'YEARLY',
-      from: moment(1970).valueOf(),
+      from: 0,
       to: moment().valueOf()
     }
   };

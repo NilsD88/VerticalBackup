@@ -1,3 +1,4 @@
+import { NewLocationService } from './../../../../services/new-location.service';
 import { SubSink } from 'subsink';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -9,7 +10,7 @@ import {cloneDeep} from 'lodash';
 import { ILocation } from 'src/app/models/g-location.model';
 import { MatDialog } from '@angular/material';
 import { LocationWizardDialogComponent } from '../../manage-locations/location-wizard/locationWizardDialog.component';
-import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import { compareTwoObjectOnSpecificProperties, findLocationById } from 'src/app/shared/utils';
 import { GraphQLError } from 'graphql';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 
@@ -33,6 +34,7 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private pointOfAttentionService: PointOfAttentionService,
+    private locationService: NewLocationService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private router: Router
@@ -47,9 +49,16 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
     const pointOfAttentionId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(pointOfAttentionId) && pointOfAttentionId !== 'new') {
       this.editMode = true;
-      this.pointOfAttention = await this.pointOfAttentionService.getPointOfAttentionById(pointOfAttentionId).toPromise();
-      this.originalPointOfAttention = cloneDeep(this.pointOfAttention);
+      const pointOfAttention = await this.pointOfAttentionService.getPointOfAttentionById(pointOfAttentionId).toPromise();
+      this.originalPointOfAttention = cloneDeep(pointOfAttention);
       this.originalPointOfAttention.locationId = this.originalPointOfAttention.location.id;
+      // Need to get the location tree of the location for adding an asset
+      const locationTree = await this.locationService.getLocationsTree().toPromise();
+      pointOfAttention.location = findLocationById(
+        { children: locationTree },
+        pointOfAttention.location.id
+      ).location;
+      this.pointOfAttention = pointOfAttention;
     } else {
       this.pointOfAttention = {
         id: null,

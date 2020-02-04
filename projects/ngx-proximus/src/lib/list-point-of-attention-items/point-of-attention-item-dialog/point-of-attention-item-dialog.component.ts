@@ -34,13 +34,12 @@ export class PointOfAttentionItemDialogComponent implements OnInit {
   public assetIsLoading = false;
 
   constructor(
-    public dialogRef: MatDialogRef<PointOfAttentionItemDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
+    public dialogRef: MatDialogRef<PointOfAttentionItemDialogComponent>,
     private sensorService: NewSensorService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
-    private pointOfAttentionService: PointOfAttentionService,
   ) {
     dialogRef.disableClose = true;
   }
@@ -57,7 +56,7 @@ export class PointOfAttentionItemDialogComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  public openAssetPicker(item: IPointOfAttentionItem = null) {
+  public openAssetPicker() {
     this.dialog.open(AddAssetDialogComponent, {
       minWidth: '320px',
       maxWidth: '400px',
@@ -68,7 +67,9 @@ export class PointOfAttentionItemDialogComponent implements OnInit {
       }
     }).afterClosed().subscribe((asset: IAsset) => {
       if (asset) {
-        this.pointOfAttentionItem.assets.push(asset);
+        if (this.pointOfAttentionItem.assets.findIndex(x => x.id === asset.id) < 0) {
+          this.pointOfAttentionItem.assets.push(asset);
+        }
       }
     });
   }
