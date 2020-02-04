@@ -23,7 +23,7 @@ export class WalkingTrailInventoryLocationsComponent extends InventoryLocationsC
       locationService,
       activatedRoute
     );
-    this.leafUrl = 'private/walkingtrail/trail/';
+    this.leafUrl = 'private/walkingtrail/trail';
   }
 
   async ngOnInit() {
