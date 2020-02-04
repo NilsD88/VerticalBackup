@@ -1,3 +1,4 @@
+import { PopupConfirmationModule } from './../popup-confirmation/popup-confirmation.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LocationExplorerComponent } from './location-explorer.component';
@@ -7,16 +8,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MoveAssetsPopupComponent } from './move-assets-popup/move-assets-popup.component';
-import { DeleteConfirmationPopupComponent } from './delete-confirmation-popup/delete-confirmation-popup.component';
 
-@NgModule({
-  declarations: [
-    LocationExplorerComponent,
-    MoveAssetsPopupComponent,
-    DeleteConfirmationPopupComponent
-  ],
-  imports: [
-    CommonModule,
+export const imports = [
+  CommonModule,
     FormsModule,
     MatTabsModule,
     MatListModule,
@@ -31,13 +25,23 @@ import { DeleteConfirmationPopupComponent } from './delete-confirmation-popup/de
     MatProgressSpinnerModule,
     RouterModule,
     MatAutocompleteModule,
-    MatDialogModule
+    MatDialogModule,
+    PopupConfirmationModule
+];
+
+@NgModule({
+  declarations: [
+    LocationExplorerComponent,
+    MoveAssetsPopupComponent,
+  ],
+  imports: [
+    ...imports
   ],
   exports: [
     LocationExplorerComponent
   ],
   entryComponents: [
-    MoveAssetsPopupComponent,
-    DeleteConfirmationPopupComponent]
+    MoveAssetsPopupComponent
+  ]
 })
 export class LocationExplorerModule { }

@@ -43,13 +43,16 @@
             padding: 5px;
             span {
               &.empty {
-                  color: $severity-critical;
+                color: $severity-critical;
               }
               &.low {
-                  color: $severity-medium;
+                color: $severity-medium;
               }
               &.ok {
-                  color: $severity-ok;            
+                color: $severity-ok;            
+              }
+              &.unknown {
+                color: $sub;        
               }
             }
           }

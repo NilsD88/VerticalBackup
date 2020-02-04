@@ -1,9 +1,8 @@
 import { SubSink } from 'subsink';
-import { DeleteConfirmationPopupComponent } from './delete-confirmation-popup/delete-confirmation-popup.component';
 import { MoveAssetsPopupComponent } from './move-assets-popup/move-assets-popup.component';
 import { Router } from '@angular/router';
 import { NewLocationService } from 'src/app/services/new-location.service';
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ContentChild, TemplateRef } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import { ILocation } from 'src/app/models/g-location.model';
 import { NewAssetService } from 'src/app/services/new-asset.service';
@@ -11,6 +10,7 @@ import { Subject } from 'rxjs';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material';
+import { PopupConfirmationComponent } from '../popup-confirmation/popup-confirmation.component';
 
 
 @Component({
@@ -19,6 +19,8 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./location-explorer.component.scss']
 })
 export class LocationExplorerComponent implements OnInit, OnDestroy {
+
+  @ContentChild('extraTemplate', {static: false}) extraTemplateRef: TemplateRef<any>;
 
   @Input() rootLocation: ILocation;
   @Input() selectedLocation: ILocation;
@@ -57,6 +59,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
         this.searchResults = locations;
       })
     );
+    console.log(this.constructor.name, 'ngOnInit()');
   }
 
   protected initLocationTree() {
@@ -97,8 +100,18 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   async wantToDeleteLocation(locationId: string) {
 
     const assets = await this.newAssetService.getAssetsByLocationId(locationId).toPromise();
+    const PEOPLE_COUNTING_ASSETS = assets.filter(asset => asset.module.startsWith('PEOPLE_COUNTING'));
     if (assets.length > 0) {
-      const wantToDelete = await this.dialog.open(DeleteConfirmationPopupComponent).afterClosed().toPromise();
+      const wantToDelete = await this.dialog.open(PopupConfirmationComponent, {
+        data: {
+          title: `Are you sure to delete this location?`,
+          content: PEOPLE_COUNTING_ASSETS.length ? 'Be careful, its people counting assets will be deleted and the others transfered' : null
+        },
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+      }).afterClosed().toPromise();
       if (wantToDelete) {
         const locationIdToTransferAssets = await this.dialog.open(MoveAssetsPopupComponent, {
           data: {

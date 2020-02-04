@@ -1,59 +1,27 @@
-<div *ngIf="searchBar">
-  <mat-form-field>
-    <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
-      (ngModelChange)="onFilterChange()">
-  </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
-      {{ option.name }}
-    </mat-option>
-  </mat-autocomplete>
-</div>
-
-<div>
-  <mat-progress-spinner *ngIf="isDownloading" style="margin:0 auto;" color="primary" mode="indeterminate">
-  </mat-progress-spinner>
-  <mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndexChange($event)">
-    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-      <div *ngIf="tab?.children?.length" class="dropList">
-        <hr data-content="LOCATIONS">
-        <div 
-          cdkDrag class="dropListItem" *ngFor="let location of tab.children"
-          [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
-        >
-          <div>
-            <pxs-icon icon="globe" class="location"></pxs-icon>
-            {{location.name}}
-          </div>
-          <div *ngIf="location.id !== ghostLocationId">
-            <span (click)="openLocation(location)">
-              <pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon>
-            </span>
+<pxs-asset-explorer-projection [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
+  [customAssetService]="customAssetService" [searchBar]="searchBar" [assetUrl]="assetUrl" [assetPicker]="assetPicker"
+  (assetClicked)="assetClicked.emit($event)" (changeLocation)="changeLocation.emit($event)">
+  <ng-template #extraTemplate let-parent>
+    <div class="dropList">
+      <div>
+        <hr data-content="ASSETS">
+        <mat-progress-spinner *ngIf="parent.loadingAssets" style="margin:0 auto;" [diameter]="25" color="primary"
+          mode="indeterminate">
+        </mat-progress-spinner>
+        <div
+          *ngIf="parent.currentLocation && !parent.loadingAssets && (!parent.currentLocation.assets ||parent.currentLocation.assets.length < 1)">
+          No asset found at this location
+        </div>
+        <div *ngIf="parent.currentLocation">
+          <div class="dropListItem" *ngFor="let asset of parent.currentLocation.assets"
+            [ngClass]="{'selected': parent.selectedAsset === asset}">
+            <a (click)="parent.clickOnAsset(asset)">
+              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+              {{asset.name}}
+            </a>
           </div>
         </div>
       </div>
-      <div class="dropList">
-        <div>
-          <hr data-content="ASSETS">
-          <mat-progress-spinner *ngIf="loadingAssets" style="margin:0 auto;" [diameter]="25" color="primary"
-            mode="indeterminate">
-          </mat-progress-spinner>
-          <div
-            *ngIf="currentLocation && !loadingAssets && (!currentLocation.assets ||currentLocation.assets.length < 1)">
-            No asset found at this location
-          </div>
-          <div *ngIf="currentLocation">
-            <div class="dropListItem" *ngFor="let asset of currentLocation.assets"
-              [ngClass]="{'selected': selectedAsset === asset}">
-              <a (click)="clickOnAsset(asset)">
-                <pxs-icon icon="document-img" class="asset"></pxs-icon>
-                {{asset.name}}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br><br>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+    </div>
+  </ng-template>
+</pxs-asset-explorer-projection>

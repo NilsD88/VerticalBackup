@@ -19,7 +19,7 @@
       <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
-  <mat-step [completed]="pointOfAttention.location">
+  <mat-step *ngIf="!editMode" [completed]="pointOfAttention.location">
     <form>
       <ng-template matStepLabel>Location</ng-template>
       <div class="row">
@@ -31,12 +31,6 @@
             (changeLocation)="updateLocation($event)"
             (selectedLocationTree)="pointOfAttention.location = $event"
           ></pxs-location-explorer>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
-          <hr>
-          <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
         </div>
       </div>
       <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="pointOfAttention.location" (next)="stepper.next()"></pxs-stepper-next>

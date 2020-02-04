@@ -1,58 +1,24 @@
-<div *ngIf="searchBar">
-  <mat-form-field>
-    <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
-      (ngModelChange)="onFilterChange()">
-  </mat-form-field>
-  <mat-autocomplete #auto="matAutocomplete">
-    <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
-      {{ option.name }}
-    </mat-option>
-  </mat-autocomplete>
-</div>
-
-<div>
-  <mat-progress-spinner *ngIf="isDownloading" style="margin:0 auto;" color="primary" mode="indeterminate">
-  </mat-progress-spinner>
-  <mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex" (selectedIndexChange)="selectedIndexChange($event)">
-    <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-      <div *ngIf="tab?.children?.length" class="dropList">
-        <hr data-content="LOCATIONS">
-        <div 
-          cdkDrag class="dropListItem" *ngFor="let location of tab.children"
-          [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
-        >
-          <div>
-            <pxs-icon icon="globe" class="location"></pxs-icon>
-            {{location.name}}
-          </div>
-          <div *ngIf="location.id !== ghostLocationId">
-            <span (click)="openLocation(location)">
-              <pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon>
-            </span>
+<pxs-point-of-attention-explorer-projection>
+  <ng-template #extraTemplate let-parent>
+    <div class="dropList">
+      <div>
+        <hr data-content="POINTS OF ATTENTION">
+        <mat-progress-spinner *ngIf="parent.loadingPointsOfAttention" style="margin:0 auto;" [diameter]="25" color="primary"
+          mode="indeterminate">
+        </mat-progress-spinner>
+        <div
+          *ngIf="parent.currentLocation && !parent.loadingPointsOfAttention && (!parent.currentLocation.pointsOfAttention || parent.currentLocation.pointsOfAttention.length < 1)">
+          No point of attention found at this location
+        </div>
+        <div *ngIf="parent.currentLocation">
+          <div class="dropListItem" *ngFor="let pointOfAttention of parent.currentLocation.pointsOfAttention">
+            <a (click)="parent.clickOnPointOfAttention(pointOfAttention)">
+              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+              {{pointOfAttention.name}}
+            </a>
           </div>
         </div>
       </div>
-      <div class="dropList">
-        <div>
-          <hr data-content="POINTS OF ATTENTION">
-          <mat-progress-spinner *ngIf="loadingPointsOfAttention" style="margin:0 auto;" [diameter]="25" color="primary"
-            mode="indeterminate">
-          </mat-progress-spinner>
-          <div
-            *ngIf="currentLocation && !loadingPointsOfAttention && (!currentLocation.pointsOfAttention ||currentLocation.pointsOfAttention.length < 1)">
-            No point of attention found at this location
-          </div>
-          <div *ngIf="currentLocation">
-            <div class="dropListItem" *ngFor="let pointOfAttention of currentLocation.pointsOfAttention">
-              <a (click)="clickOnPointOfAttention(pointOfAttention)">
-                <pxs-icon icon="document-img" class="asset"></pxs-icon>
-                {{pointOfAttention.name}}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <br><br>
-    </mat-tab>
-  </mat-tab-group>
-</div>
+    </div>
+  </ng-template>
+</pxs-point-of-attention-explorer-projection>

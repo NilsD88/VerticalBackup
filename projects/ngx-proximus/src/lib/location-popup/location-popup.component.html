@@ -23,6 +23,7 @@
     (assetClicked)="assetClicked()"
   ></pxs-asset-explorer>
 </div>
+
 <div *ngIf="viewAs === 'map'" style="height: calc(100vh - 190px);">
   <pxs-map *ngIf="rootLocation" [rootLocation]="rootLocation" [selectedLocation]="selectedLocation"
     (changeLocation)="selectedLocation=$event"></pxs-map>
