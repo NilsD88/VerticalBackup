@@ -1,21 +1,21 @@
 import { SubSink } from 'subsink';
-import { NewSensorService } from 'src/app/services/new-sensor.service';
-import { ISensorType } from './../../../models/g-sensor-type.model';
+import { SensorService } from 'src/app/services/sensor.service';
+import { ISensorType } from '../../../models/sensor-type.model';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import {Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ILocation } from 'src/app/models/g-location.model';
-import { IThing } from 'src/app/models/g-thing.model';
+import { ILocation } from 'src/app/models/location.model';
+import { IThing } from 'src/app/models/thing.model';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
-import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 import { IField } from 'src/app/models/field.model';
 
@@ -46,7 +46,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
     private tankMonitoringAssetService: TankMonitoringAssetService,
-    private sensorService: NewSensorService,
+    private sensorService: SensorService,
     private router: Router,
     public activatedRoute: ActivatedRoute
   ) {

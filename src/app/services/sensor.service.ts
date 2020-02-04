@@ -1,5 +1,5 @@
-import { ISensorDefinition } from './../models/g-sensor-definition.model';
-import { ISensorType } from 'src/app/models/g-sensor-type.model';
+import { ISensorDefinition } from '../models/sensor-definition.model';
+import { ISensorType } from 'src/app/models/sensor-type.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -9,7 +9,7 @@ import gql from 'graphql-tag';
 @Injectable({
     providedIn: 'root'
 })
-export class NewSensorService {
+export class SensorService {
 
     constructor(
         private apollo: Apollo,

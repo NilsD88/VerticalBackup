@@ -8,7 +8,7 @@ import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.compone
 import {TranslateService} from '@ngx-translate/core';
 import {TopMenuConfig} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.component';
 import { Subject } from 'rxjs';
-import { NewAlertService } from 'src/app/services/new-alert.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'pvf-layout',
@@ -37,7 +37,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     public layoutService: LayoutService,
     private globaleSearchService: GlobaleSearchService,
     public sharedService: SharedService,
-    public newAlertService: NewAlertService) {
+    public alertService: AlertService) {
       this.subs.add(
         this.globaleSearchService.searchTerm(this.searchTerm$).subscribe(result => {
           const results = [];
@@ -71,7 +71,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     this.footerConfig = await this.layoutService.getFooterTranslations();
 
     this.subs.add(
-      this.newAlertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
+      this.alertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
         this.numberOfUnreadAlerts = (numberOfUnreadAlerts > 0) ? ((numberOfUnreadAlerts > 99) ? '99+' : numberOfUnreadAlerts ) : null;
       })
     );

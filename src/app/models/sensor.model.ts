@@ -1,7 +1,7 @@
-import { ISensorDefinition } from './g-sensor-definition.model';
-import { ISensorType } from './g-sensor-type.model';
-import { IThing } from './g-thing.model';
-import { IOrganization } from './g-organization.model';
+import { ISensorDefinition } from './sensor-definition.model';
+import { ISensorType } from './sensor-type.model';
+import { IThing } from './thing.model';
+import { IOrganization } from './organization.model';
 
 export interface ISensor {
     id?: string;

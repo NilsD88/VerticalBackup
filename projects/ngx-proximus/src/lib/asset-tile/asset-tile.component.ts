@@ -1,6 +1,6 @@
-import { NewAssetService } from './../../../../../src/app/services/new-asset.service';
+import { AssetService } from '../../../../../src/app/services/asset.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import {SubSink} from 'subsink';
 
 @Component({
@@ -17,7 +17,7 @@ export class AssetTileComponent implements OnInit, OnDestroy {
   public imageIsLoading = true;
 
   constructor(
-    private assetService: NewAssetService
+    private assetService: AssetService
   ) { }
 
   ngOnInit() {

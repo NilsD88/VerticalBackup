@@ -3,7 +3,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {LocationPopupComponent} from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
 import {isNullOrUndefined} from 'util';
-import {Asset} from '../../../../models/g-asset.model';
+import {Asset} from '../../../../models/asset.model';
 
 @Component({
   selector: 'pvf-peoplecounting-detail-header',

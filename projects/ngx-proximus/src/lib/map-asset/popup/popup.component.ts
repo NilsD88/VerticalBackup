@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, EventEmitter} from '@angular/core';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { ILocation } from 'src/app/models/g-location.model';
-import { IAlert } from 'src/app/models/g-alert.model';
+import { IAsset } from 'src/app/models/asset.model';
+import { ILocation } from 'src/app/models/location.model';
+import { IAlert } from 'src/app/models/alert.model';
 
 @Component({
   selector: 'pxs-map-asset-popup',

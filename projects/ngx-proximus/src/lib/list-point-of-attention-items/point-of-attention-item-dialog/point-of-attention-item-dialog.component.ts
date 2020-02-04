@@ -1,14 +1,14 @@
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { cloneDeep } from 'lodash';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { IPointOfAttentionItem, PointOfAttentionItem, EAggregation } from './../../../../../../src/app/models/point-of-attention.model';
-import { ISensorType } from 'src/app/models/g-sensor-type.model';
-import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { ISensorType } from 'src/app/models/sensor-type.model';
+import { SensorService } from 'src/app/services/sensor.service';
 import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddAssetDialogComponent } from './add-asset-dialog/add-asset-dialog.component';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 
 
@@ -36,7 +36,7 @@ export class PointOfAttentionItemDialogComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: IDialogData,
     public dialogRef: MatDialogRef<PointOfAttentionItemDialogComponent>,
-    private sensorService: NewSensorService,
+    private sensorService: SensorService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,

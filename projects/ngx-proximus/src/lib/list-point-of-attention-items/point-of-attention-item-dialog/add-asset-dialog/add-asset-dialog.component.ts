@@ -1,5 +1,5 @@
-import { IAsset } from 'src/app/models/g-asset.model';
-import { ILocation } from 'src/app/models/g-location.model';
+import { IAsset } from 'src/app/models/asset.model';
+import { ILocation } from 'src/app/models/location.model';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { PointOfAttentionItemDialogComponent } from '../point-of-attention-item-dialog.component';

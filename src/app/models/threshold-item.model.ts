@@ -1,6 +1,6 @@
-import { ISensorType } from './g-sensor-type.model';
+import { ISensorType } from './sensor-type.model';
 import { isNullOrUndefined } from 'util';
-import { IThreshold } from './g-threshold.model';
+import { IThreshold } from './threshold.model';
 
 export interface IThresholdItem {
     id?: string;

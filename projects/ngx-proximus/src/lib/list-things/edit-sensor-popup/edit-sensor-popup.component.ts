@@ -1,8 +1,8 @@
-import { NewSensorService } from './../../../../../../src/app/services/new-sensor.service';
-import { chartTypes, aggregatedValues, InOutValues } from 'src/app/models/g-sensor-definition.model';
+import { SensorService } from '../../../../../../src/app/services/sensor.service';
+import { chartTypes, aggregatedValues, InOutValues } from 'src/app/models/sensor-definition.model';
 import { Component, OnInit, Optional, Inject, OnDestroy } from '@angular/core';
 import {MatDialogRef, MatCheckboxChange, MatSnackBar} from '@angular/material';
-import { ISensorDefinition } from 'src/app/models/g-sensor-definition.model';
+import { ISensorDefinition } from 'src/app/models/sensor-definition.model';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import { SubSink } from 'subsink';
 import { LayoutService } from 'src/app/layout/layout.service';
@@ -26,7 +26,7 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
     constructor(
         @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
         public dialogRef: MatDialogRef<EditSensorPopupComponent>,
-        private newSensorService: NewSensorService,
+        private sensorService: SensorService,
         public snackBar: MatSnackBar,
         private layoutService: LayoutService
     ) {}
@@ -77,7 +77,7 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
     submit() {
         this.loading = true;
         delete (this.sensorDefinition).id;
-        this.subs.sink = this.newSensorService.updateSensorDefinition(this.data.sensor.id, this.sensorDefinition).subscribe(
+        this.subs.sink = this.sensorService.updateSensorDefinition(this.data.sensor.id, this.sensorDefinition).subscribe(
             (result) => {
                 this.loading = false;
                 if (result) {

@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule, MatInputModule, MatFormFieldModule, MatTableModule, MatSortModule, MatTooltipModule, MatButtonModule, MatCardModule, MatIconModule, MatRadioModule, MatPaginatorModule } from '@angular/material';
 import { ImgFallbackModule } from 'ngx-img-fallback';
 import { RouterModule } from '@angular/router';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { ThresholdTemplatesDetailModule } from '../threshold-templates-detail/threshold-templates-detail.module';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmation.module';
@@ -37,7 +37,7 @@ import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmatio
     ThresholdTemplatesDetailComponent
   ],
   providers: [
-    NewThresholdTemplateService
+    ThresholdTemplateService
   ],
   exports: [
     ListThresholdTemplatesComponent

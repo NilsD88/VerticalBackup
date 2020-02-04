@@ -1,6 +1,6 @@
 import {
   IThing
-} from './../models/g-thing.model';
+} from '../models/thing.model';
 export let MOCK_CHART_DATA = [];
 export let MOCK_NEW_CHART_DATA: IThing[] = [];
 export let MOCK_NEW_CHART_TANK_DATA: IThing[] = [];

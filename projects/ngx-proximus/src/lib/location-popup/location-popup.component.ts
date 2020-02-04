@@ -1,9 +1,9 @@
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 import { SubSink } from 'subsink';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { Component, OnInit, Optional, Inject, OnDestroy, Input } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 
 @Component({
   selector: 'pxs-location-popup',
@@ -23,12 +23,12 @@ export class LocationPopupComponent implements OnInit, OnDestroy {
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
-    public newLocationService: NewLocationService,
-    public assetService: NewAssetService,
+    public locationService: LocationService,
+    public assetService: AssetService,
   ) { }
 
   ngOnInit() {
-    this.subs.sink = this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+    this.subs.sink = this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
       this.rootLocation = {
         id: null,
         parentId: null,

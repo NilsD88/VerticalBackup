@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IGeolocation } from 'src/app/models/geolocation.model';
 import { FormGroup } from '@angular/forms';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 
 @Component({
   selector: 'pxs-form-geolocation',

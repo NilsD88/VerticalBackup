@@ -1,5 +1,5 @@
 import { IPeopleCountingAsset } from './asset.model';
-import { AbstractLocation, IPagedAbstractLocations } from '../g-location.model';
+import { AbstractLocation, IPagedAbstractLocations } from '../location.model';
 
 export interface IPeopleCountingLocation extends AbstractLocation<IPeopleCountingLocation, IPeopleCountingAsset> {
     series?: IPeopleCountingLocationSerie[];

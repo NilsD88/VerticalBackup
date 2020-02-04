@@ -3,9 +3,9 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
-import { SeverityLevel } from 'src/app/models/g-threshold-item.model';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
+import { SeverityLevel } from 'src/app/models/threshold-item.model';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { ManageThresholdTemplatesComponent } from 'src/app/pages/admin/manage-threshold-templates/manage-threshold-templates.component';
 import { AddThresholdDialogComponent } from './add-threshold/addThresholdDialog.component';
 
@@ -28,7 +28,7 @@ export class ManageThresholdTemplatesDialogComponent extends ManageThresholdTemp
     @Optional() private dialogRef: MatDialogRef<ManageThresholdTemplatesComponent>,
     public changeDetectorRef: ChangeDetectorRef,
     public formBuilder: FormBuilder,
-    public newThresholdTemplateService: NewThresholdTemplateService,
+    public thresholdTemplateService: ThresholdTemplateService,
     public router: Router,
     public activeRoute: ActivatedRoute,
     public dialog: MatDialog
@@ -36,7 +36,7 @@ export class ManageThresholdTemplatesDialogComponent extends ManageThresholdTemp
       super(
         changeDetectorRef,
         formBuilder,
-        newThresholdTemplateService,
+        thresholdTemplateService,
         router,
         activeRoute,
         dialog,

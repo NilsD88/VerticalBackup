@@ -1,7 +1,7 @@
-import { NewSensorService } from './../../../../services/new-sensor.service';
+import { SensorService } from '../../../../services/sensor.service';
 import {Component, OnInit} from '@angular/core';
 import {MatDialogRef} from '@angular/material';
-import { ISensorType } from 'src/app/models/g-sensor-type.model';
+import { ISensorType } from 'src/app/models/sensor-type.model';
 
 @Component({
   selector: 'pvf-add-threshold',
@@ -11,7 +11,7 @@ export class AddThresholdComponent implements OnInit {
   items: ISensorType[] = [];
   item: ISensorType = null;
 
-  constructor(public dialogRef: MatDialogRef<AddThresholdComponent>, public newSensorService: NewSensorService) {
+  constructor(public dialogRef: MatDialogRef<AddThresholdComponent>, public sensorService: SensorService) {
   }
 
   async ngOnInit() {
@@ -19,7 +19,7 @@ export class AddThresholdComponent implements OnInit {
   }
 
   async loadItems() {
-    this.items = await this.newSensorService.getSensorTypes().toPromise();
+    this.items = await this.sensorService.getSensorTypes().toPromise();
   }
 
   submit() {

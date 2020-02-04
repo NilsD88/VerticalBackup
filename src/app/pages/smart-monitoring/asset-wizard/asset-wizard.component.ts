@@ -1,19 +1,19 @@
 import { SubSink } from 'subsink';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 import {Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { ILocation } from 'src/app/models/g-location.model';
-import { IThing } from 'src/app/models/g-thing.model';
+import { ILocation } from 'src/app/models/location.model';
+import { IThing } from 'src/app/models/thing.model';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
-import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 import { IField } from 'src/app/models/field.model';
 
@@ -45,7 +45,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
-    private newAssetService: NewAssetService,
+    private assetService: AssetService,
     private router: Router,
     public activatedRoute: ActivatedRoute
   ) {
@@ -58,11 +58,11 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       DescriptionCtrl: ['', null],
     });
 
-    this.fields = await this.newAssetService.getCustomFields().toPromise();
+    this.fields = await this.assetService.getCustomFields().toPromise();
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
-        this.asset = await this.newAssetService.getAssetById(assetId).toPromise();
+        this.asset = await this.assetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
         this.originalAsset.locationId = (this.originalAsset.location || {}).id;
@@ -179,7 +179,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       }
 
       this.subs.add(
-        this.newAssetService.updateAsset(asset).subscribe(
+        this.assetService.updateAsset(asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
             this.goToInventory();
@@ -192,7 +192,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       );
     } else {
       this.subs.add(
-        this.newAssetService.createAsset(this.asset).subscribe(
+        this.assetService.createAsset(this.asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
             this.goToInventory();

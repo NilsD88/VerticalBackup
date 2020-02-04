@@ -1,6 +1,6 @@
 import { isNullOrUndefined } from 'util';
 import { PointOfAttentionItemDialogComponent } from './point-of-attention-item-dialog/point-of-attention-item-dialog.component';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { IPointOfAttentionItem, IPointOfAttention } from './../../../../../src/app/models/point-of-attention.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';

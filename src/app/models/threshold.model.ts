@@ -1,6 +1,6 @@
-import { ISensorType } from './g-sensor-type.model';
-import { IThresholdItem, IThresholdItemWithPercentRange } from './g-threshold-item.model';
-import { IThresholdTemplate } from './g-threshold-template.model';
+import { ISensorType } from './sensor-type.model';
+import { IThresholdItem, IThresholdItemWithPercentRange } from './threshold-item.model';
+import { IThresholdTemplate } from './threshold-template.model';
 
 export interface IThreshold {
     sensorType?: ISensorType;

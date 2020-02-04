@@ -1,4 +1,4 @@
-import { ISensor } from './g-sensor.model';
+import { ISensor } from './sensor.model';
 
 export interface IThing {
     id?: string;

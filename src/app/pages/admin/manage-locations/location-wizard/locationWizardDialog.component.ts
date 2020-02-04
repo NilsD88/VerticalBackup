@@ -22,9 +22,9 @@ import {
   FormBuilder
 } from '@angular/forms';
 import {
-  NewLocationService
-} from 'src/app/services/new-location.service';
-import { ILocation } from 'src/app/models/g-location.model';
+  LocationService
+} from 'src/app/services/location.service';
+import { ILocation } from 'src/app/models/location.model';
 
 
 @Component({
@@ -40,7 +40,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
     public formBuilder: FormBuilder,
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
-    public newLocationService: NewLocationService,
+    public locationService: LocationService,
     public dialog: MatDialog,
     public router: Router,
   ) {
@@ -48,7 +48,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
       formBuilder,
       changeDetectorRef,
       activatedRoute,
-      newLocationService,
+      locationService,
       dialog,
       router
     );
@@ -65,7 +65,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
 
    createLocation() {
     this.subs.add(
-      this.newLocationService.createLocation(this.location).subscribe((location: ILocation | null) => {
+      this.locationService.createLocation(this.location).subscribe((location: ILocation | null) => {
         if (location) {
           this.dialogRef.close(location);
         }

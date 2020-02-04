@@ -1,7 +1,7 @@
-import { IRange } from './g-threshold-item.model';
-import { IAsset } from './g-asset.model';
-import { ISensorType } from './g-sensor-type.model';
-import { IThing } from './g-thing.model';
+import { IRange } from './threshold-item.model';
+import { IAsset } from './asset.model';
+import { ISensorType } from './sensor-type.model';
+import { IThing } from './thing.model';
 
 export interface IAlert {
     id?: string;

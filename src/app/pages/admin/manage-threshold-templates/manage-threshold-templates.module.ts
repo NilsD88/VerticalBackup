@@ -23,7 +23,7 @@ import {ManageThresholdTemplatesListComponent} from './manage-threshold-template
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 import { ButtonModule } from 'projects/ngx-proximus/src/lib/button/button.module';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { AddThresholdComponent } from './add-threshold/add-threshold.component';
 
 @NgModule({
@@ -51,7 +51,7 @@ import { AddThresholdComponent } from './add-threshold/add-threshold.component';
     PopupConfirmationModule
   ],
   providers: [
-    NewThresholdTemplateService,
+    ThresholdTemplateService,
   ],
   entryComponents: [AddThresholdComponent],
 })

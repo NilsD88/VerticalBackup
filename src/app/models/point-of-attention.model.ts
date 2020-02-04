@@ -1,12 +1,12 @@
 import {
   ILocation
-} from 'src/app/models/g-location.model';
+} from 'src/app/models/location.model';
 import {
   IAsset
-} from 'src/app/models/g-asset.model';
+} from 'src/app/models/asset.model';
 import {
   ISensorType
-} from 'src/app/models/g-sensor-type.model';
+} from 'src/app/models/sensor-type.model';
 import {
   isNullOrUndefined
 } from 'util';

@@ -1,14 +1,14 @@
 import { StairwayToHealthLocationService } from './../../../services/stairway-to-health/location.service';
 import { SubSink } from 'subsink';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, Optional, Inject, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { IField } from 'src/app/models/field.model';
 import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-counting/asset-wizard/assetWizardDialog.component';
 import { GraphQLError } from 'graphql/error';
@@ -57,9 +57,9 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
-    public newLocationService: NewLocationService,
+    public locationService: LocationService,
     public peopleCountingRetailLocationService: StairwayToHealthLocationService,
-    public assetService: NewAssetService,
+    public assetService: AssetService,
     public dialog: MatDialog,
     public router: Router,
   ) {}
@@ -73,7 +73,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
       DescriptionCtrl: ['', null],
     });
 
-    this.fields = await this.newLocationService.getCustomFields().toPromise();
+    this.fields = await this.locationService.getCustomFields().toPromise();
 
     this.subs.add(
       this.assetsRequest$.pipe(
@@ -88,7 +88,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
 
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
-        this.location = await this.newLocationService.getLocationById(locationId).toPromise();
+        this.location = await this.locationService.getLocationById(locationId).toPromise();
         this.assetsRequest$.next();
         this.editMode = true;
         this.originalLocation = cloneDeep(this.location);
@@ -119,7 +119,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
       module: 'PEOPLE_COUNTING_RETAIL'
     };
     if (!isNullOrUndefined(parentId)) {
-      this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
+      this.location.parent = await this.locationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
     }
   }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { LocationPopupComponent } from './location-popup.component';
 import { MapModule } from '../map/map.module';
 import { MatButtonToggleModule, MatIconModule, MatProgressSpinnerModule } from '@angular/material';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { AssetExplorerModule } from '../asset-explorer/asset-explorer.module';
 
 @NgModule({
@@ -17,7 +17,7 @@ import { AssetExplorerModule } from '../asset-explorer/asset-explorer.module';
     MatProgressSpinnerModule
   ],
   providers: [
-    NewLocationService
+    LocationService
   ]
 })
 export class LocationPopupModule { }

@@ -1,4 +1,4 @@
-import { IThing } from 'src/app/models/g-thing.model';
+import { IThing } from 'src/app/models/thing.model';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 @Injectable({
     providedIn: 'root'
 })
-export class NewThingService {
+export class ThingService {
 
     constructor(
         private apollo: Apollo,

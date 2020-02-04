@@ -1,6 +1,6 @@
 import { SubSink } from 'subsink';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
@@ -46,7 +46,7 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public locationService: NewLocationService,
+    public locationService: LocationService,
     public activatedRoute: ActivatedRoute,
   ) {}
 

@@ -1,11 +1,10 @@
 import { SubSink } from 'subsink';
 import { EditSensorPopupComponent } from './edit-sensor-popup/edit-sensor-popup.component';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import { IThing } from 'src/app/models/g-thing.model';
-import { ISensor } from 'src/app/models/g-sensor.model';
+import { IThing } from 'src/app/models/thing.model';
+import { ISensor } from 'src/app/models/sensor.model';
 import { MatTableDataSource, MatSort, MatPaginator, MatSnackBar, MatDialog } from '@angular/material';
-import { SharedService } from 'src/app/services/shared.service';
-import { NewThingService } from 'src/app/services/new-thing.service';
+import { ThingService } from 'src/app/services/thing.service';
 import { isNullOrUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import {uniqBy} from 'lodash';
@@ -47,7 +46,7 @@ export class ListThingsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private newThingService: NewThingService,
+    private thingService: ThingService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
@@ -66,7 +65,7 @@ export class ListThingsComponent implements OnInit, OnDestroy {
 
   public async getThings(): Promise<void> {
     this.isLoading = true;
-    this.things = await this.newThingService.getThings().toPromise();
+    this.things = await this.thingService.getThings().toPromise();
     this.updateDataSource(this.things);
     this.isLoading = false;
   }
@@ -122,7 +121,7 @@ export class ListThingsComponent implements OnInit, OnDestroy {
     delete thing.editing;
     delete thing.tempName;
 
-    this.subs.sink = this.newThingService.updateThing(thing).subscribe(
+    this.subs.sink = this.thingService.updateThing(thing).subscribe(
       res => {
         console.log('HTTP response', res);
       },

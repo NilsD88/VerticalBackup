@@ -1,5 +1,5 @@
 import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { isNullOrUndefined } from 'util';
 import { IGeolocation } from './geolocation.model';
 import { ICustomField } from './field.model';

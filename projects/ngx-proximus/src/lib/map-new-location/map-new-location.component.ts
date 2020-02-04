@@ -3,7 +3,7 @@ import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges
 import { IGeolocation } from 'src/app/models/geolocation.model';
 import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds, imageOverlay, CRS, Point } from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { isNullOrUndefined } from 'util';
 import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
 

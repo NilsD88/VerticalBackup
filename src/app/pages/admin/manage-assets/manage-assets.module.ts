@@ -21,7 +21,7 @@ import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import {BadgeModule} from 'projects/ngx-proximus/src/lib/badge/badge.module';
 import {ThingsListModule} from 'projects/ngx-proximus/src/lib/things-list/things-list.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 
 @NgModule({
   declarations: [ManageAssetsListComponent],
@@ -53,7 +53,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
     MatPaginatorModule
   ],
   providers: [
-    NewAssetService
+    AssetService
   ]
 })
 export class ManageAssetsModule {

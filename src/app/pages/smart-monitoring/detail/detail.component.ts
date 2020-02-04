@@ -2,14 +2,14 @@ import { SubSink } from 'subsink';
 import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { LogsService } from './../../../services/logs.service';
 import {cloneDeep} from 'lodash';
-import {NewAssetService} from 'src/app/services/new-asset.service';
+import {AssetService} from 'src/app/services/asset.service';
 import {SharedService} from 'src/app/services/shared.service';
 import {ChangeDetectorRef, Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {formatDate} from '@angular/common';
 import {TranslateService} from '@ngx-translate/core';
-import {IAsset} from 'src/app/models/g-asset.model';
-import {NewAlertService} from 'src/app/services/new-alert.service';
+import {IAsset} from 'src/app/models/asset.model';
+import {AlertService} from 'src/app/services/alert.service';
 import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
 import {Observable, Subject, of} from 'rxjs';
 import {debounceTime, switchMap, catchError} from 'rxjs/operators';
@@ -58,8 +58,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private sharedService: SharedService,
     private logsService: LogsService,
-    public newAlertService: NewAlertService,
-    public newAssetService: NewAssetService,
+    public alertService: AlertService,
+    public assetService: AssetService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private router: Router,
@@ -70,7 +70,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.activeRoute.params.subscribe(async (params) => {
       if (params.id) {
         this.subs.add(
-          this.newAssetService.getAssetDetailById(params.id).subscribe(
+          this.assetService.getAssetDetailById(params.id).subscribe(
             (asset) => {
               this.asset = asset;
               for (const thing of this.asset.things) {
@@ -300,7 +300,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   private getLastAlerts() {
     this.subs.add(
-      this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
+      this.alertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
         this.asset.alerts = alerts;
       })
     );
@@ -312,7 +312,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       switchMap(filter => {
         this.chartLoading = true;
         this.changeDetectorRef.detectChanges();
-        return this.newAssetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to).pipe(catchError(() => {
+        return this.assetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to).pipe(catchError(() => {
           this.dialog.open(DialogComponent, {
             data: {
               title: 'Sorry, an error has occured!',

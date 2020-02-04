@@ -1,19 +1,19 @@
 import { SubSink } from 'subsink';
-import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { SensorService } from 'src/app/services/sensor.service';
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { IThing } from 'src/app/models/g-thing.model';
+import { IThing } from 'src/app/models/thing.model';
 import { MatStepper } from '@angular/material/stepper';
 import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { IField } from 'src/app/models/field.model';
-import { ISensorType } from 'src/app/models/g-sensor-type.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { ISensorType } from 'src/app/models/sensor-type.model';
+import { AssetService } from 'src/app/services/asset.service';
 
 @Component({
   selector: 'pvf-walkingtrail-asset-wizard',
@@ -39,8 +39,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
   constructor(
     public formBuilder: FormBuilder,
     public dialog: MatDialog,
-    public assetService: NewAssetService,
-    public sensorService: NewSensorService,
+    public assetService: AssetService,
+    public sensorService: SensorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {

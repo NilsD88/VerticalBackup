@@ -1,21 +1,21 @@
 import { SubSink } from 'subsink';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
 import { NgElement, WithProperties } from '@angular/elements';
 import { IGeolocation } from 'src/app/models/geolocation.model';
 import { Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, LatLngBounds, geoJSON, Point, Marker} from 'leaflet';
 import { GeoJsonObject } from 'geojson';
-import { ILocation } from 'src/app/models/g-location.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { ILocation } from 'src/app/models/location.model';
+import { AssetService } from 'src/app/services/asset.service';
 import { Subject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { findLocationById } from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from './popup/popup.component';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
 
 @Component({
@@ -52,8 +52,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public newAssetService: NewAssetService,
-    public newLocationService: NewLocationService,
+    public assetService: AssetService,
+    public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
   ) {}
@@ -123,7 +123,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       this.checkIfSelectedLocation();
     } else {
       this.subs.add(
-        this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+        this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
           this.rootLocation = {
             id: null,
             parentId: null,
@@ -143,7 +143,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     if (this.customAssetService) {
       return this.customAssetService.getAssetsByLocationId(this.selectedLocation.id);
     } else {
-      return this.newAssetService.getAssetsByLocationId(this.selectedLocation.id);
+      return this.assetService.getAssetsByLocationId(this.selectedLocation.id);
     }
   }
 
