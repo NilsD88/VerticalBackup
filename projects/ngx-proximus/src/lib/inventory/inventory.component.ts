@@ -104,6 +104,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   public changeLocation(location: ILocation) {
+    console.log(location.name);
     this.selectedLocation = location;
     this.changeDetectorRef.detectChanges();
   }

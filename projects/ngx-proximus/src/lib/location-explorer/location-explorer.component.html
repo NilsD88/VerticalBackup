@@ -58,7 +58,7 @@
           </div>
         </div>
       </div>
-      <br><br>
+      <ng-container [ngTemplateOutlet]="extraTemplateRef" [ngTemplateOutletContext]="{$implicit: this}"></ng-container>
     </mat-tab>
   </mat-tab-group>
 </div>

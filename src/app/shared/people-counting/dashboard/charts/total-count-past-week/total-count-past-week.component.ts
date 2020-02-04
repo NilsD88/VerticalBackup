@@ -48,9 +48,6 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
   private initChartOptions() {
     const instance = this;
     this.chartOptions = {
-      chart: {
-        height: 400,
-      },
       title: {
         text: ''
       },

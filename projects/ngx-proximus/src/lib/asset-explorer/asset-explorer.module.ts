@@ -1,39 +1,18 @@
+import { AssetExplorerProjectionModule } from './../asset-explorer-projection/asset-explorer-projection.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AssetExplorerComponent } from './asset-explorer.component';
-import { MatTabsModule, MatListModule, MatIconModule, MatTooltipModule, MatButtonModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatAutocompleteModule, MatDialogModule } from '@angular/material';
 import { IconModule } from '../icon/icon.module';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-
+import { MatProgressSpinnerModule } from '@angular/material';
 @NgModule({
   declarations: [
     AssetExplorerComponent,
   ],
   imports: [
     CommonModule,
-    FormsModule,
-    MatTabsModule,
-    MatListModule,
-    IconModule,
-    DragDropModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    IconModule,
+    AssetExplorerProjectionModule,
     MatProgressSpinnerModule,
-    RouterModule,
-    MatAutocompleteModule,
-    MatDialogModule
-  ],
-  providers: [
-    NewAssetService,
-    NewLocationService,
+    IconModule
   ],
   exports: [
     AssetExplorerComponent

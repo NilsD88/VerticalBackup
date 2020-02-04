@@ -317,8 +317,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       csv += asset.name + ', ';
       csv += thing.devEui + ', ';
       csv += asset.location ? (asset.location.name + ', ') : ', ';
-      csv += ((thing.sensors || [])[0] || {}).value + '%, ';
-      csv += thing.batteryPercentage + '%';
+      csv += asset.fillLevel ? (asset.fillLevel + '%, ') : 'unknown, ';
+      csv += asset.batteryLevel ? (asset.batteryLevel + '%') : 'unknown';
       csv += '\n';
     }
     this.sharedService.downloadCSV('TankMonitoring_' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);

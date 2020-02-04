@@ -11,7 +11,7 @@
     <div *ngIf="selectedLocation && selectedLocation.parent" class="parent-location-container">
       <a (click)="goToParentLocation(selectedLocation.parent)">
         <pxs-icon icon="chevron-left"></pxs-icon>
+        {{selectedLocation.name}}
       </a>
-      {{selectedLocation.name}}
     </div>
 </div>
