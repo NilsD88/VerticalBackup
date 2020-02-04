@@ -230,7 +230,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
 
 
   private goToPlacePage(locationId: string) {
-    this.router.navigateByUrl(`/private/peoplecounting/place/${locationId}`);
+    this.router.navigateByUrl(`/private/stairwaytohealth/place/${locationId}`);
   }
 
 
