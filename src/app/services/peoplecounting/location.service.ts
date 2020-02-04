@@ -2,7 +2,7 @@
 
 import { MOCK_STORE_PEOPLE_COUNTING } from './../../mocks/people-counting';
 import { MOCK_LOCATIONS_PEOPLE_COUNTING } from './../../mocks/people-counting';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
@@ -17,7 +17,7 @@ import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-co
     providedIn: 'root'
 })
 
-export class PeopleCountingLocationService extends NewLocationService {
+export class PeopleCountingLocationService extends LocationService {
 
     constructor(public http: HttpClient, public apollo: Apollo) {
         super(

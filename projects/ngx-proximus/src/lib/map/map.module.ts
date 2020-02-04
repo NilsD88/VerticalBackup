@@ -7,8 +7,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 import { IconModule } from '../icon/icon.module';
 import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/material';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { AssetService } from 'src/app/services/asset.service';
+import { LocationService } from 'src/app/services/location.service';
 import { MapPopupComponent } from './popup/popup.component';
 import { createCustomElement } from '@angular/elements';
 import { RouterModule } from '@angular/router';
@@ -31,8 +31,8 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [MapComponent],
   providers: [
-    NewAssetService,
-    NewLocationService
+    AssetService,
+    LocationService
   ],
   entryComponents: [
     MapPopupComponent,

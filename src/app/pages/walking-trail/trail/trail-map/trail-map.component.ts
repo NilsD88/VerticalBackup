@@ -1,8 +1,8 @@
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
-import { IAsset } from './../../../../models/g-asset.model';
+import { IAsset } from '../../../../models/asset.model';
 import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker, Point } from 'leaflet';
 import { IGeolocation, Geolocation } from 'src/app/models/geolocation.model';

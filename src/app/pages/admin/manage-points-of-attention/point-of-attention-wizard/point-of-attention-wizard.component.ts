@@ -1,4 +1,4 @@
-import { NewLocationService } from './../../../../services/new-location.service';
+import { LocationService } from '../../../../services/location.service';
 import { SubSink } from 'subsink';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -7,7 +7,7 @@ import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import {cloneDeep} from 'lodash';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { MatDialog } from '@angular/material';
 import { LocationWizardDialogComponent } from '../../manage-locations/location-wizard/locationWizardDialog.component';
 import { compareTwoObjectOnSpecificProperties, findLocationById } from 'src/app/shared/utils';
@@ -34,7 +34,7 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private pointOfAttentionService: PointOfAttentionService,
-    private locationService: NewLocationService,
+    private locationService: LocationService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private router: Router

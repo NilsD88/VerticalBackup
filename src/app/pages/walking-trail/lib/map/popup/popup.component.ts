@@ -2,8 +2,8 @@ import { SubSink } from 'subsink';
 import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { IAsset } from 'src/app/models/g-asset.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { IAsset } from 'src/app/models/asset.model';
+import { AssetService } from 'src/app/services/asset.service';
 
 @Component({
   selector: 'pvf-walkingtrail-map-popup',
@@ -13,7 +13,7 @@ import { NewAssetService } from 'src/app/services/new-asset.service';
 export class WalkingTrailMapPopupComponent extends MapPopupComponent implements OnInit, OnDestroy {
 
   constructor(
-    public assetService: NewAssetService,
+    public assetService: AssetService,
     public router: Router,
     public elementRef: ElementRef
   ) {

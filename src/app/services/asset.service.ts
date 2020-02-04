@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import {
   Injectable
@@ -10,18 +10,18 @@ import gql from 'graphql-tag';
 import {
   IAsset,
   IPagedAssets
-} from '../models/g-asset.model';
+} from '../models/asset.model';
 import {
   map
 } from 'rxjs/operators';
-import { IThing } from '../models/g-thing.model';
+import { IThing } from '../models/thing.model';
 import { Observable } from 'rxjs';
 import { IField } from '../models/field.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NewAssetService {
+export class AssetService {
 
   constructor(
     public apollo: Apollo,

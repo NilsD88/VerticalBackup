@@ -1,5 +1,5 @@
 import { IField } from './../models/field.model';
-import { IAsset } from '../models/g-asset.model';
+import { IAsset } from '../models/asset.model';
 import { assetImage1 } from './image';
 
 export let MOCK_ASSETS: IAsset[] = [];

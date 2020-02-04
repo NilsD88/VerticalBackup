@@ -13,13 +13,13 @@ export class TankMonitoringLocationPopupComponent extends LocationPopupComponent
   constructor(
     @Optional() @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<any>,
-    public newLocationService: TankMonitoringLocationService,
+    public locationService: TankMonitoringLocationService,
     public assetService: TankMonitoringAssetService,
   ) {
     super(
       data,
       dialogRef,
-      newLocationService,
+      locationService,
       assetService
     );
     this.assetUrl = '/private/tankmonitoring/consumptions/';

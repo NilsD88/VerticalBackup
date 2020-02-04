@@ -1,9 +1,9 @@
-import {ILocation} from './g-location.model';
+import {ILocation} from './location.model';
 import {IGeolocation} from './geolocation.model';
-import {IThresholdTemplate} from './g-threshold-template.model';
-import {IThing} from './g-thing.model';
+import {IThresholdTemplate} from './threshold-template.model';
+import {IThing} from './thing.model';
 import {isNullOrUndefined} from 'util';
-import {IAlert} from './g-alert.model';
+import {IAlert} from './alert.model';
 import { ICustomField } from './field.model';
 
 export interface IAbstractAsset<TLocation> {

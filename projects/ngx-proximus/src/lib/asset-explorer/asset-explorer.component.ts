@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 
 
 @Component({

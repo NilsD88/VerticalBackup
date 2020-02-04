@@ -6,7 +6,7 @@ import {
 } from './image';
 import {
   ILocation
-} from './../models/g-location.model';
+} from '../models/location.model';
 import { IPeopleCountingLocation } from '../models/peoplecounting/location.model';
 
 export let MOCK_LOCATIONS: ILocation[] = [];

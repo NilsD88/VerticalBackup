@@ -1,10 +1,10 @@
-import { NewLocationService } from './new-location.service';
+import { LocationService } from './location.service';
 import { Injectable } from '@angular/core';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { NewAssetService } from './new-asset.service';
-import { IAsset } from '../models/g-asset.model';
-import { ILocation } from '../models/g-location.model';
+import { AssetService } from './asset.service';
+import { IAsset } from '../models/asset.model';
+import { ILocation } from '../models/location.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ import { ILocation } from '../models/g-location.model';
 export class GlobaleSearchService {
 
     constructor(
-      private newAssetService: NewAssetService,
-      private newLocationsService: NewLocationService
+      private assetService: AssetService,
+      private locationsService: LocationService
     ) { }
 
     public searchTerm(terms: Observable<string>) {
@@ -23,8 +23,8 @@ export class GlobaleSearchService {
           if (!term || term.length === 0) {
             return of([]);
           }
-          const assetsPromise: Promise<IAsset[]> = this.newAssetService.getAssetsByName(term).toPromise();
-          const locationsPromise: Promise<ILocation[]> = this.newLocationsService.getLocationsByName(term).toPromise();
+          const assetsPromise: Promise<IAsset[]> = this.assetService.getAssetsByName(term).toPromise();
+          const locationsPromise: Promise<ILocation[]> = this.locationsService.getLocationsByName(term).toPromise();
           return Promise.all([assetsPromise, locationsPromise]);
         })
       );
@@ -34,7 +34,7 @@ export class GlobaleSearchService {
       return terms.pipe(
         debounceTime(500),
         switchMap(term => {
-          return this.newLocationsService.getLocationsByName(term);
+          return this.locationsService.getLocationsByName(term);
         })
       );
     }

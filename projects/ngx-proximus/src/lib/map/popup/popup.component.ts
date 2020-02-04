@@ -1,11 +1,11 @@
 import { SubSink } from 'subsink';
 import { Router } from '@angular/router';
 import { Subject, Observable, of } from 'rxjs';
-import { NewAssetService } from './../../../../../../src/app/services/new-asset.service';
+import { AssetService } from '../../../../../../src/app/services/asset.service';
 import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { ILocation } from 'src/app/models/g-location.model';
-import { IAlert } from 'src/app/models/g-alert.model';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { ILocation } from 'src/app/models/location.model';
+import { IAlert } from 'src/app/models/alert.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { Marker } from 'leaflet';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -30,7 +30,7 @@ export class MapPopupComponent implements OnInit, OnDestroy {
   public subject$: Subject<boolean> = new Subject<boolean>();
 
   constructor(
-    public assetService: NewAssetService,
+    public assetService: AssetService,
     public router: Router,
     public elementRef: ElementRef
   ) {}

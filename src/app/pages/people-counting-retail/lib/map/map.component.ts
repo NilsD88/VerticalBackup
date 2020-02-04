@@ -1,7 +1,7 @@
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
-import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { Component, OnInit, ChangeDetectorRef, OnChanges} from '@angular/core';
+import { AssetService } from 'src/app/services/asset.service';
+import { LocationService } from 'src/app/services/location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
 import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
@@ -19,15 +19,15 @@ export class PeopleCountingRetailMapComponent extends MapComponent implements On
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public newAssetService: NewAssetService,
-    public newLocationService: NewLocationService,
+    public assetService: AssetService,
+    public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
   ) {
     super(
       changeDetectorRef,
-      newAssetService,
-      newLocationService,
+      assetService,
+      locationService,
       snackBar,
       dialog,
     );

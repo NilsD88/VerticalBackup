@@ -1,4 +1,4 @@
-import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { SensorService } from 'src/app/services/sensor.service';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AddThresholdComponent } from 'src/app/pages/admin/manage-threshold-templates/add-threshold/add-threshold.component';
 import { Component } from '@angular/core';
@@ -10,11 +10,11 @@ import { Component } from '@angular/core';
 export class AddThresholdDialogComponent extends AddThresholdComponent {
     constructor(
         public dialogRef: MatDialogRef<AddThresholdDialogComponent>,
-        public newSensorService: NewSensorService
+        public sensorService: SensorService
     ) {
         super(
             dialogRef,
-            newSensorService,
+            sensorService,
         );
     }
 }

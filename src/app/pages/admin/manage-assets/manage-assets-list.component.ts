@@ -2,8 +2,8 @@ import { SubSink } from 'subsink';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { AssetService } from 'src/app/services/asset.service';
+import { IAsset } from 'src/app/models/asset.model';
 import { Subject } from 'rxjs';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import { MatPaginator } from '@angular/material';
@@ -31,7 +31,7 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    public newAssetService: NewAssetService,
+    public assetService: AssetService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
@@ -42,7 +42,7 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
 
   private async getAssets() {
     this.isLoading = true;
-    this.assets = await this.newAssetService.getAssets().toPromise();
+    this.assets = await this.assetService.getAssets().toPromise();
     this.isLoading = false;
     this.updateDataSourceWithAssets(this.assets);
   }
@@ -75,7 +75,7 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
   }
 
   public async deleteAsset(id: string) {
-    this.subs.sink = this.newAssetService.deleteAsset(id).subscribe((result) => {
+    this.subs.sink = this.assetService.deleteAsset(id).subscribe((result) => {
       this.assets = null;
       this.changeDetectorRef.detectChanges();
       this.getAssets();

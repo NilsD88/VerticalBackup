@@ -1,6 +1,6 @@
 import { Component, OnInit, Optional, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 
 @Component({
   selector: 'pxs-threshold-templates-detail',

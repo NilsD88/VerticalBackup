@@ -1,14 +1,14 @@
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 import {Component, OnInit, Optional, Inject, OnDestroy} from '@angular/core';
 import {FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { ActivatedRoute, Router} from '@angular/router';
 import { isNullOrUndefined } from 'util';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
 import { PeopleCountingAssetWizardComponent } from './asset-wizard.component';
-import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { SensorService } from 'src/app/services/sensor.service';
 
 @Component({
   selector: 'pvf-walkingtrail-asset-wizard',
@@ -22,8 +22,8 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
     @Optional() public dialogRef: MatDialogRef < PeopleCountingAssetWizardComponent >,
     public formBuilder: FormBuilder,
     public dialog: MatDialog,
-    public assetService: NewAssetService,
-    public sensorService: NewSensorService,
+    public assetService: AssetService,
+    public sensorService: SensorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
   ) {

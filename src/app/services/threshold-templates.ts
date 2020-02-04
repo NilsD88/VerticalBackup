@@ -14,12 +14,12 @@ import {
 import gql from 'graphql-tag';
 import {
   IThresholdTemplate
-} from '../models/g-threshold-template.model';
+} from '../models/threshold-template.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NewThresholdTemplateService {
+export class ThresholdTemplateService {
 
   constructor(
     private apollo: Apollo,

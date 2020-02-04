@@ -7,7 +7,7 @@ import {
 import {
   IPagedAlerts,
   IAlert
-} from '../models/g-alert.model';
+} from '../models/alert.model';
 import {
   Apollo
 } from 'apollo-angular';
@@ -28,7 +28,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class NewAlertService {
+export class AlertService {
 
   constructor(
     private apollo: Apollo,

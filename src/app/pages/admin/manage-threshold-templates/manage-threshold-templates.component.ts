@@ -5,10 +5,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {isNullOrUndefined} from 'util';
 import {MatDialog} from '@angular/material';
 import {AddThresholdComponent} from './add-threshold/add-threshold.component';
-import { ISensorType } from 'src/app/models/g-sensor-type.model';
-import { IThresholdTemplate, ThresholdTemplate } from 'src/app/models/g-threshold-template.model';
-import { IThresholdItem, ThresholdItem, SeverityLevel } from 'src/app/models/g-threshold-item.model';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { ISensorType } from 'src/app/models/sensor-type.model';
+import { IThresholdTemplate, ThresholdTemplate } from 'src/app/models/threshold-template.model';
+import { IThresholdItem, ThresholdItem, SeverityLevel } from 'src/app/models/threshold-item.model';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { GraphQLError } from 'graphql';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
@@ -31,7 +31,7 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     public formBuilder: FormBuilder,
-    public newThresholdTemplateService: NewThresholdTemplateService,
+    public thresholdTemplateService: ThresholdTemplateService,
     public router: Router,
     public activeRoute: ActivatedRoute,
     public dialog: MatDialog
@@ -41,7 +41,7 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
     const thresholdTemplateId = await this.getRouteId();
     if (!isNullOrUndefined(thresholdTemplateId)) {
       this.editMode = true;
-      this.thresholdTemplate = await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
+      this.thresholdTemplate = await this.thresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise();
       this.thresholdTemplateFormGroup = this.formBuilder.group({
         name: ['', Validators.compose([Validators.required, Validators.pattern('[A-zÀ-ú0-9 ]*')])],
       });
@@ -276,7 +276,7 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
       }
     } else {
       this.subs.add(
-        this.newThresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
+        this.thresholdTemplateService.createThresholdTemplate(this.thresholdTemplate).subscribe(
           (result) => {
             this.createThresholdTemplateCallback(result);
           },
@@ -291,7 +291,7 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
 
   private updateThresholdTemplate() {
     this.subs.add(
-      this.newThresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
+      this.thresholdTemplateService.updateThresholdTemplate(this.thresholdTemplate).subscribe(
         () => {
           this.goToManageThresholdTemplate();
         },

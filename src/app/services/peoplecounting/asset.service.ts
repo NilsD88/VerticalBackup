@@ -1,6 +1,6 @@
 import {
-  NewAssetService
-} from '../new-asset.service';
+  AssetService
+} from '../asset.service';
 import {
   Injectable
 } from '@angular/core';
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class PeopleCountingAssetService extends NewAssetService {
+export class PeopleCountingAssetService extends AssetService {
   constructor(
     public apollo: Apollo,
     public http: HttpClient,

@@ -1,9 +1,9 @@
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { SubSink } from 'subsink';
 import { cloneDeep } from 'lodash';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { IThresholdTemplate } from 'src/app/models/g-threshold-template.model';
+import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { isUndefined } from 'util';
@@ -35,7 +35,7 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    public newThresholdTemplateService: NewThresholdTemplateService,
+    public thresholdTemplateService: ThresholdTemplateService,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog
     ) {}
@@ -60,7 +60,7 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
 
   private async getThresholdTemplates() {
     this.isLoading = true;
-    this.thresholdTemplates = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
+    this.thresholdTemplates = await this.thresholdTemplateService.getThresholdTemplates().toPromise();
     this.isLoading = false;
     this.updateDataSourceWithThresholdTemplates(this.thresholdTemplates);
   }
@@ -119,7 +119,7 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
   }
 
   private deleteThresholdTemplate(thresholdTemplateId: string) {
-    this.subs.sink = this.newThresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
+    this.subs.sink = this.thresholdTemplateService.deleteThresholdTemplate(thresholdTemplateId).subscribe(
       () => {
         this.thresholdTemplates = null;
         this.changeDetectorRef.detectChanges();
@@ -129,7 +129,7 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
   }
 
   public async openDetailDialog(thresholdTemplateId: string) {
-    const thresholdTemplate = cloneDeep(await this.newThresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise());
+    const thresholdTemplate = cloneDeep(await this.thresholdTemplateService.getThresholdTemplateById(thresholdTemplateId).toPromise());
     this.dialog.open(ThresholdTemplatesDetailComponent, {
       minWidth: '320px',
       maxWidth: '600px',

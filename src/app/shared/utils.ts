@@ -1,5 +1,5 @@
 import { reduce, isEqual } from 'lodash';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { ILeafColors } from './people-counting/dashboard/leaf.model';
 
 import * as randomColor from 'randomcolor';

@@ -1,9 +1,9 @@
+import { TankMonitoringLocationService } from 'src/app/services/tankmonitoring/location.service';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 import { InventoryComponent } from 'projects/ngx-proximus/src/lib/inventory/inventory.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 
 
 @Component({
@@ -16,15 +16,15 @@ export class TankMonitoringInventoryComponent extends InventoryComponent impleme
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
     public assetService: TankMonitoringAssetService,
-    public newThresholdTemplateService: NewThresholdTemplateService,
-    public newLocationService: NewLocationService,
+    public thresholdTemplateService: ThresholdTemplateService,
+    public locationService: TankMonitoringLocationService,
     public activatedRoute: ActivatedRoute,
   ) {
     super(
       changeDetectorRef,
       assetService,
-      newThresholdTemplateService,
-      newLocationService,
+      thresholdTemplateService,
+      locationService,
       activatedRoute,
     );
     this.assetUrl = '/private/tankmonitoring/consumptions/';

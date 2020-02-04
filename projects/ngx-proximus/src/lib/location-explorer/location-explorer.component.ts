@@ -1,11 +1,11 @@
 import { SubSink } from 'subsink';
 import { MoveAssetsPopupComponent } from './move-assets-popup/move-assets-popup.component';
 import { Router } from '@angular/router';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef, ContentChild, TemplateRef } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import { ILocation } from 'src/app/models/g-location.model';
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { ILocation } from 'src/app/models/location.model';
+import { AssetService } from 'src/app/services/asset.service';
 import { Subject } from 'rxjs';
 import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
@@ -45,8 +45,8 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   protected subs = new SubSink();
 
   constructor(
-    protected newLocationService: NewLocationService,
-    protected newAssetService: NewAssetService,
+    protected locationService: LocationService,
+    protected assetService: AssetService,
     protected changeDetectorRef: ChangeDetectorRef,
     protected dialog: MatDialog,
     protected router: Router,
@@ -55,7 +55,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initLocationTree();
     this.subs.add(
-      this.newLocationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: ILocation[]) => {
+      this.locationService.searchLocationsWithFilter(this.searchFilter$).subscribe((locations: ILocation[]) => {
         this.searchResults = locations;
       })
     );
@@ -78,7 +78,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   getLocations() {
     this.isDownloading = true;
     this.subs.add(
-      this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+      this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
         this.rootLocation = {
           id: null,
           parentId: null,
@@ -99,7 +99,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   async wantToDeleteLocation(locationId: string) {
 
-    const assets = await this.newAssetService.getAssetsByLocationId(locationId).toPromise();
+    const assets = await this.assetService.getAssetsByLocationId(locationId).toPromise();
     const PEOPLE_COUNTING_ASSETS = assets.filter(asset => asset.module.startsWith('PEOPLE_COUNTING'));
     if (assets.length > 0) {
       const wantToDelete = await this.dialog.open(PopupConfirmationComponent, {
@@ -134,7 +134,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
 
   private deleteLocation(locationId: string, locationIdToTransferAssets: string = null) {
     this.subs.add(
-      this.newLocationService.deleteLocation(locationId, locationIdToTransferAssets).subscribe((result: boolean) => {
+      this.locationService.deleteLocation(locationId, locationIdToTransferAssets).subscribe((result: boolean) => {
         this.rootLocation = null;
         this.selectedLocation = this.currentLocation;
         this.changeDetectorRef.detectChanges();
@@ -222,7 +222,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     };
 
     this.subs.add(
-      this.newLocationService.reorderLocation(location).subscribe()
+      this.locationService.reorderLocation(location).subscribe()
     );
   }
 

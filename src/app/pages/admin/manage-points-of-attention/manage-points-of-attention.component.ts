@@ -1,4 +1,4 @@
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { IPointOfAttention } from './../../../models/point-of-attention.model';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';

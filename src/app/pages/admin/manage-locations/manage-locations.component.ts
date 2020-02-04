@@ -1,7 +1,7 @@
 import { SubSink } from 'subsink';
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { ILocation } from 'src/app/models/g-location.model';
+import { LocationService } from 'src/app/services/location.service';
+import { ILocation } from 'src/app/models/location.model';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -18,7 +18,7 @@ export class ManageLocationsComponent implements OnInit, OnDestroy{
   private subs = new SubSink();
 
   constructor(
-    private newLocationService: NewLocationService,
+    private locationService: LocationService,
     private activedRoute: ActivatedRoute,
   ) {}
 
@@ -26,7 +26,7 @@ export class ManageLocationsComponent implements OnInit, OnDestroy{
     this.subs.sink = this.activedRoute.params.subscribe(async (params) => {
       const selectedLocationId = params.selectedLocationId;
       if (selectedLocationId) {
-        this.selectedLocation = await this.newLocationService.getLocationById(selectedLocationId).toPromise();
+        this.selectedLocation = await this.locationService.getLocationById(selectedLocationId).toPromise();
       }
     });
   }

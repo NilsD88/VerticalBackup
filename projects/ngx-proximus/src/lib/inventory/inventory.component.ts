@@ -1,11 +1,11 @@
 import { SubSink } from 'subsink';
-import { NewThresholdTemplateService } from 'src/app/services/new-threshold-templates';
+import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { NewLocationService } from 'src/app/services/new-location.service';
-import { ILocation } from 'src/app/models/g-location.model';
+import { LocationService } from 'src/app/services/location.service';
+import { ILocation } from 'src/app/models/location.model';
 import { Subject, Observable } from 'rxjs';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { IAsset, IPagedAssets } from 'src/app/models/g-asset.model';
+import { AssetService } from 'src/app/services/asset.service';
+import { IAsset, IPagedAssets } from 'src/app/models/asset.model';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
@@ -53,17 +53,17 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public assetService: NewAssetService,
-    public newThresholdTemplateService: NewThresholdTemplateService,
-    public newLocationService: NewLocationService,
+    public assetService: AssetService,
+    public thresholdTemplateService: ThresholdTemplateService,
+    public locationService: LocationService,
     public activatedRoute: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
     this.getPagedAssets();
-    this.filterOptions.thresholdTemplateOptions = await this.newThresholdTemplateService.getThresholdTemplates().toPromise();
+    this.filterOptions.thresholdTemplateOptions = await this.thresholdTemplateService.getThresholdTemplates().toPromise();
     this.subs.add(
-      this.newLocationService.getLocationsTree().subscribe((locations: ILocation[]) => {
+      this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
         this.rootLocation = {
           id: null,
           parentId: null,

@@ -1,13 +1,13 @@
-import { NewAssetService } from 'src/app/services/new-asset.service';
+import { AssetService } from 'src/app/services/asset.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
 import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
 import { map, timestamp } from 'rxjs/operators';
-import { IThing } from 'src/app/models/g-thing.model';
+import { IThing } from 'src/app/models/thing.model';
 import { HttpClient } from '@angular/common/http';
-import { IPagedAssets } from 'src/app/models/g-asset.model';
+import { IPagedAssets } from 'src/app/models/asset.model';
 
 
 const MODULE_NAME = 'TANK_MONITORING';
@@ -15,7 +15,7 @@ const MODULE_NAME = 'TANK_MONITORING';
 @Injectable({
   providedIn: 'root'
 })
-export class TankMonitoringAssetService extends NewAssetService {
+export class TankMonitoringAssetService extends AssetService {
 
   constructor(
     public apollo: Apollo,

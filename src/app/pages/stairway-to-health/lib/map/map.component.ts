@@ -1,8 +1,8 @@
 import { Router } from '@angular/router';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { AssetService } from 'src/app/services/asset.service';
+import { LocationService } from 'src/app/services/location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
 import { StairwayToHealthMapPopupComponent } from './popup/popup.component';
@@ -20,15 +20,15 @@ export class StairwayToHealthMapComponent extends MapComponent implements OnInit
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public newAssetService: NewAssetService,
-    public newLocationService: NewLocationService,
+    public assetService: AssetService,
+    public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
   ) {
     super(
       changeDetectorRef,
-      newAssetService,
-      newLocationService,
+      assetService,
+      locationService,
       snackBar,
       dialog,
     );

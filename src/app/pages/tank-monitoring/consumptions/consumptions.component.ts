@@ -7,11 +7,11 @@ import { cloneDeep } from 'lodash';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { IAsset } from 'src/app/models/asset.model';
 import { Observable, Subject, of} from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-import { NewAlertService } from 'src/app/services/new-alert.service';
+import { AlertService } from 'src/app/services/alert.service';
 import {formatDate} from '@angular/common';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
@@ -47,7 +47,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
   constructor(
     private activeRoute: ActivatedRoute,
     private tankMonitoringAssetService: TankMonitoringAssetService,
-    private newAlertService: NewAlertService,
+    private alertService: AlertService,
     private sharedService: SharedService,
     private translateService: TranslateService,
     private router: Router,
@@ -99,7 +99,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
 
   private getLastAlerts() {
     this.subs.add(
-      this.newAlertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
+      this.alertService.getLastAlertsByAssetId(this.asset.id).subscribe((alerts) => {
         this.asset.alerts = alerts;
       })
     );

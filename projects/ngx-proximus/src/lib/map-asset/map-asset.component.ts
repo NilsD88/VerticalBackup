@@ -1,11 +1,11 @@
 import { Geolocation } from './../../../../../src/app/models/geolocation.model';
 import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef} from '@angular/core';
 import {NgElement, WithProperties} from '@angular/elements';
-import {IAsset} from 'src/app/models/g-asset.model';
+import {IAsset} from 'src/app/models/asset.model';
 import {Map, Layer, latLng, latLngBounds, imageOverlay, CRS, tileLayer, divIcon, marker, icon, LatLngBounds, geoJSON, MarkerCluster, Point} from 'leaflet';
 import {MapAssetPopupComponent} from './popup/popup.component';
 import { GeoJsonObject } from 'geojson';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { IGeolocation } from 'src/app/models/geolocation.model';
 import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
 

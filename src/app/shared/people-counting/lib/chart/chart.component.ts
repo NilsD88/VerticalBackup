@@ -1,11 +1,11 @@
 import {isNullOrUndefined} from 'util';
-import {ISensorDefinition} from './../../../../models/g-sensor-definition.model';
+import {ISensorDefinition} from '../../../../models/sensor-definition.model';
 import {PeriodicDuration} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import {IAsset} from 'src/app/models/g-asset.model';
+import {IAsset} from 'src/app/models/asset.model';
 
 
 declare global {

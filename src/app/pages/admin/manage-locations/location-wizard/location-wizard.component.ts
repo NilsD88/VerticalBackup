@@ -1,11 +1,11 @@
 import { SubSink } from 'subsink';
 import { IField } from './../../../../models/field.model';
-import { ILocation } from 'src/app/models/g-location.model';
+import { ILocation } from 'src/app/models/location.model';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { MatStepper } from '@angular/material/stepper';
 import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
 import { cloneDeep } from 'lodash';
@@ -46,7 +46,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
-    public newLocationService: NewLocationService,
+    public locationService: LocationService,
     public dialog: MatDialog,
     public router: Router,
   ) {}
@@ -61,10 +61,10 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       DescriptionCtrl: ['', null],
     });
 
-    this.fields = await this.newLocationService.getCustomFields().toPromise();
+    this.fields = await this.locationService.getCustomFields().toPromise();
     if (!isNullOrUndefined(locationId) && locationId !== 'new') {
       try {
-        this.location = await this.newLocationService.getLocationById(locationId).toPromise();
+        this.location = await this.locationService.getLocationById(locationId).toPromise();
         this.editMode = true;
         this.originalLocation = cloneDeep(this.location);
       } catch (err) {
@@ -92,7 +92,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       customFields: []
     };
     if (!isNullOrUndefined(parentId) && parentId !== 'root') {
-      this.location.parent = await this.newLocationService.getLocationById(parentId).toPromise();
+      this.location.parent = await this.locationService.getLocationById(parentId).toPromise();
       this.location.parentId = this.location.parent.id || null;
       this.changeDetectorRef.detectChanges();
       this.parentIdParam = null;
@@ -140,7 +140,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       }
 
       this.subs.add(
-        this.newLocationService.updateLocation(location).subscribe(
+        this.locationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             this.isSavingOrUpdating = false;
             if (updatedLocation) {
@@ -161,7 +161,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
 
   public createLocation() {
     this.subs.add(
-      this.newLocationService.createLocation(this.location).subscribe(
+      this.locationService.createLocation(this.location).subscribe(
         (location: ILocation | null) => {
           this.isSavingOrUpdating = false;
           if (location) {

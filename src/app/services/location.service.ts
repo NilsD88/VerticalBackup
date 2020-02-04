@@ -1,7 +1,7 @@
-import { IField } from './../models/field.model';
+import { IField } from '../models/field.model';
 import {
   ILocation, IPagedLocations
-} from './../models/g-location.model';
+} from '../models/location.model';
 import {
   Injectable
 } from '@angular/core';
@@ -30,7 +30,7 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-export class NewLocationService {
+export class LocationService {
 
   constructor(
     public http: HttpClient,

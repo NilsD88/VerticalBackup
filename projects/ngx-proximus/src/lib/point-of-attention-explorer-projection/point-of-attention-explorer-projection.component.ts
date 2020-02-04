@@ -1,10 +1,10 @@
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { LocationExplorerComponent } from './../location-explorer/location-explorer.component';
 import { Router } from '@angular/router';
-import { NewLocationService } from 'src/app/services/new-location.service';
+import { LocationService } from 'src/app/services/location.service';
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { NewAssetService } from 'src/app/services/new-asset.service';
-import { IAsset } from 'src/app/models/g-asset.model';
+import { AssetService } from 'src/app/services/asset.service';
+import { IAsset } from 'src/app/models/asset.model';
 import { Subject, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
@@ -34,15 +34,15 @@ export class PointOfAttentionExplorerProjectionComponent extends LocationExplore
 
   constructor(
     protected pointOfAttentionService: PointOfAttentionService,
-    protected newAssetService: NewAssetService,
-    protected newLocationService: NewLocationService,
+    protected assetService: AssetService,
+    protected locationService: LocationService,
     protected changeDetectorRef: ChangeDetectorRef,
     protected dialog: MatDialog,
     protected router: Router,
   ) {
     super(
-      newLocationService,
-      newAssetService,
+      locationService,
+      assetService,
       changeDetectorRef,
       dialog,
       router,

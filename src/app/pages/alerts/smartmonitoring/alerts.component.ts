@@ -1,5 +1,5 @@
 import { SubSink } from 'subsink';
-import { NewSensorService } from 'src/app/services/new-sensor.service';
+import { SensorService } from 'src/app/services/sensor.service';
 import { cloneDeep } from 'lodash';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
@@ -7,8 +7,8 @@ import * as moment from 'moment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
 import { SharedService } from 'src/app/services/shared.service';
-import { IAlert } from 'src/app/models/g-alert.model';
-import { NewAlertService } from 'src/app/services/new-alert.service';
+import { IAlert } from 'src/app/models/alert.model';
+import { AlertService } from 'src/app/services/alert.service';
 import { Subject, Observable } from 'rxjs';
 import { switchMap, debounceTime } from 'rxjs/operators';
 import { DateRange } from 'projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.component';
@@ -79,17 +79,17 @@ export class AlertsComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private newSensorService: NewSensorService,
+    private sensorService: SensorService,
     private sharedService: SharedService,
     private snackBar: MatSnackBar,
-    private newAlertService: NewAlertService,
+    private alertService: AlertService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.getSensorTypesOptions();
     this.subs.add(
-      this.newAlertService.getAlertsByDateRangeOBS(this.filterBE$).subscribe(
+      this.alertService.getAlertsByDateRangeOBS(this.filterBE$).subscribe(
         (alerts) => {
           this.alerts = alerts;
           this.filteredAlerts = cloneDeep(this.alerts);
@@ -229,7 +229,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
     });
 
     this.subs.add(
-      this.newAlertService.readByAlertIds(this.selectedAlerts).subscribe(
+      this.alertService.readByAlertIds(this.selectedAlerts).subscribe(
         result => {
           if (result) {
             this.getNumberOfAlerts();
@@ -267,7 +267,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
     });
 
     this.subs.add(
-      this.newAlertService.unreadByAlertIds(this.selectedAlerts).subscribe(
+      this.alertService.unreadByAlertIds(this.selectedAlerts).subscribe(
         result => {
           if (result) {
             this.getNumberOfAlerts();
@@ -291,7 +291,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   private getNumberOfAlerts() {
     this.subs.add(
-      this.newAlertService.getNumberOfUnreadAlerts().subscribe()
+      this.alertService.getNumberOfUnreadAlerts().subscribe()
     );
   }
 
@@ -353,7 +353,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   public async getSensorTypesOptions(): Promise<void> {
     this.sensorTypesLoading = true;
-    this.filterOptions.sensorTypes = (await this.newSensorService.getSensorTypeNames().toPromise()).map((sensorType) => {
+    this.filterOptions.sensorTypes = (await this.sensorService.getSensorTypeNames().toPromise()).map((sensorType) => {
       return {label: sensorType.name, id: sensorType.id};
     });
     this.sensorTypesLoading = false;

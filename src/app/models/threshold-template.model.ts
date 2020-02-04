@@ -1,4 +1,4 @@
-import { IThreshold } from './g-threshold.model';
+import { IThreshold } from './threshold.model';
 import { isNullOrUndefined } from 'util';
 
 export interface IThresholdTemplate {

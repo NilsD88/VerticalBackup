@@ -1,4 +1,4 @@
-import { IAsset } from '../g-asset.model';
+import { IAsset } from '../asset.model';
 
 export interface ITankMonitoringAsset extends IAsset {
     fillLevel?: number;
