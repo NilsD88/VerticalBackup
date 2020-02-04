@@ -1,3 +1,4 @@
+import { isNullOrUndefined } from 'util';
 import { IPointOfAttention } from './../../../../models/point-of-attention.model';
 import {ISensorDefinition} from '../../../../models/sensor-definition.model';
 import {PeriodicDuration} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
@@ -217,7 +218,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData) {
-    console.log(item);
     const color = randomColor({
       hue: ESensorColors[String(item.label).toUpperCase()]
     });
@@ -229,7 +229,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie) => {
-          return [serie.timestamp, serie.value ? parseFloat(serie.value.toFixed(2)) : null];
+          return [serie.timestamp, !isNullOrUndefined(serie.value) ? parseFloat(serie.value.toFixed(2)) : null];
         })
       });
     }

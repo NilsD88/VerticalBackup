@@ -95,15 +95,6 @@ export class MapAssetComponent implements OnInit {
               icon: locationIcon
             }
           ).bindPopup(fl => this.createLocationPopup(child)).openPopup();
-
-          /*.on('click', (e) => {
-            const parent = this.location;
-            this.change.emit({
-              location: sublocation,
-              parent,
-            });
-          });
-          */
           this.locationsLayer.push(newMarker);
         }
       }
