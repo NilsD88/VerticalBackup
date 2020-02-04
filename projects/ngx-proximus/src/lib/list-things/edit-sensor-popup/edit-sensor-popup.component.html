@@ -4,18 +4,18 @@
     [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'">
 </h1>
 <div mat-dialog-content>
-
   <div *ngIf="hasPeopleCounting && data.sensor.sensorType.type === 'COUNTER'">
-    <hr data-content="PEOPLE COUNTING">
+    <hr data-content="Smart counting parameter">
     <div class="counting-direction">
       <mat-button-toggle-group name="countingDirection" aria-label="Counting direction" appearance="legacy"
         [(ngModel)]="sensorDefinition.inOutType">
         <mat-button-toggle *ngFor="let value of inOutValues" [value]="value">{{value}}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
+    <i>This applies only for the smart counting chart</i>
   </div>
 
-  <hr data-content="SMART MONITORING">
+  <hr data-content="Monitoring parameters">
   <mat-form-field>
     <input matInput placeholder="Rename to" type="text" [(ngModel)]="sensorDefinition.name">
   </mat-form-field>
@@ -28,6 +28,7 @@
       <mat-checkbox [(ngModel)]="sensorDefinition.useOnNotification">Use on notification</mat-checkbox>
     </div>
   </div>
+  <i>This applies only for the monitoring charts</i>
 
   <hr>
   <div *ngIf="sensorDefinition.useOnChart">
