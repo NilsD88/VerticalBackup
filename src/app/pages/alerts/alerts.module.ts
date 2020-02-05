@@ -55,7 +55,8 @@ import { ImgFallbackModule } from 'ngx-img-fallback';
     MatCardModule,
     MatButtonToggleModule,
     ImgFallbackModule,
-    PopupConfirmationModule
+    PopupConfirmationModule,
+    MatTooltipModule
   ]
 })
 export class AlertsModule {

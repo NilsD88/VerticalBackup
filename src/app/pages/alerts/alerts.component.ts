@@ -395,6 +395,10 @@ export class AlertsComponent implements OnInit, OnDestroy {
     this.filterBE$.next(this.filterBE);
   }
 
+  public displayRange(alert: IAlert): string {
+    return `${alert.range.from}${alert.sensorType.postfix} - ${alert.range.to}${alert.sensorType.postfix}`;
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
