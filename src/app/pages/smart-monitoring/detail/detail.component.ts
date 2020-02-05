@@ -188,7 +188,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     };
 
     const differences = compareTwoObjectOnSpecificProperties(
-      originalFilter, this.currentFilter, ['interval', 'from', 'to', 'durationInHours']);
+      originalFilter, this.currentFilter, ['interval', 'from', 'to']);
 
     if ((differences && differences.length > 0)) {
       this.chartData = [];

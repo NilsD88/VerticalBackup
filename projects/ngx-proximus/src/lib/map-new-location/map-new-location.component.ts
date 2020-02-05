@@ -56,7 +56,7 @@ export class MapNewLocationComponent implements OnInit {
         this.backgroundLayer = tileLayer(MAP_TILES_URL_ACTIVE),
         this.options = {
           layers: this.backgroundLayer,
-          zoom: 12,
+          zoom: 13,
           center: latLng(lat, lng),
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         }
@@ -140,7 +140,7 @@ export class MapNewLocationComponent implements OnInit {
           const { latitude, longitude } = position.coords;
           this.options = {
             layers: this.backgroundLayer,
-            zoom: 12,
+            zoom: 13,
             center: latLng(latitude, longitude),
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
           };
@@ -166,8 +166,6 @@ export class MapNewLocationComponent implements OnInit {
 
   addMarker(geolocation: IGeolocation) {
     const {lat, lng} = geolocation;
-    const that = this;
-
     const newMarker = marker(
       [ lat, lng ],
       {

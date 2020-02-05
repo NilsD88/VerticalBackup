@@ -1,8 +1,9 @@
+import { DialogModule } from './../../../../projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { SubSink } from 'subsink';
 import { SensorService } from 'src/app/services/sensor.service';
 import { cloneDeep } from 'lodash';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar} from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, MatSnackBar, MatDialog} from '@angular/material';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
 import 'jspdf-autotable';
@@ -12,6 +13,7 @@ import { AlertService } from 'src/app/services/alert.service';
 import { Subject, Observable } from 'rxjs';
 import { switchMap, debounceTime } from 'rxjs/operators';
 import { DateRange } from 'projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.component';
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 
 export interface IAlertFilterBE {
@@ -83,7 +85,8 @@ export class AlertsComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private snackBar: MatSnackBar,
     private alertService: AlertService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -214,6 +217,19 @@ export class AlertsComponent implements OnInit, OnDestroy {
   }
 
   public markAsRead() {
+    if (this.selectedAlerts.length > 5000) {
+      return this.dialog.open(PopupConfirmationComponent, {
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+        data: {
+          hideContinue: true,
+          title: 'Warning',
+          content: 'Mark as read of more than 5000 alerts is not allowed'
+        }
+      });
+    }
     const oldA = cloneDeep(this.alerts);
     const oldF = cloneDeep(this.filteredAlerts);
     const oldP = cloneDeep(this.postFilteredAlerts);
@@ -252,6 +268,19 @@ export class AlertsComponent implements OnInit, OnDestroy {
   }
 
   public markAsUnread() {
+    if (this.selectedAlerts.length > 5000) {
+      return this.dialog.open(PopupConfirmationComponent, {
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+        data: {
+          hideContinue: true,
+          title: 'Warning',
+          content: 'Mark as unread of more than 5000 alerts is not allowed'
+        }
+      });
+    }
     const oldA = cloneDeep(this.alerts);
     const oldF = cloneDeep(this.filteredAlerts);
     const oldP = cloneDeep(this.postFilteredAlerts);
@@ -364,6 +393,10 @@ export class AlertsComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
     this.filterBE.dateRange = dateRange;
     this.filterBE$.next(this.filterBE);
+  }
+
+  public displayRange(alert: IAlert): string {
+    return `${alert.range.from}${alert.sensorType.postfix} - ${alert.range.to}${alert.sensorType.postfix}`;
   }
 
   ngOnDestroy() {

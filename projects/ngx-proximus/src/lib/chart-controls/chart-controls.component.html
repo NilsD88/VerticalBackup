@@ -7,7 +7,7 @@
         </mat-button-toggle-group>
     </div>
     <div class="right">
-        <pxs-date-range-selection (dateChange)="dateRangeChange($event.dateRange, $event.isSwaping)" [drpOptions]="drpOptions"></pxs-date-range-selection>
+        <pxs-date-range-selection (dateChange)="dateRangeChange($event.dateRange, $event.intervalNeedToChange)" [drpOptions]="drpOptions"></pxs-date-range-selection>
         <button *ngIf="showExportOptions" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Chart menu">
             <mat-icon>more_vert</mat-icon>
         </button>

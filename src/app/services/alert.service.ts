@@ -23,7 +23,7 @@ import {
 } from 'projects/ngx-proximus/src/lib/date-range-selection/date-range-selection.component';
 import {
   IAlertFilterBE
-} from '../pages/alerts/smartmonitoring/alerts.component';
+} from '../pages/alerts/alerts.component';
 
 @Injectable({
   providedIn: 'root'

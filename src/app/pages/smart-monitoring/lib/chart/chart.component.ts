@@ -39,7 +39,6 @@ interface IFilterChartData {
   interval?: string;
   from?: number;
   to?: number;
-  durationInHours?: number;
 }
 
 
