@@ -1,3 +1,4 @@
+import { PopupConfirmationModule } from './../../../../projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
 import { NgModule } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AlertsComponent} from './alerts.component';
@@ -54,6 +55,7 @@ import { ImgFallbackModule } from 'ngx-img-fallback';
     MatCardModule,
     MatButtonToggleModule,
     ImgFallbackModule,
+    PopupConfirmationModule
   ]
 })
 export class AlertsModule {

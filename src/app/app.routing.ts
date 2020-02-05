@@ -235,7 +235,7 @@ export const AppRoutes: Routes = [
       {
         path: 'alerts',
         canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/alerts/smartmonitoring/alerts.module').then(m => m.AlertsModule)
+        loadChildren: () => import('./pages/alerts/alerts.module').then(m => m.AlertsModule)
       },
       {
         path: 'tankmonitoring',
