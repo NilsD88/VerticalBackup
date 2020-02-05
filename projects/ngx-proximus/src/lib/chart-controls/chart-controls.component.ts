@@ -80,13 +80,13 @@ export class ChartControlsComponent implements OnInit {
     };
   }
 
-  public dateRangeChange(dateRange: { fromDate: Date; toDate: Date; }, isSwaping: boolean) {
+  public dateRangeChange(dateRange: { fromDate: Date; toDate: Date; }, intervalNeedToChange: boolean) {
     const {fromDate, toDate} = dateRange;
     const duration = moment.duration(moment(toDate).diff(fromDate));
     const durationHours =  +duration.asHours().toFixed(0);
 
     let interval: Intervals = this.filter.interval;
-    if (!isSwaping) {
+    if (intervalNeedToChange) {
       this.intervals = this.minimumIntervals;
       interval = this.minimumIntervals[0];
       if (durationHours > 24) {
