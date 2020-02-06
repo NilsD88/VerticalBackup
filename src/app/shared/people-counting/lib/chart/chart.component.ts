@@ -228,11 +228,12 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
   }
 
   private addYAxisValues(item: IChartData) {
+    const direction = (item.sensorDefinition || {}).inOutType;
     const color = randomColor({
       hue: ESensorColors[String(item.label).toUpperCase()]
-    })
+    });
     if (this.filter.interval !== 'ALL') {
-        if ((item.sensorDefinition || {}).inOutType === 'BOTH') {
+        if (direction === 'BOTH') {
           // IN: SUM
           const inSumId = item.sensorId + 'in_sum';
           this.options.series.push({
@@ -244,7 +245,7 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2)) / 2];
             })
           });
 
@@ -259,12 +260,10 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+              return [serie.timestamp, parseFloat(serie.sum.toFixed(2)) / 2];
             })
           });
         } else {
-
-          const direction = (item.sensorDefinition || {}).inOutType;
 
           // SUM
           const sumId = item.sensorId + '_sum';
@@ -281,24 +280,59 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
             })
           });
         }
-        
     } else {
       // REAL VALUES
       const id = item.sensorId;
-      this.options.series.push({
-        id,
-        name: item.label,
-        color,
-        yAxis: this.getYAxisByLabel(item.label),
-        zIndex: 1,
-        type: 'column',
-        showInLegend: (item.series.length) ? true : false,
-        data: item.series.map((serie) => {
-          if (!isNullOrUndefined(serie.value)) {
-            return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
-          }
-        })
-      });
+      if (direction === 'BOTH') {
+        // IN
+        const inValueId = item.sensorId + 'in_value';
+        this.options.series.push({
+          id: inValueId,
+          name: item.label + ' (IN)',
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'column',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            if (!isNullOrUndefined(serie.value)) {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2)) / 2];
+            }
+          })
+        });
+
+        // OUT
+        const outValueId = item.sensorId + 'out_value';
+        this.options.series.push({
+          id: outValueId,
+          name: item.label + ' (OUT)',
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'column',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            if (!isNullOrUndefined(serie.value)) {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2)) / 2];
+            }
+          })
+        });
+      } else {
+        this.options.series.push({
+          id,
+          name: item.label,
+          color,
+          yAxis: this.getYAxisByLabel(item.label),
+          zIndex: 1,
+          type: 'column',
+          showInLegend: (item.series.length) ? true : false,
+          data: item.series.map((serie) => {
+            if (!isNullOrUndefined(serie.value)) {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            }
+          })
+        });
+      }
     }
   }
 
