@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { cloneDeep } from 'lodash';
-import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import * as randomColor from 'randomcolor';
 
 import * as Highcharts from 'highcharts';
@@ -33,9 +33,13 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
 
   constructor(private router: Router) { }
 
-  ngOnChanges() {
-    if (this.chart) {
-      this.updateChart();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.leafs) {
+      if (changes.leafs.currentValue && changes.leafs.currentValue !== changes.leafs.previousValue) {
+        if (this.chart) {
+          this.updateChart();
+        }
+      }
     }
   }
 

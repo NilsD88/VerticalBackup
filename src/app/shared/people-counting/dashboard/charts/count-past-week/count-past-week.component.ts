@@ -68,7 +68,9 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.leafs) {
       if (changes.leafs.currentValue && changes.leafs.currentValue !== changes.leafs.previousValue) {
-        this.updateChart();
+        if (this.chart) {
+          this.updateChart();
+        }
       }
     }
   }
@@ -80,6 +82,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     mTZ();
     this.initChartOptions();
     this.initChart();
+    this.updateChart();
   }
 
   private initChartOptions() {
