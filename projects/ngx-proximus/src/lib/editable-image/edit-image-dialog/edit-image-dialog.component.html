@@ -5,15 +5,26 @@
       <h2>{{data.title}}</h2>
     </div>
 
+    <div *ngIf="!imageLoaded" class="col-12 spinner-container">
+      <mat-progress-spinner color="primary" mode="indeterminate">
+      </mat-progress-spinner>
+    </div>
+
     <div class="col-12">
-      <ngx-img (onSelect)="onImageEditorSelect($event)" (onReset)="onImageEditorReset()"
-               [config]="imageEditorConfig"></ngx-img>
+      <image-cropper
+        [imageChangedEvent]="data.imageEvent"
+        (imageLoaded)="imageLoaded=true;"
+        (imageCropped)="result=$event.base64"
+        [aspectRatio]="data.ratio ? data.ratio : 1"
+        [maintainAspectRatio]="data.ratio ? true : false"
+        [resizeToWidth]="(data.maxWidthAndHeight ? data.maxWidthAndHeight : 1024)"
+      ></image-cropper>
     </div>
 
     <div class="col-12">
       <div style="display: flex; justify-content: center; padding: 1rem;">
         <button mat-button color="warn" (click)="close()">Cancel</button>
-        <button mat-button color="primary" (click)="save()">Save</button>
+        <button mat-button color="primary" [disabled]="!result" (click)="save()">Save</button>
       </div>
     </div>
 
