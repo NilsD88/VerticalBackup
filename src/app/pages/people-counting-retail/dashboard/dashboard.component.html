@@ -41,15 +41,15 @@
         <div class="col-md-12" *ngIf="leafs?.length < 20">
             <pvf-peoplecounting-count-past-week [leafs]="lastWeekLeafs" [leafColors]="leafColors" [leafUrl]="leafUrl" (decrease)="decrease()" (increase)="increase()" [loading]="lastWeekLeafsLoading" [loadingError]="lastWeekLeafsLoadingError" (wantTryAgain)="lastWeekLeafs$.next()"></pvf-peoplecounting-count-past-week>
         </div>
-        <div class="col-md-12" *ngIf="leafs?.length >= 20" style="height:400px">
-            <pvf-peoplecounting-total-count-past-week [leafs]="lastWeekLeafs" [leafColors]="leafColors" [leafUrl]="leafUrl" style="height:400px" [loading]="lastWeekLeafsLoading" [loadingError]="lastWeekLeafsLoadingError" (wantTryAgain)="lastWeekLeafs$.next()"></pvf-peoplecounting-total-count-past-week>
+        <div class="col-md-12" *ngIf="leafs?.length >= 20">
+            <pvf-peoplecounting-total-count-past-week [leafs]="lastWeekLeafs" [leafColors]="leafColors" [leafUrl]="leafUrl" [loading]="lastWeekLeafsLoading" [loadingError]="lastWeekLeafsLoadingError" (wantTryAgain)="lastWeekLeafs$.next()"></pvf-peoplecounting-total-count-past-week>
         </div>
     </div>
 </div>
 <div class="container">
     <div class="row">
-        <div class="col-md-12" style="height:400px">
-            <pvf-peoplecounting-total-count-past-year [leafs]="lastYearLeafs" [leafColors]="leafColors" [leafUrl]="leafUrl" [loading]="lastYearLeafsLoading" [loadingError]="lastYearLeafsLoadingError" (wantTryAgain)="lastYearLeafs$.next()" style="height:400px"></pvf-peoplecounting-total-count-past-year>
+        <div class="col-md-12">
+            <pvf-peoplecounting-total-count-past-year [leafs]="lastYearLeafs" [leafColors]="leafColors" [leafUrl]="leafUrl" [loading]="lastYearLeafsLoading" [loadingError]="lastYearLeafsLoadingError" (wantTryAgain)="lastYearLeafs$.next()"></pvf-peoplecounting-total-count-past-year>
         </div>
     </div>
 </div>
