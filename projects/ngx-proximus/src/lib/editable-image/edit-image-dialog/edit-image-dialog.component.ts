@@ -17,9 +17,7 @@ export class EditImageDialogComponent implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-    console.log(cloneDeep(this));
-  }
+  ngOnInit() {}
 
   save() {
     this.dialogRef.close(this.result);

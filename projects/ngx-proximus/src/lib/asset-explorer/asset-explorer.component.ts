@@ -21,8 +21,6 @@ export class AssetExplorerComponent implements OnInit {
   @Output() assetClicked: EventEmitter<IAsset> = new EventEmitter<IAsset>();
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
-  ngOnInit() {
-    console.log(this.constructor.name, 'ngOnInit()');
-  }
+  ngOnInit() {}
 
 }

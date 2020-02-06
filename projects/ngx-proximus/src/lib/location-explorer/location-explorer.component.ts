@@ -59,7 +59,6 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
         this.searchResults = locations;
       })
     );
-    console.log(this.constructor.name, 'ngOnInit()');
   }
 
   protected initLocationTree() {
@@ -185,7 +184,6 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   goToChild(location) {
     if (this.selectLocation !== location) {
       if (!(location.children || []).length && this.leafUrl) {
-        console.log(`${this.leafUrl}/${location.id}`);
         this.router.navigateByUrl(`${this.leafUrl}/${location.id}`);
         return;
       }
