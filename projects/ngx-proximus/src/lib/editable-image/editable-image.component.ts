@@ -1,5 +1,6 @@
+import { cloneDeep } from 'lodash';
 import { PopupConfirmationComponent, IPopupConfirmation } from './../popup-confirmation/popup-confirmation.component';
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef, OnChanges, SimpleChanges } from '@angular/core';
 import {MatDialog} from '@angular/material';
 import {EditImageDialogComponent} from './edit-image-dialog/edit-image-dialog.component';
 
@@ -8,16 +9,25 @@ import {EditImageDialogComponent} from './edit-image-dialog/edit-image-dialog.co
   templateUrl: './editable-image.component.html',
   styleUrls: ['./editable-image.component.css']
 })
-export class EditableImageComponent {
+export class EditableImageComponent implements OnInit {
+
+  @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
+
   @Input() image = '';
   @Input() dialogTitle = 'Edit image';
-  @Input() ratio: number;
-  @Input() maxWidthAndHeight = 0;
+  @Input() ratio: number = null;
+  @Input() maxWidthAndHeight = 1024;
   @Input() confirmationMessage: IPopupConfirmation;
 
   @Output() change: EventEmitter<string> = new EventEmitter();
 
+  private orginalImage: string;
+
   constructor(private dialog: MatDialog) {
+  }
+
+  ngOnInit() {
+    console.log(cloneDeep(this));
   }
 
   onClick() {
@@ -28,16 +38,27 @@ export class EditableImageComponent {
     }
   }
 
-  private async openEditImageDialog() {
+
+
+  public async fileChangeEvent(event: any) {
+    this.orginalImage = this.image;
+    try {
+      if (event.target.files.length <= 0) {
+        return null;
+      }
+    } catch (error) {
+      return null;
+    }
     const dialogRef = this.dialog.open(EditImageDialogComponent, {
       data: {
-        image: this.image,
+        imageEvent: event,
         title: this.dialogTitle,
         ratio: this.ratio,
-        maxWidthAndHeight: this.maxWidthAndHeight
+        maxWidthAndHeight: this.maxWidthAndHeight,
       },
-      width: '100vw',
+      maxWidth: '1024px',
       maxHeight: '80vh',
+      width: 'auto'
     });
 
     const result = await dialogRef.afterClosed().toPromise();
@@ -45,7 +66,14 @@ export class EditableImageComponent {
     if (result) {
       this.image = result;
       this.change.emit(result);
+    } else {
+      this.change.emit(this.orginalImage);
     }
+  }
+
+  private openEditImageDialog() {
+    this.fileInput.nativeElement.value = '';
+    this.fileInput.nativeElement.click();
   }
 
 
@@ -65,6 +93,7 @@ export class EditableImageComponent {
       }
     });
   }
+
 
 
 }
