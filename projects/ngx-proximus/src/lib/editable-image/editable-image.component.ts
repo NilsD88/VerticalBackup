@@ -26,9 +26,7 @@ export class EditableImageComponent implements OnInit {
   constructor(private dialog: MatDialog) {
   }
 
-  ngOnInit() {
-    console.log(cloneDeep(this));
-  }
+  ngOnInit() {}
 
   onClick() {
     if (this.confirmationMessage) {

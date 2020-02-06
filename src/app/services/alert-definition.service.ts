@@ -17,7 +17,6 @@ export class AlertDefinitionService {
     return new Promise(async (resolve, reject) => {
       this.http.get(`${environment.baseUrl}/alertdefinitions/?filter=name=='Default'`)
         .subscribe((response: any) => {
-          console.log(response);
           if (response) {
             const defaultAlertDef = response.length ? new AlertDefinition(response[0]) : new AlertDefinition(null);
             resolve(defaultAlertDef);
