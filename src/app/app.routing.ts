@@ -201,7 +201,7 @@ export const AppRoutes: Routes = [
     canActivate: [PublicAuthGuard],
     children: [{
       path: '',
-      loadChildren: () => import('./pages/error/smartmonitoring/error.module').then(m => m.ErrorModule)
+      loadChildren: () => import('./pages/error/error.module').then(m => m.ErrorModule)
     }]
   },
   {
