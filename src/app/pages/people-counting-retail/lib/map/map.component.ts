@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges} from '@angular/core';
 import { AssetService } from 'src/app/services/asset.service';
@@ -23,6 +24,7 @@ export class PeopleCountingRetailMapComponent extends MapComponent implements On
     public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
+    protected sharedService: SharedService,
   ) {
     super(
       changeDetectorRef,
@@ -30,6 +32,7 @@ export class PeopleCountingRetailMapComponent extends MapComponent implements On
       locationService,
       snackBar,
       dialog,
+      sharedService
     );
   }
 

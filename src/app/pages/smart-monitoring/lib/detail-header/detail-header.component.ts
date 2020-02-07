@@ -15,8 +15,6 @@ export class DetailHeaderComponent implements OnInit {
   @Input() asset: Asset;
   public orgName: string;
 
-  public isNullOrUndefined = isNullOrUndefined;
-
   constructor(
     public dialog: MatDialog,
     private sharedService: SharedService,
@@ -38,10 +36,6 @@ export class DetailHeaderComponent implements OnInit {
         selectedLocation: this.asset.location
       }
     });
-  }
-
-  parseLastValue(value: number) {
-    return parseFloat(value.toFixed(2));
   }
 
 }

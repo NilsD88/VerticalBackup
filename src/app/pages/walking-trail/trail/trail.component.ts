@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { findLocationById } from 'src/app/shared/utils';
@@ -29,6 +30,7 @@ export class TrailComponent implements OnInit {
     private locationService: WalkingTrailLocationService,
     public assetService: WalkingTrailAssetService,
     private activatedRoute: ActivatedRoute,
+    private sharedService: SharedService,
   ) { }
 
   ngOnInit() {
@@ -38,15 +40,20 @@ export class TrailComponent implements OnInit {
         count: this.leaf.assets.length
       });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
-      const rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children:  await this.locationService.getLocationsTree().toPromise()
-      };
+      let rootLocation: IPeopleCountingLocation;
+      if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+        rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+      } else {
+        rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children:  await this.locationService.getLocationsTree().toPromise()
+        };
+      }
       if (this.leaf.parent) {
         const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
         this.parentLocation = parentLocation;

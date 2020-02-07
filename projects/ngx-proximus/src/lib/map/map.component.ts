@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../../src/app/services/shared.service';
 import { SubSink } from 'subsink';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -56,6 +57,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
+    protected sharedService: SharedService
   ) {}
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -124,15 +126,19 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.subs.add(
         this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-          this.rootLocation = {
-            id: null,
-            parentId: null,
-            geolocation: null,
-            image: null,
-            name: 'Locations',
-            description: null,
-            children: locations,
-          };
+          if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+            this.rootLocation = locations[0];
+          } else {
+            this.rootLocation = {
+              id: null,
+              parentId: null,
+              geolocation: null,
+              image: null,
+              name: 'Locations',
+              description: null,
+              children: locations,
+            };
+          }
           this.checkIfSelectedLocation();
         })
       );

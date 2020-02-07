@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../../src/app/services/shared.service';
 import { AssetService } from 'src/app/services/asset.service';
 import { SubSink } from 'subsink';
 import { ILocation } from 'src/app/models/location.model';
@@ -25,19 +26,24 @@ export class LocationPopupComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<any>,
     public locationService: LocationService,
     public assetService: AssetService,
+    protected sharedService: SharedService,
   ) { }
 
   ngOnInit() {
     this.subs.sink = this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-      this.rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children: locations,
-      };
+      if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+        this.rootLocation = locations[0];
+      } else {
+        this.rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children: locations,
+        };
+      }
     });
 
     if (this.data) {

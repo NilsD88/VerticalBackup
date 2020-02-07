@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { SubSink } from 'subsink';
 import {
   cloneDeep
@@ -30,6 +31,7 @@ import {
 } from 'src/app/models/peoplecounting/location.model';
 import { catchError, switchMap } from 'rxjs/operators';
 import { of, Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 moment.locale('nl-be');
@@ -63,19 +65,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private locationService: WalkingTrailLocationService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private sharedService: SharedService,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
-    this.rootLocation = {
-      id: null,
-      parentId: null,
-      geolocation: null,
-      image: null,
-      name: 'Locations',
-      description: null,
-      children: await this.locationService.getLocationsTree().toPromise()
-    };
+    if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+      this.rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+      const { module, id } = this.rootLocation;
+      if (module === 'PEOPLE_COUNTING_WALKING_TRAIL') {
+        this.router.navigateByUrl(`${this.leafUrl}/${id}`);
+      }
+    } else {
+      this.rootLocation = {
+        id: null,
+        parentId: null,
+        geolocation: null,
+        image: null,
+        name: 'Locations',
+        description: null,
+        children: await this.locationService.getLocationsTree().toPromise()
+      };
+    }
     this.subs.add(
       this.getLastWeekData(this.lastWeekLeafs$).subscribe(
         (result) => {

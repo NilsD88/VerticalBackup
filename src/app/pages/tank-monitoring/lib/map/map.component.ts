@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { Router } from '@angular/router';
 import { ITankMonitoringAsset } from './../../../../models/tankmonitoring/asset.model';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
@@ -51,6 +52,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
+    protected sharedService: SharedService,
   ) {
     super(
       changeDetectorRef,
@@ -58,6 +60,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
       locationService,
       snackBar,
       dialog,
+      sharedService
     );
   }
 

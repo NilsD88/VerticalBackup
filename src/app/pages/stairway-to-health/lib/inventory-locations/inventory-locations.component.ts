@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { StairwayToHealthLocationService } from './../../../../services/stairway-to-health/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -17,11 +18,13 @@ export class StairwayToHealthInventoryLocationsComponent extends InventoryLocati
     public changeDetectorRef: ChangeDetectorRef,
     public locationService: StairwayToHealthLocationService,
     public activatedRoute: ActivatedRoute,
+    protected sharedService: SharedService,
   ) {
     super(
       changeDetectorRef,
       locationService,
-      activatedRoute
+      activatedRoute,
+      sharedService
     );
     this.leafUrl = 'private/stairwaytohealth/place';
   }

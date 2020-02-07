@@ -58,4 +58,8 @@ export class User implements IUser {
   public hasModule(feature: string): boolean {
     return this.modules.indexOf(feature) >= 0;
   }
+
+  public hasRole(role: string): boolean {
+    return this.roles.indexOf(role) >= 0;
+  }
 }

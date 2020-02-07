@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../../src/app/services/shared.service';
 import { LocationExplorerComponent } from './../location-explorer/location-explorer.component';
 import { Router } from '@angular/router';
 import { LocationService } from 'src/app/services/location.service';
@@ -35,6 +36,7 @@ export class AssetExplorerProjectionComponent extends LocationExplorerComponent 
     protected changeDetectorRef: ChangeDetectorRef,
     protected dialog: MatDialog,
     protected router: Router,
+    protected sharedService: SharedService,
   ) {
     super(
       locationService,
@@ -42,6 +44,7 @@ export class AssetExplorerProjectionComponent extends LocationExplorerComponent 
       changeDetectorRef,
       dialog,
       router,
+      sharedService
     );
   }
 
