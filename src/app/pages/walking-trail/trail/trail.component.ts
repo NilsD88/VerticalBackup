@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { findLocationById } from 'src/app/shared/utils';
@@ -29,24 +30,35 @@ export class TrailComponent implements OnInit {
     private locationService: WalkingTrailLocationService,
     public assetService: WalkingTrailAssetService,
     private activatedRoute: ActivatedRoute,
+    private sharedService: SharedService,
   ) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
-      this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
+      let rootLocation: IPeopleCountingLocation;
+      if (isLocationAdmin) {
+        rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+      } else {
+        rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children:  await this.locationService.getLocationsTree().toPromise()
+        };
+      }
+      if (isLocationAdmin && rootLocation.id === params.id) {
+        this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+      } else {
+        this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      }
       this.assetColors = randomColor({
         count: this.leaf.assets.length
       });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
-      const rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children:  await this.locationService.getLocationsTree().toPromise()
-      };
       if (this.leaf.parent) {
         const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
         this.parentLocation = parentLocation;

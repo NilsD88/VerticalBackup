@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { IAsset } from '../../../../models/asset.model';
@@ -47,6 +48,9 @@ export class TrailMapComponent implements OnInit {
   public selectedTrail: IPeopleCountingLocation;
   public markerClusterOptions: any;
 
+  private sumsLastWeekUntilSameReference = [];
+  private sumsThisWeekSameReference = [];
+
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private assetService: WalkingTrailAssetService,
@@ -77,26 +81,41 @@ export class TrailMapComponent implements OnInit {
     this.initMap();
   }
 
-  private initMap() {
-    this.populateMarkersWithTrails();
-    const floorPlan = (this.location) ? this.location.image : null;
+  private async initMap() {
+    let floorPlan = null;
+    if (this.location.id === this.leaf.id) {
+      this.selectedTrail = this.leaf;
+    }
+    if (this.selectedTrail) {
+      floorPlan = this.selectedTrail ? this.selectedTrail.image : null;
+    } else {
+      floorPlan = this.location ? this.location.image : null;
+    }
     if (floorPlan) {
-      const image: HTMLImageElement = new Image();
-      image.src = floorPlan;
-      image.onload = () => {
-        const { width, height } = image;
-        const ratioW = height / width;
-        const ratioH = width / height;
-        this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
-        const imageMap = imageOverlay(floorPlan, this.imageBounds);
-        this.options = {
-          crs: CRS.Simple,
-          layers: [imageMap],
-          zoom: 1,
-          maxZoom: 12,
-        };
-        this.changeDetectorRef.detectChanges();
-      };
+      await new Promise(
+        (resolve, reject) => {
+          const image: HTMLImageElement = new Image();
+          image.src = floorPlan;
+          image.onload = () => {
+            const { width, height } = image;
+            const ratioW = height / width;
+            const ratioH = width / height;
+            this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
+            const imageMap = imageOverlay(floorPlan, this.imageBounds);
+            this.options = {
+              crs: CRS.Simple,
+              layers: [imageMap],
+              zoom: 1,
+              maxZoom: 12,
+            };
+            this.changeDetectorRef.detectChanges();
+            resolve();
+          };
+          image.onerror = () => {
+            reject();
+          };
+        }
+      );
     } else {
       this.options = {
         layers: tileLayer(MAP_TILES_URL_ACTIVE),
@@ -105,6 +124,12 @@ export class TrailMapComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
       };
+    }
+    if (this.selectedTrail) {
+      const assets = await this.assetService.getAssetsByLocationId(this.selectedTrail.id).toPromise();
+      this.populateMarkersWithAssets(assets);
+    } else {
+      this.populateMarkersWithTrails();
     }
   }
 
@@ -118,38 +143,50 @@ export class TrailMapComponent implements OnInit {
       html: `<div class="trail"><span class="status ${status}"></span><div class="name"><span>${name}</span></div></div>`
     });
 
-    const children = this.location.children;
+    const children = this.location.children.filter(child => child.module === 'PEOPLE_COUNTING_WALKING_TRAIL');
     if (children && children.length) {
-      const sumsLastWeekUntilSameReference = (await this.locationService.getLocationsDataByIds(
-        this.location.children.map(location => location.id),
-        'WEEKLY',
-        moment().startOf('isoWeek').subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().subtract(1, 'weeks').valueOf()
-      ).toPromise());
+      if (!this.sumsLastWeekUntilSameReference.length) {
+        try {
+          this.sumsLastWeekUntilSameReference = (await this.locationService.getLocationsDataByIds(
+            children.map(location => location.id),
+            'WEEKLY',
+            moment().startOf('isoWeek').subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+            moment().subtract(1, 'weeks').valueOf()
+          ).toPromise());
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
-      const sumsThisWeekSameReference = (await this.locationService.getLocationsDataByIds(
-        this.location.children.map(location => location.id),
-        'WEEKLY',
-        moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().valueOf()
-      ).toPromise());
+      if (!this.sumsThisWeekSameReference.length) {
+        try {
+          this.sumsThisWeekSameReference = (await this.locationService.getLocationsDataByIds(
+            children.map(location => location.id),
+            'WEEKLY',
+            moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+            moment().valueOf()
+          ).toPromise());
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
       for (const child of children) {
         child.parent = this.location;
         let sumLastWeekUntilSameReference = null;
         let sumThisWeekSameReference = null;
 
-        const indexLastWeekRef = sumsLastWeekUntilSameReference.findIndex(x => x.id === child.id);
+        const indexLastWeekRef = this.sumsLastWeekUntilSameReference.findIndex(x => x.id === child.id);
         if (indexLastWeekRef > -1) {
-          const ref = sumsLastWeekUntilSameReference[indexLastWeekRef];
-          if((ref.series || []).length) {
+          const ref = this.sumsLastWeekUntilSameReference[indexLastWeekRef];
+          if ((ref.series || []).length) {
             sumLastWeekUntilSameReference = ref.series[0].valueIn;
           }
         }
 
-        const indexWeekRef = sumsThisWeekSameReference.findIndex(x => x.id === child.id);
+        const indexWeekRef = this.sumsThisWeekSameReference.findIndex(x => x.id === child.id);
         if (indexWeekRef > -1) {
-          const ref = sumsThisWeekSameReference[indexWeekRef];
+          const ref = this.sumsThisWeekSameReference[indexWeekRef];
           if ((ref.series || []).length) {
             sumThisWeekSameReference = ref.series[0].valueIn;
           }
@@ -168,13 +205,14 @@ export class TrailMapComponent implements OnInit {
             icon: trailIcon(child.name, status)
           }
         ).on('click', async (event) => {
+          this.options = null;
+          this.changeDetectorRef.detectChanges();
           this.selectedTrail = child;
-          const assets = await this.assetService.getAssetsByLocationId(child.id).toPromise();
-          this.populateMarkersWithAssets(assets);
+          this.initMap();
         });
         this.trailsLayer.push(newMarker);
       }
-      this.setTrailBounds(this.location);
+      this.setTrailBounds(children);
       this.fitBoundsAndZoomOnTrail();
     }
   }
@@ -201,11 +239,13 @@ export class TrailMapComponent implements OnInit {
         });
         this.assetsLayer.push(newMarker);
       }
-      this.fitBoundsAndZoomOnCheckpoints(assets);
+      if (assets.length > 1) {
+        this.fitBoundsAndZoomOnCheckpoints(assets);
+      }
     }
   }
 
-  private setTrailBounds(location: ILocation = this.location) {
+  private setTrailBounds(locations: ILocation[]) {
     const geoJsonData = {
       type: 'Feature',
       properties: {},
@@ -214,8 +254,7 @@ export class TrailMapComponent implements OnInit {
         coordinates: [[]]
       }
     };
-
-    this.addLocationsBounds(geoJsonData, location);
+    this.addLocationsBounds(geoJsonData, locations);
     const geoJsonLayer = geoJSON(geoJsonData as GeoJsonObject);
     this.trailBounds = geoJsonLayer.getBounds();
   }
@@ -229,7 +268,6 @@ export class TrailMapComponent implements OnInit {
         coordinates: [[]]
       }
     };
-
     this.addCheckpointsBounds(geoJsonData, assets);
     const geoJsonLayer = geoJSON(geoJsonData as GeoJsonObject);
     return geoJsonLayer.getBounds();
@@ -240,11 +278,13 @@ export class TrailMapComponent implements OnInit {
       this.currentMap.fitBounds(this.trailBounds);
       setTimeout(() => {
         const currentZoom = this.currentMap.getZoom();
-        this.currentMap.setView(this.leaf.geolocation, currentZoom - 1);
+        if (this.location.geolocation) {
+          this.currentMap.setView(this.location.geolocation, currentZoom - 1);
+        }
       }, 0);
     } else {
       setTimeout(() => {
-        this.currentMap.panTo(this.leaf.geolocation);
+        this.currentMap.panTo(this.location.geolocation);
       });
     }
   }
@@ -255,16 +295,15 @@ export class TrailMapComponent implements OnInit {
       this.currentMap.fitBounds(bounds);
     } else {
       setTimeout(() => {
-        this.currentMap.panTo(this.leaf.geolocation);
+        this.currentMap.panTo(this.selectedTrail.geolocation);
       });
     }
   }
 
-  private addLocationsBounds(geoJsonData, location) {
+  private addLocationsBounds(geoJsonData, locations) {
     if (location) {
-      const children = location.children;
-      if (children && children.length) {
-        children.forEach(child => {
+      if (locations && locations.length) {
+        locations.forEach(child => {
           const {lng, lat} = child.geolocation;
           geoJsonData.geometry.coordinates[0].push([lng, lat]);
         });
@@ -290,7 +329,10 @@ export class TrailMapComponent implements OnInit {
   }
 
   public resetMap() {
-    this.selectedTrail = null;
+    this.options = null;
+    this.selectedTrail = undefined;
+    this.imageBounds = undefined;
+    this.changeDetectorRef.detectChanges();
     this.initMap();
   }
 }

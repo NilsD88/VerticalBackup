@@ -80,15 +80,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.isLoading = true;
-    this.rootLocation = {
-      id: null,
-      parentId: null,
-      geolocation: null,
-      image: null,
-      name: 'Locations',
-      description: null,
-      children: await this.locationService.getLocationsTree().toPromise()
-    };
+    if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+      this.rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+    } else {
+      this.rootLocation = {
+        id: null,
+        parentId: null,
+        geolocation: null,
+        image: null,
+        name: 'Locations',
+        description: null,
+        children: await this.locationService.getLocationsTree().toPromise()
+      };
+    }
     this.assets = await this.assetService.getAssets().toPromise();
     this.assets.forEach((asset) => {
       const THINGS = asset.things;

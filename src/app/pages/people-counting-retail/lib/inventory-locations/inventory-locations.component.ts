@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { PeopleCountingRetailLocationService } from './../../../../services/peoplecounting-retail/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -17,11 +18,13 @@ export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLo
     public changeDetectorRef: ChangeDetectorRef,
     public locationService: PeopleCountingRetailLocationService,
     public activatedRoute: ActivatedRoute,
+    protected sharedService: SharedService,
   ) {
     super(
       changeDetectorRef,
       locationService,
-      activatedRoute
+      activatedRoute,
+      sharedService
     );
     this.leafUrl = 'private/peoplecounting/store';
   }

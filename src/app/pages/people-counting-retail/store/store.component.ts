@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { PeopleCountingRetailAssetService } from './../../../services/peoplecounting-retail/asset.service';
 import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import { findLocationById } from 'src/app/shared/utils';
@@ -26,25 +27,31 @@ export class StoreComponent implements OnInit {
     public locationService: PeopleCountingRetailLocationService,
     public assetService: PeopleCountingRetailAssetService,
     private activatedRoute: ActivatedRoute,
+    private sharedService: SharedService,
   ) { }
 
   ngOnInit() {
 
     this.activatedRoute.params.subscribe(async (params) => {
-      this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
       this.assetColors = randomColor({
         count: this.leaf.assets.length
       });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
-      const rootLocation = {
-        id: null,
-        parentId: null,
-        geolocation: null,
-        image: null,
-        name: 'Locations',
-        description: null,
-        children:  await this.locationService.getLocationsTree().toPromise()
-      };
+      let rootLocation: IPeopleCountingLocation;
+      if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+        rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+      } else {
+        rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children:  await this.locationService.getLocationsTree().toPromise()
+        };
+      }
       if (this.leaf.parent) {
         const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
         this.parentLocation = parentLocation;

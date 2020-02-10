@@ -11,6 +11,7 @@ import {findLocationById} from 'src/app/shared/utils';
 import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from '../popup-confirmation/popup-confirmation.component';
+import { SharedService } from 'src/app/services/shared.service';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     protected changeDetectorRef: ChangeDetectorRef,
     protected dialog: MatDialog,
     protected router: Router,
+    protected sharedService: SharedService,
   ) {}
 
   ngOnInit() {
@@ -78,19 +80,27 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     this.isDownloading = true;
     this.subs.add(
       this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-        this.rootLocation = {
-          id: null,
-          parentId: null,
-          geolocation: null,
-          image: null,
-          name: 'Locations',
-          description: null,
-          children: locations,
-        };
-        this.tabs = [{
-          name: this.rootLocation.name,
-          children: locations,
-        }];
+        if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+          this.rootLocation = locations[0];
+          this.tabs = [{
+            name: this.rootLocation.name,
+            children: this.rootLocation.children,
+          }];
+        } else {
+          this.rootLocation = {
+            id: null,
+            parentId: null,
+            geolocation: null,
+            image: null,
+            name: 'Locations',
+            description: null,
+            children: locations,
+          };
+          this.tabs = [{
+            name: this.rootLocation.name,
+            children: locations,
+          }];
+        }
         this.checkIfSelectedLocation();
       })
     );

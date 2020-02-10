@@ -1,3 +1,4 @@
+import { DetailHeaderListThingsModule } from './../../../../../../projects/ngx-proximus/src/lib/detail-header/list-things/list-things.module';
 import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -17,7 +18,8 @@ import { TankMonitoringLocationPopupComponent } from '../location-popup/location
     MatDialogModule,
     TankMonitoringLocationPopupModule,
     NgxSkeletonLoaderModule,
-    IconModule
+    IconModule,
+    DetailHeaderListThingsModule
   ],
   exports: [DetailHeaderComponent],
   entryComponents: [

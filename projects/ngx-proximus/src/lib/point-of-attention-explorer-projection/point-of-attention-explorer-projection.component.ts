@@ -11,6 +11,7 @@ import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material';
 import { findLocationById } from 'src/app/shared/utils';
 import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
+import { SharedService } from 'src/app/services/shared.service';
 
 const pointOfAttentionUrl = 'private/smartmonitoring/points-of-attention/point-of-attention/';
 
@@ -39,6 +40,7 @@ export class PointOfAttentionExplorerProjectionComponent extends LocationExplore
     protected changeDetectorRef: ChangeDetectorRef,
     protected dialog: MatDialog,
     protected router: Router,
+    protected sharedService: SharedService,
   ) {
     super(
       locationService,
@@ -46,6 +48,7 @@ export class PointOfAttentionExplorerProjectionComponent extends LocationExplore
       changeDetectorRef,
       dialog,
       router,
+      sharedService
     );
   }
 

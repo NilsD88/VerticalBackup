@@ -28,78 +28,6 @@ export class StairwayToHealthLocationService extends PeopleCountingLocationServi
       return this.http.get < IPeopleCountingLocation[] > (url);
     }
 
-    public getLocationById(id: string): Observable < IPeopleCountingLocation > {
-      const GET_LOCATION_BY_ID = gql `
-              query findLocationById($id: Long!) {
-                  location: findLocationById(id: $id) {
-                      id,
-                      name,
-                      description,
-                      parent {
-                          id,
-                          name,
-                          geolocation {
-                              lat,
-                              lng
-                          },
-                          image
-                      }
-                      image,
-                      geolocation {
-                          lat
-                          lng
-                      },
-                      assets {
-                        id,
-                        name
-                      },
-                      customFields {
-                      keyId,
-                      value
-                    }
-                  }
-              }
-          `;
-  
-      interface GetLocationByIdQuery {
-        location: IPeopleCountingLocation | null;
-      }
-  
-      return this.apollo.query < GetLocationByIdQuery > ({
-        query: GET_LOCATION_BY_ID,
-        fetchPolicy: 'network-only',
-        variables: {
-          id,
-        }
-      }).pipe(map(({
-        data
-      }) => data.location));
-    }
-  
-    public getImageCollectionById(locationId: string): Observable < IPeopleCountingLocation > {
-      const GET_LOCATION_BY_ID = gql `
-        query findLocationById($id: Long!) {
-            location: findLocationById(id: $id) {
-              images
-            }
-        }
-    `;
-  
-      interface GetLocationByIdQuery {
-        location: IPeopleCountingLocation | null;
-      }
-  
-      return this.apollo.query < GetLocationByIdQuery > ({
-        query: GET_LOCATION_BY_ID,
-        fetchPolicy: 'network-only',
-        variables: {
-          id: locationId
-        }
-      }).pipe(map(({
-        data
-      }) => data.location));
-    }
-  
     public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedPeopleCountingLocations > {
       return super.getPagedLeafLocations(
         pageNumber,
@@ -108,7 +36,7 @@ export class StairwayToHealthLocationService extends PeopleCountingLocationServi
         MODULE_NAME
       );
     }
-  
+
     public createLocation(location: IPeopleCountingLocation): Observable < IPeopleCountingLocation > {
       const CREATE_LOCATION = gql `
               mutation CreateLocation($input: LocationCreateInput!) {

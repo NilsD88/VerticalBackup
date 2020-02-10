@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
 import {
   cloneDeep
@@ -23,6 +24,7 @@ import {
 import { SubSink } from 'subsink';
 import { Subject, Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 moment.locale('nl-be');
@@ -52,19 +54,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private locationService: StairwayToHealthLocationService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private sharedService: SharedService,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
-    this.rootLocation = {
-      id: null,
-      parentId: null,
-      geolocation: null,
-      image: null,
-      name: 'Locations',
-      description: null,
-      children: await this.locationService.getLocationsTree().toPromise()
-    };
+    if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+      this.rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+      const { module, id } = this.rootLocation;
+      if (module === 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH') {
+        this.router.navigateByUrl(`${this.leafUrl}/${id}`);
+      }
+    } else {
+      this.rootLocation = {
+        id: null,
+        parentId: null,
+        geolocation: null,
+        image: null,
+        name: 'Locations',
+        description: null,
+        children: await this.locationService.getLocationsTree().toPromise()
+      };
+    }
     this.subs.add(
       this.getLastYearData(this.lastYearLocations$).subscribe(
         (result) => {
@@ -97,6 +109,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public changeLocation(location: IPeopleCountingLocation) {
+    console.log(location);
     const locations: IPeopleCountingLocation[] = location.children || [];
     this.locationColors = generateLeafColors(locations);
     this.currentLocations = locations;

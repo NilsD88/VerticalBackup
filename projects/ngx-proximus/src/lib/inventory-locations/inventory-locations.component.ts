@@ -5,6 +5,7 @@ import { Subject, Observable } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { IPeopleCountingLocation, IPagedPeopleCountingLocations } from 'src/app/models/peoplecounting/location.model';
+import { SharedService } from 'src/app/services/shared.service';
 
 export interface IInventoryFilterBE {
   name?: string;
@@ -48,6 +49,7 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef,
     public locationService: LocationService,
     public activatedRoute: ActivatedRoute,
+    protected sharedService: SharedService,
   ) {}
 
   async ngOnInit() {
@@ -55,17 +57,21 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
 
     this.subs.add(
       this.locationService.getLocationsTree().subscribe((locations: IPeopleCountingLocation[]) => {
-        this.rootLocation = {
-          id: null,
-          parentId: null,
-          geolocation: null,
-          image: null,
-          name: 'Locations',
-          description: null,
-          children: locations,
-        };
-        if (locations.length === 1) {
-          this.selectedLocation = this.rootLocation.children[0];
+        if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+          this.rootLocation = locations[0];
+        } else {
+          this.rootLocation = {
+            id: null,
+            parentId: null,
+            geolocation: null,
+            image: null,
+            name: 'Locations',
+            description: null,
+            children: locations,
+          };
+          if (locations.length === 1) {
+            this.selectedLocation = this.rootLocation.children[0];
+          }
         }
       })
     );

@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../../src/app/services/shared.service';
 import { SubSink } from 'subsink';
 import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
@@ -57,6 +58,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     public thresholdTemplateService: ThresholdTemplateService,
     public locationService: LocationService,
     public activatedRoute: ActivatedRoute,
+    protected sharedService: SharedService,
   ) {}
 
   async ngOnInit() {
@@ -64,17 +66,21 @@ export class InventoryComponent implements OnInit, OnDestroy {
     this.filterOptions.thresholdTemplateOptions = await this.thresholdTemplateService.getThresholdTemplates().toPromise();
     this.subs.add(
       this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-        this.rootLocation = {
-          id: null,
-          parentId: null,
-          geolocation: null,
-          image: null,
-          name: 'Locations',
-          description: null,
-          children: locations,
-        };
-        if (locations.length === 1) {
-          this.selectedLocation = this.rootLocation.children[0];
+        if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+          this.rootLocation = locations[0];
+        } else {
+          this.rootLocation = {
+            id: null,
+            parentId: null,
+            geolocation: null,
+            image: null,
+            name: 'Locations',
+            description: null,
+            children: locations,
+          };
+          if (locations.length === 1) {
+            this.selectedLocation = this.rootLocation.children[0];
+          }
         }
       })
     );

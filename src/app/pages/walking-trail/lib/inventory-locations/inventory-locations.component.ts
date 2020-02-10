@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -17,11 +18,13 @@ export class WalkingTrailInventoryLocationsComponent extends InventoryLocationsC
     public changeDetectorRef: ChangeDetectorRef,
     public locationService: WalkingTrailLocationService,
     public activatedRoute: ActivatedRoute,
+    protected sharedService: SharedService
   ) {
     super(
       changeDetectorRef,
       locationService,
-      activatedRoute
+      activatedRoute,
+      sharedService
     );
     this.leafUrl = 'private/walkingtrail/trail';
   }

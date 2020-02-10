@@ -26,9 +26,8 @@
         <div mat-menu-item class="mat-menu-header">
           {{ 'LAYOUT.ADMIN' | translate }}
         </div>
-        <div mat-menu-item>
-          <a mat-menu-item [routerLink]="['/private','admin','manage-alert-definition']"
-             routerLinkActive="router-link-active">
+        <div mat-menu-item *ngIf="!layoutService.user?.hasRole('pxs:iot:location_admin')">
+          <a mat-menu-item [routerLink]="['/private','admin','manage-alert-definition']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.ALERT_DEFINITIONS' | translate }}
           </a>
         </div>
@@ -50,9 +49,8 @@
             {{ 'LAYOUT.MANAGE_THINGS' | translate }}
           </button>
         </div>
-        <div mat-menu-item>
-          <button mat-menu-item [routerLink]="['/private','admin','manage-threshold-templates']"
-                  routerLinkActive="router-link-active">
+        <div mat-menu-item *ngIf="!layoutService.user?.hasRole('pxs:iot:location_admin')">
+          <button mat-menu-item [routerLink]="['/private','admin','manage-threshold-templates']" routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_THRESHOLD_TEMPLATES' | translate }}
           </button>
         </div>

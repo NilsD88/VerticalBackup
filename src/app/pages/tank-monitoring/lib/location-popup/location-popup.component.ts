@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { TankMonitoringAssetService } from './../../../../services/tankmonitoring/asset.service';
 import { TankMonitoringLocationService } from './../../../../services/tankmonitoring/location.service';
 import { Component, OnInit, Optional, Inject, OnDestroy } from '@angular/core';
@@ -15,12 +16,14 @@ export class TankMonitoringLocationPopupComponent extends LocationPopupComponent
     public dialogRef: MatDialogRef<any>,
     public locationService: TankMonitoringLocationService,
     public assetService: TankMonitoringAssetService,
+    protected sharedService: SharedService,
   ) {
     super(
       data,
       dialogRef,
       locationService,
-      assetService
+      assetService,
+      sharedService
     );
     this.assetUrl = '/private/tankmonitoring/consumptions/';
    }

@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { Router } from '@angular/router';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
@@ -24,6 +25,7 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
     public locationService: LocationService,
     public snackBar: MatSnackBar,
     public dialog: MatDialog,
+    protected sharedService: SharedService,
   ) {
     super(
       changeDetectorRef,
@@ -31,6 +33,7 @@ export class WalkingTrailMapComponent extends MapComponent implements OnInit, On
       locationService,
       snackBar,
       dialog,
+      sharedService
     );
   }
 

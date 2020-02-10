@@ -1,3 +1,4 @@
+import { SharedService } from './../../../../services/shared.service';
 import { TankMonitoringLocationService } from 'src/app/services/tankmonitoring/location.service';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 import { InventoryComponent } from 'projects/ngx-proximus/src/lib/inventory/inventory.component';
@@ -19,6 +20,7 @@ export class TankMonitoringInventoryComponent extends InventoryComponent impleme
     public thresholdTemplateService: ThresholdTemplateService,
     public locationService: TankMonitoringLocationService,
     public activatedRoute: ActivatedRoute,
+    protected sharedService: SharedService,
   ) {
     super(
       changeDetectorRef,
@@ -26,6 +28,7 @@ export class TankMonitoringInventoryComponent extends InventoryComponent impleme
       thresholdTemplateService,
       locationService,
       activatedRoute,
+      sharedService
     );
     this.assetUrl = '/private/tankmonitoring/consumptions/';
   }
