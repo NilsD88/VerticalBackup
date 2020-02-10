@@ -212,6 +212,7 @@ export class TrailMapComponent implements OnInit {
         });
         this.trailsLayer.push(newMarker);
       }
+
       this.setTrailBounds(children);
       this.fitBoundsAndZoomOnTrail();
     }
@@ -275,13 +276,22 @@ export class TrailMapComponent implements OnInit {
 
   public fitBoundsAndZoomOnTrail() {
     if (this.trailBounds.isValid()) {
-      this.currentMap.fitBounds(this.trailBounds);
-      setTimeout(() => {
-        const currentZoom = this.currentMap.getZoom();
-        if (this.location.geolocation) {
-          this.currentMap.setView(this.location.geolocation, currentZoom - 1);
-        }
-      }, 0);
+      if (
+        this.trailBounds.getSouthWest().lat === this.trailBounds.getNorthEast().lat &&
+        this.trailBounds.getSouthWest().lng === this.trailBounds.getNorthEast().lng
+      ) {
+        setTimeout(() => {
+          this.currentMap.panTo(this.location.geolocation);
+        });
+      } else {
+        this.currentMap.fitBounds(this.trailBounds);
+        setTimeout(() => {
+          const currentZoom = this.currentMap.getZoom();
+          if (this.location.geolocation) {
+            this.currentMap.setView(this.location.geolocation, currentZoom - 1);
+          }
+        }, 0);
+      }
     } else {
       setTimeout(() => {
         this.currentMap.panTo(this.location.geolocation);
@@ -292,7 +302,16 @@ export class TrailMapComponent implements OnInit {
   public fitBoundsAndZoomOnCheckpoints(assets: IPeopleCountingAsset[]) {
     const bounds = this.getCheckpointBounds(assets);
     if (bounds.isValid()) {
-      this.currentMap.fitBounds(bounds);
+      if (
+        bounds.getSouthWest().lat === this.trailBounds.getNorthEast().lat &&
+        bounds.getSouthWest().lng === this.trailBounds.getNorthEast().lng
+      ) {
+        setTimeout(() => {
+          this.currentMap.panTo(this.location.geolocation);
+        });
+      } else {
+        this.currentMap.fitBounds(bounds);
+      }
     } else {
       setTimeout(() => {
         this.currentMap.panTo(this.selectedTrail.geolocation);
