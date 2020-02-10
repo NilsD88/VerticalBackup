@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
@@ -37,8 +38,17 @@ export class SummaryStatisticsComponent implements OnInit {
   async ngOnInit() {
     this.displayedColumns = ['totalWeek', 'totalDay', 'avgWeek', 'avgDay'];
 
+    let leafsId: string[];
+    if (this.leaf.parent.id === this.leaf.id) {
+      leafsId = [this.leaf.id];
+    } else {
+      leafsId = this.leaf.parent.children.map(
+        location => location.id
+      );
+    }
+
     const leafs = await this.locationService.getLocationsDataByIds(
-      (this.leaf.parent.children || []).map(location => location.id),
+      leafsId,
       'DAILY',
       moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
       moment().valueOf()

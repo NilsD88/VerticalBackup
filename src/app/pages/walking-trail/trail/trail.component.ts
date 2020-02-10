@@ -35,13 +35,9 @@ export class TrailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
-      this.leaf = await this.locationService.getLocationById(params.id).toPromise();
-      this.assetColors = randomColor({
-        count: this.leaf.assets.length
-      });
-      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
       let rootLocation: IPeopleCountingLocation;
-      if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+      if (isLocationAdmin) {
         rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
       } else {
         rootLocation = {
@@ -54,6 +50,15 @@ export class TrailComponent implements OnInit {
           children:  await this.locationService.getLocationsTree().toPromise()
         };
       }
+      if (isLocationAdmin && rootLocation.id === params.id) {
+        this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+      } else {
+        this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      }
+      this.assetColors = randomColor({
+        count: this.leaf.assets.length
+      });
+      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
       if (this.leaf.parent) {
         const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
         this.parentLocation = parentLocation;

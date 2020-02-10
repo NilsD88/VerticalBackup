@@ -1,7 +1,12 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-sm-12">
-      <pvf-trail-map [location]="parentLocation" *ngIf="parentLocation" [leaf]="leaf" [assetUrl]="assetUrl"></pvf-trail-map>
+      <pvf-trail-map 
+        *ngIf="parentLocation"
+        [location]="parentLocation"
+        [leaf]="leaf"
+        [assetUrl]="assetUrl"
+      ></pvf-trail-map>
     </div>
     <div class="col-md-6 col-sm-12">
       <pvf-trail-images [leaf]="leaf"></pvf-trail-images>
@@ -10,7 +15,7 @@
   </div>
 </div>
 <pvf-peoplecounting-month-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
-<pvf-trails-benchmark [parentLocation]="parentLocation"></pvf-trails-benchmark>
+<pvf-trails-benchmark *ngIf="parentLocation?.id !== leaf?.id" [parentLocation]="parentLocation"></pvf-trails-benchmark>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-6 col-sm-12">
