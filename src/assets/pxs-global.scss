@@ -1382,5 +1382,7 @@ mat-form-field {
 }
 
 .mat-dialog-content {
-  overflow: hidden;
+  display: block;
+  max-height: none !important;
+  overflow: hidden !important;
 }
