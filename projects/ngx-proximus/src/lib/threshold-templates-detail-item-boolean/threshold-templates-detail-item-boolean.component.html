@@ -10,10 +10,10 @@
 <div class="threshold-bar-container">
   <div 
     class="threshold-ball"
-    *ngFor="let thresholdItems of threshold.thresholdItems"
+    *ngFor="let thresholdItem of threshold.thresholdItems"
     matTooltip="{{thresholdItem.severity}}, from {{thresholdItem.range.from}} to {{thresholdItem.range.to}}"
     [ngClass]="{'low': thresholdItem.severity=='LOW', 'medium': thresholdItem.severity=='MEDIUM', 'critical': thresholdItem.severity=='CRITICAL'}"
-    [style.left.%]="thresholdItem.range.fromPercent"
+    [style.left.%]="thresholdItem.range.from ? 100 : 0"
   ></div>
 </div>
 <div class="threshold-indicator-container">
