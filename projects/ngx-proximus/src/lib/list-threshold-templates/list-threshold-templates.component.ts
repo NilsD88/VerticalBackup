@@ -41,11 +41,7 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
     ) {}
 
   async ngOnInit() {
-    if (this.admin) {
-      this.displayedColumns = ['name', 'thresholds', 'actions'];
-    } else {
-      this.displayedColumns = ['name', 'thresholds'];
-    }
+    this.displayedColumns = ['name', 'thresholds', 'actions'];
     if (!isUndefined(this.selectedThresholdTemplate)) {
       this.displayedColumns.unshift('select');
     }
