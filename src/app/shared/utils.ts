@@ -42,13 +42,13 @@ function findItemsWithTermOnKey(term: string, collection: any[], key: string) {
     return collection.filter((item) => item[key].toLocaleUpperCase().includes(TERM));
 }
 
-function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocation[] {
-  const decreasedLeafs = [];
-  const decreasedLeafsRaw = {};
+function increaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocation[] {
+  const increasedLeafs = [];
+  const increasedLeafsRaw = {};
   for (const leaf of leafs) {
     if (leaf.parent !== null) {
-      if (!decreasedLeafsRaw[leaf.parent.id]) {
-        decreasedLeafsRaw[leaf.parent.id] = {
+      if (!increasedLeafsRaw[leaf.parent.id]) {
+        increasedLeafsRaw[leaf.parent.id] = {
           id: leaf.parent.id,
           name: leaf.parent.name,
           series: leaf.series,
@@ -56,15 +56,15 @@ function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocatio
           children: [leaf]
         };
       } else {
-        decreasedLeafsRaw[leaf.parent.id].series = [
-          ...decreasedLeafsRaw[leaf.parent.id].series,
+        increasedLeafsRaw[leaf.parent.id].series = [
+          ...increasedLeafsRaw[leaf.parent.id].series,
           ...leaf.series
         ];
-        decreasedLeafsRaw[leaf.parent.id].children.push(leaf);
+        increasedLeafsRaw[leaf.parent.id].children.push(leaf);
       }
     }
   }
-  Object.values(decreasedLeafsRaw).forEach((leaf: IPeopleCountingLocation) => {
+  Object.values(increasedLeafsRaw).forEach((leaf: IPeopleCountingLocation) => {
     const series = {};
     leaf.series.forEach(serie => {
       series[serie.timestamp] = {
@@ -73,29 +73,29 @@ function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocatio
         valueOut: ((series[serie.timestamp] || {}).valueOut || 0) + serie.valueOut
       };
     });
-    decreasedLeafs.push({
+    increasedLeafs.push({
       ...leaf,
       series: Object.values(series),
     });
   });
-  if (decreasedLeafs.length > 0) {
-    return decreasedLeafs;
+  if (increasedLeafs.length > 0) {
+    return increasedLeafs;
   } else {
     return leafs;
   }
 }
 
-function increaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocation[] {
-  const increasedLeafs = [];
+function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocation[] {
+  const decreasedLeafs = [];
   for (const leaf of leafs) {
     if (leaf.children && leaf.children.length > 0) {
       for (const child of leaf.children) {
-        increasedLeafs.push(child);
+        decreasedLeafs.push(child);
       }
     }
   }
-  if (increasedLeafs.length > 0) {
-    return increasedLeafs;
+  if (decreasedLeafs.length > 0) {
+    return decreasedLeafs;
   } else {
     return leafs;
   }
