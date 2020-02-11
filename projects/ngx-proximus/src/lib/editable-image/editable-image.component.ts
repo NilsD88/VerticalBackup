@@ -13,7 +13,7 @@ export class EditableImageComponent implements OnInit {
 
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
-  @Input() image = '';
+  @Input() image: string;
   @Input() dialogTitle = 'Edit image';
   @Input() ratio: number = null;
   @Input() maxWidthAndHeight = 1024;

@@ -322,6 +322,12 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
     }
   }
 
+  public changeLocationImages(index: number, image: string) {
+    if (typeof image === 'string') {
+      this.location.images[index] = image;
+    }
+  }
+
   public cancelWizard() {
     this.router.navigateByUrl('/private/walkingtrail/dashboard');
   }
