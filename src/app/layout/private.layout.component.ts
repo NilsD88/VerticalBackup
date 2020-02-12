@@ -55,7 +55,6 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
-    this.numberOfUnreadAlerts$ = this.alertService.numberOfUnreadAlerts$.asObservable();
     this.topMenuConfig = {
       languages: this.layoutService.languages.map(this.layoutService.mapLanguage),
       activeLanguage: this.layoutService.currentLang,
@@ -70,7 +69,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
       }
     };
     this.footerConfig = await this.layoutService.getFooterTranslations();
-
+    this.numberOfUnreadAlerts$ = this.alertService.numberOfUnreadAlerts$.asObservable();
     this.subs.add(
       this.alertService.getNumberOfUnreadAlerts().subscribe()
     );
