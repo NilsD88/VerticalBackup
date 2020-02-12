@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { SubSink } from 'subsink';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
@@ -71,7 +72,8 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private translateService: TranslateService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
 
@@ -142,6 +144,20 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
       plotOptions: {
         column: {
           stacking: 'normal'
+        },
+        series: {
+          point: {
+            events: {
+              click: (event) => {
+                try {
+                  const assetId = event.point.series.options.id;
+                  this.router.navigateByUrl(`${this.assetUrl}${assetId}`);
+                } catch (error) {
+                  console.error(error);
+                }
+              }
+            }
+          }
         }
       },
       series: [],

@@ -205,10 +205,15 @@ export class TrailMapComponent implements OnInit {
             icon: trailIcon(child.name, status, this.leaf.id === child.id)
           }
         ).on('click', async (event) => {
-          this.options = null;
-          this.changeDetectorRef.detectChanges();
-          this.selectedTrail = child;
-          this.initMap();
+          if (this.leaf.id === child.id) {
+            this.options = null;
+            this.changeDetectorRef.detectChanges();
+            this.selectedTrail = child;
+            this.initMap();
+          } else {
+            this.router.navigateByUrl(`private/walkingtrail/trail/${child.id}`);
+            this.ngOnInit();
+          }
         });
         this.trailsLayer.push(newMarker);
       }

@@ -2,9 +2,9 @@ import { SharedService } from './../../../services/shared.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import { findLocationById } from 'src/app/shared/utils';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import * as randomColor from 'randomcolor';
@@ -31,10 +31,16 @@ export class TrailComponent implements OnInit {
     public assetService: WalkingTrailAssetService,
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
-  ) { }
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
+  ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.routeReuseStrategy.shouldDetach = () => true;
+  }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
+      this.changeDetectorRef.detectChanges();
       const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
       let rootLocation: IPeopleCountingLocation;
       if (isLocationAdmin) {
