@@ -4,7 +4,7 @@ import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef, Output, Eve
 import * as randomColor from 'randomcolor';
 
 import * as Highcharts from 'highcharts';
-import { decreaseLeafs } from 'src/app/shared/utils';
+import { increaseLeafs } from 'src/app/shared/utils';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { isNullOrUndefined } from 'util';
 import { ILeafColors } from '../../leaf.model';
@@ -121,7 +121,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
     }
 
     const data = [];
-    const leafs = decreaseLeafs(cloneDeep(this.leafs));
+    const leafs = increaseLeafs(cloneDeep(this.leafs));
     for (const leaf of leafs) {
       data.push({
         id: leaf.id,
