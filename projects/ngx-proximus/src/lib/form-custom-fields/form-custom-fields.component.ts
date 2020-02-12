@@ -24,7 +24,6 @@ export class FormCustomFieldsComponent implements OnInit {
   }
 
   setValue(id: string, value: string) {
-
     const index = (this.customFields || []).findIndex(x => x.keyId === id);
     if (index < 0) {
       this.customFields.push({
