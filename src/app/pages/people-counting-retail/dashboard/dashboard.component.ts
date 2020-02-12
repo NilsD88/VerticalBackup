@@ -183,8 +183,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         return this.locationService.getLocationsDataByIds(
           this.leafs.map(leaf => leaf.id),
           'MONTHLY',
-          moment().subtract(1, 'year').set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-          moment().set({month: 0, date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+          moment().subtract(1, 'year').set({date: 1, hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+          moment().subtract(1, 'month').endOf('month').valueOf(),
         ).pipe(catchError((error) => {
           console.error(error);
           this.lastYearLeafsLoading = false;
