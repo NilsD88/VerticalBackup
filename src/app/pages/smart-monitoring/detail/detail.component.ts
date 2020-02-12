@@ -64,6 +64,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
   ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.routeReuseStrategy.shouldDetach = () => true;
   }
 
   ngOnInit() {

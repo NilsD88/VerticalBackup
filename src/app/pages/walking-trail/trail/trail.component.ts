@@ -31,7 +31,6 @@ export class TrailComponent implements OnInit {
     public assetService: WalkingTrailAssetService,
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
-    private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -40,7 +39,6 @@ export class TrailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
-      this.changeDetectorRef.detectChanges();
       const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
       let rootLocation: IPeopleCountingLocation;
       if (isLocationAdmin) {
