@@ -24,6 +24,7 @@ import {
 import {
   IAlertFilterBE
 } from '../pages/alerts/alerts.component';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class AlertService {
     private apollo: Apollo,
   ) {}
 
+  public numberOfUnreadAlerts$ = new Subject<number>();
 
   // START APOLLO
 
@@ -56,6 +58,7 @@ export class AlertService {
     }).valueChanges.pipe(map(({
       data
     }) => {
+      this.numberOfUnreadAlerts$.next(data.number);
       return data.number;
     }));
   }

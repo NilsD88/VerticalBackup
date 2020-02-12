@@ -18,9 +18,9 @@
                     align-items: center;
                     justify-content: center;
                     border-radius: 20px;
-                    box-shadow: 0 0px 25px rgba(0, 0, 0, 0.33);                
+                    box-shadow: 0 0px 25px rgba(0, 0, 0, 0.33); 
+                    background: #FAEBAE;               
                     &.down {
-                        background: #FAEBAE;
                         &::before {
                             font-size: 20px;
                             transform: rotate(135deg);
@@ -28,7 +28,6 @@
                         }
                     }
                     &.up {
-                        background: #47A7EC;
                         &::before {
                             font-size: 20px;
                             transform: rotate(-45deg);
@@ -36,11 +35,13 @@
                         }
                     }
                     &.equal {
-                        background: #FAEBAE;
                         &::before {
                             font-size: 20px;
                             content: '='
                         }
+                    }
+                    &.selected {
+                        background: #47A7EC !important;
                     }
                 }
 
