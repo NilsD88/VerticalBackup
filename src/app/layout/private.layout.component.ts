@@ -7,7 +7,7 @@ import {LayoutService} from './layout.service';
 import {IFooterConfig} from 'projects/ngx-proximus/src/lib/footer/footer.component';
 import {TranslateService} from '@ngx-translate/core';
 import {TopMenuConfig} from 'projects/ngx-proximus/src/lib/top-menu/top-menu.component';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
@@ -27,7 +27,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   public footerConfig: IFooterConfig;
   public searchResults: any[];
   public searchTerm$ = new Subject<string>();
-  public numberOfUnreadAlerts = null;
+  public numberOfUnreadAlerts$ = new Observable <number> ();
 
   private subs = new SubSink();
 
@@ -55,6 +55,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<void> {
+    this.numberOfUnreadAlerts$ = this.alertService.numberOfUnreadAlerts$.asObservable();
     this.topMenuConfig = {
       languages: this.layoutService.languages.map(this.layoutService.mapLanguage),
       activeLanguage: this.layoutService.currentLang,
@@ -71,9 +72,7 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     this.footerConfig = await this.layoutService.getFooterTranslations();
 
     this.subs.add(
-      this.alertService.getNumberOfUnreadAlerts().subscribe((numberOfUnreadAlerts) => {
-        this.numberOfUnreadAlerts = (numberOfUnreadAlerts > 0) ? ((numberOfUnreadAlerts > 99) ? '99+' : numberOfUnreadAlerts ) : null;
-      })
+      this.alertService.getNumberOfUnreadAlerts().subscribe()
     );
   }
 

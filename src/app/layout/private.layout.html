@@ -73,7 +73,7 @@
   <pxs-menu-item [label]="'People counting'" [mat-menu-trigger-for]="peopleCounting" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"></pxs-menu-item>
   <pxs-menu-item [label]="'Stairway to health'" [mat-menu-trigger-for]="stairwayToHealth" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
-    label: numberOfUnreadAlerts,
+    label: ((numberOfUnreadAlerts$ | async) > 99 ? '99+' : (numberOfUnreadAlerts$ | async)),
     class: 'red-badge'
   }"></pxs-menu-item>
 </pxs-main-menu>
