@@ -116,7 +116,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
       image: null,
       geolocation: null,
       customFields: [],
-      module: 'PEOPLE_COUNTING_RETAIL'
+      module: 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.locationService.getLocationById(parentId).toPromise();
