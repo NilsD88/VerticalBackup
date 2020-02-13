@@ -63,6 +63,7 @@ export class TrailComponent implements OnInit {
         count: this.leaf.assets.length
       });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      this.leaf.assets = this.assets;
       if (this.leaf.parent) {
         const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
         this.parentLocation = parentLocation;
