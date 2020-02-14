@@ -118,7 +118,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
     });
 
     const weekdaysShorts = moment.weekdaysShort();
-    weekdaysShorts.push(weekdaysShorts.shift());
+    weekdaysShorts.push(weekdaysShorts[0]);
 
     this.chartOptions = {
       time: {
@@ -130,7 +130,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
         marginTop: 50,
         marginBottom: 40,
         events: {
-          render: function () {
+          render: function() {
             const series = this.series;
             let bbox;
 
@@ -226,11 +226,14 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
         formatter: function () {
           if (!isNullOrUndefined(this.point.value)) {
             return `
-              ${Highcharts.dateFormat('%a %e. %B %Y', this.point.date)}
+              ${moment(this.point.date).format('L')}
               <br><div>Value: ${this.point.value} </div>
             `;
           } else {
-            return false;
+            return `
+              ${moment(this.point.date).format('L')}
+              <br><div>Value: null </div>
+            `;
           }
         }
       },
@@ -243,9 +246,6 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
             crop: false,
             overflow: 'allow',
             formatter: function () {
-              if (this.point.y == 6 || this.point.y == 16)
-                return this.point.week;
-              else
                 return null;
             },
             style: {
@@ -267,7 +267,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
     try {
       this.chart = Highcharts.chart('calendar-view-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -301,7 +301,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
           }
           return [
             (currentWeekNumber - firstWeekNumber + padding),
-            (date.isoWeekday() - 1),
+            (date.isoWeekday()),
             serie.valueIn,
             (date.isoWeek() - weekNumber + 1),
             serie.timestamp
@@ -319,7 +319,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
     } catch (error) {
       this.chartOptions.series = [];
       this.chart = Highcharts.chart('calendar-view-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 
