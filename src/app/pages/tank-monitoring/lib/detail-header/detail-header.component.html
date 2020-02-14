@@ -4,7 +4,8 @@
       <div class="col-sm-6 col-xs-12">
         <h2>{{orgName}}</h2>
         <h4 (click)="openDialog()" class="text-accent" *ngIf="asset">
-          <pxs-icon icon="globe"></pxs-icon> {{asset?.location?.name}}
+          <pxs-icon icon="globe"></pxs-icon>
+          {{asset?.location?.name}}
         </h4>
         <h4 class="text-accent" *ngIf="!asset">
           <a style="color: inherit;">
@@ -22,7 +23,8 @@
         </p>
         <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
         <p>
-          <i *ngIf="asset?.lastRefill?.timestamp">Last refill: {{asset?.lastRefill?.timestamp | date: 'dd/MM/yyyy' }}</i>
+          <i *ngIf="asset?.lastRefill?.timestamp">Filled to {{asset?.lastRefill.value}}% on
+            : {{asset?.lastRefill?.timestamp | date: 'dd/MM/yyyy' }}</i>
         </p>
         <br>
       </div>
