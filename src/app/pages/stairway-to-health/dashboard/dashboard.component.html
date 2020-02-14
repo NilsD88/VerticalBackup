@@ -38,17 +38,17 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12" style="height:400px">
+        <div class="col-md-12">
             <pvf-stairwaytohealth-dashboard-total-count-chart [locations]="currentLocations" [locationColors]="locationColors" style="height:400px"></pvf-stairwaytohealth-dashboard-total-count-chart>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12" style="height:400px">
+        <div class="col-md-12">
             <pvf-peoplecounting-total-count-past-year [leafs]="lastYearLocations" [leafColors]="locationColors" [leafUrl]="leafUrl"  [loading]="lastYearLocationsLoading" [loadingError]="lastYearLocationsLoadingError" (wantTryAgain)="lastYearLocations$.next()" style="height:400px"></pvf-peoplecounting-total-count-past-year>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12" style="height:400px">
+        <div class="col-md-12">
             <pvf-stairwaytohealth-dashboard-statistics [locations]="currentLocations" [locationColors]="locationColors" style="height:400px"></pvf-stairwaytohealth-dashboard-statistics>
         </div>
     </div>
