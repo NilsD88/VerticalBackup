@@ -147,6 +147,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
     const series = [];
     locations.forEach((location) => {
       const locationId = location.id;
+      try {
       series.push(
         {
           id: locationId,
@@ -157,6 +158,11 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
           })
         }
       );
+      } catch (error) {
+        console.error(error);
+        console.log(cloneDeep(location));
+        console.log(cloneDeep(location.series));
+      }
     });
 
     this.chartOptions.series = series;
@@ -182,6 +188,8 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError((error) => {
+          console.log('catchError');
+          console.log(cloneDeep(this.locations));
           console.error(error);
           this.chartLoading = false;
           this.loadingError = true;

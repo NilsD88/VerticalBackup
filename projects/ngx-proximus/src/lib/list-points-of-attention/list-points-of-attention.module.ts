@@ -4,6 +4,8 @@ import { MatTableModule, MatSortModule, MatCardModule, MatProgressSpinnerModule,
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListPointsOfAttentionComponent } from './list-points-of-attention.component';
+import { PopupConfirmationComponent } from '../popup-confirmation/popup-confirmation.component';
+import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmation.module';
 
 
 
@@ -19,7 +21,8 @@ import { ListPointsOfAttentionComponent } from './list-points-of-attention.compo
     MatProgressSpinnerModule,
     MatTooltipModule,
     IconModule,
+    PopupConfirmationModule,
   ],
-  exports: [ListPointsOfAttentionComponent]
+  exports: [ListPointsOfAttentionComponent],
 })
 export class ListPointsOfAttentionModule { }

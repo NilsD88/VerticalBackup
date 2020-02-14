@@ -8,7 +8,6 @@ import { MatTableDataSource, MatPaginator, MatSort, MatDialog } from '@angular/m
 import { ThresholdTemplatesDetailComponent } from '../threshold-templates-detail/threshold-templates-detail.component';
 import { isUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
-import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'pxs-list-threshold-templates',
