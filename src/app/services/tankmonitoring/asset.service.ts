@@ -1,13 +1,13 @@
-import { AssetService } from 'src/app/services/asset.service';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Apollo } from 'apollo-angular';
+import {AssetService} from 'src/app/services/asset.service';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Apollo} from 'apollo-angular';
 import gql from 'graphql-tag';
-import { ITankMonitoringAsset } from 'src/app/models/tankmonitoring/asset.model';
-import { map, timestamp } from 'rxjs/operators';
-import { IThing } from 'src/app/models/thing.model';
-import { HttpClient } from '@angular/common/http';
-import { IPagedAssets } from 'src/app/models/asset.model';
+import {ITankMonitoringAsset} from 'src/app/models/tankmonitoring/asset.model';
+import {map} from 'rxjs/operators';
+import {IThing} from 'src/app/models/thing.model';
+import {HttpClient} from '@angular/common/http';
+import {IPagedAssets} from 'src/app/models/asset.model';
 
 
 const MODULE_NAME = 'TANK_MONITORING';
@@ -27,47 +27,47 @@ export class TankMonitoringAssetService extends AssetService {
     );
   }
 
-  public createAsset(asset: ITankMonitoringAsset): Observable < boolean > {
+  public createAsset(asset: ITankMonitoringAsset): Observable<boolean> {
     asset.module = MODULE_NAME;
     return super.createAsset(asset);
   }
 
-  public getAssets(): Observable < ITankMonitoringAsset[] > {
-    // Real data
-    const GET_ASSETS_BY_MODULE = gql `
-        query FindAssetsByModule($input: AssetFindByModuleInput!) {
-          assets: findAssetsByModule(input: $input) {
-            id,
-            name,
-            location {
-              id,
-              name,
-            },
-            geolocation {
-              lat,
-              lng
-            }
-            things {
-              devEui,
-              batteryPercentage,
-              sensors {
-                sensorType {
+  public getAssets(): Observable<ITankMonitoringAsset[]> {
+      // Real data
+      const GET_ASSETS_BY_MODULE = gql`
+          query FindAssetsByModule($input: AssetFindByModuleInput!) {
+              assets: findAssetsByModule(input: $input) {
                   id,
-                  name
-                }
-                value,
-                timestamp
+                  name,
+                  location {
+                      id,
+                      name,
+                  },
+                  geolocation {
+                      lat,
+                      lng
+                  }
+                  things {
+                      devEui,
+                      batteryPercentage,
+                      sensors {
+                          sensorType {
+                              id,
+                              name
+                          }
+                          value,
+                          timestamp
+                      }
+                  }
               }
-            }
           }
-        }
       `;
 
     interface GetAssetsTankMonitoringDashboardResponse {
       assets: ITankMonitoringAsset[];
     }
 
-    return this.apollo.query < GetAssetsTankMonitoringDashboardResponse > ({
+    return this.apollo.query <GetAssetsTankMonitoringDashboardResponse>({
       query: GET_ASSETS_BY_MODULE,
       fetchPolicy: 'network-only',
       variables: {
@@ -76,12 +76,12 @@ export class TankMonitoringAssetService extends AssetService {
         }
       }
     }).pipe(map(({
-      data
-    }) => data.assets));
+                   data
+                 }) => data.assets));
 
   }
 
-  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedAssets > {
+  public getPagedAssets(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable<IPagedAssets> {
     return super.getPagedAssets(
       pageNumber,
       pageSize,
@@ -90,102 +90,103 @@ export class TankMonitoringAssetService extends AssetService {
     );
   }
 
-  public getAssetPopupDetail(id: string): Observable < ITankMonitoringAsset > {
-    const GET_ASSET_POPUP_DETAIL_BY_ID = gql `
-            query findAssetById($id: Long!) {
-                asset: findAssetById(id: $id) {
-                    id,
-                    name,
-                    description,
-                    image,
-                    lastRefill {
+  public getAssetPopupDetail(id: string): Observable<ITankMonitoringAsset> {
+      const GET_ASSET_POPUP_DETAIL_BY_ID = gql`
+          query findAssetById($id: Long!) {
+              asset: findAssetById(id: $id) {
+                  id,
+                  name,
+                  description,
+                  image,
+                  lastRefill {
                       timestamp
-                    },
-                    location {
+                  },
+                  location {
                       name,
-                    },
-                    things {
-                     devEui,
-                     batteryPercentage,
-                     sensors {
-                       value
-                     }
-                    }
-                }
-            }
-        `;
+                  },
+                  things {
+                      devEui,
+                      batteryPercentage,
+                      sensors {
+                          value
+                      }
+                  }
+              }
+          }
+      `;
 
     interface GetAssetDetailByIdResponse {
       asset: ITankMonitoringAsset;
     }
 
-    return this.apollo.query < GetAssetDetailByIdResponse > ({
+    return this.apollo.query <GetAssetDetailByIdResponse>({
       query: GET_ASSET_POPUP_DETAIL_BY_ID,
       fetchPolicy: 'network-only',
       variables: {
         id,
       }
     }).pipe(map(({
-      data
-    }) => data.asset));
+                   data
+                 }) => data.asset));
   }
 
-  public getAssetDetailById(id: string): Observable < ITankMonitoringAsset > {
+  public getAssetDetailById(id: string): Observable<ITankMonitoringAsset> {
 
-    const GET_ASSET_DETAIL_BY_ID = gql `
-            query findAssetById($id: Long!) {
-                asset: findAssetById(id: $id) {
-                    id,
-                    name,
-                    description,
-                    lastRefill {
-                      timestamp
-                    },
-                    geolocation {
+      const GET_ASSET_DETAIL_BY_ID = gql`
+          query findAssetById($id: Long!) {
+              asset: findAssetById(id: $id) {
+                  id,
+                  name,
+                  description,
+                  lastRefill {
+                      timestamp,
+                      value
+                  },
+                  geolocation {
                       lat,
                       lng
-                    },
-                    location {
+                  },
+                  location {
                       id,
                       name,
                       geolocation {
-                        lat,
-                        lng
+                          lat,
+                          lng
                       },
                       image
-                    },
-                    customFields {
+                  },
+                  customFields {
                       keyId,
                       value
-                    }
-                    things {
-                     id,
-                     name,
-                     devEui,
-                     batteryPercentage,
-                     sensors {
-                       id,
-                       sensorType {
-                        id,
-                        name,
-                        postfix
-                       },
-                       timestamp,
-                       value,
-                       sensorDefinition {
-                         name,
-                         useOnChart,
-                         chartType,
-                         aggregatedValues {
-                          min,
-                          max,
-                          avg,
-                          sum
-                         }
-                       }
-                     }
-                    },
-                    thresholdTemplate {
+                  }
+                  things {
+                      id,
+                      name,
+                      devEui,
+                      batteryPercentage,
+                      sensors {
+                          id,
+                          sensorType {
+                              id,
+                              name,
+                              postfix
+                          },
+                          timestamp,
+                          value,
+                          sensorDefinition {
+                              name,
+                              useOnChart,
+                              chartType,
+                              aggregatedValues {
+                                  min,
+                                  max,
+                                  avg,
+                                  sum
+                              }
+                          }
+                      }
+                  },
+                  thresholdTemplate {
                       id,
                       name,
                       thresholds {
@@ -206,35 +207,35 @@ export class TankMonitoringAssetService extends AssetService {
                               severity,
                           }
                       }
-                    },
-                    image
-                }
-            }
-        `;
+                  },
+                  image
+              }
+          }
+      `;
 
     interface GetAssetDetailByIdResponse {
       asset: ITankMonitoringAsset;
     }
 
-    return this.apollo.query < GetAssetDetailByIdResponse > ({
+    return this.apollo.query <GetAssetDetailByIdResponse>({
       query: GET_ASSET_DETAIL_BY_ID,
       fetchPolicy: 'network-only',
       variables: {
         id,
       }
     }).pipe(map(({
-      data
-    }) => data.asset));
+                   data
+                 }) => data.asset));
   }
 
-  public getAssetsByLocationId(locationId: string): Observable < ITankMonitoringAsset[] > {
+  public getAssetsByLocationId(locationId: string): Observable<ITankMonitoringAsset[]> {
     return super.getAssetsByLocationId(
       locationId,
       MODULE_NAME
     );
   }
 
-  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable < IThing[] > {
+  public getAssetDataById(id: string, interval: string, from: number, to: number): Observable<IThing[]> {
     return super.getAssetDataById(
       id,
       interval,
