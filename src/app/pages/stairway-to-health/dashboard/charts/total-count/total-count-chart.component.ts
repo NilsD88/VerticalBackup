@@ -66,7 +66,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
   }) dataRangeSelection;
 
   @Input() locations: IPeopleCountingLocation[];
-  @Input() locationColors: ILeafColors[];
+  @Input() locationColors: ILeafColors[] = [];
 
   public filter: IFilterChartData = {
     interval: 'DAILY',
@@ -178,7 +178,6 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
         this.chartLoading = true;
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-        // REAL DATA
         return this.locationService.getLocationsDataByIds(
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to

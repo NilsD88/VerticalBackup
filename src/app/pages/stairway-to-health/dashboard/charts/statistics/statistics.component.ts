@@ -37,7 +37,7 @@ mTZ();
 export class StatisticsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() locations: IPeopleCountingLocation[];
-  @Input() locationColors: ILeafColors[];
+  @Input() locationColors: ILeafColors[] = [];
 
   public subjects = {
     day: new Subject<null>(),
