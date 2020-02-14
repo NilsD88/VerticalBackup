@@ -9,7 +9,7 @@
         <img 
           *ngFor="let sensor of thing.sensors"
           [src]="'assets/smartmonitoring/images/icons/icon-'+ sensor.sensorType.name + '.svg'"
-          [matTooltip]="sensor.sensorType.name + ' ' + sensor.sensorType.min + sensor.sensorType.postfix + ' - '+ sensor.sensorType.max + sensor.sensorType.postfix"
+          [matTooltip]="sensor.sensorType.name"
           [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
         >
         <p class="mb-0 pb-0" *ngIf="thing.name">{{thing.name}}</p>

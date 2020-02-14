@@ -61,6 +61,8 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router,
   ) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.routeReuseStrategy.shouldDetach = () => true;
   }
 
   ngOnInit() {

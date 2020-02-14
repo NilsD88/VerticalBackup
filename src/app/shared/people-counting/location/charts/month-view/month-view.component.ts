@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { SubSink } from 'subsink';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
 import {
@@ -63,15 +64,16 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
   public currentFilter: IFilterChartData = {
     interval: 'DAILY',
-    from: moment().subtract(1, 'months').date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    to: moment().date(1).set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf()
+    from: moment().subtract(1, 'months').startOf('month').valueOf(),
+    to: moment().subtract(1, 'months').endOf('month').valueOf(),
   };
 
   private subs = new SubSink();
 
   constructor(
     private translateService: TranslateService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
 
@@ -142,6 +144,20 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
       plotOptions: {
         column: {
           stacking: 'normal'
+        },
+        series: {
+          point: {
+            events: {
+              click: (event) => {
+                try {
+                  const assetId = event.point.series.options.id;
+                  this.router.navigateByUrl(`${this.assetUrl}${assetId}`);
+                } catch (error) {
+                  console.error(error);
+                }
+              }
+            }
+          }
         }
       },
       series: [],
@@ -164,7 +180,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
     try {
       this.chart = Highcharts.chart('month-view-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -186,10 +202,10 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
     const initialValue = [];
     let weekNumber = 1;
     let oldWeekday = 1;
-    const daysInMonth = moment().subtract(1, 'months').date(1).daysInMonth();
+    const daysInMonth = moment(this.currentFilter.from).daysInMonth();
     for (let index = 0; index < daysInMonth; index++) {
       initialValue.push(null);
-      const weekDay = moment().subtract(1, 'months').date(index + 1).isoWeekday();
+      const weekDay = moment(this.currentFilter.from).date(index + 1).isoWeekday();
       if (weekDay < oldWeekday) {
         weekNumber++;
       }
@@ -215,8 +231,8 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
         for (const serie of asset.series) {
           const date = moment(serie.timestamp).date();
-          assetInValues[date + 1] = serie.valueIn;
-          assetOutValues[date + 1] = -serie.valueOut;
+          assetInValues[date - 1] = serie.valueIn;
+          assetOutValues[date - 1] = -serie.valueOut;
         }
 
         for (let index = 1; index <= weekNumber; index++) {
@@ -224,8 +240,8 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
           const weekOutValues = [null, null, null, null, null, null, null];
           const dateToAdd = dateToWeek.filter(date => date.weekNumber === index);
           for (const date of dateToAdd) {
-            weekInValues[date.weekDay - 1] = assetInValues[date.date];
-            weekOutValues[date.weekDay - 1] = assetOutValues[date.date];
+            weekInValues[date.weekDay - 1] = assetInValues[date.date - 1];
+            weekOutValues[date.weekDay - 1] = assetOutValues[date.date - 1];
           }
 
           const NOT_DISPLAY_OUT = Math.abs(Math.min(...weekOutValues)) === 0;
@@ -280,14 +296,15 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
       this.chartOptions.series = [];
       this.chartOptions.xAxis.categories = [];
       this.chart = Highcharts.chart('month-view-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 
 
   public swapPeriod(direction: boolean) {
-    this.currentFilter.from = moment(this.currentFilter.from).subtract((direction) ? -1 : 1, 'months').valueOf();
-    this.currentFilter.to = moment(this.currentFilter.to).subtract((direction) ? -1 : 1, 'months').valueOf();
+    const month = moment(this.currentFilter.from).subtract((direction) ? -1 : 1, 'months');
+    this.currentFilter.from = month.startOf('month').valueOf();
+    this.currentFilter.to =  month.endOf('month').valueOf();
     this.chartData$.next(this.currentFilter);
   }
 

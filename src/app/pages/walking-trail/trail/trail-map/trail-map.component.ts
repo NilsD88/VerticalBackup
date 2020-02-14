@@ -137,10 +137,10 @@ export class TrailMapComponent implements OnInit {
     this.trailsLayer = [];
     this.assetsLayer = [];
 
-    const trailIcon = (name, status) => divIcon({
+    const trailIcon = (name, status, selected = false) => divIcon({
       className: 'walking-trail',
       iconSize: null,
-      html: `<div class="trail"><span class="status ${status}"></span><div class="name"><span>${name}</span></div></div>`
+      html: `<div class="trail"><span class="status ${status} ${selected ? 'selected' : ''}"></span><div class="name"><span>${name}</span></div></div>`
     });
 
     const children = this.location.children.filter(child => child.module === 'PEOPLE_COUNTING_WALKING_TRAIL');
@@ -202,13 +202,18 @@ export class TrailMapComponent implements OnInit {
         const newMarker = marker(
           [child.geolocation.lat, child.geolocation.lng],
           {
-            icon: trailIcon(child.name, status)
+            icon: trailIcon(child.name, status, this.leaf.id === child.id)
           }
         ).on('click', async (event) => {
-          this.options = null;
-          this.changeDetectorRef.detectChanges();
-          this.selectedTrail = child;
-          this.initMap();
+          if (this.leaf.id === child.id) {
+            this.options = null;
+            this.changeDetectorRef.detectChanges();
+            this.selectedTrail = child;
+            this.initMap();
+          } else {
+            this.router.navigateByUrl(`private/walkingtrail/trail/${child.id}`);
+            this.ngOnInit();
+          }
         });
         this.trailsLayer.push(newMarker);
       }

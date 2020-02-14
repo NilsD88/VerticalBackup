@@ -37,6 +37,7 @@ export class PlaceComponent implements OnInit {
         count: this.leaf.assets.length
       });
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      this.leaf.assets = this.assets;
       let rootLocation: IPeopleCountingLocation;
       if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
         rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];

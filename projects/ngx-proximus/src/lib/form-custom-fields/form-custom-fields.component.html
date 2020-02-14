@@ -5,17 +5,25 @@
       (change)="setValue(field.id, $event.target.value)">
   </mat-form-field>
   <mat-form-field *ngIf="field.type === 'list'">
-    <mat-select [placeholder]="getLabelName(field.label)" matInput 
-    [value]="getValue(field.id)" (change)="setValue(field.id, $event.target.value)">
-      <mat-option *ngFor="let option of field.options.split(';')" value="option">{{option}}</mat-option>
+    <mat-select 
+      matInput
+      [placeholder]="getLabelName(field.label)"
+      [value]="getValue(field.id)"
+      (selectionChange)="setValue(field.id, $event.value)"
+    >
+      <mat-option *ngFor="let option of field.options.split(';')" [value]="option">{{option}}</mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="field.type === 'boolean'">
-    <mat-select [placeholder]="getLabelName(field.label)" matInput
-    [value]="getValue(field.id)" (change)="setValue(field.id, $event.target.value)">
-      <mat-option value="null"></mat-option>
-      <mat-option value="true">TRUE</mat-option>
-      <mat-option value="false">FALSE</mat-option>
+    <mat-select
+      matInput
+      [placeholder]="getLabelName(field.label)" 
+      [value]="getValue(field.id)"
+      (selectionChange)="setValue(field.id, $event.value)"
+    >
+      <mat-option [value]="null"></mat-option>
+      <mat-option value="'TRUE'">TRUE</mat-option>
+      <mat-option value="'FALSE'">FALSE</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

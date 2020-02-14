@@ -4,7 +4,7 @@ import { Component, Input, OnChanges, OnInit, ViewChild, ElementRef, Output, Eve
 import * as randomColor from 'randomcolor';
 
 import * as Highcharts from 'highcharts';
-import { decreaseLeafs } from 'src/app/shared/utils';
+import { increaseLeafs } from 'src/app/shared/utils';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { isNullOrUndefined } from 'util';
 import { ILeafColors } from '../../leaf.model';
@@ -95,9 +95,13 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
           },
           events: {
             click: function (event) {
-              const leafId = event.point.options.id;
-              if (!isNullOrUndefined(leafId)) {
-                instance.router.navigateByUrl(`${instance.leafUrl}/${leafId}`);
+              try {
+                const {id, parent} = event.point.options;
+                if (parent) {
+                  instance.router.navigateByUrl(`${instance.leafUrl}/${id}`);
+                }
+              } catch (error) {
+                console.error(error);
               }
             }
           }
@@ -121,17 +125,17 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
     }
 
     const data = [];
-    const leafs = decreaseLeafs(cloneDeep(this.leafs));
+    const leafs = increaseLeafs(cloneDeep(this.leafs));
     for (const leaf of leafs) {
       data.push({
-        id: leaf.id,
-        name: leaf.name,
+        id: leaf.id || 'null',
+        name: leaf.id ? leaf.name : '',
       });
       if ((leaf.children || []).length > 0) {
         for (const child of leaf.children) {
           data.push({
             name: child.name,
-            parent: leaf.id,
+            parent: leaf.id || 'null',
             id: child.id,
             color: (this.leafColors.find(element => element.id === child.id) || {})['color'] || randomColor(),
             value: child.series.reduce((a, b) => a + b.valueIn || 0, 0)
