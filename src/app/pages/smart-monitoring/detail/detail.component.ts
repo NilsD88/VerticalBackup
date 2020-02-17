@@ -18,6 +18,7 @@ import * as jspdf from 'jspdf';
 import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { IThing } from 'src/app/models/thing.model';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -75,17 +76,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.assetService.getAssetDetailById(params.id).subscribe(
             (asset) => {
               this.asset = asset;
-              for (const thing of this.asset.things) {
-                thing.sensors = thing.sensors.filter(
-                  filter => {
-                    if (filter.sensorDefinition) {
-                      return filter.sensorDefinition.useOnChart;
-                    } else {
-                      return true;
-                    }
-                  }
-                );
-              }
+              this.filterSensor(this.asset.things);
               this.changeDetectorRef.detectChanges();
               this.init();
             },
@@ -103,7 +94,10 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.getLastAlerts();
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(
-        things => this.afterGetChartData(things),
+        things => {
+          const filteredThings = this.filterSensor(things);
+          this.afterGetChartData(filteredThings);
+        },
         error => {
           this.chartData = [];
           this.myAggregatedValues = [];
@@ -167,12 +161,27 @@ export class DetailComponent implements OnInit, OnDestroy {
         }
       }
       this.chartData = chartData;
+      console.log(cloneDeep(chartData));
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
       // STANDARD DEVIATIONS
       this.aggregatedValues = aggregatedValues;
   }
 
+  private filterSensor(things: IThing[]): IThing[] {
+    for (const thing of things) {
+      thing.sensors = thing.sensors.filter(
+        filter => {
+          if (filter.sensorDefinition) {
+            return filter.sensorDefinition.useOnChart;
+          } else {
+            return true;
+          }
+        }
+      );
+    }
+    return things;
+  }
 
   public updateChartData(options: { interval?: string; from?: number; to?: number; }) {
     const interval = options.interval ? options.interval as Intervals : this.currentFilter.interval as Intervals;

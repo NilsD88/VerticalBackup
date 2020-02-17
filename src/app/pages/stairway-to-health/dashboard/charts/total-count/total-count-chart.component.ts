@@ -183,11 +183,12 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
     return request.pipe(
       debounceTime(500),
       switchMap(filter => {
+        if (!this.locations) {
+          return of([]);
+        }
         this.chartLoading = true;
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-        console.log('switchMap');
-        console.log('locations', cloneDeep(this.locations));
         return this.locationService.getLocationsDataByIds(
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to
@@ -215,6 +216,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+
 
   private initChartOptions() {
     const instance = this;
