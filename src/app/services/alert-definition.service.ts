@@ -47,7 +47,6 @@ export class AlertDefinitionService {
   }
 
   public updateDefaultAlertDefinition(alertDefinition): Promise<any> {
-    console.log(alertDefinition);
     return new Promise(async (resolve, reject) => {
       this.http.put(`${environment.baseUrl}/alertdefinitions/${alertDefinition.id}`, alertDefinition)
         .subscribe((response: any) => {
@@ -66,7 +65,6 @@ export class AlertDefinitionService {
 
   public updateDefaultAlertDefinitionEmail(alertDefinition): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      console.log(alertDefinition);
       this.http.put(`${environment.baseUrl}/alertdefinitions/${alertDefinition.id}`, alertDefinition)
         .subscribe((response: any) => {
           const snackBarRef = this.snackBar.open(

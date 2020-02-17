@@ -145,7 +145,6 @@ export class ThresholdTemplateService {
     }).pipe(map(({
       data
     }) => {
-      console.log(data);
       return data.thresholdTemplate;
     }));
   }
