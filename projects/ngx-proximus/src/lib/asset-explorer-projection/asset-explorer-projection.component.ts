@@ -103,8 +103,6 @@ export class AssetExplorerProjectionComponent extends LocationExplorerComponent 
   }
 
   getAssetsBySelectedLocation() {
-    console.log('getAssetsBySelectedLocation', this.currentLocation.id);
-    console.log(cloneDeep(this.currentLocation.assets));
     if (!this.currentLocation.assets || !(this.currentLocation.assets || []).length) {
       this.currentLocation.assets = [];
       this.loadingAssets = true;

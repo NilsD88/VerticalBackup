@@ -161,7 +161,6 @@ export class DetailComponent implements OnInit, OnDestroy {
         }
       }
       this.chartData = chartData;
-      console.log(cloneDeep(chartData));
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
       // STANDARD DEVIATIONS

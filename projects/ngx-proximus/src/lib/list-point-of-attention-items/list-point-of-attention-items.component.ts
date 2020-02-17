@@ -4,6 +4,7 @@ import { IAsset } from 'src/app/models/asset.model';
 import { IPointOfAttentionItem, IPointOfAttention } from './../../../../../src/app/models/point-of-attention.model';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { PopupConfirmationComponent } from '../popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pxs-list-point-of-attention-items',
@@ -100,8 +101,23 @@ export class ListPointOfAttentionItemsComponent implements OnInit {
 
 
   public deleteItem(item: IPointOfAttentionItem) {
-    const itemIndex = this.pointOfAttention.items.findIndex(i => i.id === item.id);
-    this.pointOfAttention.items.splice(itemIndex, 1);
-    this.updateDataSourceWithItems(this.pointOfAttention.items);
+    this.dialog.open(PopupConfirmationComponent, {
+      data: {
+        title: `Warning`,
+        content: 'Are you sure you want to delete? It will not be accessible anymore.'
+      },
+      minWidth: '320px',
+      maxWidth: '400px',
+      width: '100vw',
+      maxHeight: '80vh',
+    }).afterClosed().subscribe(
+      result => {
+        if (result) {
+          const itemIndex = this.pointOfAttention.items.findIndex(i => i.id === item.id);
+          this.pointOfAttention.items.splice(itemIndex, 1);
+          this.updateDataSourceWithItems(this.pointOfAttention.items);
+        }
+      }
+    );
   }
 }

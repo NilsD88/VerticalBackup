@@ -181,7 +181,6 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
             this.originalLocation = cloneDeep(location);
             this.changeDetectorRef.detectChanges();
             this.stepper.next();
-            console.log(this.location);
             this.isSavingOrUpdating = false;
           },
           (error) => {
