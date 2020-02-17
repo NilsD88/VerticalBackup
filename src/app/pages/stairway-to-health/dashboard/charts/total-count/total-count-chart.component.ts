@@ -186,6 +186,8 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
         this.chartLoading = true;
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
+        console.log('switchMap');
+        console.log('location', cloneDeep(location));
         return this.locationService.getLocationsDataByIds(
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to
