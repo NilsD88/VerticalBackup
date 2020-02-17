@@ -144,6 +144,8 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateChart(locations: IPeopleCountingLocation[]) {
+    console.log('total-count-chart:updateChart()');
+    console.log(cloneDeep(locations));
     const series = [];
     locations.forEach((location) => {
       const locationId = location.id;
