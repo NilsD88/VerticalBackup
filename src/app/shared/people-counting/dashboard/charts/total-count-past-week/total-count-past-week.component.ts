@@ -6,7 +6,6 @@ import * as randomColor from 'randomcolor';
 import * as Highcharts from 'highcharts';
 import { increaseLeafs } from 'src/app/shared/utils';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { isNullOrUndefined } from 'util';
 import { ILeafColors } from '../../leaf.model';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
