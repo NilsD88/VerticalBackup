@@ -212,7 +212,7 @@ export class ChartComponent implements OnInit, OnChanges {
     } catch (error) {
       this.options.series = [];
       this.chart = Highcharts.chart('chart-container', this.options);
-      console.log(error);
+      console.error(error);
     }
   }
 

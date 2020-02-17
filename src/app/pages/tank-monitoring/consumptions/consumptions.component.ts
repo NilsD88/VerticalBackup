@@ -67,7 +67,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
               this.init();
             },
             (error) => {
-              console.log(error);
+              console.error(error);
               this.router.navigate(['/error/404']);
             }
           )

@@ -58,7 +58,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
       } catch (err) {
-       console.log(err);
+       console.error(err);
        this.router.navigate(['/error/404']);
       }
     } else {

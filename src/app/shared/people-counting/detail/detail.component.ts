@@ -90,7 +90,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
               this.init();
             },
             (error) => {
-              console.log(error);
+              console.error(error);
               this.router.navigate(['/error/404']);
             }
           )
@@ -153,7 +153,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
                 postfix: sensor.sensorType.postfix
             });
           } catch (error) {
-            console.log(error);
+            console.error(error);
           }
         }
         // END STANDARD DEVIATION
@@ -201,8 +201,6 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
   public async downloadPdfDetail() {
     const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF (210 x 297)
     pdf.setFontSize(10);
-    console.log(pdf);
-
     function setStyle(styleName) {
       switch (styleName) {
         case 'title':

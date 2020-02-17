@@ -142,7 +142,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
     try {
       this.chart = Highcharts.chart('total-count-past-year-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -178,7 +178,7 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
       this.chartOptions.series = [];
       this.chartOptions.xAxis.categories = [];
       this.chart = Highcharts.chart('total-count-past-year-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 
