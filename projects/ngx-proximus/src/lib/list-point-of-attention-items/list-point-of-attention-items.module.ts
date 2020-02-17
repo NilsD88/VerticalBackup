@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ListPointOfAttentionItemsComponent } from './list-point-of-attention-items.component';
 import { MatTableModule, MatSortModule, MatCardModule, MatProgressSpinnerModule, MatButtonModule, MatTooltipModule } from '@angular/material';
 import { PointOfAttentionItemDialogComponent } from './point-of-attention-item-dialog/point-of-attention-item-dialog.component';
+import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmation.module';
 
 
 
@@ -22,6 +23,7 @@ import { PointOfAttentionItemDialogComponent } from './point-of-attention-item-d
     TranslateModule,
     MatTooltipModule,
     PointOfAttentionItemDialogModule,
+    PopupConfirmationModule,
   ],
   exports: [ListPointOfAttentionItemsComponent],
   entryComponents: [PointOfAttentionItemDialogComponent]
