@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { SharedService } from './../../../../../src/app/services/shared.service';
 import { LocationExplorerComponent } from './../location-explorer/location-explorer.component';
 import { Router } from '@angular/router';
@@ -102,6 +103,8 @@ export class AssetExplorerProjectionComponent extends LocationExplorerComponent 
   }
 
   getAssetsBySelectedLocation() {
+    console.log('getAssetsBySelectedLocation', this.currentLocation.id);
+    console.log(cloneDeep(this.currentLocation.assets));
     if (!this.currentLocation.assets || !(this.currentLocation.assets || []).length) {
       this.currentLocation.assets = [];
       this.loadingAssets = true;

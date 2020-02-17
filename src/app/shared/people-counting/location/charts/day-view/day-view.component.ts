@@ -213,7 +213,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
     try {
       this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -309,7 +309,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
       this.chartOptions.series = [];
       this.chartOptions.xAxis.categories = [];
       this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 

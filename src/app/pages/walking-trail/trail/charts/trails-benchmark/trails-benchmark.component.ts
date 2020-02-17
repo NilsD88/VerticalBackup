@@ -183,7 +183,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
     try {
       this.chart = Highcharts.chart('trails-benchmark-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -226,7 +226,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
       this.chartOptions.xAxis.categories = [];
       this.chartOptions.colors = [];
       this.chart = Highcharts.chart('trails-benchmark-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 

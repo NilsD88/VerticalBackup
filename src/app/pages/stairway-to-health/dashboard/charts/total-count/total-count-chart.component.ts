@@ -144,8 +144,6 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateChart(locations: IPeopleCountingLocation[]) {
-    console.log('total-count-chart:updateChart()');
-    console.log(cloneDeep(locations));
     const series = [];
     locations.forEach((location) => {
       const locationId = location.id;
@@ -162,8 +160,6 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
       );
       } catch (error) {
         console.error(error);
-        console.log(cloneDeep(location));
-        console.log(cloneDeep(location.series));
       }
     });
 
@@ -175,7 +171,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
     } catch (error) {
       this.chartOptions.series = [];
       this.chart = Highcharts.chart('stairway-count-chart', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -193,8 +189,6 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError((error) => {
-          console.log('catchError');
-          console.log(cloneDeep(this.locations));
           console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
@@ -269,7 +263,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
     try {
       this.chart = Highcharts.chart('stairway-count-chart', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 

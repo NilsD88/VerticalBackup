@@ -137,7 +137,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
     try {
       this.chart = Highcharts.chart('count-by-asset-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -165,7 +165,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
     } catch (error) {
       this.chartOptions.series[0].data = [];
       this.chart = Highcharts.chart('count-by-asset-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 

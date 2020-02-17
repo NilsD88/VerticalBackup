@@ -256,7 +256,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           this.snackBar.open(`Failed to read the alerts`, null, {
             duration: 2000,
           });
-          console.log(error);
+          console.error(error);
           this.alerts = oldA;
           this.filteredAlerts = oldF;
           this.postFilteredAlerts = oldP;
@@ -307,7 +307,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           this.snackBar.open(`Failed to unread the alerts`, null, {
             duration: 2000,
           });
-          console.log(error);
+          console.error(error);
           this.alerts = oldA;
           this.filteredAlerts = oldF;
           this.postFilteredAlerts = oldP;

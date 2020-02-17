@@ -146,7 +146,7 @@ export class DetailComponent implements OnInit, OnDestroy {
                   postfix: sensor.sensorType.postfix
               });
             } catch (error) {
-              console.log(error);
+              console.error(error);
             }
           }
           // END STANDARD DEVIATION

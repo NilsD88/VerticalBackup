@@ -48,7 +48,7 @@ export class LogsService {
           }
         }, (err) => {
           if (err.status === 410) {
-            console.log(err);
+            console.error(err);
           } else {
             this.sharedService.rejectPromise(errorMessage, reject);
           }
@@ -70,7 +70,7 @@ export class LogsService {
           }
         }, (err) => {
           if (err.status === 410) {
-            console.log(err);
+            console.error(err);
           } else {
             this.sharedService.rejectPromise(errorMessage , reject);
           }
