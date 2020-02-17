@@ -1,8 +1,9 @@
 import { SubSink } from 'subsink';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
 import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
+import { PopupConfirmationComponent } from '../popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pxs-list-points-of-attention',
@@ -22,7 +23,8 @@ export class ListPointsOfAttentionComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private pointOfAttentionService: PointOfAttentionService
+    private pointOfAttentionService: PointOfAttentionService,
+    private dialog: MatDialog,
   ) { }
 
   public async ngOnInit() {
@@ -38,12 +40,27 @@ export class ListPointsOfAttentionComponent implements OnInit, OnDestroy {
   }
 
   public deletePointOfAttention(id: string) {
-    this.subs.add(
-      this.pointOfAttentionService.deletePointOfAttention(id).subscribe(
-        (result) => {
-          this.getPointsOfAttention();
+    this.dialog.open(PopupConfirmationComponent, {
+      data: {
+        title: `Warning`,
+        content: 'Are you sure you want to delete? It will not be accessible anymore.'
+      },
+      minWidth: '320px',
+      maxWidth: '400px',
+      width: '100vw',
+      maxHeight: '80vh',
+    }).afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.subs.add(
+            this.pointOfAttentionService.deletePointOfAttention(id).subscribe(
+              () => {
+                this.getPointsOfAttention();
+              }
+            )
+          );
         }
-      )
+      }
     );
   }
 

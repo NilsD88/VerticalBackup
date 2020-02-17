@@ -66,7 +66,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
   }) dataRangeSelection;
 
   @Input() locations: IPeopleCountingLocation[];
-  @Input() locationColors: ILeafColors[];
+  @Input() locationColors: ILeafColors[] = [];
 
   public filter: IFilterChartData = {
     interval: 'DAILY',
@@ -144,9 +144,12 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateChart(locations: IPeopleCountingLocation[]) {
+    console.log('total-count-chart:updateChart()');
+    console.log(cloneDeep(locations));
     const series = [];
     locations.forEach((location) => {
       const locationId = location.id;
+      try {
       series.push(
         {
           id: locationId,
@@ -157,6 +160,11 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
           })
         }
       );
+      } catch (error) {
+        console.error(error);
+        console.log(cloneDeep(location));
+        console.log(cloneDeep(location.series));
+      }
     });
 
     this.chartOptions.series = series;
@@ -175,14 +183,18 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
     return request.pipe(
       debounceTime(500),
       switchMap(filter => {
+        if (!this.locations) {
+          return of([]);
+        }
         this.chartLoading = true;
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-        // REAL DATA
         return this.locationService.getLocationsDataByIds(
           this.locations.map(location => location.id),
           filter.interval, filter.from, filter.to
         ).pipe(catchError((error) => {
+          console.log('catchError');
+          console.log(cloneDeep(this.locations));
           console.error(error);
           this.chartLoading = false;
           this.loadingError = true;
@@ -204,6 +216,7 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
       }
     }
   }
+
 
   private initChartOptions() {
     const instance = this;

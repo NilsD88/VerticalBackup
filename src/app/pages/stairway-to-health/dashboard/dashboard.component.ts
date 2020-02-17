@@ -109,7 +109,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public changeLocation(location: IPeopleCountingLocation) {
-    console.log(location);
     const locations: IPeopleCountingLocation[] = location.children || [];
     this.locationColors = generateLeafColors(locations);
     this.currentLocations = locations;

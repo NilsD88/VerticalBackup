@@ -1,0 +1,9 @@
+#stairway-count-chart {
+    width: 100%;
+    height: 400px;
+}
+
+:host{
+    display: flex;
+    flex-direction: column;
+}
