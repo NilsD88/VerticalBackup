@@ -59,33 +59,60 @@ export class SummaryComponent implements OnInit, OnChanges {
 
 
   async getAllData() {
-    const totalYesterday = await this.locationService.getLocationsDataByIds(
-      [this.leaf.id],
-      'DAILY',
-      moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    ).toPromise();
+    console.log('getAllData');
 
-    const totalTwoLastWeeks = await this.locationService.getLocationsDataByIds(
-      [this.leaf.id],
-      'WEEKLY',
-      moment().startOf('isoWeek').subtract(2, 'week').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-    ).toPromise();
+    let totalYesterday: IPeopleCountingLocation[] = [];
+    let totalTwoLastWeeks: IPeopleCountingLocation[] = [];
+    let today: IPeopleCountingLocation[] = [];
+    let todayLastWeek: IPeopleCountingLocation[] = [];
 
-    const today = await this.locationService.getLocationsDataByIds(
-      [this.leaf.id],
-      'HOURLY',
-      moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      moment().valueOf(),
-    ).toPromise();
+    try {
+      totalYesterday = await this.locationService.getLocationsDataByIds(
+        [this.leaf.id],
+        'DAILY',
+        moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      ).toPromise();
+    } catch (error) {
+      console.error('error while fetching totalYesterday data');
+      console.error(error);
+    }
 
-    const todayLastWeek = await this.locationService.getLocationsDataByIds(
-      [this.leaf.id],
-      'HOURLY',
-      moment().subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-      moment().subtract(1, 'weeks').valueOf(),
-    ).toPromise();
+    try {
+      totalTwoLastWeeks = await this.locationService.getLocationsDataByIds(
+        [this.leaf.id],
+        'WEEKLY',
+        moment().startOf('isoWeek').subtract(2, 'week').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+      ).toPromise();
+    } catch (error) {
+      console.error('error while fetching totalTwoLastWeeks data');
+      console.error(error);
+    }
+
+    try {
+      today = await this.locationService.getLocationsDataByIds(
+        [this.leaf.id],
+        'HOURLY',
+        moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().valueOf(),
+      ).toPromise();
+    } catch (error) {
+      console.error('error while fetching today data');
+      console.error(error);
+    }
+
+    try {
+      todayLastWeek = await this.locationService.getLocationsDataByIds(
+        [this.leaf.id],
+        'HOURLY',
+        moment().subtract(1, 'weeks').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().subtract(1, 'weeks').valueOf(),
+      ).toPromise();
+    } catch (error) {
+      console.error('error while fetching todayLastWeek data');
+      console.error(error);
+    }
 
     const totalToday = today.length ? today[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
     const totalTodayLastWeek = todayLastWeek.length ? todayLastWeek[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
@@ -100,9 +127,5 @@ export class SummaryComponent implements OnInit, OnChanges {
       differenceToday: totalToday - totalTodayLastWeek
     };
   }
-
-
-
-
 
 }
