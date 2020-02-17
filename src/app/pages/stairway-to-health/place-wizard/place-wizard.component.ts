@@ -278,6 +278,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
       this.displayLocationExplorer = false;
       this.changeDetectorRef.detectChanges();
       this.location.parent = result;
+      this.location.parentId = result.id;
       this.displayLocationExplorer = true;
     }
   }
