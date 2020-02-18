@@ -368,6 +368,53 @@ export class LocationService {
     }));
   }
 
+  public getPagedLocations(
+    pageNumber: number = 0,
+    pageSize: number = 10,
+    filter = {},
+    moduleName: string = null
+    ): Observable < IPagedLocations > {
+    const GET_PAGED_LOCATIONS = gql `
+      query findLocationsByFilterPaged($input: PagedLeafLocationsFindByFilterInput!) {
+        pagedLocations: findLocationsByFilterPaged(input: $input) {
+          totalElements,
+          totalPages,
+          locations {
+              id,
+              name,
+              description,
+              image,
+              parent {
+                id,
+                name,
+                image
+              }
+          }
+        }
+      }`;
+
+    interface GetPagedLocationsResponse {
+      pagedLocations: IPagedLocations;
+    }
+
+    return this.apollo.query < GetPagedLocationsResponse > ({
+      query: GET_PAGED_LOCATIONS,
+      variables: {
+        input: {
+          pageNumber,
+          pageSize,
+          ...filter,
+          moduleName
+        }
+      },
+      fetchPolicy: 'network-only'
+    }).pipe(map(({
+      data
+    }) => {
+      return data.pagedLocations;
+    }));
+  }
+
   // END APOLLO
 
   public getLocationsTree(): Observable < ILocation[] > {
