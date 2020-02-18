@@ -175,7 +175,8 @@
       "NAME": "Asset name",
       "SENSORS": "Sensors",
       "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
-      "THRESHOLD_TEMPLATES": "Threshold templates"
+      "THRESHOLD_TEMPLATES": "Threshold templates",
+      "THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME": "Threshold template item custom name"
     }
   },
   "SENSORTYPES": {
