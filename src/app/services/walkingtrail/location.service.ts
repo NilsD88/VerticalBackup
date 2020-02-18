@@ -128,6 +128,15 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
     );
   }
 
+  public getPagedLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedPeopleCountingLocations > {
+    return super.getPagedLocations(
+      pageNumber,
+      pageSize,
+      filter,
+      MODULE_NAME
+    );
+  }
+
   public createLocation(location: IPeopleCountingLocation): Observable < IPeopleCountingLocation > {
     const CREATE_LOCATION = gql `
             mutation CreateLocation($input: LocationCreateInput!) {

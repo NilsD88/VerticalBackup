@@ -70,8 +70,8 @@ export class SummaryComponent implements OnInit, OnChanges {
       totalYesterday = await this.locationService.getLocationsDataByIds(
         [this.leaf.id],
         'DAILY',
-        moment().subtract(1, 'days').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().subtract(1, 'day').startOf('day').valueOf(),
+        moment().endOf('day').valueOf(),
       ).toPromise();
     } catch (error) {
       console.error('error while fetching totalYesterday data');
@@ -82,8 +82,8 @@ export class SummaryComponent implements OnInit, OnChanges {
       totalTwoLastWeeks = await this.locationService.getLocationsDataByIds(
         [this.leaf.id],
         'WEEKLY',
-        moment().startOf('isoWeek').subtract(2, 'week').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().startOf('isoWeek').set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
+        moment().startOf('isoWeek').subtract(2, 'week').startOf('day').valueOf(),
+        moment().startOf('isoWeek').subtract(1, 'day').endOf('day').valueOf(),
       ).toPromise();
     } catch (error) {
       console.error('error while fetching totalTwoLastWeeks data');
@@ -117,6 +117,7 @@ export class SummaryComponent implements OnInit, OnChanges {
     const totalToday = today.length ? today[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
     const totalTodayLastWeek = todayLastWeek.length ? todayLastWeek[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
 
+    console.log(totalTwoLastWeeks);
     const totalLastWeek =  totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[1].valueIn : null) : null;
     const totalBeforeLastWeek = totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[0].valueIn : null) : null;
 
