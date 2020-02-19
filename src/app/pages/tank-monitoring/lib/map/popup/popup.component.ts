@@ -1,7 +1,6 @@
-import { cloneDeep } from 'lodash';
 import { Router } from '@angular/router';
 import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
-import { Component, Input, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 
 @Component({
@@ -23,6 +22,14 @@ export class TankMonitoringMapPopupComponent extends MapPopupComponent implement
       tankMonitoringAssetService,
       router,
       elementRef
+    );
+  }
+
+  getAssetPopupDetail() {
+    this.subs.add(
+      this.assetService.getImageOfAssetById(this.asset.id).subscribe((image: string) => {
+        this.asset.image = image;
+      })
     );
   }
 
