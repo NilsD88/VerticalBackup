@@ -214,7 +214,10 @@
     "FILTER": {
       "PLACEHOLDERS": {
         "ASSET_NAME": "Asset name",
-        "LOCATION_NAME": "Location name"
+        "LOCATION_NAME": "Location name",
+        "TRAIL_NAME": "Trail name",
+        "PLACE_NAME": "Place name",
+        "STORE_NAME": "Store name"
       }
     }
   },
