@@ -27,6 +27,7 @@ export class StairwayToHealthInventoryLocationsComponent extends InventoryLocati
       sharedService
     );
     this.leafUrl = 'private/stairwaytohealth/place';
+    this.locationPlaceholderName = 'INVENTORY.FILTER.PLACEHOLDERS.PLACE_NAME';
   }
 
   async ngOnInit() {
