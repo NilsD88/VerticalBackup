@@ -218,7 +218,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  private populateMarkersWithchildren() {
+  protected populateMarkersWithchildren() {
     this.locationsLayer = [];
     const locationIcon = divIcon({
       className: 'map-marker-location',
