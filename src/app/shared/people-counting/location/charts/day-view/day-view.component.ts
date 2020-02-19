@@ -174,7 +174,6 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
     this.chartOptions = {
       chart: {
         type: 'column',
-        marginBottom: 100,
         zoomType: 'x',
       },
       title: '',
