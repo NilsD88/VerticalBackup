@@ -75,6 +75,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
         name: this.rootLocation.name,
         children: this.rootLocation.children,
       }];
+      this.rootLocation.assets = undefined;
       this.checkIfSelectedLocation();
     } else {
       this.getLocations();

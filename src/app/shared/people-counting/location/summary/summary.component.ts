@@ -59,8 +59,6 @@ export class SummaryComponent implements OnInit, OnChanges {
 
 
   async getAllData() {
-    console.log('getAllData');
-
     let totalYesterday: IPeopleCountingLocation[] = [];
     let totalTwoLastWeeks: IPeopleCountingLocation[] = [];
     let today: IPeopleCountingLocation[] = [];
@@ -117,7 +115,6 @@ export class SummaryComponent implements OnInit, OnChanges {
     const totalToday = today.length ? today[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
     const totalTodayLastWeek = todayLastWeek.length ? todayLastWeek[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
 
-    console.log(totalTwoLastWeeks);
     const totalLastWeek =  totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[1].valueIn : null) : null;
     const totalBeforeLastWeek = totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[0].valueIn : null) : null;
 

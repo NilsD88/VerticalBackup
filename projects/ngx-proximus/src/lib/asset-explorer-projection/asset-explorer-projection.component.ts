@@ -76,6 +76,7 @@ export class AssetExplorerProjectionComponent extends LocationExplorerComponent 
     );
 
     super.ngOnInit();
+    this.getAssetsBySelectedLocation();
   }
 
   protected checkIfSelectedLocation() {

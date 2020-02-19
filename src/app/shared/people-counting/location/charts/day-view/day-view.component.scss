@@ -4,3 +4,17 @@
     justify-content: center;
     margin-top: 25px;
 }
+
+#day-view-chart-container{
+    width: 100%;
+    height: 340px;
+    overflow: visible !important;
+    > div {
+        overflow: visible !important;
+    }
+}
+
+:host{
+    display: flex;
+    flex-direction: column;
+}
