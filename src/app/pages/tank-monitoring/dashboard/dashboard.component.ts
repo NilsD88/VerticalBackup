@@ -103,7 +103,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (FILL_LEVEL) {
           const VALUE = FILL_LEVEL.value;
           const TIMESTAMP = FILL_LEVEL.timestamp;
+          console.log(cloneDeep(FILL_LEVEL));
+          console.log(TIMESTAMP);
           const HOURS = moment.duration(moment().diff(moment(TIMESTAMP))).asHours();
+          console.log(HOURS);
           if (HOURS > 48) {
             asset.status = 'UNKNOWN';
           } else {
