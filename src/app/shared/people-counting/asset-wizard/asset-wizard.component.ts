@@ -58,11 +58,11 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
       } catch (err) {
-       console.log(err);
+       console.error(err);
        this.router.navigate(['/error/404']);
       }
     } else {
-      console.log('NO ASSET FOUNDED');
+      console.error(`No asset with id ${assetId} was found`);
       this.router.navigate(['/error/404']);
     }
   }
@@ -163,7 +163,6 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
   }
 
   public wantToSaveAsset() {
-    console.log('[ASSET] WANT TO SAVE');
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
       const dialogRef = this.dialog.open(PopupConfirmationComponent, {

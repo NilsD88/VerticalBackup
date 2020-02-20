@@ -86,7 +86,7 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
             },
             (error) => {
                 this.loading = false;
-                console.log(error);
+                console.error(error);
                 this.snackBar.open(`Failed to update the sensor definition!`, null, {
                     panelClass: ['error-snackbar'],
                     duration: 3000

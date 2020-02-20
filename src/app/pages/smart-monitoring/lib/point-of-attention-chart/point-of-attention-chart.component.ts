@@ -188,7 +188,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
         noData: 'No data for the selected period'
       };
       this.chart = Highcharts.chart('point-of-attention-chart-container', this.options);
-      console.log(error);
+      console.error(error);
     }
   }
 

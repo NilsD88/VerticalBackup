@@ -48,7 +48,7 @@ export class StatisticsComponent implements OnInit, OnChanges, OnDestroy {
   public titles = {
     day: 'Today',
     week: 'This week',
-    all: 'All'
+    all: 'Total'
   };
 
   public series = {

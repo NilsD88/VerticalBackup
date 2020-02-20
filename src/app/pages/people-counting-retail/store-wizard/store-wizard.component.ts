@@ -181,7 +181,6 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
             this.originalLocation = cloneDeep(location);
             this.changeDetectorRef.detectChanges();
             this.stepper.next();
-            console.log(this.location);
             this.isSavingOrUpdating = false;
           },
           (error) => {
@@ -279,6 +278,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
       this.displayLocationExplorer = false;
       this.changeDetectorRef.detectChanges();
       this.location.parent = result;
+      this.location.parentId = result.id;
       this.displayLocationExplorer = true;
     }
   }

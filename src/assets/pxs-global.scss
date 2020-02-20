@@ -1173,13 +1173,6 @@ mat-form-field {
   width : 100%;
 }
 
-.image-button-container {
-  display : flex;
-
-  button {
-    flex : 1;
-  }
-}
 
 .mat-icon-button.mat-accent {
   color : $accent;
@@ -1385,4 +1378,8 @@ mat-form-field {
   display: block;
   max-height: none !important;
   overflow: hidden !important;
+}
+
+.highcharts-container {
+  overflow: visible !important;
 }

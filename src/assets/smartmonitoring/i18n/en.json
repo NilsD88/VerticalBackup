@@ -175,7 +175,8 @@
       "NAME": "Asset name",
       "SENSORS": "Sensors",
       "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
-      "THRESHOLD_TEMPLATES": "Threshold templates"
+      "THRESHOLD_TEMPLATES": "Threshold templates",
+      "THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME": "Threshold template item custom name"
     }
   },
   "SENSORTYPES": {
@@ -213,7 +214,10 @@
     "FILTER": {
       "PLACEHOLDERS": {
         "ASSET_NAME": "Asset name",
-        "LOCATION_NAME": "Location name"
+        "LOCATION_NAME": "Location name",
+        "TRAIL_NAME": "Trail name",
+        "PLACE_NAME": "Place name",
+        "STORE_NAME": "Store name"
       }
     }
   },

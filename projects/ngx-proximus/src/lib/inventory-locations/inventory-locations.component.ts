@@ -37,6 +37,7 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
 
   public locations: IPeopleCountingLocation[] = [];
   public leafUrl: string;
+  public locationPlaceholderName = 'INVENTORY.FILTER.PLACEHOLDERS.LOCATION_NAME';
 
   public pageNumber = 0;
   public pageSize = 10;
@@ -114,7 +115,7 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
   public async getPagedLocations() {
     try {
       this.locationsLoading = true;
-      const locationsResult = await this.locationService.getPagedLeafLocations(this.pageNumber, this.pageSize, this.filterBE).toPromise();
+      const locationsResult = await this.locationService.getPagedLocations(this.pageNumber, this.pageSize, this.filterBE).toPromise();
       this.locations = locationsResult.locations;
       this.totalItems = locationsResult.totalElements;
       this.locationsLoading = false;
@@ -132,7 +133,7 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
     return filters.pipe(
       debounceTime(500),
       switchMap(() => {
-        return this.locationService.getPagedLeafLocations(this.pageNumber, this.pageSize, this.filterBE);
+        return this.locationService.getPagedLocations(this.pageNumber, this.pageSize, this.filterBE);
       })
     );
   }

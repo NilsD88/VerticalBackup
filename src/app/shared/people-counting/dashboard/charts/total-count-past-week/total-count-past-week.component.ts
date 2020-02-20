@@ -6,7 +6,6 @@ import * as randomColor from 'randomcolor';
 import * as Highcharts from 'highcharts';
 import { increaseLeafs } from 'src/app/shared/utils';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { isNullOrUndefined } from 'util';
 import { ILeafColors } from '../../leaf.model';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
@@ -114,7 +113,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
     try {
       this.chart = Highcharts.chart('total-count-past-week-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -149,7 +148,7 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
     } catch (error) {
       this.chartOptions.series[0].data = [];
       this.chart = Highcharts.chart('total-count-past-week-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 }

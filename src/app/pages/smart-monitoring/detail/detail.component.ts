@@ -146,7 +146,7 @@ export class DetailComponent implements OnInit, OnDestroy {
                   postfix: sensor.sensorType.postfix
               });
             } catch (error) {
-              console.log(error);
+              console.error(error);
             }
           }
           // END STANDARD DEVIATION
@@ -161,7 +161,6 @@ export class DetailComponent implements OnInit, OnDestroy {
         }
       }
       this.chartData = chartData;
-      console.log(cloneDeep(chartData));
       this.chartLoading = false;
       this.changeDetectorRef.detectChanges();
       // STANDARD DEVIATIONS

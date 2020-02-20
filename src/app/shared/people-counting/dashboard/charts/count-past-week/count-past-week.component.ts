@@ -174,7 +174,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
     try {
       this.chart = Highcharts.chart('count-past-week-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -205,7 +205,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
       this.chartOptions.series = [];
       this.chartOptions.legend = {};
       this.chart = Highcharts.chart('count-past-week-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 }

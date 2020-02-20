@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { StairwayToHealthAssetService } from './../../../../../services/stairway-to-health/asset.service';
 import { PeopleCountingRetailAssetService } from './../../../../../services/peoplecounting-retail/asset.service';
 import { SubSink } from 'subsink';
@@ -25,7 +26,6 @@ import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { allIntervalBetween } from 'src/app/shared/utils';
-import {uniqBy, orderBy} from 'lodash';
 
 declare global {
   interface Window {
@@ -73,6 +73,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private translateService: TranslateService,
     private changeDetectorRef: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
 
@@ -173,7 +174,6 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
     this.chartOptions = {
       chart: {
         type: 'column',
-        marginBottom: 100,
         zoomType: 'x',
       },
       title: '',
@@ -203,6 +203,20 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
       plotOptions: {
         column: {
           stacking: 'normal'
+        },
+        series: {
+          point: {
+            events: {
+              click: (event) => {
+                try {
+                  const assetId = event.point.series.options.id;
+                  this.router.navigateByUrl(`${this.assetUrl}${assetId}`);
+                } catch (error) {
+                  console.error(error);
+                }
+              }
+            }
+          }
         }
       },
       series: [],
@@ -213,7 +227,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
     try {
       this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -309,7 +323,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
       this.chartOptions.series = [];
       this.chartOptions.xAxis.categories = [];
       this.chart = Highcharts.chart('day-view-chart-container', this.chartOptions);
-      console.log(error);
+      console.error(error);
     }
   }
 

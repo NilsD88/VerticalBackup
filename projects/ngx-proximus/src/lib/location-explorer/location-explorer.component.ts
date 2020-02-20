@@ -34,7 +34,11 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
   @Output() selectedLocationTree: EventEmitter<ILocation> = new EventEmitter<ILocation>();
 
-  public tabs: {name: string, children: ILocation[]}[] = [];
+  public tabs: {
+    id: string,
+    name: string,
+    children: ILocation[]
+  }[] = [];
   public selectedIndex = 0;
   public currentLocation: ILocation;
   public isDownloading = false;
@@ -67,9 +71,11 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     this.isDownloading = true;
     if (this.rootLocation) {
       this.tabs = [{
+        id: this.rootLocation.id,
         name: this.rootLocation.name,
         children: this.rootLocation.children,
       }];
+      this.rootLocation.assets = undefined;
       this.checkIfSelectedLocation();
     } else {
       this.getLocations();
@@ -83,6 +89,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
         if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
           this.rootLocation = locations[0];
           this.tabs = [{
+            id: this.rootLocation.id,
             name: this.rootLocation.name,
             children: this.rootLocation.children,
           }];
@@ -97,6 +104,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
             children: locations,
           };
           this.tabs = [{
+            id: this.rootLocation.id,
             name: this.rootLocation.name,
             children: locations,
           }];
@@ -151,8 +159,6 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
       })
     );
   }
-
-
 
   protected checkIfSelectedLocation() {
     this.currentLocation = this.rootLocation;

@@ -192,7 +192,7 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
         noData: 'No data for the selected period'
       };
       this.chart = Highcharts.chart('chart-container', this.options);
-      console.log(error);
+      console.error(error);
     }
   }
 

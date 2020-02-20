@@ -27,6 +27,7 @@ interface IAlertFilterFE {
   sensorTypeIds: string[];
   thresholdTemplateName: string;
   name: string;
+  thresholdTemplateItemName: string;
 }
 
 enum SeverityLevel {
@@ -55,7 +56,12 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   public dataSource;
   public isLoading = false;
-  public displayedColumns: string[] = ['select', 'read', 'timestamp', 'sensorType.name', 'severity', 'thresholdTemplateName', 'thing.devEui', 'asset.location.name', 'value'];
+  public displayedColumns: string[] = [
+    'select', 'read', 'timestamp',
+    'sensorType.name', 'severity',
+    'thresholdTemplateName', 'thing.devEui',
+    'asset.location.name', 'value'
+  ];
 
 
   public filterBE: IAlertFilterBE = {
@@ -69,6 +75,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
     sensorTypeIds: [],
     thresholdTemplateName: '',
     name: '',
+    thresholdTemplateItemName: '',
   };
 
   public filterOptions = {
@@ -131,6 +138,15 @@ export class AlertsComponent implements OnInit, OnDestroy {
         if (alert.thresholdTemplateName) {
           const TERM = this.filterFE.thresholdTemplateName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
           result = alert.thresholdTemplateName.toLocaleUpperCase().includes(TERM);
+        } else {
+          result = false;
+        }
+      }
+
+      if (this.filterFE.thresholdTemplateItemName && result) {
+        if (alert.label) {
+          const TERM = this.filterFE.thresholdTemplateItemName.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase();
+          result = alert.label.toLocaleUpperCase().includes(TERM);
         } else {
           result = false;
         }
@@ -256,7 +272,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           this.snackBar.open(`Failed to read the alerts`, null, {
             duration: 2000,
           });
-          console.log(error);
+          console.error(error);
           this.alerts = oldA;
           this.filteredAlerts = oldF;
           this.postFilteredAlerts = oldP;
@@ -307,7 +323,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           this.snackBar.open(`Failed to unread the alerts`, null, {
             duration: 2000,
           });
-          console.log(error);
+          console.error(error);
           this.alerts = oldA;
           this.filteredAlerts = oldF;
           this.postFilteredAlerts = oldP;
