@@ -1,5 +1,6 @@
 <img [src]="image" alt="" style="display: flex; width: 100%;">
 <div class="image-button-container">
   <button mat-raised-button (click)="onClick()">{{dialogTitle}}</button>
+  <button *ngIf="image && removeButton" mat-button color="warn" (click)="removeImage()">Remove</button>
   <input #fileInput type="file"  accept="image/x-png,image/jpeg,image/jpg" (change)="fileChangeEvent($event)" style="display:none;" />
 </div>

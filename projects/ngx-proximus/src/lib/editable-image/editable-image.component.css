@@ -1,0 +1,7 @@
+.image-button-container {
+    display: flex;
+    flex-direction: column;
+    button {
+        flex: 1;
+    }
+  }
