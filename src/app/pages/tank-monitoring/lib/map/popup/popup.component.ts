@@ -1,6 +1,7 @@
+import { ITankMonitoringAsset } from './../../../../../models/tankmonitoring/asset.model';
 import { Router } from '@angular/router';
 import { MapPopupComponent } from 'projects/ngx-proximus/src/lib/map/popup/popup.component';
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, Input } from '@angular/core';
 import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asse
 })
 export class TankMonitoringMapPopupComponent extends MapPopupComponent implements OnInit, OnDestroy {
 
+  @Input() asset: ITankMonitoringAsset;
   public fullLocationName = '';
 
   constructor(
@@ -27,8 +29,10 @@ export class TankMonitoringMapPopupComponent extends MapPopupComponent implement
 
   getAssetPopupDetail() {
     this.subs.add(
-      this.assetService.getImageOfAssetById(this.asset.id).subscribe((image: string) => {
-        this.asset.image = image;
+      this.assetService.getAssetPopupDetail(this.asset.id).subscribe((asset: ITankMonitoringAsset) => {
+        this.asset.image = asset.image;
+        this.asset.lastRefill = asset.lastRefill;
+        this.asset.description = asset.description;
       })
     );
   }
