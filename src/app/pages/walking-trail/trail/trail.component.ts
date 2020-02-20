@@ -1,12 +1,12 @@
-import { SharedService } from './../../../services/shared.service';
-import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
-import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
-import { findLocationById } from 'src/app/shared/utils';
-import { ActivatedRoute, Router } from '@angular/router';
-import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { IImage } from 'ng-simple-slideshow';
-import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import {SharedService} from './../../../services/shared.service';
+import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
+import {WalkingTrailAssetService} from 'src/app/services/walkingtrail/asset.service';
+import {findLocationById} from 'src/app/shared/utils';
+import {ActivatedRoute, Router} from '@angular/router';
+import {WalkingTrailLocationService} from './../../../services/walkingtrail/location.service';
+import {Component, OnInit} from '@angular/core';
+import {IImage} from 'ng-simple-slideshow';
+import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
 import * as randomColor from 'randomcolor';
 
 
@@ -51,13 +51,18 @@ export class TrailComponent implements OnInit {
           image: null,
           name: 'Locations',
           description: null,
-          children:  await this.locationService.getLocationsTree().toPromise()
+          children: await this.locationService.getLocationsTree().toPromise()
         };
       }
       if (isLocationAdmin && rootLocation.id === params.id) {
         this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
       } else {
-        this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+        try {
+          this.leaf = await this.locationService.getLocationById(params.id).toPromise().catch();
+        } catch (error) {
+          console.error(error);
+          await this.router.navigate(['/error/404']);
+        }
       }
       this.assetColors = randomColor({
         count: this.leaf.assets.length
