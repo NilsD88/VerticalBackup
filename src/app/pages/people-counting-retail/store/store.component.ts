@@ -70,12 +70,12 @@ export class StoreComponent implements OnInit {
       if (this.leaf.parent) {
         try {
           const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
+          this.parentLocation = parentLocation;
         } catch (error) {
           if (error.message.indexOf('404') !== -1) {
             await this.router.navigate(['/error/404']);
           }
         }
-        this.parentLocation = parentLocation;
       } else {
         this.parentLocation = rootLocation;
       }
