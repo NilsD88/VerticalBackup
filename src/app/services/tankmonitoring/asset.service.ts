@@ -99,7 +99,8 @@ export class TankMonitoringAssetService extends AssetService {
                   description,
                   image,
                   lastRefill {
-                      timestamp
+                      timestamp,
+                      value
                   },
                   location {
                       name,
