@@ -1,3 +1,4 @@
+import { PopupConfirmationModule } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.module';
 import { EasterEggModule } from 'projects/ngx-proximus/src/lib/easter-egg/easter-egg.module';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
@@ -50,7 +51,8 @@ import { AssetService } from 'src/app/services/asset.service';
     IconModule,
     EasterEggModule,
     TranslateModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    PopupConfirmationModule,
   ],
   providers: [
     AssetService
