@@ -18,6 +18,8 @@ export class EditableImageComponent implements OnInit {
   @Input() ratio: number = null;
   @Input() maxWidthAndHeight = 1024;
   @Input() confirmationMessage: IPopupConfirmation;
+  @Input() removeButton = true;
+
 
   @Output() change: EventEmitter<string> = new EventEmitter();
 
@@ -74,7 +76,6 @@ export class EditableImageComponent implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
-
   private openConfirmationDialog() {
     const dialogRef = this.dialog.open(PopupConfirmationComponent, {
       minWidth: '320px',
@@ -92,6 +93,8 @@ export class EditableImageComponent implements OnInit {
     });
   }
 
-
+  public removeImage() {
+    this.change.emit(null);
+  }
 
 }

@@ -56,7 +56,7 @@
     <div class="row">
       <div class="location-images">
         <div *ngFor="let image of location.images; index as i">
-          <pxs-editable-image (change)="changeLocationImages(i, $event)" [image]="image"></pxs-editable-image>
+          <pxs-editable-image (change)="changeLocationImages(i, $event)" [image]="image" [removeButton]="false"></pxs-editable-image>
           <button mat-button color="warn" (click)="removeImage(i)">Remove</button>
         </div>
         <div style="height: 100%;">
