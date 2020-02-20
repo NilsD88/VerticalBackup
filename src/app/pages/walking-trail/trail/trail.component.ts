@@ -39,43 +39,51 @@ export class TrailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
-      const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
-      let rootLocation: IPeopleCountingLocation;
-      if (isLocationAdmin) {
-        rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
-      } else {
-        rootLocation = {
-          id: null,
-          parentId: null,
-          geolocation: null,
-          image: null,
-          name: 'Locations',
-          description: null,
-          children: await this.locationService.getLocationsTree().toPromise()
-        };
-      }
-      if (isLocationAdmin && rootLocation.id === params.id) {
-        this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
-      } else {
-        try {
-          this.leaf = await this.locationService.getLocationById(params.id).toPromise().catch();
-        } catch (error) {
-          console.error(error);
-          await this.router.navigate(['/error/404']);
+        const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
+        let rootLocation: IPeopleCountingLocation;
+        if (isLocationAdmin) {
+          rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+        } else {
+          rootLocation = {
+            id: null,
+            parentId: null,
+            geolocation: null,
+            image: null,
+            name: 'Locations',
+            description: null,
+            children: await this.locationService.getLocationsTree().toPromise()
+          };
         }
+        if (isLocationAdmin && rootLocation.id === params.id) {
+          try {
+            this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+          } catch (error) {
+            if (error.message.indexOf('404') !== -1) {
+              await this.router.navigate(['/error/404']);
+            }
+          }
+        } else {
+          try {
+            this.leaf = await this.locationService.getLocationById(params.id).toPromise().catch();
+          } catch (error) {
+            if (error.message.indexOf('404') !== -1) {
+              await this.router.navigate(['/error/404']);
+            }
+          }
+        }
+        this.assetColors = randomColor({
+          count: this.leaf.assets.length
+        });
+        this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+        this.leaf.assets = this.assets;
+        if (this.leaf.parent) {
+          const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
+          this.parentLocation = parentLocation;
+        } else {
+          this.parentLocation = rootLocation;
+        }
+        this.leaf.parent = this.parentLocation;
       }
-      this.assetColors = randomColor({
-        count: this.leaf.assets.length
-      });
-      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
-      this.leaf.assets = this.assets;
-      if (this.leaf.parent) {
-        const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
-        this.parentLocation = parentLocation;
-      } else {
-        this.parentLocation = rootLocation;
-      }
-      this.leaf.parent = this.parentLocation;
-    });
+    );
   }
 }

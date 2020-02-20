@@ -1,17 +1,17 @@
-import { SubSink } from 'subsink';
-import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { SharedService } from 'src/app/services/shared.service';
-import { TranslateService } from '@ngx-translate/core';
-import { TankMonitoringAssetService } from 'src/app/services/tankmonitoring/asset.service';
-import { cloneDeep } from 'lodash';
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy } from '@angular/core';
-import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { IAsset } from 'src/app/models/asset.model';
-import { Observable, Subject, of} from 'rxjs';
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
-import { AlertService } from 'src/app/services/alert.service';
+import {SubSink} from 'subsink';
+import {Intervals} from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {SharedService} from 'src/app/services/shared.service';
+import {TranslateService} from '@ngx-translate/core';
+import {TankMonitoringAssetService} from 'src/app/services/tankmonitoring/asset.service';
+import {cloneDeep} from 'lodash';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {ActivatedRoute, Router} from '@angular/router';
+import {IAsset} from 'src/app/models/asset.model';
+import {Observable, of, Subject} from 'rxjs';
+import {catchError, debounceTime, switchMap} from 'rxjs/operators';
+import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
+import {AlertService} from 'src/app/services/alert.service';
 import {formatDate} from '@angular/common';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
@@ -68,7 +68,9 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
             },
             (error) => {
               console.error(error);
-              this.router.navigate(['/error/404']);
+              if (error.message.indexOf('404') !== -1) {
+                this.router.navigate(['/error/404']);
+              }
             }
           )
         );

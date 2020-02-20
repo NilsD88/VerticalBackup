@@ -1,11 +1,11 @@
-import { SharedService } from './../../../services/shared.service';
-import { PeopleCountingRetailAssetService } from './../../../services/peoplecounting-retail/asset.service';
-import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
-import { findLocationById } from 'src/app/shared/utils';
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
+import {SharedService} from './../../../services/shared.service';
+import {PeopleCountingRetailAssetService} from './../../../services/peoplecounting-retail/asset.service';
+import {PeopleCountingRetailLocationService} from './../../../services/peoplecounting-retail/location.service';
+import {findLocationById} from 'src/app/shared/utils';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
+import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
 import * as randomColor from 'randomcolor';
 
 @Component({
@@ -28,16 +28,30 @@ export class StoreComponent implements OnInit {
     public assetService: PeopleCountingRetailAssetService,
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
-  ) { }
+    private router: Router
+  ) {
+  }
 
   ngOnInit() {
 
     this.activatedRoute.params.subscribe(async (params) => {
-      this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+      try {
+        this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+      } catch (error) {
+        if (error.message.indexOf('404') !== -1) {
+          await this.router.navigate(['/error/404']);
+        }
+      }
       this.assetColors = randomColor({
         count: this.leaf.assets.length
       });
-      this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      try {
+        this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      } catch (error) {
+        if (error.message.indexOf('404') !== -1) {
+          await this.router.navigate(['/error/404']);
+        }
+      }
       this.leaf.assets = this.assets;
       let rootLocation: IPeopleCountingLocation;
       if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
@@ -50,11 +64,17 @@ export class StoreComponent implements OnInit {
           image: null,
           name: 'Locations',
           description: null,
-          children:  await this.locationService.getLocationsTree().toPromise()
+          children: await this.locationService.getLocationsTree().toPromise()
         };
       }
       if (this.leaf.parent) {
-        const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
+        try {
+          const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
+        } catch (error) {
+          if (error.message.indexOf('404') !== -1) {
+            await this.router.navigate(['/error/404']);
+          }
+        }
         this.parentLocation = parentLocation;
       } else {
         this.parentLocation = rootLocation;
