@@ -1,31 +1,16 @@
-import { PeopleCountingRetailLocationService } from './../../../../../services/peoplecounting-retail/location.service';
-import { SubSink } from 'subsink';
-import {
-  isNullOrUndefined
-} from 'util';
-import {
-  IPeopleCountingLocation,
-  IPeopleCountingLocationSerie
-} from 'src/app/models/peoplecounting/location.model';
-import {
-  Component,
-  OnInit,
-  Input,
-  ChangeDetectorRef,
-  OnDestroy
-} from '@angular/core';
+import {PeopleCountingRetailLocationService} from './../../../../../services/peoplecounting-retail/location.service';
+import {SubSink} from 'subsink';
+import {isNullOrUndefined} from 'util';
+import {IPeopleCountingLocation, IPeopleCountingLocationSerie} from 'src/app/models/peoplecounting/location.model';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import {
-  TranslateService
-} from '@ngx-translate/core';
-import { Subject, Observable, of } from 'rxjs';
-import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
-import {uniqBy, orderBy} from 'lodash';
-import { allIntervalBetween } from 'src/app/shared/utils';
-import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
+import {TranslateService} from '@ngx-translate/core';
+import {Observable, of, Subject} from 'rxjs';
+import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import {catchError, debounceTime, switchMap} from 'rxjs/operators';
+import {StairwayToHealthLocationService} from 'src/app/services/stairway-to-health/location.service';
 
 declare global {
   interface Window {
@@ -85,7 +70,8 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
   constructor(
     private translateService: TranslateService,
     private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) {
+  }
 
 
   ngOnInit() {
@@ -130,24 +116,24 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
         marginTop: 50,
         marginBottom: 40,
         events: {
-          render: function() {
+          render: function () {
             const series = this.series;
             let bbox;
 
-            if(instance.svgElements.length) {
+            if (instance.svgElements.length) {
               instance.svgElements.forEach(svgElement => {
                 svgElement.destroy();
               });
               instance.svgElements = [];
             }
 
-            series.forEach(function(s) {
+            series.forEach(function (s) {
               bbox = s.group.getBBox(true);
               instance.svgElements.push(this.renderer.text(
-                  s.name,
-                  bbox.x + this.plotLeft + bbox.width / 2,
-                  bbox.y + this.plotTop - 10
-                )
+                s.name,
+                bbox.x + this.plotLeft + bbox.width / 2,
+                bbox.y + this.plotTop - 10
+              )
                 .attr({
                   align: 'center'
                 })
@@ -246,7 +232,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
             crop: false,
             overflow: 'allow',
             formatter: function () {
-                return null;
+              return null;
             },
             style: {
               fontSize: '9px',
@@ -337,6 +323,7 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         // REAL DATA
+        console.log(this.leaf);
         return this.locationService.getLocationsDataByIds(
           [this.leaf.id],
           filter.interval, filter.from, filter.to
