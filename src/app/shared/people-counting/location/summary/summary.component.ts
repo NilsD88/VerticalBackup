@@ -1,20 +1,10 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
-import {
-  IPeopleCountingLocation
-} from 'src/app/models/peoplecounting/location.model';
-import {
-  TranslateService
-} from '@ngx-translate/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
+import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
-import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
-import { PeopleCountingRetailLocationService } from 'src/app/services/peoplecounting-retail/location.service';
+import {StairwayToHealthLocationService} from 'src/app/services/stairway-to-health/location.service';
+import {PeopleCountingRetailLocationService} from 'src/app/services/peoplecounting-retail/location.service';
 
 
 interface IData {
@@ -39,7 +29,8 @@ export class SummaryComponent implements OnInit, OnChanges {
 
   constructor(
     private translateService: TranslateService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.locale = this.translateService.currentLang;
@@ -115,7 +106,7 @@ export class SummaryComponent implements OnInit, OnChanges {
     const totalToday = today.length ? today[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
     const totalTodayLastWeek = todayLastWeek.length ? todayLastWeek[0].series.reduce((a, b) => a + b.valueIn, 0) : null;
 
-    const totalLastWeek =  totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[1].valueIn : null) : null;
+    const totalLastWeek = totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[totalTwoLastWeeks[0].series.length - 1].valueIn : null) : null;
     const totalBeforeLastWeek = totalTwoLastWeeks.length ? (totalTwoLastWeeks[0].series.length ? totalTwoLastWeeks[0].series[0].valueIn : null) : null;
 
     this.data = {
