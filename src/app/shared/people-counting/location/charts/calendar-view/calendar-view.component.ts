@@ -2,7 +2,7 @@ import {PeopleCountingRetailLocationService} from './../../../../../services/peo
 import {SubSink} from 'subsink';
 import {isNullOrUndefined} from 'util';
 import {IPeopleCountingLocation, IPeopleCountingLocationSerie} from 'src/app/models/peoplecounting/location.model';
-import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -43,7 +43,7 @@ require('highcharts/modules/series-label')(Highcharts);
   templateUrl: './calendar-view.component.html',
   styleUrls: ['./calendar-view.component.scss']
 })
-export class CalendarViewComponent implements OnInit, OnDestroy {
+export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
   @Input() locationService: PeopleCountingRetailLocationService | StairwayToHealthLocationService;
@@ -82,6 +82,19 @@ export class CalendarViewComponent implements OnInit, OnDestroy {
 
     this.initChartOptions();
     this.initChart();
+    this.getAllData();
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.leaf) {
+      if (changes.leaf.currentValue && changes.leaf.currentValue !== changes.leaf.previousValue) {
+        this.getAllData();
+      }
+    }
+  }
+
+  private getAllData() {
     this.subs.sink = this.getChartData(this.chartData$).subscribe(
       (locations: IPeopleCountingLocation[]) => {
         if (!this.loadingError) {
