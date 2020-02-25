@@ -7,6 +7,7 @@ import {Component, OnInit} from '@angular/core';
 import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
 import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
 import * as randomColor from 'randomcolor';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'pvf-store',
@@ -37,7 +38,13 @@ export class StoreComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
       try {
         this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+        if (isNullOrUndefined(this.leaf)) {
+          throw {
+            message: '404'
+          };
+        }
       } catch (error) {
+        console.error(error);
         if (error.message.indexOf('404') !== -1) {
           await this.router.navigate(['/error/404']);
         }

@@ -17,7 +17,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Today </th>
       <td mat-cell *matCellDef="let element">
         <div>
-          {{element.today}}
+          {{element.today | number: '1.0-2'}}
         </div>
       </td>
     </ng-container>
@@ -27,7 +27,7 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Week </th>
       <td mat-cell *matCellDef="let element">
         <div>
-          {{element.week}}
+          {{element.week | number: '1.0-2'}}
         </div>
       </td>
     </ng-container>

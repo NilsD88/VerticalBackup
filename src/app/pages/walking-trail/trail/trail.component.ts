@@ -9,6 +9,7 @@ import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import * as randomColor from 'randomcolor';
 import { UNKNOWN_PARENT_ID } from 'src/app/shared/global';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -45,8 +46,14 @@ export class TrailComponent implements OnInit {
         console.error(error);
         try {
           this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
-        } catch (error) {
-          console.log(error);
+          if (isNullOrUndefined(this.leaf)) {
+            throw {
+              message: '404'
+            };
+          }
+        } catch (error2) {
+          await this.router.navigate(['/error/404']);
+          console.log(error2);
         }
       }
       this.assetColors = randomColor({
@@ -64,10 +71,6 @@ export class TrailComponent implements OnInit {
           ]
         };
         this.leaf.parent = this.parentLocation;
-        /*
-        this.parentLocation = {this.leaf};
-        this.leaf.parent = this.parentLocation;
-        */
       }
     });
   }

@@ -6,6 +6,7 @@ import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.mo
 import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
 import * as randomColor from 'randomcolor';
 import {StairwayToHealthAssetService} from 'src/app/services/stairway-to-health/asset.service';
+import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'pvf-place',
@@ -36,6 +37,11 @@ export class PlaceComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
         try {
           this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+          if (isNullOrUndefined(this.leaf)) {
+            throw {
+              message: '404'
+            };
+          }
         } catch (error) {
           if (error.message.indexOf('404') !== -1) {
             await this.router.navigate(['/error/404']);
