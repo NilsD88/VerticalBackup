@@ -15,7 +15,8 @@ import {
   debounceTime,
   distinctUntilChanged,
   map,
-  switchMap
+  switchMap,
+  catchError
 } from 'rxjs/operators';
 
 import {
@@ -25,6 +26,7 @@ import gql from 'graphql-tag';
 import {
   environment
 } from 'src/environments/environment';
+import { throwError, of } from 'rxjs';
 
 
 @Injectable({
@@ -407,12 +409,15 @@ export class LocationService {
           moduleName
         }
       },
-      fetchPolicy: 'network-only'
-    }).pipe(map(({
-      data
-    }) => {
-      return data.pagedLocations;
-    }));
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all'
+    }).pipe(
+      map(({
+        data
+      }) => {
+        return data.pagedLocations;
+      })
+    );
   }
 
   // END APOLLO

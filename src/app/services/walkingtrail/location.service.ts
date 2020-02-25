@@ -56,12 +56,16 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
                     description,
                     parent {
                         id,
-                        name,
-                        geolocation {
+                        image,
+                        children {
+                          id,
+                          name,
+                          module,
+                          geolocation {
                             lat,
                             lng
-                        },
-                        image
+                          }
+                        }
                     }
                     image,
                     geolocation {
@@ -73,9 +77,53 @@ export class WalkingTrailLocationService extends PeopleCountingLocationService {
                       name
                     },
                     customFields {
-                      keyId,
-                      value
+                    keyId,
+                    value
+                  }
+                }
+            }
+        `;
+
+    interface GetLocationByIdQuery {
+      location: IPeopleCountingLocation | null;
+    }
+
+    return this.apollo.query < GetLocationByIdQuery > ({
+      query: GET_LOCATION_BY_ID,
+      fetchPolicy: 'network-only',
+      variables: {
+        id,
+      }
+    }).pipe(map(({
+      data
+    }) => data.location));
+  }
+
+  public getLocationByIdWithoutParent(id: string): Observable < IPeopleCountingLocation > {
+    const GET_LOCATION_BY_ID = gql `
+            query findLocationById($id: Long!) {
+                location: findLocationById(id: $id) {
+                    id,
+                    name,
+                    description,
+                    image,
+                    geolocation {
+                        lat
+                        lng
                     },
+                    assets {
+                      id,
+                      name,
+                      module,
+                      geolocation {
+                        lat,
+                        lng
+                      }
+                    },
+                    customFields {
+                    keyId,
+                    value
+                  }
                 }
             }
         `;

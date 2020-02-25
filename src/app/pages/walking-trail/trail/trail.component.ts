@@ -4,10 +4,11 @@ import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.se
 import { findLocationById } from 'src/app/shared/utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import * as randomColor from 'randomcolor';
+import { UNKNOWN_PARENT_ID } from 'src/app/shared/global';
 
 
 @Component({
@@ -30,7 +31,6 @@ export class TrailComponent implements OnInit {
     private locationService: WalkingTrailLocationService,
     public assetService: WalkingTrailAssetService,
     private activatedRoute: ActivatedRoute,
-    private sharedService: SharedService,
     private router: Router,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -39,25 +39,15 @@ export class TrailComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.params.subscribe(async (params) => {
-      const isLocationAdmin = this.sharedService.user.hasRole('pxs:iot:location_admin');
-      let rootLocation: IPeopleCountingLocation;
-      if (isLocationAdmin) {
-        rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
-      } else {
-        rootLocation = {
-          id: null,
-          parentId: null,
-          geolocation: null,
-          image: null,
-          name: 'Locations',
-          description: null,
-          children:  await this.locationService.getLocationsTree().toPromise()
-        };
-      }
-      if (isLocationAdmin && rootLocation.id === params.id) {
-        this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
-      } else {
+      try {
         this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+      } catch (error) {
+        console.error(error);
+        try {
+          this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+        } catch (error) {
+          console.log(error);
+        }
       }
       this.assetColors = randomColor({
         count: this.leaf.assets.length
@@ -65,12 +55,20 @@ export class TrailComponent implements OnInit {
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
       this.leaf.assets = this.assets;
       if (this.leaf.parent) {
-        const parentLocation = findLocationById(rootLocation, this.leaf.parent.id).location;
-        this.parentLocation = parentLocation;
+        this.parentLocation = this.leaf.parent;
       } else {
-        this.parentLocation = rootLocation;
+        this.parentLocation = {
+          id: UNKNOWN_PARENT_ID,
+          children: [
+            this.leaf
+          ]
+        };
+        this.leaf.parent = this.parentLocation;
+        /*
+        this.parentLocation = {this.leaf};
+        this.leaf.parent = this.parentLocation;
+        */
       }
-      this.leaf.parent = this.parentLocation;
     });
   }
 }

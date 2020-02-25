@@ -10,8 +10,11 @@
     (leafletMapReady)="onMapReady($event)"
   ></div>
   <div *ngIf="selectedTrail && selectedTrail.parent" class="parent-location-container">
-    <a (click)="resetMap()">
+    <a (click)="resetMap()" *ngIf="selectedTrail.parent && selectedTrail.parent.id !== UNKNOWN_PARENT_ID">
       <pxs-icon icon="chevron-left"></pxs-icon>
+      {{selectedTrail.name}}
+    </a>
+    <a *ngIf="selectedTrail.parent.id === UNKNOWN_PARENT_ID">
       {{selectedTrail.name}}
     </a>
   </div>
