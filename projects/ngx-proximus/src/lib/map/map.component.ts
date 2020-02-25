@@ -17,7 +17,7 @@ import { isNullOrUndefined } from 'util';
 import { MatDialog } from '@angular/material/dialog';
 import { MapPopupComponent } from './popup/popup.component';
 import { IAsset } from 'src/app/models/asset.model';
-import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
+import {MAP_TILES_URL_ACTIVE, UNKNOWN_PARENT_ID, DEFAULT_LOCATION} from 'src/app/shared/global';
 
 @Component({
   selector: 'pxs-map',
@@ -49,6 +49,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   public assetsRequestSource = new Subject();
   public assets: IAsset[];
+  public UNKNOWN_PARENT_ID = UNKNOWN_PARENT_ID;
 
 
   constructor(
@@ -97,11 +98,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       )
     );
 
-    // By default, center with Proximus location
-    this.center = {
-      lat: 50.860180,
-      lng: 4.358606
-    };
+    this.center = DEFAULT_LOCATION;
 
     this.markerClusterOptions = {
       iconCreateFunction(cluster) {

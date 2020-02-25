@@ -5,7 +5,7 @@ import { Map, latLng, tileLayer, icon, Layer, marker, LatLngBounds, latLngBounds
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import { ILocation } from 'src/app/models/location.model';
 import { isNullOrUndefined } from 'util';
-import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
+import { MAP_TILES_URL_ACTIVE, DEFAULT_LOCATION } from 'src/app/shared/global';
 
 @Component({
   selector: 'pxs-map-new-location',
@@ -35,7 +35,7 @@ export class MapNewLocationComponent implements OnInit {
   ngOnInit() {
     if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
       const floorPlan = this.parentLocation.image;
-      if(floorPlan){
+      if (floorPlan) {
         const image:HTMLImageElement = new Image();
         image.src = floorPlan;
         image.onload = () => {
@@ -52,14 +52,15 @@ export class MapNewLocationComponent implements OnInit {
           };
         }
       } else {
-        const { lat, lng } = this.parentLocation.geolocation;
+        // By default, center with Proximus location
+        const { lat, lng } = this.parentLocation.geolocation || DEFAULT_LOCATION;
         this.backgroundLayer = tileLayer(MAP_TILES_URL_ACTIVE),
         this.options = {
           layers: this.backgroundLayer,
           zoom: 13,
           center: latLng(lat, lng),
           attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        }
+        };
       }
     } else {
       this.createOptionsMapWithUserGeolocation();

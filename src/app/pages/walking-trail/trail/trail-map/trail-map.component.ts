@@ -1,14 +1,12 @@
-import { cloneDeep } from 'lodash';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { IAsset } from '../../../../models/asset.model';
-import { WalkingTrailAssetService } from './../../../../services/walkingtrail/asset.service';
 import { ILocation } from 'src/app/models/location.model';
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker, Point } from 'leaflet';
+import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker, Point, layerGroup } from 'leaflet';
 import { IGeolocation, Geolocation } from 'src/app/models/geolocation.model';
 import { GeoJsonObject } from 'geojson';
-import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
+import {MAP_TILES_URL_ACTIVE, UNKNOWN_PARENT_ID} from 'src/app/shared/global';
 
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -47,13 +45,13 @@ export class TrailMapComponent implements OnInit {
   public trailBounds: LatLngBounds;
   public selectedTrail: IPeopleCountingLocation;
   public markerClusterOptions: any;
+  public UNKNOWN_PARENT_ID = UNKNOWN_PARENT_ID;
 
   private sumsLastWeekUntilSameReference = [];
   private sumsThisWeekSameReference = [];
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private assetService: WalkingTrailAssetService,
     private locationService: WalkingTrailLocationService,
     private router: Router,
   ) {}
@@ -83,7 +81,7 @@ export class TrailMapComponent implements OnInit {
 
   private async initMap() {
     let floorPlan = null;
-    if (this.location.id === this.leaf.id) {
+    if (this.location.id === this.leaf.id || this.location.id === UNKNOWN_PARENT_ID) {
       this.selectedTrail = this.leaf;
     }
     if (this.selectedTrail) {
@@ -102,13 +100,14 @@ export class TrailMapComponent implements OnInit {
             const ratioH = width / height;
             this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
             const imageMap = imageOverlay(floorPlan, this.imageBounds);
+            this.options = null;
+            this.changeDetectorRef.detectChanges();
             this.options = {
               crs: CRS.Simple,
               layers: [imageMap],
               zoom: 1,
               maxZoom: 12,
             };
-            this.changeDetectorRef.detectChanges();
             resolve();
           };
           image.onerror = () => {
@@ -126,16 +125,18 @@ export class TrailMapComponent implements OnInit {
       };
     }
     if (this.selectedTrail) {
-      const assets = await this.assetService.getAssetsByLocationId(this.selectedTrail.id).toPromise();
-      this.populateMarkersWithAssets(assets);
+      this.populateMarkersWithAssets(this.selectedTrail.assets);
     } else {
       this.populateMarkersWithTrails();
     }
+    this.changeDetectorRef.detectChanges();
   }
 
   private async populateMarkersWithTrails() {
     this.trailsLayer = [];
     this.assetsLayer = [];
+
+    const markers = [];
 
     const trailIcon = (name, status, selected = false) => divIcon({
       className: 'walking-trail',
@@ -144,7 +145,10 @@ export class TrailMapComponent implements OnInit {
     });
 
     const children = this.location.children.filter(child => child.module === 'PEOPLE_COUNTING_WALKING_TRAIL');
+
     if (children && children.length) {
+
+      /*
       if (!this.sumsLastWeekUntilSameReference.length) {
         try {
           this.sumsLastWeekUntilSameReference = (await this.locationService.getLocationsDataByIds(
@@ -170,6 +174,7 @@ export class TrailMapComponent implements OnInit {
           console.error(error);
         }
       }
+      */
 
       for (const child of children) {
         child.parent = this.location;
@@ -204,19 +209,28 @@ export class TrailMapComponent implements OnInit {
           {
             icon: trailIcon(child.name, status, this.leaf.id === child.id)
           }
-        ).on('click', async (event) => {
+        ).on('click', async () => {
           if (this.leaf.id === child.id) {
-            this.options = null;
-            this.changeDetectorRef.detectChanges();
-            this.selectedTrail = child;
-            this.initMap();
+            if (this.leaf.assets.length) {
+              if (!(!this.location.image && !child.image)) {
+                this.options = null;
+                this.changeDetectorRef.detectChanges();
+              }
+              this.trailsLayer = [];
+              this.assetsLayer = [];
+              this.changeDetectorRef.detectChanges();
+              this.selectedTrail = this.leaf;
+              this.initMap();
+            }
           } else {
             this.router.navigateByUrl(`private/walkingtrail/trail/${child.id}`);
             this.ngOnInit();
           }
         });
-        this.trailsLayer.push(newMarker);
+        markers.push(newMarker);
       }
+
+      this.trailsLayer.push(layerGroup(markers));
 
       this.setTrailBounds(children);
       this.fitBoundsAndZoomOnTrail();
@@ -224,8 +238,11 @@ export class TrailMapComponent implements OnInit {
   }
 
   private populateMarkersWithAssets(assets: IAsset[]) {
+    console.log('populateMarkersWithAssets', assets);
     this.assetsLayer = [];
     this.trailsLayer = [];
+
+    const markers = [];
 
     const asstIcon = (name) => divIcon({
       className: 'walking-trail',
@@ -243,11 +260,10 @@ export class TrailMapComponent implements OnInit {
         ).on('click', async (event) => {
           this.router.navigateByUrl(`${this.assetUrl}${asset.id}`);
         });
-        this.assetsLayer.push(newMarker);
+        markers.push(newMarker);
       }
-      if (assets.length > 1) {
-        this.fitBoundsAndZoomOnCheckpoints(assets);
-      }
+      this.assetsLayer.push(layerGroup(markers));
+      this.fitBoundsAndZoomOnCheckpoints(assets);
     }
   }
 
@@ -286,7 +302,9 @@ export class TrailMapComponent implements OnInit {
         this.trailBounds.getSouthWest().lng === this.trailBounds.getNorthEast().lng
       ) {
         setTimeout(() => {
-          this.currentMap.panTo(this.location.geolocation);
+          if (!this.location.image) {
+            this.currentMap.panTo(this.location.geolocation);
+          }
         });
       } else {
         this.currentMap.fitBounds(this.trailBounds);
@@ -308,11 +326,11 @@ export class TrailMapComponent implements OnInit {
     const bounds = this.getCheckpointBounds(assets);
     if (bounds.isValid()) {
       if (
-        bounds.getSouthWest().lat === this.trailBounds.getNorthEast().lat &&
-        bounds.getSouthWest().lng === this.trailBounds.getNorthEast().lng
+        bounds.getSouthWest().lat === bounds.getNorthEast().lat &&
+        bounds.getSouthWest().lng === bounds.getNorthEast().lng
       ) {
         setTimeout(() => {
-          this.currentMap.panTo(this.location.geolocation);
+          this.currentMap.panTo(bounds.getSouthWest());
         });
       } else {
         this.currentMap.fitBounds(bounds);
