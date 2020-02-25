@@ -148,7 +148,6 @@ export class TrailMapComponent implements OnInit {
 
     if (children && children.length) {
 
-      /*
       if (!this.sumsLastWeekUntilSameReference.length) {
         try {
           this.sumsLastWeekUntilSameReference = (await this.locationService.getLocationsDataByIds(
@@ -174,7 +173,6 @@ export class TrailMapComponent implements OnInit {
           console.error(error);
         }
       }
-      */
 
       for (const child of children) {
         child.parent = this.location;
