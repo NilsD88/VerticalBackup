@@ -7,7 +7,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Week total </th>
             <td mat-cell *matCellDef="let element">
               <div>
-                {{element.totalWeek}}
+                {{element.totalWeek | number:'1.0-2'}}
               </div>
             </td>
           </ng-container>
@@ -17,7 +17,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Day total </th>
             <td mat-cell *matCellDef="let element">
               <div>
-                {{element.totalDay}}
+                {{element.totalDay | number:'1.0-2'}}
               </div>
             </td>
           </ng-container>
@@ -27,7 +27,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Week average</th>
             <td mat-cell *matCellDef="let element">
               <div>
-                {{element.avgWeek}}
+                {{element.avgWeek | number:'1.0-2'}}
               </div>
             </td>
           </ng-container>
@@ -37,7 +37,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Day average </th>
             <td mat-cell *matCellDef="let element">
               <div>
-                {{element.avgDay}}
+                {{element.avgDay | number:'1.0-2'}}
               </div>
             </td>
           </ng-container>
