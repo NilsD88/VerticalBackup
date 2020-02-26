@@ -24,7 +24,7 @@
                         &::before {
                             font-size: 20px;
                             transform: rotate(135deg);
-                            content: '\2794'
+                            content: '\2794';
                         }
                     }
                     &.up {
@@ -75,8 +75,9 @@
                     border-radius: 20px;
                     box-shadow: 0 0px 25px rgba(0, 0, 0, 0.33);                
                     &::before {
-                        font-size: 55px;
-                        content: '\2B27'
+                        font-size: 35px;
+                        content: '\2B27';
+                        margin-top: -5px;
                     }
                 }
 
