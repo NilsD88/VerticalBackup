@@ -245,7 +245,10 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2)) / 2];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.sum) ? null : parseFloat(serie.sum.toFixed(2)) / 2
+              ];
             })
           });
 
@@ -260,7 +263,10 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2)) / 2];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.sum) ? null : parseFloat(serie.sum.toFixed(2)) / 2
+              ];
             })
           });
         } else {
@@ -276,7 +282,10 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.sum) ? null : parseFloat(serie.sum.toFixed(2))
+              ];
             })
           });
         }

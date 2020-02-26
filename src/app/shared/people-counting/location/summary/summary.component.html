@@ -1,26 +1,26 @@
 <div class="container">
   <div class="itemcontainer">
-    <p class="data" [style.color]="'#686868'">{{data?.totalYesterday | number: '1.0-2'}}</p>
+    <p class="data" [style.color]="'#686868'">{{data?.totalYesterday | number: '1.0-2':'fr-FR'}}</p>
     <p class="info">Total count yesterday</p>
 
   </div>
   <br />
 
   <div class="itemcontainer">
-    <p class="data" [style.color]="'#686868'">{{data?.totalLastWeek | number: '1.0-2'}}</p>
+    <p class="data" [style.color]="'#686868'">{{data?.totalLastWeek | number: '1.0-2':'fr-FR'}}</p>
     <p class="info">Total count last week</p>
 
   </div>
   <br />
 
   <div class="itemcontainer">
-    <p class="data" [style.color]="data?.differenceLastWeek>0? 'green' : 'red'">{{data?.differenceLastWeek | number: '1.0-2'}}</p>
+    <p class="data" [style.color]="data?.differenceLastWeek>0? 'green' : 'red'">{{data?.differenceLastWeek | number: '1.0-2':'fr-FR'}}</p>
     <p class="info">Difference between last week and the week before last week</p>
 
   </div>
   <br />
   <div class="itemcontainer">
-    <p class="data" [style.color]="data?.differenceToday>0? 'green' : 'red'">{{data?.differenceToday | number: '1.0-2'}}</p>
+    <p class="data" [style.color]="data?.differenceToday>0? 'green' : 'red'">{{data?.differenceToday | number: '1.0-2':'fr-FR'}}</p>
     <p class="info">Difference between today and same day last week</p>
 
   </div>

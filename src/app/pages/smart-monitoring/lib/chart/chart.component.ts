@@ -166,6 +166,7 @@ export class ChartComponent implements OnInit, OnChanges {
           }
         },
         series: {
+          connectNulls: true,
           showInNavigator: true,
           marker: {
             enabled: false
@@ -254,9 +255,10 @@ export class ChartComponent implements OnInit, OnChanges {
             type: sensorDefinition.chartType,
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              if (serie.sum !== null) {
-                return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
-              }
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.sum) ? null : parseFloat(serie.sum.toFixed(2))
+              ];
             })
           });
         }
@@ -272,9 +274,10 @@ export class ChartComponent implements OnInit, OnChanges {
             type: sensorDefinition.chartType,
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              if (serie.avg !== null) {
-                return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-              }
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.avg) ? null : parseFloat(serie.avg.toFixed(2))
+              ];
             })
           });
         }
@@ -296,9 +299,11 @@ export class ChartComponent implements OnInit, OnChanges {
               enabled: false
             },
             data: item.series.map((serie) => {
-              if (serie.min !== null && serie.max !== null) {
-                return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-              }
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.min) ? null : parseFloat(serie.min.toFixed(2)),
+                isNullOrUndefined(serie.max) ? null : parseFloat(serie.max.toFixed(2)),
+              ];
             })
           });
         } else {
@@ -314,7 +319,10 @@ export class ChartComponent implements OnInit, OnChanges {
               type: 'areaspline',
               showInLegend: (item.series.length) ? true : false,
               data: item.series.map((serie) => {
-                return [serie.timestamp, parseFloat(serie.max.toFixed(2))];
+                return [
+                  serie.timestamp,
+                  isNullOrUndefined(serie.max) ? null : parseFloat(serie.max.toFixed(2)),
+                ];
               })
             });
           } else if (sensorDefinition.aggregatedValues.min) {
@@ -329,15 +337,15 @@ export class ChartComponent implements OnInit, OnChanges {
               type: 'areaspline',
               showInLegend: (item.series.length) ? true : false,
               data: item.series.map((serie) => {
-                if (serie.min !== null) {
-                  return [serie.timestamp, parseFloat(serie.min.toFixed(2))];
-                }
+                return [
+                  serie.timestamp,
+                  isNullOrUndefined(serie.min) ? null : parseFloat(serie.min.toFixed(2)),
+                ];
               })
             });
           }
         }
       } else {
-
         // AVERAGE
         const avgId = item.sensorId + '_avg';
         this.options.series.push({
@@ -350,9 +358,10 @@ export class ChartComponent implements OnInit, OnChanges {
           type: 'spline',
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
-            if (serie.avg !== null) {
-              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
-            }
+            return [
+              serie.timestamp,
+              isNullOrUndefined(serie.avg) ? null : parseFloat(serie.avg.toFixed(2))
+            ];
           })
         });
 
@@ -374,9 +383,11 @@ export class ChartComponent implements OnInit, OnChanges {
             enabled: false
           },
           data: item.series.map((serie) => {
-            if (serie.min !== null && serie.max !== null) {
-              return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
-            }
+            return [
+              serie.timestamp,
+              isNullOrUndefined(serie.min) ? null : parseFloat(serie.min.toFixed(2)),
+              isNullOrUndefined(serie.max) ? null : parseFloat(serie.max.toFixed(2))
+            ];
           })
         });
       }
@@ -395,7 +406,10 @@ export class ChartComponent implements OnInit, OnChanges {
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
             if (serie.value !== null) {
-              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.value) ? null : parseFloat(serie.value.toFixed(2))
+              ];
             }
           })
         });
@@ -410,9 +424,10 @@ export class ChartComponent implements OnInit, OnChanges {
           type: 'spline',
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
-            if (!isNullOrUndefined(serie.value)) {
-              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
-            }
+            return [
+              serie.timestamp,
+              isNullOrUndefined(serie.value) ? null : parseFloat(serie.value.toFixed(2))
+            ];
           })
         });
       }

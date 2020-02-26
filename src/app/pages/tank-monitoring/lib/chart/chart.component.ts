@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { IAsset } from 'src/app/models/asset.model';
+import { isNullOrUndefined } from 'util';
 
 
 declare global {
@@ -138,6 +139,7 @@ export class ChartComponent implements OnInit, OnChanges {
             }
         },
         series: {
+          connectNulls: true,
           marker: {
             enabled: false
           }
@@ -160,7 +162,10 @@ export class ChartComponent implements OnInit, OnChanges {
             type: 'spline',
             showInLegend: (FILL_LEVEL.series.length) ? true : false,
             data: FILL_LEVEL.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.avg) ? null : parseFloat(serie.avg.toFixed(2))
+              ];
             })
           });
         }
@@ -173,7 +178,10 @@ export class ChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (CONSUMPTION.series.length) ? true : false,
             data: CONSUMPTION.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.sum) ? null : parseFloat(serie.sum.toFixed(2))
+              ];
             })
           });
         }
@@ -187,7 +195,10 @@ export class ChartComponent implements OnInit, OnChanges {
             type: 'spline',
             showInLegend: (FILL_LEVEL.series.length) ? true : false,
             data: FILL_LEVEL.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.value) ? null : parseFloat(serie.value.toFixed(2))
+              ];
             })
           });
         }
@@ -200,7 +211,10 @@ export class ChartComponent implements OnInit, OnChanges {
             type: 'column',
             showInLegend: (CONSUMPTION.series.length) ? true : false,
             data: CONSUMPTION.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+              return [
+                serie.timestamp,
+                isNullOrUndefined(serie.value) ? null : parseFloat(serie.value.toFixed(2))
+              ];
             })
           });
         }
