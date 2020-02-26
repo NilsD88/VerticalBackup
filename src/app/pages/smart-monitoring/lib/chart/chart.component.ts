@@ -1,7 +1,7 @@
 import {isNullOrUndefined} from 'util';
 import {ISensorDefinition} from '../../../../models/sensor-definition.model';
 import {PeriodicDuration} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -188,7 +188,7 @@ export class ChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      this.addYAxisOption((data.series || []).length, data.label);
+      this.addYAxisOption((data.series || []).length, data.label);
       this.addYAxisValues(data);
     }
 
@@ -254,7 +254,9 @@ export class ChartComponent implements OnInit, OnChanges {
             type: sensorDefinition.chartType,
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+              if (serie.sum !== null) {
+                return [serie.timestamp, parseFloat(serie.sum.toFixed(2))];
+              }
             })
           });
         }
@@ -270,7 +272,9 @@ export class ChartComponent implements OnInit, OnChanges {
             type: sensorDefinition.chartType,
             showInLegend: (item.series.length) ? true : false,
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+              if (serie.avg !== null) {
+                return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+              }
             })
           });
         }
@@ -292,7 +296,9 @@ export class ChartComponent implements OnInit, OnChanges {
               enabled: false
             },
             data: item.series.map((serie) => {
-              return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+              if (serie.min !== null && serie.max !== null) {
+                return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+              }
             })
           });
         } else {
@@ -323,7 +329,9 @@ export class ChartComponent implements OnInit, OnChanges {
               type: 'areaspline',
               showInLegend: (item.series.length) ? true : false,
               data: item.series.map((serie) => {
-                return [serie.timestamp, parseFloat(serie.min.toFixed(2))];
+                if (serie.min !== null) {
+                  return [serie.timestamp, parseFloat(serie.min.toFixed(2))];
+                }
               })
             });
           }
@@ -342,7 +350,9 @@ export class ChartComponent implements OnInit, OnChanges {
           type: 'spline',
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+            if (serie.avg !== null) {
+              return [serie.timestamp, parseFloat(serie.avg.toFixed(2))];
+            }
           })
         });
 
@@ -364,7 +374,9 @@ export class ChartComponent implements OnInit, OnChanges {
             enabled: false
           },
           data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+            if (serie.min !== null && serie.max !== null) {
+              return [serie.timestamp, parseFloat(serie.min.toFixed(2)), parseFloat(serie.max.toFixed(2))];
+            }
           })
         });
       }
@@ -382,7 +394,9 @@ export class ChartComponent implements OnInit, OnChanges {
           type: item.sensorDefinition.chartType,
           showInLegend: (item.series.length) ? true : false,
           data: item.series.map((serie) => {
-            return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            if (serie.value !== null) {
+              return [serie.timestamp, parseFloat(serie.value.toFixed(2))];
+            }
           })
         });
       } else {
