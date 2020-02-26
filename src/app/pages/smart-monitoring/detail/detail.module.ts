@@ -41,7 +41,7 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     LinkedThingsModule,
     LastAlertsModule,
     NoDataModule,
-    DialogModule
+    DialogModule,
   ],
 })
 export class DetailModule {

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartControlsComponent } from './chart-controls.component';
@@ -12,7 +13,8 @@ import { DateRangeSelectionModule } from '../date-range-selection/date-range-sel
     DateRangeSelectionModule,
     MatButtonModule,
     MatMenuModule,
-    MatIconModule
+    MatIconModule,
+    TranslateModule
   ],
   exports: [ChartControlsComponent],
 })

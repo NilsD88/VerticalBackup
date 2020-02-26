@@ -2,13 +2,13 @@
   <ng-template #extraTemplate let-parent>
     <div class="dropList">
       <div>
-        <hr data-content="POINTS OF ATTENTION">
+        <hr [attr.data-content]="'LAYOUT.POINTS_OF_ATTENTION' | translate">
         <mat-progress-spinner *ngIf="parent.loadingPointsOfAttention" style="margin:0 auto;" [diameter]="25" color="primary"
           mode="indeterminate">
         </mat-progress-spinner>
         <div
           *ngIf="parent.currentLocation && !parent.loadingPointsOfAttention && (!parent.currentLocation.pointsOfAttention || parent.currentLocation.pointsOfAttention.length < 1)">
-          No point of attention found at this location
+          {{ 'LOCATIONS.NO_POA_FOUND_IN_LOCATIONS' | translate }}
         </div>
         <div *ngIf="parent.currentLocation">
           <div class="dropListItem" *ngFor="let pointOfAttention of parent.currentLocation.pointsOfAttention">

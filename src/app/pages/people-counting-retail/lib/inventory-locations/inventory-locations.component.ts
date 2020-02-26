@@ -27,7 +27,7 @@ export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLo
       sharedService
     );
     this.leafUrl = 'private/peoplecounting/store';
-    this.locationPlaceholderName = 'INVENTORY.FILTER.PLACEHOLDERS.STORE_NAME';
+    this.locationPlaceholderName = 'FILTERS.STORE_NAME';
   }
 
   async ngOnInit() {

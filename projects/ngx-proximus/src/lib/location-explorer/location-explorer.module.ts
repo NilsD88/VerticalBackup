@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { PopupConfirmationModule } from './../popup-confirmation/popup-confirmation.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,7 +27,8 @@ export const imports = [
     RouterModule,
     MatAutocompleteModule,
     MatDialogModule,
-    PopupConfirmationModule
+    PopupConfirmationModule,
+    TranslateModule
 ];
 
 @NgModule({

@@ -169,9 +169,9 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
 
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
     pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 45, 15);
-    const assetNameTranslation: string = await this.getTranslation('PDF.ASSET_NAME');
+    const assetNameTranslation: string = await this.getTranslation('FILTERS.ASSET_NAME');
     pdf.text(assetNameTranslation + ' : ' + this.asset.name, 45, 20);
-    const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
+    const locationNameTranslation: string = await this.getTranslation('FILTERS.LOCATION_NAME');
     pdf.text(locationNameTranslation + ' : ' + this.asset.location.name, 45, 25);
 
     const options = this.myChart.options;

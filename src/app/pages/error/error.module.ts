@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule} from '@angular/router';
@@ -13,7 +14,8 @@ import { AuthService } from 'src/app/services/auth.service';
   imports: [
     CommonModule,
     RouterModule.forChild(ErrorRoutes),
-    ButtonModule
+    ButtonModule,
+    TranslateModule
   ],
   providers: [
     AuthService

@@ -1,7 +1,7 @@
 <mat-horizontal-stepper [linear]="true" #stepper *ngIf="location">
   <mat-step [completed]="location.parent">
     <form>
-      <ng-template matStepLabel>Parent</ng-template>
+      <ng-template matStepLabel>{{ 'LAYOUT.PARENT' |translate }}</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
             <pxs-location-explorer
@@ -16,7 +16,7 @@
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
           <hr>
-          <button mat-button color="primary" (click)="openAddLocation()">Create a new location</button>
+          <button mat-button color="primary" (click)="openAddLocation()">{{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}</button>
         </div>
       </div>
       <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
@@ -24,14 +24,14 @@
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
-      <ng-template matStepLabel>Description</ng-template>
+      <ng-template matStepLabel>{{ 'GENERAL.DESCRIPTION' | translate }}</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
           <mat-form-field>
-            <input matInput placeholder="Name" formControlName="NameCtrl" [(ngModel)]="location.name" required>
+            <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="NameCtrl" [(ngModel)]="location.name" required>
           </mat-form-field>
           <mat-form-field>
-            <textarea matInput placeholder="Description" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
+            <textarea matInput [placeholder]="'GENERAL.DESCRIPTION' | translate" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
           </mat-form-field>
           <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
@@ -41,7 +41,7 @@
   </mat-step>
   <mat-step [completed]="location.geolocation">
     <form>
-      <ng-template matStepLabel>Geolocation</ng-template>
+      <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
       <pxs-form-geolocation 
         *ngIf="location.parent && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
         [location]="location.parent"
@@ -52,7 +52,7 @@
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
-    <ng-template matStepLabel>Floor plan</ng-template>
+    <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
         <div class="location-image">
@@ -60,10 +60,10 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" [text]="'GENERAL.SAVE_AND_CONTINUE' | translate" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
   <mat-step>
-      <ng-template matStepLabel>Assets</ng-template>
+    <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
       <div class="row">
         <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
           <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
@@ -77,9 +77,9 @@
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
           <hr>
-          <button mat-button color="primary" (click)="openAddAsset()">Create a new asset</button>
+          <button mat-button color="primary" (click)="openAddAsset()">{{ 'ASSETS.CREATE_NEW_ASSET' | translate }}</button>
         </div>
       </div>
-      <pxs-stepper-next [completed]="location.geolocation" [text]="'Done!'" [color]="'success'" (next)="done()"></pxs-stepper-next> 
+      <pxs-stepper-next [completed]="location.geolocation" [text]="'LAYOUT.DONE' | translate" [color]="'success'" (next)="done()"></pxs-stepper-next> 
     </mat-step>
 </mat-horizontal-stepper>

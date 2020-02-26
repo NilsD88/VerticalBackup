@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
@@ -9,7 +10,7 @@ import { FormGroup } from '@angular/forms';
 export class StepperNextComponent implements OnInit {
 
   @Input() completed = true;
-  @Input() text = 'Next';
+  @Input() text;
   @Input() color = 'primary';
   @Input() formGroup: FormGroup = new FormGroup({});
   @Input() loading: boolean;
@@ -18,9 +19,14 @@ export class StepperNextComponent implements OnInit {
   @Output() cancel = new EventEmitter();
 
 
-  constructor() { }
+  constructor(
+    private translateService: TranslateService
+  ) { }
 
   ngOnInit() {
+    if (!this.text) {
+      this.text = this.translateService.instant('LAYOUT.NEXT');
+    }
   }
 
   callCancel() {

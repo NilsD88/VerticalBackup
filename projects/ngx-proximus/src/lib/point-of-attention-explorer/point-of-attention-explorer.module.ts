@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { PointOfAttentionExplorerProjectionModule } from './../point-of-attention-explorer-projection/point-of-attention-explorer-projection.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -14,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material';
     MatProgressSpinnerModule,
     IconModule,
     PointOfAttentionExplorerProjectionModule,
+    TranslateModule
   ],
   exports: [
     PointOfAttentionExplorerComponent

@@ -5,7 +5,7 @@
         matInput 
         required
         [compareWith]="compareById"
-        [placeholder]="'FILTER.PLACEHOLDER_SENSORTYPE' | translate" 
+        [placeholder]="'FILTERS.SELECT_SENSOR_TYPE' | translate" 
         [(ngModel)]="pointOfAttentionItem.sensorType"
         formControlName="SensorTypeCtrl"
         >
@@ -13,11 +13,11 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-        <input matInput [placeholder]="'FILTER.NAME.PLACEHOLDER' | translate" formControlName="NameCtrl"
+        <input matInput [placeholder]="'FILTERS.POINT_OF_ATTENTION_NAME' | translate" formControlName="NameCtrl"
         [(ngModel)]="pointOfAttentionItem.name" required>
     </mat-form-field>
     <mat-form-field>
-      <mat-select [placeholder]="'FILTER.PLACEHOLDER_AGGREGATION' | translate" matInput
+      <mat-select [placeholder]="'FILTERS.SELECT_AGGREGATION' | translate" matInput
         [(ngModel)]="pointOfAttentionItem.aggregationType" formControlName="AggregationCtrl">
         <mat-option *ngFor="let aggregation of aggregations" [value]="aggregation">{{aggregation}}</mat-option>
       </mat-select>

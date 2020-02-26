@@ -11,7 +11,7 @@
               <input 
                 matInput
                 type="text" 
-                placeholder="Asset name"
+                [placeholder]="'FILTERS.ASSET_NAME' | translate"
                 [(ngModel)]="filter.name"
                 (ngModelChange)="filterByName()"
               >

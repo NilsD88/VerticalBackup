@@ -12,11 +12,11 @@
       <span class="visible-md-inline visible-lg-inline" [translate]="'LAYOUT.ACCOUNT'"></span>
       <mat-menu #user="matMenu">
         <div mat-menu-item>
-          Account
+          {{ 'LAYOUT.ACCOUNT' | translate }}
         </div>
         <div mat-menu-item>
           <button mat-menu-item (click)="layoutService.login()">
-          Login
+            {{ 'LAYOUT.SIGN_IN' | translate }}
           </button>
         </div>
       </mat-menu>

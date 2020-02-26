@@ -29,7 +29,7 @@ import { RouterModule } from '@angular/router';
     MatCardModule,
     MatPaginatorModule,
     IconModule,
-    MatButtonModule
+    MatButtonModule,
   ]
 })
 export class DashboardModule { }

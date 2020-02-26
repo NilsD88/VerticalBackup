@@ -9,7 +9,6 @@ import { MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, Mat
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
-import { FormKeyvalueModule } from 'projects/ngx-proximus/src/lib/form-keyvalue/form-keyvalue.module';
 import { FormGeolocationModule } from 'projects/ngx-proximus/src/lib/form-geolocation/form-geolocation.module';
 import { EditableImageModule } from 'projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
@@ -34,7 +33,6 @@ import { PeopleCountingAssetWizardComponent } from './asset-wizard.component';
     MatSelectModule,
     MatListModule,
     IconModule,
-    FormKeyvalueModule,
     FormGeolocationModule,
     EditableImageModule,
     LocationExplorerModule,
@@ -44,7 +42,8 @@ import { PeopleCountingAssetWizardComponent } from './asset-wizard.component';
     ListThresholdTemplatesModule,
     MatDialogModule,
     PopupConfirmationModule,
-    FormCustomFieldsModule
+    FormCustomFieldsModule,
+    TranslateModule
   ],
   exports: [PeopleCountingAssetWizardComponent]
 })

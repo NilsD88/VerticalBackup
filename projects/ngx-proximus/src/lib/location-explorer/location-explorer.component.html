@@ -1,6 +1,6 @@
 <div *ngIf="searchBar">
   <mat-form-field>
-    <input matInput type="text" [matAutocomplete]="auto" placeholder="Search a location by name" [(ngModel)]="filter.name"
+    <input matInput type="text" [matAutocomplete]="auto" [placeholder]="'LOCATIONS.SEARCH_LOCATION_BY_NAME' | translate" [(ngModel)]="filter.name"
       (ngModelChange)="onFilterChange()">
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete">
@@ -17,7 +17,7 @@
     (selectedIndexChange)="selectedIndexChange($event)">
     <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
       <div *ngIf="tab?.children?.length" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="!admin" class="dropList">
-        <hr data-content="LOCATIONS">
+        <hr [attr.data-content]="'LAYOUT.LOCATIONS' | translate">
         <div cdkDrag class="dropListItem" *ngFor="let location of tab.children"
           [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
           (click)="clickOnLocation(location)">
@@ -48,13 +48,13 @@
         <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)"
           [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
           <div>
-            <pxs-icon icon="plus-o"></pxs-icon> Add new location
+            <pxs-icon icon="plus-o"></pxs-icon> {{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}
           </div>
         </div>
         <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)"
           [routerLink]="['/private/admin/manage-locations/new/'+'root']">
           <div>
-            <pxs-icon icon="plus-o"></pxs-icon> Add new location
+            <pxs-icon icon="plus-o"></pxs-icon> {{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}
           </div>
         </div>
       </div>

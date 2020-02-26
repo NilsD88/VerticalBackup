@@ -37,7 +37,7 @@ export class InventoryLocationsComponent implements OnInit, OnDestroy {
 
   public locations: IPeopleCountingLocation[] = [];
   public leafUrl: string;
-  public locationPlaceholderName = 'INVENTORY.FILTER.PLACEHOLDERS.LOCATION_NAME';
+  public locationPlaceholderName = 'FILTERS.LOCATION_NAME';
 
   public pageNumber = 0;
   public pageSize = 10;

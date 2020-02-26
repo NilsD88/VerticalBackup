@@ -14,7 +14,7 @@
             <strong>{{thing.name}}</strong>
             <ul>
               <li>
-                <b>Battery:</b>
+                <b>{{'SENSORTYPES.battery' | translate}}:</b>
                 <span [ngClass]="{'empty': thing?.batteryPercentage < 10, 'low': thing?.batteryPercentage >= 10 && thing?.batteryPercentage < 20, 'ok': thing?.batteryPercentage >= 20}">
                   {{(thing.batteryPercentage) ? (thing.batteryPercentage+'%') : 'null'}}
                 </span>
@@ -30,6 +30,6 @@
     <h6>{{location.name}}</h6>
   </div>
   <div class="subtitle">
-    <a (click)="openLocation()">Open this location</a>
+    <a (click)="openLocation()">{{'LOCATIONS.OPEN_THIS_LOCATION' | translate}}</a>
   </div>
 </div>

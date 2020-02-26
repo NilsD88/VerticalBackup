@@ -1,48 +1,48 @@
 <div class="relative">
   <div class="form-bg not-found">
     <div class="relative error-wrapper">
-      <h1>Oops! This is awkward</h1>
+      <h1>{{ 'ERRORS.HEADER' | translate }}</h1>
       <div *ngIf="errorCode === 404">
-          <h2 >This page is no longer available …</h2>
+          <h2>{{ 'ERRORS.401.TITLE' | translate }}</h2>
           <div class="error-details">
-            <p>Sorry, an error has occured, requested page not found!</p>
+            <p>{{ 'ERRORS.401.CONTENT' | translate }}</p>
           </div>
           <div class="error-actions">
             <pxs-button color="white" size="large" (click)="toHome()">
-              Take me to home
+              {{ 'ERRORS.BUTTONS.BACK_HOME' | translate }}
             </pxs-button>
           </div>
       </div>
       <div *ngIf="errorCode === 401">
-          <h2 >Unauthorized</h2>
+          <h2>{{ 'ERRORS.401.TITLE' | translate }}</h2>
           <div class="error-details">
-            <p>Sorry, an error has occured, you are not authorized to see the requested page!</p>
+            <p>{{ 'ERRORS.401.CONTENT' | translate }}</p>
           </div>
           <div class="error-actions">
             <pxs-button color="white" size="large" (click)="toHome()">
-              Take me to home
+              {{ 'ERRORS.BUTTONS.BACK_HOME' | translate }}
             </pxs-button>
           </div>
       </div>
       <div *ngIf="errorCode === 403">
-          <h2 >Forbidden</h2>
+          <h2 >{{ 'ERRORS.403.TITLE' | translate }}</h2>
           <div class="error-details">
-            <p>Sorry, an error has occured, you are not authorized to see the requested page!</p>
+            <p>{{ 'ERRORS.403.CONTENT' | translate }}</p>
           </div>
           <div class="error-actions">
             <pxs-button color="white" size="large" (click)="logout()">
-              Logout
+              {{ 'LAYOUT.SIGN_OUT' | translate }}
             </pxs-button>
           </div>
       </div>
       <div *ngIf="errorCode === 500">
-          <h2 >Server Error</h2>
+          <h2 >{{ 'ERRORS.500.TITLE' | translate }}</h2>
           <div class="error-details">
-            <p>Sorry, an error has occured, our servers might be down!</p>
+            <p>{{ 'ERRORS.500.CONTENT' | translate }}</p>
           </div>
           <div class="error-actions">
             <pxs-button color="white" size="large" (click)="toHome()">
-              Take me to home
+              {{ 'ERRORS.BUTTONS.BACK_HOME' | translate}}
             </pxs-button>
           </div>
       </div>

@@ -2,15 +2,15 @@
 <div mat-dialog-content>
   
   <mat-form-field>
-    <mat-select [(ngModel)]="item" placeholder="Select sensor type">
+    <mat-select [(ngModel)]="item" [placeholder]="'FILTERS.SELECT_SENSOR_TYPE' | translate">
       <mat-option *ngFor="let item of items" [value]="item">{{item.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 
   <button mat-raised-button color="primary" (click)="submit()">
-    Submit
+    {{ 'GENERAL.SUBMIT' | translate }}
   </button>
   <button mat-raised-button (click)="cancel()">
-    Cancel
+    {{ 'GENERAL.CANCEL' | translate }}
   </button>
 </div>

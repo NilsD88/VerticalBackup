@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -31,7 +32,8 @@ import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmatio
     MatRadioModule,
     ThresholdTemplatesDetailModule,
     MatPaginatorModule,
-    PopupConfirmationModule
+    PopupConfirmationModule,
+    TranslateModule
   ],
   entryComponents: [
     ThresholdTemplatesDetailComponent

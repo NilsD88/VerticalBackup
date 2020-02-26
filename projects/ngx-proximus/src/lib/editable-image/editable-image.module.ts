@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {EditableImageComponent} from './editable-image.component';
@@ -19,7 +20,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     MatInputModule,
     PopupConfirmationModule,
     ImageCropperModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    TranslateModule
   ],
   exports: [EditableImageComponent],
   entryComponents: [

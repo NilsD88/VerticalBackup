@@ -14,7 +14,6 @@ import {
 } from '@angular/material';
 import {LoaderModule} from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {ImageEditorModule} from 'projects/ngx-proximus/src/lib/image-editor/image-editor.module';
 import {EditableImageModule} from 'projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import {ManageAssetsListComponent} from './manage-assets-list.component';
 import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
@@ -39,7 +38,6 @@ import { AssetService } from 'src/app/services/asset.service';
     MatCardModule,
     LoaderModule,
     FlexLayoutModule,
-    ImageEditorModule,
     MatButtonModule,
     EditableImageModule,
     MatChipsModule,

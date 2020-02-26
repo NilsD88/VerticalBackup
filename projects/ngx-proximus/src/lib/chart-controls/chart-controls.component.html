@@ -14,11 +14,11 @@
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="downloadPDF.emit()" [disabled]="chartDataIsLoading || !chartDataLength">
                 <mat-icon>picture_as_pdf</mat-icon>
-                <span>Export PDF</span>
+                <span>{{ 'GENERAL.EXPORT_PDF' | translate}}</span>
             </button>
             <button mat-menu-item disabled (click)="downloadCSV.emit()" [disabled]="chartDataIsLoading || !chartDataLength">
                 <mat-icon>insert_drive_file</mat-icon>
-                <span>Export CSV</span>
+                <span>{{ 'GENERAL.EXPORT_PDF' | translate}}</span>
             </button>
         </mat-menu>
     </div>

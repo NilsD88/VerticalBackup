@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MapDialogComponent } from './../map-dialog/map-dialog.component';
 import { MapDialogModule } from './../map-dialog/map-dialog.module';
 import {NgModule, Injector} from '@angular/core';
@@ -27,7 +28,8 @@ import { RouterModule } from '@angular/router';
     IconModule,
     MatSnackBarModule,
     MatDialogModule,
-    MapDialogModule
+    MapDialogModule,
+    TranslateModule
   ],
   exports: [MapComponent],
   providers: [

@@ -4,13 +4,13 @@
   <ng-template #extraTemplate let-parent>
     <div class="dropList">
       <div>
-        <hr data-content="ASSETS">
+        <hr [attr.data-content]="'LAYOUT.ASSETS' | translate">
         <mat-progress-spinner *ngIf="parent.loadingAssets" style="margin:0 auto;" [diameter]="25" color="primary"
           mode="indeterminate">
         </mat-progress-spinner>
         <div
           *ngIf="parent.currentLocation && !parent.loadingAssets && (!parent.currentLocation.assets ||parent.currentLocation.assets.length < 1)">
-          No asset found at this location
+          {{ 'LOCATIONS.NO_ASSET_FOUND_IN_LOCATIONS' | translate }}
         </div>
         <div *ngIf="parent.currentLocation">
           <div class="dropListItem" *ngFor="let asset of parent.currentLocation.assets"

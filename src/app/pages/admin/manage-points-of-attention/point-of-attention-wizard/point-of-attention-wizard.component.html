@@ -1,17 +1,17 @@
 <mat-horizontal-stepper #stepper [linear]="false" *ngIf="pointOfAttention">
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
-      <ng-template matStepLabel>Description</ng-template>
+      <ng-template matStepLabel>{{ 'GENERAL.DESCRIPTION' | translate }}</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
           <mat-form-field>
-            <input matInput placeholder="Name" formControlName="NameCtrl" [(ngModel)]="pointOfAttention.name" required>
+            <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="NameCtrl" [(ngModel)]="pointOfAttention.name" required>
             <mat-error *ngIf="descriptionFormGroup.get('NameCtrl').hasError('minlength')">
               {{ 'MANAGE_ASSETS.VALIDATORS.NAME.MIN_LENGHT' | translate }}
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <textarea matInput placeholder="Description" formControlName="DescriptionCtrl"
+            <textarea matInput [placeholder]="'GENERAL.DESCRIPTION' | translate" formControlName="DescriptionCtrl"
               [(ngModel)]="pointOfAttention.description" maxlength="255"></textarea>
           </mat-form-field>
         </div>
@@ -21,7 +21,7 @@
   </mat-step>
   <mat-step *ngIf="!editMode" [completed]="pointOfAttention.location">
     <form>
-      <ng-template matStepLabel>Location</ng-template>
+      <ng-template matStepLabel>{{ 'LAYOUT.LOCATION' | translate }}</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
           <pxs-location-explorer
@@ -38,14 +38,14 @@
   </mat-step>
   <mat-step [completed]="pointOfAttention.location">
     <form>
-      <ng-template matStepLabel>Items</ng-template>
+      <ng-template matStepLabel>{{ 'LAYOUT.ITEMS' | translate }}</ng-template>
       <div class="container">
           <div class="row">
             <div class="col-md-12 mx-auto">
               <pxs-list-point-of-attention-items [(pointOfAttention)]="pointOfAttention"></pxs-list-point-of-attention-items>
             </div>
           </div>
-          <pxs-stepper-next [completed]="pointOfAttention.location && pointOfAttention.items?.length" [loading]="isSavingOrUpdating" [text]="'Save'" [color]="'success'" (next)="save()"></pxs-stepper-next>
+          <pxs-stepper-next [completed]="pointOfAttention.location && pointOfAttention.items?.length" [loading]="isSavingOrUpdating" [text]="'GENERAL.SAVE' | translate" [color]="'success'" (next)="save()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
 import { WalkingTrailMapPopupComponent } from './popup/popup.component';
 import { NgModule, Injector } from '@angular/core';
@@ -25,7 +26,8 @@ import { MapDialogModule } from 'projects/ngx-proximus/src/lib/map-dialog/map-di
     IconModule,
     MatSnackBarModule,
     MatDialogModule,
-    MapDialogModule
+    MapDialogModule,
+    TranslateModule
   ],
   exports: [
     WalkingTrailMapComponent,

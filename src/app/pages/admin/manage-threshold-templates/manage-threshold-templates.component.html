@@ -2,25 +2,25 @@
 <div class="container" *ngIf="thresholdTemplate" [formGroup]="thresholdTemplateFormGroup">
   <div class="row">
     <div class="col-12">
-      <h2>Threshold template</h2>
+      <h2>{{ 'LAYOUT.THRESHOLD_TEMPLATE' | translate}}</h2>
     </div>
     <div class="col-md-12">
       <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name" [(ngModel)]="thresholdTemplate.name" required>
+        <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="name" [(ngModel)]="thresholdTemplate.name" required>
         <mat-error *ngIf="thresholdTemplateFormGroup.get('name').hasError('pattern')">
-          Only alphanumeric characters are allowed
+          {{ 'FILTERS.ONLY_ALPHANUMERIC' | translate }}
         </mat-error>
       </mat-form-field>
     </div>
     <div class="col-md-12" style="display:flex; justify-content: space-between; margin-bottom: 20px;">
-      <h4 style="margin: 0; padding: 0;">Thresholds</h4>
+      <h4 style="margin: 0; padding: 0;">{{ 'LAYOUT.THRESHOLDS' | translate }}</h4>
       <button style="height: 40px; " mat-raised-button (click)="addThreshold()">
         <pxs-icon icon="plus-o"></pxs-icon>
-        Add threshold
+        {{ 'THRESHOLD_TEMPLATE.ADD_THRESHOLD' | translate }}
       </button>
     </div>
     <div class="col-md-12" *ngIf="!thresholdTemplate.thresholds || !thresholdTemplate.thresholds.length">
-      No threshold added yet
+      {{ 'THRESHOLD_TEMPLATE.NO_THRESHOLD' | translate }}
     </div>
     <div class="col-md-12 sensor-card" *ngFor="let threshold of thresholdTemplate.thresholds;"
          formGroupName="threshold-{{threshold.sensorType.id}}">
@@ -56,17 +56,17 @@
             </div>
             <div class="col-md-4" *ngIf="threshold.sensorType.type === 'COUNTER'" formGroupName="counter">
               <mat-form-field class="col-md-6">
-                <input type="number" matInput placeholder="From" [(ngModel)]="thresholdItem.range.from" required
+                <input type="number" matInput [placeholder]="'THRESHOLD_TEMPLATE.FROM' | translate" [(ngModel)]="thresholdItem.range.from" required
                        formControlName="from">
               </mat-form-field>
               <mat-form-field class="col-md-6">
-                <input type="number" matInput placeholder="To" [(ngModel)]="thresholdItem.range.to" required
+                <input type="number" matInput [placeholder]="'THRESHOLD_TEMPLATE.TO' | translate" [(ngModel)]="thresholdItem.range.to" required
                        formControlName="to">
               </mat-form-field>
             </div>
             <div class="col-md-2">
               <mat-form-field>
-                <mat-select [(ngModel)]="thresholdItem.severity" placeholder="Severity" required
+                <mat-select [(ngModel)]="thresholdItem.severity" [placeholder]="'GENERAL.SEVERITY' | translate" required
                             formControlName="severity">
                   <mat-option *ngFor="let severity of severities" [value]="severity">
                     <span style="text-transform: capitalize">{{severity}}</span>
@@ -77,19 +77,19 @@
             <div class="col-md-3" formGroupName="notification">
               <div class="alerts">
                 <div class="alert-type">
-                  <mat-checkbox [(ngModel)]="thresholdItem.notification.web" formControlName="web">Web</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="thresholdItem.notification.web" formControlName="web">{{ 'THRESHOLD_TEMPLATE.WEB' | translate }}</mat-checkbox>
                 </div>
                 <div class="alert-type">
-                  <mat-checkbox [(ngModel)]="thresholdItem.notification.mail" formControlName="mail">Mail</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="thresholdItem.notification.mail" formControlName="mail">{{ 'THRESHOLD_TEMPLATE.MAIL' | translate }}</mat-checkbox>
                 </div>
                 <div class="alert-type">
-                  <mat-checkbox [(ngModel)]="thresholdItem.notification.sms" formControlName="sms">Sms</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="thresholdItem.notification.sms" formControlName="sms">{{ 'THRESHOLD_TEMPLATE.SMS' | translate }}</mat-checkbox>
                 </div>
               </div>
             </div>
             <div class="col-md-2">
               <mat-form-field>
-                <input type="text" matInput placeholder="Label" [(ngModel)]="thresholdItem.label"
+                <input type="text" matInput [placeholder]="'GENERAL.LABEL' | translate" [(ngModel)]="thresholdItem.label"
                        formControlName="label">
               </mat-form-field>
             </div>
@@ -102,7 +102,7 @@
           </div>
           <button mat-raised-button (click)="addThresholdItem(threshold.sensorType.id)" style="margin-top: 10px;">
             <pxs-icon icon="plus-o"></pxs-icon>
-            Add threshold item
+            {{'THRESHOLD_TEMPLATE.ADD_THRESHOLD_ITEM' | translate}}
           </button>
         </mat-card-content>
       </mat-card>
@@ -112,10 +112,10 @@
     <p>Form status: {{ thresholdTemplateFormGroup.status | json }}</p>
     -->
     <pxs-button *ngIf="!thresholdTemplateFormGroup?.valid" disabled="true" size="large" color="primary"
-                style="margin: 15px auto;">Save the threshold template
+                style="margin: 15px auto;">{{'THRESHOLD_TEMPLATE.SAVE_THRESHOLD_TEMPLATE' | translate}}
     </pxs-button>
     <pxs-button *ngIf="thresholdTemplateFormGroup?.valid" size="large" color="primary" (click)="saveThresholdTemplate()"
-                style="margin: 15px auto;">Save the threshold template
+                style="margin: 15px auto;">{{'THRESHOLD_TEMPLATE.SAVE_THRESHOLD_TEMPLATE' | translate}}
     </pxs-button>
   </div>
 </div>
