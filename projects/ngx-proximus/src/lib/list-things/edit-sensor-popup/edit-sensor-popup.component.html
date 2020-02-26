@@ -12,28 +12,26 @@
         <mat-button-toggle *ngFor="let value of inOutValues" [value]="value">{{value}}</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <i>This applies only for the smart counting chart</i>
+    <i>{{ 'THINGS.ONLY_APPLY_FOR_SMART_COUNTING' | translate }}</i>
   </div>
 
   <hr data-content="Monitoring parameters">
   <mat-form-field>
-    <input matInput placeholder="Rename to" type="text" [(ngModel)]="sensorDefinition.name">
+    <input matInput [placeholder]="'GENERAL.RENAME_TO' | translate" type="text" [(ngModel)]="sensorDefinition.name">
   </mat-form-field>
   <div class="row">
     <div class="col col-xs-6">
-      <mat-checkbox [(ngModel)]="sensorDefinition.useOnChart" (change)="useOnChartChange($event)">Use on chart
-      </mat-checkbox>
+      <mat-checkbox [(ngModel)]="sensorDefinition.useOnChart" (change)="useOnChartChange($event)">{{ 'THINGS.USE_ON_CHART' | translate }}</mat-checkbox>
     </div>
     <div class="col col-xs-6">
-      <mat-checkbox [(ngModel)]="sensorDefinition.useOnNotification">Use on notification</mat-checkbox>
+      <mat-checkbox [(ngModel)]="sensorDefinition.useOnNotification">{{ 'THINGS.USE_ON_NOTIFICATION' | translate }}</mat-checkbox>
     </div>
   </div>
-  <i>This applies only for the monitoring charts</i>
-
+  <i>{{ 'THINGS.ONLY_APPLY_FOR_TANK_MONITORING' | translate }}</i>
   <hr>
   <div *ngIf="sensorDefinition.useOnChart">
     <mat-form-field *ngIf="sensorDefinition.useOnChart">
-      <mat-select placeholder="Chart type" [(ngModel)]="sensorDefinition.chartType">
+      <mat-select [placeholder]="'THINGS.CHART_TYPE' | translate" [(ngModel)]="sensorDefinition.chartType">
         <mat-option *ngFor="let chartType of chartTypes" [value]="chartType">
           {{chartType}}
         </mat-option>
@@ -47,9 +45,9 @@
   <br><br>
 
   <button mat-raised-button color="primary" [class.spinner]="loading" [disabled]="loading" (click)="submit()">
-    Submit
+    {{ 'GENERAL.SUBMIT' | translate }}
   </button>
   <button mat-raised-button (click)="cancel()">
-    Cancel
+    {{ 'GENERAL.CANCEL' | translate }}
   </button>
 </div>

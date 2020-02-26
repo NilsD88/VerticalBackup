@@ -17,25 +17,25 @@
             <strong>{{asset?.things[0]?.name}}</strong>
             <ul>
               <li>
-                <b>Battery:</b>
+                <b>{{'SENSORTYPES.battery' | translate}}:</b>
                 <span [ngClass]="{'empty': asset?.batteryLevel < 10, 'low': asset?.batteryLevel >= 10 && asset?.batteryLevel < 20, 'ok': asset?.batteryLevel >= 20, 'unknown': asset?.status === 'UNKNOWN'}">
                   {{asset?.batteryLevel ? asset?.batteryLevel+'%': 'unknown'}}
                 </span>
               </li>
               <li>
-                <b>Fuel level:</b>
+                <b>{{'TANK_MONITORING.FUEL_LEVEL' | translate}}:</b>
                 <span [ngClass]="{'empty': asset?.fillLevel < 10, 'low': asset?.fillLevel >= 10 && asset?.fillLevel < 20, 'ok': asset?.fillLevel >= 20, 'unknown': asset?.status === 'UNKNOWN'}">
                   {{asset?.fillLevel ? asset?.fillLevel+'%': 'unknown'}}
                 </span>
               </li>
               <li>
-                <b>Last refill:</b>
+                <b>{{'TANK_MONITORING.LAST_REFILL' | translate}}:</b>
                 <span>
                   {{(asset?.lastRefill?.timestamp) ? (asset?.lastRefill?.timestamp | date) : 'unknown'}}
                 </span>
               </li>
               <li>
-                  <b>Description:</b> {{asset?.description}}
+                  <b>{{'GENERAL.DESCRIPTION' | translate}}:</b> {{asset?.description}}
               </li>
             </ul>
         </li>
@@ -48,6 +48,6 @@
     <h6>{{location.name}}</h6>
   </div>
   <div class="subtitle">
-    <a (click)="openLocation()">Open this location</a>
+    <a (click)="openLocation()">{{'LOCATIONS.OPEN_THIS_LOCATION' | translate}}</a>
   </div>
 </div>

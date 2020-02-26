@@ -22,7 +22,6 @@
     "INTRO": {
       "TITLE": "Smart Monitoring",
       "SUBTITLE": "Surroundings measurements",
-
       "P1": "Do you have a complete view of your assets? Are quality controls of high importance to you? Or do you need to meet specific certifications?",
       "P2": "Smart Monitoring offers a unique view of your assets in order to manage them efficiently. It provides the relevant information to make calculated decisions. Want more information about specific assets? We will identify the sensor for you to generate the right insights.",
       "P3": "We offer a small discrete datalogger that does not require a sim card or registration. This logger measures temperature, relative humidity and light values. It uses the LoRaWAN® network of Proximus, which allows a long battery lifetime and avoids the need for additional cables.",
@@ -76,12 +75,6 @@
       }
     }
   },
-  "MENU-ITEMS": {
-    "About": "About",
-    "Alerts": "Alerts",
-    "Inventory": "Inventory",
-    "Locations": "Locations"
-  },
   "GENERAL": {
     "APP_NAME": "Smart Monitoring",
     "APP_SUBTITLE": "Surroundings measurements",
@@ -93,11 +86,29 @@
     "EXPORT_PDF": "Export to PDF",
     "EXPORT_EXCEL": "Export to Excel",
     "EXPORT_CSV": "Export to CSV",
+    "DOWNLOAD": "DOWNLOAD",
     "SUBMIT": "Submit",
-    "CANCEL": "Cancel",
     "EDIT": "Edit",
     "DELETE": "Delete",
-    "SHOW": "Show"
+    "SHOW": "Show",
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "SAVE": "Save",
+    "SAVE_AND_CONTINUE": "Save and continue",
+    "NEXT": "Next",
+    "CANCEL": "Cancel",
+    "DONE": "Done",
+    "DATE": "Date",
+    "TIMESTAMP": "TIMESTAMP",
+    "VALUE": "Value",
+    "RENAME_TO": "Rename to",
+    "ACTIONS": "Actions",
+    "CATEGORY": "Category",
+    "SEVERITY": "Severity",
+    "LABEL": "Label",
+    "THING_ID": "Thing ID",
+    "BATTERY_LEVEL": "Battery level",
+    "SHOW_DETAILS": "Show details"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",
@@ -111,73 +122,73 @@
     "MANAGE_POINTS_OF_ATTENTION": "Manage points of attention",
     "ALERT_DEFINITIONS": "Alert definitions",
     "ALERTS": "Alerts",
+    "LOCATIONS": "Locations",
+    "LOCATION": "Location",
+    "ASSETS": "Assets",
+    "ASSET": "Asset",
+    "SENSORS": "Sensors",
+    "SENSOR": "Sensor",
+    "VALUE": "Value",
+    "POINTS_OF_ATTENTION": "Points of attention",
+    "POINT_OF_ATTENTION": "Point of attention",
+    "THRESHOLDS": "Thresholds",
+    "THRESHOLD": "Threshold",
+    "ITEMS": "Items",
+    "ITEM": "Item",
+    "IMAGES": "Images",
+    "PARENT": "Parent",
+    "FLOOR_PLAN": "Floor plan",
+    "GEOLOCATION": "Geolocation",
+    "THINGS": "Things",
+    "THRESHOLD_TEMPLATE": "Threshold template",
+    "THRESHOLD_TEMPLATES": "Threshold templates",
     "LANGUAGE": "Language",
     "ACCOUNT": "Account",
     "CONTACT": "Contact",
+    "DASHBOARD": "Dashboard",
+    "INVENTORY": "Inventory",
     "SIGN_OUT": "Logout",
     "SIGN_IN": "Login",
     "SIGN_IN_ENCO": "EnCo",
     "SIGN_IN_MYPROXIMUS": "MyProximus",
     "PRIVACY_POLICY": "Privacy policy",
-    "TODAY": "Today",
-    "NO_ALERTS_TODAY": "No alerts today",
-    "UNREAD_ALERTS": "Unread alerts",
-    "NO_UNREAD_ALERTS": "No unread alerts",
     "ADMIN": "Admin"
   },
-  "FILTER": {
-    "TITLE": "Filter",
-    "TOGGLE": "Toggle filter",
-    "SAVE_AS_DEFAULT": "Save as default filter",
-    "REVERT_DEFAULT": "Revert to default filter",
-    "PLACEHOLDER_SENSORTYPE": "Select sensor type",
-    "PLACEHOLDER_AGGREGATION": "Select aggregation",
-    "PLACEHOLDER_THRESHOLD_TEMPLATE": "Select threshold template",
-    "THRESHOLD_TEMPLATES": {
-      "NOT_FOUND": "No threshold templates found",
-      "PLACEHOLDER": "Select threshold template",
-      "LOADING_TEXT": "Threshold templates loading"
-    },
-    "LOCATION": "Location",
-    "LOCATION_TYPE": {
-      "NOT_FOUND": "No location types found",
-      "PLACEHOLDER": "Select location type",
-      "LOADING_TEXT": "Location types loading"
-    },
-    "STATUS": {
-      "NOT_FOUND": "No statuses found",
-      "PLACEHOLDER": "Select status",
-      "LOADING_TEXT": "Statuses loading"
-    },
-    "NAME": {
-      "PLACEHOLDER": "Name"
-    },
-    "SUBMIT": "Submit"
+  "THINGS": {
+    "CHART_TYPE": "Chart type",
+    "USE_ON_CHART": "Use on chart",
+    "USE_ON_NOTIFICATION": "Use on notification",
+    "ONLY_APPLY_FOR_TANK_MONITORING": "This applies only for the monitoring charts",
+    "ONLY_APPLY_FOR_SMART_COUNTING": "This applies only for the smart counting chart"
   },
   "ALERTS": {
     "MARK_AS_READ": "Mark as read",
     "MARK_AS_UNREAD": "Mark as unread",
-    "DOWNLOAD": "Download",
-    "TITLE": "Alerts",
-    "ASSET": "Asset",
-    "LOCATION_TYPE": "Location type",
-    "DATE": "Date",
-    "MESSAGE": "Message",
-    "THRESHOLD_TEMPLATE": "Threshold template",
-    "MARK_SELECTED_READ": "Mark selected as read",
-    "MARK_SELECTED_UNREAD": "Mark selected as unread",
-    "UNREAD_ALERTS": "Unread alerts",
-    "READ_ALERTS": "Read alerts",
     "READ": "Read",
     "UNREAD": "Unread",
     "ALL": "All",
-    "FILTER": {
-      "NAME": "Asset name",
-      "SENSORS": "Sensors",
-      "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
-      "THRESHOLD_TEMPLATES": "Threshold templates",
-      "THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME": "Threshold template item custom name"
-    }
+    "ALERT(S)_SELECTED": "alert(s) selected"
+  },
+  "FILTERS": {
+    "ASSET_NAME": "Asset name",
+    "POINT_OF_ATTENTION_NAME": "Point of attention name",
+    "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
+    "THRESHOLD_TEMPLATES": {
+      "NOT_FOUND": "No threshold templates found",
+      "LOADING_TEXT": "Threshold templates loading"
+    },
+    "THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME": "Threshold template item custom name",
+    "LOCATION_NAME": "Location name",
+    "TRAIL_NAME": "Trail name",
+    "PLACE_NAME": "Place name",
+    "STORE_NAME": "Store name",
+    "SELECT_AGGREGATION": "Select aggregation",
+    "SELECT_SENSOR_TYPE": "Select sensor type",
+    "THING_NAME": "Thing name",
+    "SENSOR_TYPE_NAME": "Sensor type name",
+    "DEVICE_ID": "Device ID",
+    "THING_NAME_OR_DEVEUI": "Thing name or devEui",
+    "ONLY_ALPHANUMERIC": "Only alphanumeric characters are allowed"
   },
   "SENSORTYPES": {
     "range": "range",
@@ -189,44 +200,73 @@
     "pulse": "Pulse",
     "counter": "Counter"
   },
-  "ALERT_TYPE": {
-    "high": "high",
-    "low": "low"
-  },
-  "LOCATIONTYPE_SELECT": {
-    "NOT_FOUND_TEXT": "No location types found",
-    "LOADING_TEXT": "Loading location types",
-    "PLACEHOLDER": "Select location type"
-  },
-  "THRESHOLD_TEMPLATE_INPUT": {
-    "CUSTOM": "Custom",
-    "ENABLED": "Enabled",
-    "DISABLED": "Disabled"
-  },
   "INVENTORY": {
-    "TITLE": "Inventory",
     "ASSET": {
       "NONE_FOUND": "No asset found."
     },
     "LOCATION": {
       "NONE_FOUND": "No location found."
-    },
-    "FILTER": {
-      "PLACEHOLDERS": {
-        "ASSET_NAME": "Asset name",
-        "LOCATION_NAME": "Location name",
-        "TRAIL_NAME": "Trail name",
-        "PLACE_NAME": "Place name",
-        "STORE_NAME": "Store name"
-      }
     }
   },
   "LOCATIONS": {
+    "SEARCH_LOCATION_BY_NAME": "Search a location by name",
     "TITLE": "assets by location",
     "TOGGLE_MAP": "Toggle map view",
     "NAME": {
       "PLACEHOLDER": "Search on asset name for the selected location"
+    },
+    "CREATE_NEW_LOCATION": "Create a new location",
+    "NO_ASSET_FOUND_IN_LOCATIONS": "No asset found in this location",
+    "NO_POA_FOUND_IN_LOCATIONS": "No point of attention found in this location",
+    "OPEN_THIS_LOCATION": "Open this location"
+  },
+  "ASSETS": {
+    "CREATE_NEW_ASSET": "Create a new asset",
+    "NEW_ASSET": "New asset"
+  },
+  "POINTS_OF_ATTENTION": {
+    "MY_POINTS_OF_ATTENTION": "My points of attention",
+    "NEW_POINT_OF_ATTENTION": "New point of attention"
+  },
+  "THRESHOLD_TEMPLATE": {
+    "CREATE_NEW_THRESHOLD_TEMPLATE": "Create a new threshold template",
+    "NO_THRESHOLD_TEMPLATE": "No threshold template",
+    "THRESHOLD_ITEM_LABEL": "Threshold item label",
+    "THRESHOLD_ITEM_MIN": "Threshold item min",
+    "THRESHOLD_ITEM_MAX": "Threshold item max",
+    "ADD_THRESHOLD": "Add threshold",
+    "NO_THRESHOLD": "No threshold added yet",
+    "ADD_THRESHOLD_ITEM": "Add threshold item",
+    "SAVE_THRESHOLD_TEMPLATE": "Save the threshold template",
+    "FROM": "From",
+    "TO": "To",
+    "MAIL": "Mail",
+    "WEB": "Web",
+    "SMS": "Sms"
+  },
+  "TANK_MONITORING": {
+    "TANK_INVENTORY": "Tank inventory",
+    "NEW_TANK": "New tank",
+    "FUEL_LEVEL": "Fuel level",
+    "LAST_REFILL": "Last refill",
+    "STATUS": {
+      "EMPTY": "Empty fuel",
+      "LOW": "Low fuel",
+      "OK": "No problem",
+      "UNKNOWN": "Unknown"
     }
+  },
+  "WALKING_TRAIL": {
+    "TRAILS_OVERVIEW": "Trails overview",
+    "NEW_TRAIL": "New trail"
+  },
+  "PEOPLE_COUNTING_RETAIL": {
+    "STORES_OVERVIEW": "Stores overview",
+    "NEW_STORE": "New store"
+  },
+  "STAIRWAY_TO_HEALTH": {
+    "PLACES_OVERVIEW": "Places overview",
+    "NEW_PLACE": "New place"
   },
   "PRIVACY_POLICY": {
     "TITLE": "Privacy Policy",
@@ -259,8 +299,6 @@
     "LOADING_UNREAD_ALERTS": "Loading unread alerts",
     "NO_CHART_DATA": "No data available for selected filter",
     "PLACEHOLDER_CHARTTYPE": "Chart type",
-    "THRESHOLD_TEMPLATE": "Threshold template",
-    "DESCRIPTION": "Description",
     "NO_DESCRIPTION": "No description for this asset",
     "LAST_MEASUREMENT": "Last measurement",
     "LAST_MEASUREMENTS": "Last measurements",
@@ -269,7 +307,6 @@
     "NO_ASSET_ALERTS": "No alerts",
     "PLACEHOLDER_SENSORTYPE": "Select chart sensors",
     "CHART_CONFIGURATION": "Chart configuration",
-    "THRESHOLDS": "Thresholds",
     "ALERTS": "Alerts",
     "RECEIVED_VALUE": "Received value",
     "THRESHOLD_LOW": "Threshold low",
@@ -305,6 +342,7 @@
     "CANCEL": "Cancel"
   },
   "IMAGE_INPUT": {
+    "ADD": "Add an image",
     "SELECT_IMAGE": "Select image",
     "CHANGE": "Change",
     "REMOVE": "Remove"
@@ -321,34 +359,9 @@
     "RECIPIENT": "Recipient",
     "ASSET": "Asset",
     "LOG": "Log",
-    "THRESHOLD_TEMPLATE": "Threshold template",
-    "CATEGORY": "Category",
     "SAVE_EMAIL": "Save email settings",
     "SMS_SETTINGS": "SMS settings",
-    "SAVE_SMS": "Save SMS settings",
-    "BUTTON_LABELS": {
-      "ASSET_NAME": "Asset name",
-      "LOCATION_NAME": "Location name",
-      "SUBLOCATION_NAME": "Sublocation name",
-      "DEVICE_ID": "Device ID",
-      "TIMESTAMP": "Timestamp",
-      "VALUE": "Value",
-      "MATERIAL_NAME": "Threshold template name",
-      "THRESHOLD_MIN": "Threshold Min",
-      "THRESHOLD_MAX": "Threshold Max",
-      "THING_NAME": "Thing name",
-      "THRESHOLD_TEMPLATE_NAME": "Threshold template name",
-      "SENSOR_TYPE_NAME": "Sensor type name",
-      "THRESHOLD_ITEM_LABEL": "Threshold item label",
-      "THRESHOLD_ITEM_MIN": "Threshold item min",
-      "THRESHOLD_ITEM_MAX": "Threshold item max"
-    }
-  },
-  "ASSET_MODAL": {
-    "DETAIL": "Detail",
-    "PLACEHOLDERS": {
-      "NAME": "Name"
-    }
+    "SAVE_SMS": "Save SMS settings"
   },
   "SUPPORT": {
     "TITLE": "Support",
@@ -402,14 +415,6 @@
       "NAME" : {
         "MIN_LENGHT" : "Name not long enough"
       }
-    },
-    "TABLE_HEADERS": {
-      "NAME": "Name",
-      "ACTIONS": "Actions",
-      "LOCATION_TYPE": "Location type",
-      "LOCATION": "Location",
-      "SUBLOCATION": "Sublocation",
-      "THRESHOLD_TEMPLATE": "Threshold template"
     }
   },
   "SENSOR_BOTTOMSHEET": {
@@ -452,21 +457,31 @@
   "PDF": {
     "ASSET_NAME": "Asset name",
     "CLIENT_NAME" : "Client name",
-    "LOCATION_NAME" : "Location name",
-    "SUBLOCATION_NAME" : "Sublocation name",
     "CHART" : "CHART",
     "MEASURE_PERIOD" : "Measure period from",
     "TO" : "to",
-    "AGGREGATED_VALUES" : "AGGREGATED VALUES",
-    "POINT_OF_ATTENTION": "Point of attention"
+    "AGGREGATED_VALUES" : "AGGREGATED VALUES"
   },
-  "DASHBOARD" : {
-    "TANK_MONITORING": {
-      "STATUS": {
-        "EMPTY": "Empty fuel",
-        "LOW": "Low fuel",
-        "OK": "No problem"
-      }
+  "ERRORS": {
+    "HEADER": "Oops! This is awkward",
+    "BUTTONS": {
+      "BACK_HOME": "Take me home"
+    },
+    "401": {
+      "TITLE": "Unauthorized",
+      "CONTENT": "Sorry, an error has occured, you are not authorized to see the requested page!" 
+    },
+    "403": {
+      "TITLE": "Forbidden",
+      "CONTENT": "Sorry, an error has occured, you are not authorized to see the requested page!" 
+    },
+    "404": {
+      "TITLE": "This page is no longer available …",
+      "CONTENT": "Sorry, an error has occured, requested page not found!" 
+    },
+    "500": {
+      "TITLE": "Server Error",
+      "CONTENT": "Sorry, an error has occured, our servers might be down!" 
     }
   },
   "temperature": "Temperature",

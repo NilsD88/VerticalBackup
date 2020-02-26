@@ -27,7 +27,7 @@ export class WalkingTrailInventoryLocationsComponent extends InventoryLocationsC
       sharedService
     );
     this.leafUrl = 'private/walkingtrail/trail';
-    this.locationPlaceholderName = 'INVENTORY.FILTER.PLACEHOLDERS.TRAIL_NAME';
+    this.locationPlaceholderName = 'FILTERS.TRAIL_NAME';
   }
 
   async ngOnInit() {

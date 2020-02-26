@@ -140,9 +140,9 @@ export class PointOfAttentionComponent implements OnInit, OnDestroy {
 
     const clientNameTranslation: string = await this.getTranslation('PDF.CLIENT_NAME');
     pdf.text(clientNameTranslation + ' : ' + this.sharedService.user.orgName, 10, 15);
-    const pointOfAttentionNameTranslation: string = await this.getTranslation('PDF.POINT_OF_ATTENTION_NAME');
+    const pointOfAttentionNameTranslation: string = await this.getTranslation('FILTERS.POINT_OF_ATTENTION');
     pdf.text(pointOfAttentionNameTranslation + ' : ' + this.pointOfAttention.name, 10, 20);
-    const locationNameTranslation: string = await this.getTranslation('PDF.LOCATION_NAME');
+    const locationNameTranslation: string = await this.getTranslation('FILTERS.LOCATION_NAME');
     pdf.text(locationNameTranslation + ' : ' + this.pointOfAttention.location.name, 10, 25);
 
     const options = this.myChart.options;

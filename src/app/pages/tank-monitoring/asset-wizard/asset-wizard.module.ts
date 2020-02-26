@@ -12,7 +12,6 @@ import { MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, Mat
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
-import { FormKeyvalueModule } from 'projects/ngx-proximus/src/lib/form-keyvalue/form-keyvalue.module';
 import { FormGeolocationModule } from 'projects/ngx-proximus/src/lib/form-geolocation/form-geolocation.module';
 import { EditableImageModule } from 'projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
@@ -37,7 +36,6 @@ import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-thre
     MatSelectModule,
     MatListModule,
     IconModule,
-    FormKeyvalueModule,
     FormGeolocationModule,
     EditableImageModule,
     LocationExplorerModule,
@@ -51,6 +49,7 @@ import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-thre
     ManageThresholdTemplatesDialogModule,
     FormCustomFieldsModule,
     RouterModule.forChild(TankMonitoringAssetWizardRoutes),
+    TranslateModule
   ],
   exports: [TankMonitoringAssetWizardComponent],
   entryComponents: [

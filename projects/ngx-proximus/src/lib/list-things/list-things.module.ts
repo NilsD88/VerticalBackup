@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { EditSensorPopupComponent } from './edit-sensor-popup/edit-sensor-popup.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -31,7 +32,8 @@ import { LoaderModule } from '../loader/loader.module';
     MatSelectModule,
     MatInputModule,
     MatPaginatorModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    TranslateModule
   ],
   exports: [
     ListThingsComponent

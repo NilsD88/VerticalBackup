@@ -14,7 +14,6 @@ export class EditableImageComponent implements OnInit {
   @ViewChild('fileInput', {static: false}) fileInput: ElementRef;
 
   @Input() image: string;
-  @Input() dialogTitle = 'Edit image';
   @Input() ratio: number = null;
   @Input() maxWidthAndHeight = 1024;
   @Input() confirmationMessage: IPopupConfirmation;
@@ -52,7 +51,6 @@ export class EditableImageComponent implements OnInit {
     const dialogRef = this.dialog.open(EditImageDialogComponent, {
       data: {
         imageEvent: event,
-        title: this.dialogTitle,
         ratio: this.ratio,
         maxWidthAndHeight: this.maxWidthAndHeight,
       },

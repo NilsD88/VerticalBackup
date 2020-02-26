@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MapDialogModule } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.module';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,6 +27,7 @@ import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map
     MatSnackBarModule,
     MatDialogModule,
     MapDialogModule,
+    TranslateModule
   ],
   exports: [
     PeopleCountingRetailMapComponent,

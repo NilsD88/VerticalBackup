@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { AssetExplorerProjectionModule } from './../asset-explorer-projection/asset-explorer-projection.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,7 +13,8 @@ import { MatProgressSpinnerModule } from '@angular/material';
     CommonModule,
     AssetExplorerProjectionModule,
     MatProgressSpinnerModule,
-    IconModule
+    IconModule,
+    TranslateModule
   ],
   exports: [
     AssetExplorerComponent

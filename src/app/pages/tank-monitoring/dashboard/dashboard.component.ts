@@ -279,7 +279,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     for (const status in STATUS_ASSETS) {
       if (status) {
         chartData.push({
-          name: status,
+          name: this.sharedService.translate.instant('TANK_MONITORING.STATUS.' + status),
           keyName: status,
           y: STATUS_ASSETS[status].length
         });

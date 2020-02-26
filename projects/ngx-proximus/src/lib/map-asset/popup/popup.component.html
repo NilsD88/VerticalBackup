@@ -18,7 +18,7 @@
     <li *ngFor="let thing of asset.things">
       <strong>{{thing.name}}</strong>
         <ul>
-          <li>Battery: {{(thing.batteryPercentage) ? (thing.batteryPercentage+'%') : 'null'}}</li>
+          <li>{{'SENSORTYPES.battery' | translate}}: {{(thing.batteryPercentage) ? (thing.batteryPercentage+'%') : 'null'}}</li>
         </ul>
     </li>
   </ul>
@@ -29,6 +29,6 @@
       <h6>{{location.name}}</h6>
     </div>
     <div class="subtitle">
-      <a (click)="openLocation()">Open this location</a>
+      <a (click)="openLocation()">{{'LOCATIONS.OPEN_THIS_LOCATION' | translate}}</a>
     </div>
 </div>

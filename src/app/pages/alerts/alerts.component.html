@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row" style="margin-top: 1rem;">
     <div class="col-md-3">
-      <h1 class="pxs-title">{{'ALERTS.TITLE' | translate}}</h1>
+      <h1 class="pxs-title">{{'LAYOUT.ALERTS' | translate}}</h1>
     </div>
     <div class="col-md-9 alerts-filter-container">
       <div class="row">
         <div class="col-xl-8 col-lg-8 col-md-8">
           <mat-form-field class="w-100">
-            <input type="text" matInput [placeholder]="'ALERTS.FILTER.NAME' | translate" [(ngModel)]="filterFE.name"
+            <input type="text" matInput [placeholder]="'FILTERS.ASSET_NAME' | translate" [(ngModel)]="filterFE.name"
                    (ngModelChange)="changeFilterFE()">
           </mat-form-field>
         </div>
@@ -15,19 +15,19 @@
           <ng-select [multiple]="true" [clearable]="true" [items]="filterOptions.sensorTypes"
                      [(ngModel)]="filterFE.sensorTypeIds" bindValue="id" [loading]="sensorTypesLoading"
                      [hideSelected]="true"
-                     (change)="changeFilterFE()" [placeholder]="'ALERTS.FILTER.SENSORS' | translate">
+                     (change)="changeFilterFE()" [placeholder]="'LAYOUT.SENSORS' | translate">
           </ng-select>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
           <mat-form-field class="w-100">
-            <input type="text" matInput [placeholder]="'ALERTS.FILTER.THRESHOLD_TEMPLATE_NAME' | translate"
+            <input type="text" matInput [placeholder]="'FILTERS.THRESHOLD_TEMPLATE_NAME' | translate"
                    [(ngModel)]="filterFE.thresholdTemplateName"
                    (ngModelChange)="changeFilterFE()">
           </mat-form-field>
         </div>
         <div class="col-xl-4 col-lg-6 col-md-6">
           <mat-form-field class="w-100">
-            <input type="text" matInput [placeholder]="'ALERTS.FILTER.THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME' | translate" [(ngModel)]="filterFE.thresholdTemplateItemName"
+            <input type="text" matInput [placeholder]="'FILTERS.THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME' | translate" [(ngModel)]="filterFE.thresholdTemplateItemName"
                    (ngModelChange)="changeFilterFE()">
           </mat-form-field>
         </div>
@@ -52,7 +52,7 @@
       </mat-button-toggle-group>
     </div>
     <div class="actions">
-      <span>{{selectedAlerts.length}} alert(s) selected</span>
+      <span>{{selectedAlerts.length}} {{ 'ALERTS.ALERT(S)_SELECTED' | translate }}</span>
       <div>
         <button mat-stroked-button color="primary" [disabled]="!selectedAlerts.length"
                 (click)="markAsRead()">{{'ALERTS.MARK_AS_READ' | translate}}</button>
@@ -60,16 +60,16 @@
                 (click)="markAsUnread()">{{'ALERTS.MARK_AS_UNREAD' | translate}}</button>
 
         <button mat-stroked-button color="primary" [matMenuTriggerFor]="menuDownload" [disabled]="!selectedAlerts.length">
-          <span>{{'ALERTS.DOWNLOAD' | translate}}</span>
+          <span>{{'GENERAL.DOWNLOAD' | translate}}</span>
         </button>
         <mat-menu #menuDownload>
             <button mat-menu-item (click)="downloadSelectedAlertsPDF()">
                 <mat-icon>picture_as_pdf</mat-icon>
-                <span>Export PDF</span>
+                <span>{{'GENERAL.EXPORT_PDF' | translate}}</span>
             </button>
             <button mat-menu-item disabled (click)="downloadSelectedAlertsCSV()" [disabled]="!selectedAlerts.length">
                 <mat-icon>insert_drive_file</mat-icon>
-                <span>Export CSV</span>
+                <span>{{'GENERAL.EXPORT_CSV' | translate}}</span>
             </button>
         </mat-menu>
       </div>
@@ -103,7 +103,7 @@
 
         <!-- Date Column -->
         <ng-container matColumnDef="timestamp">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GENERAL.DATE' | translate }}</th>
           <td mat-cell *matCellDef="let element">
             <span class="name">{{element.asset?.name}}</span>
             <span class="date">{{element.timestamp | date : 'dd/MM/yyyy - HH:mm'}}</span>
@@ -112,7 +112,7 @@
 
         <!-- Sensor Column -->
         <ng-container matColumnDef="sensorType.name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sensor</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'LAYOUT.SENSOR' | translate }}</th>
           <td mat-cell *matCellDef="let element">
             <div>
               <img [src]="'assets/smartmonitoring/images/icons/icon-'+ element.sensorType?.name + '.svg'"
@@ -125,7 +125,7 @@
 
         <!-- Severity Column -->
         <ng-container matColumnDef="severity">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Severity</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'GENERAL.SEVERITY' | translate }}</th>
           <td mat-cell *matCellDef="let element">
             <div
               [matTooltip]="displayRange(element)"
@@ -138,7 +138,7 @@
 
         <!-- Threshold Template Column -->
         <ng-container matColumnDef="thresholdTemplateName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Threshold template</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'LAYOUT.THRESHOLD_TEMPLATE' | translate }}</th>
           <td mat-cell *matCellDef="let element">
             <span class="alert-threshold-template">
               {{element.thresholdTemplateName}}
@@ -148,7 +148,7 @@
 
         <!-- Thing Column -->
         <ng-container matColumnDef="thing.devEui">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Thing</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'LAYOUT.THING' | translate }}</th>
           <td mat-cell *matCellDef="let element">
             <div class="thing">
               <span class="devEui">{{element.thing?.devEui}}</span>
@@ -159,7 +159,7 @@
 
         <!-- Location Column -->
         <ng-container matColumnDef="asset.location.name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Location</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'LAYOUT.LOCATION' | translate }}</th>
           <td mat-cell *matCellDef="let element">
             {{element.asset?.location?.name}}
           </td>
@@ -167,9 +167,9 @@
 
         <!-- Value Column -->
         <ng-container matColumnDef="value">
-          <th mat-header-cell *matHeaderCellDef>Value</th>
+          <th mat-header-cell *matHeaderCellDef>{{ 'GENERAL.VALUE' | translate }}</th>
           <td mat-cell *matCellDef="let element">
-            {{element.value.toFixed(2)}} {{element.sensorType?.postfix}}
+            {{element.value | number:'1.0-2'}} {{element.sensorType?.postfix}}
           </td>
         </ng-container>
 

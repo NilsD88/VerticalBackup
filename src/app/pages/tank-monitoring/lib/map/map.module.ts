@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MapDialogComponent } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
 import { MapDialogModule } from './../../../../../../projects/ngx-proximus/src/lib/map-dialog/map-dialog.module';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
@@ -25,7 +26,8 @@ import { createCustomElement } from '@angular/elements';
     IconModule,
     MatSnackBarModule,
     MapDialogModule,
-    MatDialogModule
+    MatDialogModule,
+    TranslateModule
   ],
   exports: [
     TankMonitoringMapComponent,

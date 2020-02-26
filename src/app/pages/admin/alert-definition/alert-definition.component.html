@@ -31,7 +31,7 @@
           </div>
           <div class="col-12">
             <mat-form-field class="w-75" *ngFor="let recipient of alertDefinitionModel.email.recipients; let i = index;">
-              <input type="email" matInput placeholder="Recipient"
+              <input type="email" matInput [placeholder]="'ALERT_DEF.RECIPIENT' | translate"
                      [(ngModel)]="alertDefinitionModel.email.recipients[i].value">
               <button matSuffix mat-icon-button [matTooltip]="'ALERT_DEF.DELETE_RECIPIENT' | translate" color="warn"
                       (click)="deleteRecipient('email', i)">
@@ -59,10 +59,10 @@
           <div class="col-3">
             <small class="text-faded" [translate]="'ALERT_DEF.PLACEHOLDERS'"></small>
             <mat-form-field class="w-100">
-              <mat-select placeholder="{{'ALERT_DEF.CATEGORY' | translate}}" [(ngModel)]="activePlaceholders">
+              <mat-select placeholder="{{'GENERAL.CATEGORY' | translate}}" [(ngModel)]="activePlaceholders">
                 <mat-option [value]="placeholders.asset"><span [translate]="'ALERT_DEF.ASSET'" ></span></mat-option>
                 <mat-option [value]="placeholders.log"><span [translate]="'ALERT_DEF.LOG'" ></span></mat-option>
-                <mat-option [value]="placeholders.threshold"><span [translate]="'ALERT_DEF.THRESHOLD_TEMPLATE'"></span></mat-option>
+                <mat-option [value]="placeholders.threshold"><span [translate]="'LAYOUT.THRESHOLD_TEMPLATE'"></span></mat-option>
               </mat-select>
             </mat-form-field>
 
@@ -120,10 +120,10 @@
           <div class="col-3">
             <small class="text-faded">{{'ALERT_DEF.PLACEHOLDERS' | translate}}</small>
             <mat-form-field class="w-100">
-              <mat-select placeholder="Category" [(ngModel)]="activePlaceholders">
+              <mat-select [placeholder]="'GENERAL.CATEGORY' | translate" [(ngModel)]="activePlaceholders">
                 <mat-option [value]="placeholders.asset">{{'ALERT_DEF.ASSET' | translate}}</mat-option>
                 <mat-option [value]="placeholders.log">{{'ALERT_DEF.LOG' | translate}}</mat-option>
-                <mat-option [value]="placeholders.threshold">{{'ALERT_DEF.THRESHOLD_TEMPLATE' | translate}}</mat-option>
+                <mat-option [value]="placeholders.threshold">{{'LAYOUT.THRESHOLD_TEMPLATE' | translate}}</mat-option>
               </mat-select>
             </mat-form-field>
             <button mat-raised-button
