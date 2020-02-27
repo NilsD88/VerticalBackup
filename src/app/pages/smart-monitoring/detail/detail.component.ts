@@ -326,7 +326,7 @@ export class DetailComponent implements OnInit, OnDestroy {
           this.dialog.open(DialogComponent, {
             data: {
               title: this.translateService.instant('ERRORS.SORRY_ERROR_OCCURED'),
-              message: this.translateService.instant('ERROS.ERROR_OCCURED_GETTING_DATA')
+              message: this.translateService.instant('ERRORS.ERROR_OCCURED_GETTING_DATA')
             },
             minWidth: '320px',
             maxWidth: '400px',

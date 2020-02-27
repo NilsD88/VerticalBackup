@@ -7,7 +7,7 @@
     <b>{{asset.location.name}}</b>
   </div>
   <div class="last-alert" *ngIf="lastAlert">
-    <strong>Last alert: </strong>{{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}
+    <strong>{{'ALERTS.LAST_ALERT' | translate}}: </strong>{{'SENSORTYPES.' + lastAlert?.thresholdAlert?.sensorType?.name | translate}}
     {{alertsService.getAlertType(lastAlert.sensorReading.value, lastAlert.thresholdAlert.high, lastAlert.thresholdAlert.low) | translate}}
     <br>
     <span class="last-alert-date">

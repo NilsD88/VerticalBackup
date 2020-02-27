@@ -43,11 +43,12 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
   public isSavingOrUpdating: boolean;
 
   public changeFloorPlanConfirmationMessage: IPopupConfirmation = {
-    title: 'Warning',
-    content: 'Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?',
-    continueButton: 'Yes',
-    cancelButton: 'No'
+    title: this.translateService.instant('GENERAL.WARNING'),
+    content: this.translateService.instant('DIALOGS.WARNINGS.PAY_ATTENTION_FLOOR_PLAN'),
+    continueButton: this.translateService.instant('GENERAL.YES'),
+    cancelButton: this.translateService.instant('GENERAL.NO')
   };
+
 
   private originalLocation: IPeopleCountingLocation;
   private assetsRequest$ = new Subject();

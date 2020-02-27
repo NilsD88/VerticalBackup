@@ -47,7 +47,7 @@
         
         <!-- Sensors Column -->
         <ng-container matColumnDef="thresholds">
-          <th mat-header-cell *matHeaderCellDef> {{ 'LAYOUT.THRESHOLDS'}} </th>
+          <th mat-header-cell *matHeaderCellDef> {{ 'LAYOUT.THRESHOLDS' | translate}} </th>
             <td mat-cell *matCellDef="let element" class="sensors-container">
               <div class="sensor" *ngIf="element.thresholds.length">
                   <img 

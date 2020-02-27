@@ -23,7 +23,7 @@
         </p>
         <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
         <p>
-          <i *ngIf="asset?.lastRefill?.timestamp">Filled to {{asset?.lastRefill.value}}% on
+          <i *ngIf="asset?.lastRefill?.timestamp">{{'TANK_MONITORING.CONSUMPTIONS.FILLED_TO' | translate}} {{asset?.lastRefill.value}}% {{'TANK_MONITORING.CONSUMPTIONS.FILLED_TO_ON' | translate}}
             : {{asset?.lastRefill?.timestamp | date: 'dd/MM/yyyy' }}</i>
         </p>
         <br>

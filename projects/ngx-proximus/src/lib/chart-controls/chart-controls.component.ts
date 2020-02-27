@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { Component, OnInit, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { NgxDrpOptions } from 'ngx-mat-daterange-picker';
@@ -41,6 +42,7 @@ export class ChartControlsComponent implements OnInit {
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -54,13 +56,13 @@ export class ChartControlsComponent implements OnInit {
 
     const today = moment().startOf('day').toDate();
     const drpPresets = [
-      {presetLabel: 'Last 24 hours', range: {
+      {presetLabel: this.translateService.instant('FILTERS.PRESETS.LAST_24_HOURS'), range: {
         fromDate: moment().subtract(1, 'day').toDate(), toDate: moment().toDate()
       }},
-      {presetLabel: 'Last 7 Days', range: {
+      {presetLabel: this.translateService.instant('FILTERS.PRESETS.LAST_7_DAYS'), range: {
         fromDate: moment().subtract(7, 'day').startOf('day').toDate(), toDate: today
       }},
-      {presetLabel: 'Last 30 Days', range: {
+      {presetLabel: this.translateService.instant('FILTERS.PRESETS.LAST_30_DAYS'), range: {
         fromDate: moment().subtract(30, 'day').startOf('day').toDate(), toDate: today
       }}
     ];
@@ -69,11 +71,11 @@ export class ChartControlsComponent implements OnInit {
       presets: drpPresets,
       format: 'mediumDate',
       range: {fromDate, toDate},
-      applyLabel: 'Submit',
+      applyLabel: this.translateService.instant('GENERAL.SUBMIT'),
       calendarOverlayConfig: {
         shouldCloseOnBackdropClick: true
       },
-      cancelLabel: 'Cancel',
+      cancelLabel: this.translateService.instant('GENERAL.CANCEL'),
       excludeWeekends: false,
       fromMinMax: {fromDate: null, toDate: fromMax},
       toMinMax: {fromDate: null, toDate: toMax}

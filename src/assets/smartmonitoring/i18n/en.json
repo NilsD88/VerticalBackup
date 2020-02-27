@@ -5,7 +5,7 @@
     "LINK": "Learn more"
   },
   "DISCLAIMER": {
-    "ALL_RIGHTS_RESERVED": "All rights reserved.",
+    "ALL_RIGHTS_RESERVED": "All rights reserved",
     "TERMS_AND_CONDITIONS": "General terms and conditions, consumer info and privacy",
     "COOKIE_POLICY": "Cookie policy",
     "BELGIAN_LAW": "This site was created and is managed in accordance with Belgian law.",
@@ -114,12 +114,20 @@
     "MONTH": "Month",
     "YEAR": "Year",
     "WEEK": "Week",
+    "THIS_WEEK": "This week",
     "INCREASE": "Increase",
     "DECREASE": "Decrease",
+    "TOTAL": "Total",
     "WARNING": "Warning",
     "AGGREGATION": "Aggregation",
     "SEE": "See",
-    "MESSAGE": "Message"
+    "MESSAGE": "Message",
+    "NO_DATA_AVAILABLE": "No data available",
+    "NO_DATA_FOR_SELECTED_PERIOD": "No data for the selected period",
+    "YES": "Yes",
+    "NO": "No",
+    "TRUE": "True",
+    "FALSE": "False"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",
@@ -181,7 +189,9 @@
     "READ": "Read",
     "UNREAD": "Unread",
     "ALL": "All",
-    "ALERT(S)_SELECTED": "alert(s) selected"
+    "ALERT(S)_SELECTED": "alert(s) selected",
+    "LAST_ALERTS": "Last alerts",
+    "LAST_ALERT": "Last alert"
   },
   "FILTERS": {
     "ASSET_NAME": "Asset name",
@@ -209,6 +219,11 @@
       "WEEKLY": "Weekly",
       "MONTHLY": "Monthly",
       "YEARLY": "Yearly"
+    },
+    "PRESETS": {
+      "LAST_24_HOURS": "Last 24 hours",
+      "LAST_7_DAYS": "Last 7 Days",
+      "LAST_30_DAYS": "Last 30 Days"
     }
   },
   "SENSORTYPES": {
@@ -219,15 +234,32 @@
     "luminosity": "Luminosity",
     "battery": "Battery",
     "pulse": "Pulse",
-    "counter": "Counter"
-  },
-  "INVENTORY": {
-    "ASSET": {
-      "NONE_FOUND": "No asset found."
-    },
-    "LOCATION": {
-      "NONE_FOUND": "No location found."
-    }
+    "counter": "Counter",
+    "Counter A": "Counter A",
+    "Counter B": "Counter B",
+    "Payload Counter": "Payload Counter",
+    "RSSI": "RSSI",
+    "Sensor Status": "Sensor Status",
+    "Total Counter A": "Total Counter A",
+    "Total Counter B": "Total Counter B",
+    "battery level": "Battery level",
+    "battery percentage": "Battery percentage",
+    "battery voltage": "Battery voltage",
+    "battery_current_level": "Current battery level",
+    "co2": "co2",
+    "consumption": "Consumption",
+    "device id": "Device id",
+    "device status": "Device status",
+    "measurement interval": "Measurement interval",
+    "payload type": "Payload type",
+    "presence": "Presence",
+    "resistance": "Resistance",
+    "shock": "Shock",
+    "shock counter": "Shock counter",
+    "tank fill level": "Tank fill level",
+    "total_count": "Total count",
+    "transmit interval": "Transmit interval",
+    "type variant": "Type variant"
   },
   "LOCATIONS": {
     "SEARCH_LOCATION_BY_NAME": "Search a location by name",
@@ -239,11 +271,14 @@
     "CREATE_NEW_LOCATION": "Create a new location",
     "NO_ASSET_FOUND_IN_LOCATIONS": "No asset found in this location",
     "NO_POA_FOUND_IN_LOCATIONS": "No point of attention found in this location",
-    "OPEN_THIS_LOCATION": "Open this location"
+    "OPEN_THIS_LOCATION": "Open this location",
+    "NONE_FOUND": "No location found"
   },
   "ASSETS": {
     "CREATE_NEW_ASSET": "Create a new asset",
-    "NEW_ASSET": "New asset"
+    "ADD_NEW_ASSET": "Add new asset",
+    "NEW_ASSET": "New asset",
+    "NONE_FOUND": "No asset found"
   },
   "POINTS_OF_ATTENTION": {
     "MY_POINTS_OF_ATTENTION": "My points of attention",
@@ -275,6 +310,11 @@
       "LOW": "Low fuel",
       "OK": "No problem",
       "UNKNOWN": "Unknown"
+    },
+    "CONSUMPTION": "Consumption",
+    "CONSUMPTIONS": {
+      "FILLED_TO": "Filled to",
+      "FILLED_TO_ON": "on"
     }
   },
   "WALKING_TRAIL": {
@@ -331,24 +371,7 @@
     "CONTINUE": "Continue"
   },
   "DETAIL": {
-    "LOADING_UNREAD_ALERTS": "Loading unread alerts",
-    "NO_CHART_DATA": "No data available for selected filter",
-    "PLACEHOLDER_CHARTTYPE": "Chart type",
-    "NO_DESCRIPTION": "No description for this asset",
-    "LAST_MEASUREMENT": "Last measurement",
-    "LAST_MEASUREMENTS": "Last measurements",
-    "NO_LAST_MEASURE": "No last measurements available yet.",
-    "DATA_CHART": "Data chart",
-    "NO_ASSET_ALERTS": "No alerts",
-    "PLACEHOLDER_SENSORTYPE": "Select chart sensors",
-    "CHART_CONFIGURATION": "Chart configuration",
-    "ALERTS": "Alerts",
-    "RECEIVED_VALUE": "Received value",
-    "THRESHOLD_LOW": "Threshold low",
-    "THRESHOLD_HIGH": "Threshold high",
     "LINKED_THINGS": "Linked things",
-    "CHART": "Chart",
-    "CONFIGURATIONS": "Configurations",
     "AGGREGATED": {
       "MEASUREMENT" : "Measurement",
       "MAX" : "Max",
@@ -515,6 +538,12 @@
     "TRY_AGAIN": "Try again"
   },
   "DIALOGS": {
+    "TRANSFERS": {
+      "TRANSFER_ATTACHED_ASSETS": "Transfer attached assets",
+      "CHOOSE_WHERE_TO_TRANSFER": "Choose a location where to move the attached assets. If you cancel the transfer, the assets will be linked to the parent location automatically. If there is no parent the assets will become orphans.",
+      "CANCEL_TRANSFER": "Cancel the transfer",
+      "TRANSFER_ASSETS": "Transfer the assets"
+    },
     "DELETE": {
       "ARE_YOU_SURE_TO_DELETE_THIS_LOCATION": "Are you sure to delete this location?",
       "ARE_YOU_SURE_NO_MORE_ACCESSIBLE": "Are you sure you want to delete? It will not be accessible anymore.",
@@ -531,8 +560,14 @@
       "AT_LEAST_ONE_THING_FOR_YOUR_MODULE": "You can an only add an asset with at least one thing defined for your module"
     },
     "WARNINGS": {
-      "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Not all the sensors defined in the threshold template are matching the sensor assigned to this asset"
+      "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Not all the sensors defined in the threshold template are matching the sensor assigned to this asset",
+      "PAY_ATTENTION_FLOOR_PLAN": "Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?"
     }
+  },
+  "MAPS": {
+    "NO_POSITION_SELECTED": "No position selected",
+    "POSITION_SELECTED": "Position selected",
+    "REMOVE_POSITION": "remove the position"
   },
   "NOTIFS": {
     "SUCCESS": {

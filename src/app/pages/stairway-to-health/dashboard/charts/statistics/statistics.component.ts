@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Subject, Observable, of } from 'rxjs';
 import { SubSink } from 'subsink';
 import { StairwayToHealthLocationService } from 'src/app/services/stairway-to-health/location.service';
@@ -46,9 +47,9 @@ export class StatisticsComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   public titles = {
-    day: 'Today',
-    week: 'This week',
-    all: 'Total'
+    day: this.translateService.instant('GENERAL.TODAY'),
+    week: this.translateService.instant('GENERAL.THIS_WEEK'),
+    all: this.translateService.instant('GENERAL.TOTAL'),
   };
 
   public series = {
@@ -92,6 +93,7 @@ export class StatisticsComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private locationService: StairwayToHealthLocationService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
