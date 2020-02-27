@@ -226,12 +226,12 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
           if (!isNullOrUndefined(this.point.value)) {
             return `
               ${moment(this.point.date).format('L')}
-              <br><div>Value: ${this.point.value} </div>
+              <br><div>${instance.translateService.instant('GENERAL.VALUE')}: ${this.point.value} </div>
             `;
           } else {
             return `
               ${moment(this.point.date).format('L')}
-              <br><div>Value: null </div>
+              <br><div>${instance.translateService.instant('GENERAL.VALUE')}: null </div>
             `;
           }
         }
@@ -272,8 +272,8 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateChart(series: IPeopleCountingLocationSerie[]) {
     this.chartOptions.series = [];
-    this.startMonth = moment(this.currentFilter.from).format('MMMM YY');
-    this.endMonth = moment(this.currentFilter.to).subtract(1, 'day').format('MMMM YY');
+    this.startMonth = moment(this.currentFilter.from).format('MMMM YYYY');
+    this.endMonth = moment(this.currentFilter.to).subtract(1, 'day').format('MMMM YYYY');
 
     if (!series) {
       return this.displayChart();
@@ -336,7 +336,6 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         // REAL DATA
-        console.log(this.leaf);
         return this.locationService.getLocationsDataByIds(
           [this.leaf.id],
           filter.interval, filter.from, filter.to

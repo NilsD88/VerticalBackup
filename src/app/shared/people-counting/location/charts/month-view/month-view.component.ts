@@ -250,14 +250,14 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
           if (!NOT_DISPLAY_IN) {
             if (!NOT_DISPLAY_OUT) {
               series.push({
-                name: `Week ${index} - ${assetName}`,
+                name: `${this.translateService.instant('GENERAL.WEEK')} ${index} - ${assetName}`,
                 color: assetColors[assetIndex],
                 id: asset.id,
                 data: weekInValues,
                 stack: 'W' + index,
               });
               series.push({
-                name: `Week ${index} - ${assetName} (OUT)`,
+                name: `${this.translateService.instant('GENERAL.WEEK')} ${index} - ${assetName} (OUT)`,
                 color: assetColors[assetIndex],
                 id: asset.id,
                 data: weekOutValues,
@@ -266,7 +266,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
               });
             } else {
               series.push({
-                name: `Week ${index} - ${assetName}`,
+                name: `${this.translateService.instant('GENERAL.WEEK')} ${index} - ${assetName}`,
                 color: assetColors[assetIndex],
                 id: asset.id,
                 data: weekInValues,
@@ -275,7 +275,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
             }
           } else {
             series.push({
-              name: `Week ${index} - ${assetName}`,
+              name: `${this.translateService.instant('GENERAL.WEEK')} ${index} - ${assetName}`,
               color: assetColors[assetIndex],
               id: asset.id,
               data: weekOutValues,
