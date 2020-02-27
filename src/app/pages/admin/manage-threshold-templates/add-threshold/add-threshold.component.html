@@ -3,7 +3,7 @@
   
   <mat-form-field>
     <mat-select [(ngModel)]="item" [placeholder]="'FILTERS.SELECT_SENSOR_TYPE' | translate">
-      <mat-option *ngFor="let item of items" [value]="item">{{item.name}}</mat-option>
+      <mat-option *ngFor="let item of items" [value]="item">{{('SENSORTYPES.'+item.name) | translate}}</mat-option>
     </mat-select>
   </mat-form-field>
 

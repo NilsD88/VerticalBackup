@@ -97,6 +97,7 @@
     "SAVE_AND_CONTINUE": "Save and continue",
     "NEXT": "Next",
     "CANCEL": "Cancel",
+    "CONTINUE": "Continue",
     "DONE": "Done",
     "DATE": "Date",
     "TIMESTAMP": "TIMESTAMP",
@@ -298,7 +299,12 @@
     "TO": "To",
     "MAIL": "Mail",
     "WEB": "Web",
-    "SMS": "Sms"
+    "SMS": "Sms",
+    "SEVERITIES": {
+      "LOW": "Low",
+      "MEDIUM": "Medium",
+      "CRITICAL": "Critical"
+    }
   },
   "TANK_MONITORING": {
     "TANK_INVENTORY": "Tank inventory",
@@ -374,16 +380,10 @@
     "LINKED_THINGS": "Linked things",
     "AGGREGATED": {
       "MEASUREMENT" : "Measurement",
-      "MAX" : "Max",
-      "MIN" : "Min",
-      "AVERAGE" : "Avg",
-      "STANDARDDEVIATION" : "StD"
-    },
-    "LAST_ALERT": {
-      "TITLE": "Last Alert",
-      "VALUE": "Value",
-      "LOW": "Low",
-      "HIGH": "High"
+      "MAX": "Max",
+      "MIN": "Min",
+      "AVERAGE": "Avg",
+      "STD_DEV": "StdDev"
     }
   },
   "DELETE_CONFIRM": {
@@ -585,10 +585,5 @@
     },
     "NO_ADDRESS_FOUND": "No address found!",
     "ASSETS_WITHOUT_POSITION": "asset(s) without position"
-  },
-  "temperature": "Temperature",
-  "humidity": "Humidity",
-  "motion": "Motion",
-  "luminosity": "Luminosity",
-  "battery": "Battery"
+  }
 }

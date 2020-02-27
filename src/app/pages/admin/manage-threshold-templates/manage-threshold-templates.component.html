@@ -28,7 +28,7 @@
         <mat-card-header style="display: flex; align-content: center;">
           <div class="title">
             <img [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name + '.svg'">
-            <h5 style="margin: 0;">{{threshold.sensorType.name}}</h5>
+            <h5 style="margin: 0;">{{('SENSORTYPES.'+threshold.sensorType.name) | translate}}</h5>
           </div>
           <button style="margin-left: 15px;" mat-icon-button color="warn"
                   (click)="deleteThreshold(threshold.sensorType.id)">
@@ -69,7 +69,7 @@
                 <mat-select [(ngModel)]="thresholdItem.severity" [placeholder]="'GENERAL.SEVERITY' | translate" required
                             formControlName="severity">
                   <mat-option *ngFor="let severity of severities" [value]="severity">
-                    <span style="text-transform: capitalize">{{severity}}</span>
+                    <span style="text-transform: capitalize">{{('THRESHOLD_TEMPLATE.SEVERITIES.'+severity) | translate}}</span>
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -107,10 +107,6 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <!--
-    <p>Form value: {{ thresholdTemplateFormGroup.value | json }}</p>
-    <p>Form status: {{ thresholdTemplateFormGroup.status | json }}</p>
-    -->
     <pxs-button *ngIf="!thresholdTemplateFormGroup?.valid" disabled="true" size="large" color="primary"
                 style="margin: 15px auto;">{{'THRESHOLD_TEMPLATE.SAVE_THRESHOLD_TEMPLATE' | translate}}
     </pxs-button>

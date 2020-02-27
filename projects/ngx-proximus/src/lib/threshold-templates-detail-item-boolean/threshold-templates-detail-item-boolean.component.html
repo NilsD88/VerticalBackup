@@ -11,7 +11,7 @@
   <div
     class="threshold-ball"
     *ngFor="let thresholdItem of threshold.thresholdItems"
-    matTooltip="{{thresholdItem.severity}}, from {{thresholdItem.range.from}} to {{thresholdItem.range.to}}"
+    matTooltip="{{('THRESHOLD_TEMPLATE.SEVERITIES.'+thresholdItem.severity) | translate}}, from {{thresholdItem.range.from}} to {{thresholdItem.range.to}}"
     [ngClass]="{'low': thresholdItem.severity=='LOW', 'medium': thresholdItem.severity=='MEDIUM', 'critical': thresholdItem.severity=='CRITICAL'}"
     [style.left.%]="thresholdItem.range.from ? 100 : 0"
   ></div>

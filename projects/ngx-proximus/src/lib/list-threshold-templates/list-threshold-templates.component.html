@@ -53,7 +53,7 @@
                   <img 
                     *ngFor="let threshold of element.thresholds"
                     [src]="'assets/smartmonitoring/images/icons/icon-'+ threshold.sensorType.name.toLowerCase() + '.svg'"
-                    [matTooltip]="threshold.sensorType.name"
+                    [matTooltip]="('SENSORTYPES.'+threshold.sensorType.name) | translate"
                     [src-fallback]="'assets/smartmonitoring/images/icons/icon-default.svg'"
                   >
               </div>
