@@ -19,11 +19,39 @@ import {FooterModule} from 'projects/ngx-proximus/src/lib/footer/footer.module';
 import {MatMenuModule, MatSnackBarModule, MatTooltipModule} from '@angular/material';
 import { SharedModule } from './shared/shared.module';
 import { GraphQLModule } from './graphql.module';
+import {NgcCookieConsentModule, NgcCookieConsentConfig} from 'ngx-cookieconsent';
 
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, 'assets/' + environment.assetPrefix + '/i18n/', '.json');
 }
+
+const cookieConfig: NgcCookieConsentConfig = {
+  cookie: {
+    domain: 'proximus.be'
+  },
+  position: 'bottom',
+  theme: 'block',
+  palette: {
+    popup: {
+      background: '#000000',
+      text: '#ffffff',
+      link: '#ffffff'
+    },
+    button: {
+      background: '#c5b38a',
+      text: '#ffffff',
+      border: 'transparent'
+    }
+  },
+  content: {
+    message: 'This website uses only cookies that are necessary for its functionality.',
+    dismiss: 'Accept!',
+    deny: 'Refuse cookies',
+    link: 'Learn more',
+    href: 'https://www.proximus.be/en/id_cr_cookie/personal/products/orphans/cookie-policy.html'
+  }
+};
 
 @NgModule({
   declarations: [
@@ -34,6 +62,7 @@ export function createTranslateLoader(http: HttpClient) {
   imports: [
     BrowserModule,
     RouterModule.forRoot(AppRoutes, {scrollPositionRestoration: 'enabled'}),
+    NgcCookieConsentModule.forRoot(cookieConfig),
     BrowserAnimationsModule,
     HttpClientModule,
     MatMenuModule,
