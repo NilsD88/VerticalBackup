@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SensorService } from '../../../../../../src/app/services/sensor.service';
 import { chartTypes, aggregatedValues, InOutValues } from 'src/app/models/sensor-definition.model';
 import { Component, OnInit, Optional, Inject, OnDestroy } from '@angular/core';
@@ -28,7 +29,8 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
         public dialogRef: MatDialogRef<EditSensorPopupComponent>,
         private sensorService: SensorService,
         public snackBar: MatSnackBar,
-        private layoutService: LayoutService
+        private layoutService: LayoutService,
+        private translateService: TranslateService
     ) {}
 
     async ngOnInit() {
@@ -87,7 +89,7 @@ export class EditSensorPopupComponent implements OnInit, OnDestroy {
             (error) => {
                 this.loading = false;
                 console.error(error);
-                this.snackBar.open(`Failed to update the sensor definition!`, null, {
+                this.snackBar.open(this.translateService.instant('NOTIFS.FAILS.UPDATE_SENSOR_DEFINITION'), null, {
                     panelClass: ['error-snackbar'],
                     duration: 3000
                 });

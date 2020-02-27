@@ -315,7 +315,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public downloadSelectedAssetCSV() {
-    let csv = 'Name, Thing ID, Location, Fill level, Battery level\n';
+    const header: string[] = [
+      this.sharedService.translate.instant('GENERAL.NAME'),
+      this.sharedService.translate.instant('GENERAL.THING_ID'),
+      this.sharedService.translate.instant('LAYOUT.LOCATION'),
+      this.sharedService.translate.instant('TANK_MONITORING.FUEL_LEVEL'),
+      this.sharedService.translate.instant('GENERAL.BATTERY_LEVEL'),
+    ];
+    let csv = `${header.join(', ')}\n`;
     for (const asset of this.filteredAssetsOnTable) {
       const thing = ((asset.things || [])[0] || {});
       csv += asset.name + ', ';

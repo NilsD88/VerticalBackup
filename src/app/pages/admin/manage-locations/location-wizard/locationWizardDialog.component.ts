@@ -25,6 +25,7 @@ import {
   LocationService
 } from 'src/app/services/location.service';
 import { ILocation } from 'src/app/models/location.model';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -43,6 +44,7 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
     public locationService: LocationService,
     public dialog: MatDialog,
     public router: Router,
+    public translateService: TranslateService
   ) {
     super(
       formBuilder,
@@ -50,7 +52,8 @@ export class LocationWizardDialogComponent extends LocationWizardComponent imple
       activatedRoute,
       locationService,
       dialog,
-      router
+      router,
+      translateService
     );
     this.showCancel = false;
   }

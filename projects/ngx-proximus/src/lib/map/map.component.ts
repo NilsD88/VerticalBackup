@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SharedService } from './../../../../../src/app/services/shared.service';
 import { SubSink } from 'subsink';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
@@ -188,9 +189,12 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (assetWithoutPosition.length > 0) {
-      this.snackBar.open(`${assetWithoutPosition.length} asset(s) without position`, 'See', {
-        duration: 3000
-      }).onAction().subscribe(() => {
+      this.snackBar.open(
+        `${assetWithoutPosition.length} ${this.sharedService.translate.instant('NOTIFS.ASSETS_WITHOUT_POSITION')}`,
+        this.sharedService.translate.instant('GENERAL.SEE'),
+        {
+          duration: 3000
+        }).onAction().subscribe(() => {
           this.dialog.open(MapDialogComponent, {
             width: '300px',
             data: {

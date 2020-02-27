@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { StairwayToHealthLocationService } from './../../../services/stairway-to-health/location.service';
 import { SubSink } from 'subsink';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
@@ -62,6 +63,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
     public assetService: AssetService,
     public dialog: MatDialog,
     public router: Router,
+    private translateService: TranslateService
   ) {}
 
   async ngOnInit() {
@@ -292,8 +294,8 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
         console.error('Place\'s name is already used');
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exists`,
-            message: 'Please choose an other location name to be able to save it'
+            title: `${nameAlreadyUsed} ${this.translateService.instant('DIALOGS.FAILS.ALREADY_EXISTS')}`,
+            message: this.translateService.instant('DIALOGS.FAILS.CHOOSE_AN_OTHER_LOCATION_NAME')
           },
           minWidth: '320px',
           maxWidth: '400px',

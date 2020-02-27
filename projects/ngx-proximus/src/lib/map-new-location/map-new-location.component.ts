@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges} from '@angular/core';
 import { IGeolocation } from 'src/app/models/geolocation.model';
@@ -28,15 +29,16 @@ export class MapNewLocationComponent implements OnInit {
   provider: OpenStreetMapProvider;
   showNotifIfNoAddress = false;
 
-  constructor(public snackBar: MatSnackBar) {
-
-  }
+  constructor(
+    public snackBar: MatSnackBar,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit() {
     if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
       const floorPlan = this.parentLocation.image;
       if (floorPlan) {
-        const image:HTMLImageElement = new Image();
+        const image: HTMLImageElement = new Image();
         image.src = floorPlan;
         image.onload = () => {
           const { width, height } = image;
@@ -124,7 +126,7 @@ export class MapNewLocationComponent implements OnInit {
       if (event.path[0].className === 'glass ') {
         if (event.path[0].value) {
           this.markers = [];
-          this.snackBar.open('No address found!', null, {
+          this.snackBar.open(this.translateService.instant('NOTIFS.NO_ADDRESS_FOUND'), null, {
             duration: 2000,
             panelClass: ['orange-snackbar']
           });

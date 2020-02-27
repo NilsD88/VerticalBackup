@@ -325,8 +325,8 @@ export class DetailComponent implements OnInit, OnDestroy {
         return this.assetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to).pipe(catchError(() => {
           this.dialog.open(DialogComponent, {
             data: {
-              title: 'Sorry, an error has occured!',
-              message: 'An error has occured during getting the sensor data'
+              title: this.translateService.instant('ERRORS.SORRY_ERROR_OCCURED'),
+              message: this.translateService.instant('ERROS.ERROR_OCCURED_GETTING_DATA')
             },
             minWidth: '320px',
             maxWidth: '400px',

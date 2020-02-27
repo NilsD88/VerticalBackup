@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { IField } from './../../../../models/field.model';
 import { ILocation } from 'src/app/models/location.model';
@@ -49,6 +50,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
     public locationService: LocationService,
     public dialog: MatDialog,
     public router: Router,
+    public translateService: TranslateService
   ) {
   }
 
@@ -201,8 +203,8 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exists`,
-            message: 'Please choose an other location name to be able to save it'
+            title: `${nameAlreadyUsed} ${this.translateService.instant('DIALOGS.FAILS.ALREADY_EXISTS')}`,
+            message: this.translateService.instant('DIALOGS.FAILS.CHOOSE_AN_OTHER_LOCATION_NAME')
           },
           minWidth: '320px',
           maxWidth: '400px',

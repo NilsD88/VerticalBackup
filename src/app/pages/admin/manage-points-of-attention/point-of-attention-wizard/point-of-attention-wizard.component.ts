@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { LocationService } from '../../../../services/location.service';
 import { SubSink } from 'subsink';
 import { PointOfAttentionService } from 'src/app/services/point-of-attention.service';
@@ -37,7 +38,8 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
     private locationService: LocationService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService,
   ) { }
 
   async ngOnInit() {
@@ -164,8 +166,8 @@ export class PointOfAttentionWizardComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exists`,
-            message: 'Please choose an other threshold template name to be able to save it'
+            title: `${nameAlreadyUsed} ${this.translateService.instant('DIALOGS.FAILS.ALREADY_EXISTS')}`,
+            message: this.translateService.instant('DIALOGS.FAILS.CHOOSE_AN_OTHER_POINT_OF_ATTENTION_NAME')
           },
           minWidth: '320px',
           maxWidth: '400px',

@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SummaryStatisticsComponent } from './summary-statistics.component';
@@ -12,7 +13,8 @@ import { MatTableModule, MatSortModule, MatProgressSpinnerModule, MatCardModule 
     MatTableModule,
     MatSortModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    TranslateModule
   ],
   exports: [SummaryStatisticsComponent]
 })

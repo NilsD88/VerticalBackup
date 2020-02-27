@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { EditSensorPopupComponent } from './edit-sensor-popup/edit-sensor-popup.component';
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
@@ -48,7 +49,8 @@ export class ListThingsComponent implements OnInit, OnDestroy {
   constructor(
     private thingService: ThingService,
     public snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private translateService: TranslateService
   ) {}
 
   public async ngOnInit() {
@@ -127,7 +129,7 @@ export class ListThingsComponent implements OnInit, OnDestroy {
       },
       err => {
         thing.name = orignalName;
-        this.snackBar.open(`Failed to update the thing's name!`, null, {
+        this.snackBar.open(this.translateService.instant('NOTIFS.FAILS.UPDATE_THINGS_NAME'), null, {
           duration: 2000,
           panelClass: ['error-snackbar']
         });

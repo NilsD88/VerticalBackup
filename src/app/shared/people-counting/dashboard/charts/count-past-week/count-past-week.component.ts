@@ -111,13 +111,13 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
         filename: 'count-past-week',
         buttons: {
           increaseButton: {
-            text: 'Increase',
+            text: this.translateService.instant('GENERAL.INCREASE'),
             onclick: () => {
               this.increase.emit();
             },
           },
           decreaseButton: {
-            text: 'Decrease',
+            text: this.translateService.instant('GENERAL.DECREASE'),
             onclick: () => {
               this.decrease.emit();
             },

@@ -86,7 +86,7 @@
     "EXPORT_PDF": "Export to PDF",
     "EXPORT_EXCEL": "Export to Excel",
     "EXPORT_CSV": "Export to CSV",
-    "DOWNLOAD": "DOWNLOAD",
+    "DOWNLOAD": "Download",
     "SUBMIT": "Submit",
     "EDIT": "Edit",
     "DELETE": "Delete",
@@ -108,7 +108,18 @@
     "LABEL": "Label",
     "THING_ID": "Thing ID",
     "BATTERY_LEVEL": "Battery level",
-    "SHOW_DETAILS": "Show details"
+    "SHOW_DETAILS": "Show details",
+    "TODAY": "Today",
+    "DAY": "Day",
+    "MONTH": "Month",
+    "YEAR": "Year",
+    "WEEK": "Week",
+    "INCREASE": "Increase",
+    "DECREASE": "Decrease",
+    "WARNING": "Warning",
+    "AGGREGATION": "Aggregation",
+    "SEE": "See",
+    "MESSAGE": "Message"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",
@@ -128,6 +139,8 @@
     "ASSET": "Asset",
     "SENSORS": "Sensors",
     "SENSOR": "Sensor",
+    "SENSOR_TYPES": "Sensor types",
+    "SENSOR_TYPE": "Sensor type",
     "VALUE": "Value",
     "POINTS_OF_ATTENTION": "Points of attention",
     "POINT_OF_ATTENTION": "Point of attention",
@@ -135,11 +148,12 @@
     "THRESHOLD": "Threshold",
     "ITEMS": "Items",
     "ITEM": "Item",
+    "THINGS": "Things",
+    "THING": "Thing",
     "IMAGES": "Images",
     "PARENT": "Parent",
     "FLOOR_PLAN": "Floor plan",
     "GEOLOCATION": "Geolocation",
-    "THINGS": "Things",
     "THRESHOLD_TEMPLATE": "Threshold template",
     "THRESHOLD_TEMPLATES": "Threshold templates",
     "LANGUAGE": "Language",
@@ -188,7 +202,14 @@
     "SENSOR_TYPE_NAME": "Sensor type name",
     "DEVICE_ID": "Device ID",
     "THING_NAME_OR_DEVEUI": "Thing name or devEui",
-    "ONLY_ALPHANUMERIC": "Only alphanumeric characters are allowed"
+    "ONLY_ALPHANUMERIC": "Only alphanumeric characters are allowed",
+    "INTERVALS": {
+      "HOURLY": "Hourly",
+      "DAILY": "Daily",
+      "WEEKLY": "Weekly",
+      "MONTHLY": "Monthly",
+      "YEARLY": "Yearly"
+    }
   },
   "SENSORTYPES": {
     "range": "range",
@@ -258,15 +279,29 @@
   },
   "WALKING_TRAIL": {
     "TRAILS_OVERVIEW": "Trails overview",
-    "NEW_TRAIL": "New trail"
+    "NEW_TRAIL": "New trail",
+    "BENCHMARK_LAST_WEEK": "Benchmark of the last week",
+    "WEEK_TOTAL": "Week total",
+    "DAY_TOTAL": "Day total",
+    "WEEK_AVERAGE": "Week average",
+    "DAY_AVERAGE": "Day average"
   },
   "PEOPLE_COUNTING_RETAIL": {
     "STORES_OVERVIEW": "Stores overview",
-    "NEW_STORE": "New store"
+    "NEW_STORE": "New store",
+    "TOTAL_COUNT_YESTERDAY": "Total count yesterday",
+    "TOTAL_COUNT_LAST_WEEK": "Total count last week",
+    "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Difference between last week and the week before last week",
+    "DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK": "Difference between today and same day last week"
   },
   "STAIRWAY_TO_HEALTH": {
     "PLACES_OVERVIEW": "Places overview",
     "NEW_PLACE": "New place"
+  },
+  "PEOPLE_COUNTING": {
+    "LAST_WEEK": "Last week",
+    "LAST_YEAR": "Last year",
+    "COUNT_BY_ASSET": "Count by asset"
   },
   "PRIVACY_POLICY": {
     "TITLE": "Privacy Policy",
@@ -314,14 +349,6 @@
     "LINKED_THINGS": "Linked things",
     "CHART": "Chart",
     "CONFIGURATIONS": "Configurations",
-    "CHARTTYPES": {
-      "24HOURS" : "All data of last 24 hours",
-      "HOURLY": "Hourly",
-      "DAILY": "Daily",
-      "WEEKLY": "Weekly",
-      "MONTHLY": "Monthly",
-      "YEARLY": "Yearly"
-    },
     "AGGREGATED": {
       "MEASUREMENT" : "Measurement",
       "MAX" : "Max",
@@ -482,7 +509,47 @@
     "500": {
       "TITLE": "Server Error",
       "CONTENT": "Sorry, an error has occured, our servers might be down!" 
+    },
+    "SORRY_ERROR_OCCURED": "Sorry, an error has occured!",
+    "ERROR_OCCURED_GETTING_DATA": "An error has occured during getting the data",
+    "TRY_AGAIN": "Try again"
+  },
+  "DIALOGS": {
+    "DELETE": {
+      "ARE_YOU_SURE_TO_DELETE_THIS_LOCATION": "Are you sure to delete this location?",
+      "ARE_YOU_SURE_NO_MORE_ACCESSIBLE": "Are you sure you want to delete? It will not be accessible anymore.",
+      "BE_CAREFUL_PEOPLE_COUNTING_ASSETS_WILL_BE_DELETED": "Be careful, its people counting assets will be deleted and the others transfered",
+      "ARE_YOU_SURE_ASSETS_ARE_USING_THIS_TEMPLATE": "Are you sure you want to delete? Assets are using this template"
+    },
+    "FAILS": {
+      "ALREADY_EXISTS": "already exists",
+      "CHOOSE_AN_OTHER_LOCATION_NAME": "Please choose an other location name to be able to save it",
+      "CHOOSE_AN_OTHER_THRESHOLD_TEMPLATE_NAME": "Please choose an other threshold template name to be able to save it",
+      "CHOOSE_AN_OTHER_POINT_OF_ATTENTION_NAME": "Please choose an other point of attention name to be able to save it",
+      "MARK_AS_READ_MORE_THAN_5000_NOT_ALLOWED": "Mark as read of more than 5000 alerts is not allowed",
+      "MARK_AS_UNREAD_MORE_THAN_5000_NOT_ALLOWED": "Mark as unread of more than 5000 alerts is not allowed",
+      "AT_LEAST_ONE_THING_FOR_YOUR_MODULE": "You can an only add an asset with at least one thing defined for your module"
+    },
+    "WARNINGS": {
+      "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Not all the sensors defined in the threshold template are matching the sensor assigned to this asset"
     }
+  },
+  "NOTIFS": {
+    "SUCCESS": {
+      "UPDATED_ALERT_DEFINITION_ASSET_SETTINGS": "Successfully updated alert definition asset settings",
+      "UPDATED_ALERT_DEFINITION_SETTINGS": "Successfully updated alert definition settings",
+      "SENT_YOUR_MESSAGE": "Successfully sent your message"
+    },
+    "FAILS": {
+      "UPDATE_SENSOR_DEFINITION": "Failed to update the sensor definition!",
+      "UPDATE_THINGS_NAME": "Failed to update the thing's name!",
+      "READ_THE_ALERTS": "Failed to read the alerts",
+      "UNREAD_THE_ALERTS": "Failed to unread the alerts",
+      "UPDATE_ALERT_DEFINITION_SETTINGS": "Error! Failed to update alert definition settings",
+      "SENT_YOUR_MESSAGE": "Error! Failed to send message. Please try again."
+    },
+    "NO_ADDRESS_FOUND": "No address found!",
+    "ASSETS_WITHOUT_POSITION": "asset(s) without position"
   },
   "temperature": "Temperature",
   "humidity": "Humidity",

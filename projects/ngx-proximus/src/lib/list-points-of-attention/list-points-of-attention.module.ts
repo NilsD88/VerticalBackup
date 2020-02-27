@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import { MatTableModule, MatSortModule, MatCardModule, MatProgressSpinnerModule, MatButtonModule, MatTooltipModule } from '@angular/material';
@@ -22,6 +23,7 @@ import { PopupConfirmationModule } from '../popup-confirmation/popup-confirmatio
     MatTooltipModule,
     IconModule,
     PopupConfirmationModule,
+    TranslateModule
   ],
   exports: [ListPointsOfAttentionComponent],
 })

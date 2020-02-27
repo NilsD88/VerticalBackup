@@ -22,7 +22,18 @@ export class LastAlertsComponent implements OnInit {
   }
 
   download() {
-    let csv = 'Date, Asset, Sensor, Severity, Threshold template, Thing, Location, Value, Read\n';
+    const header: string[] = [
+      this.sharedService.translate.instant('GENERAL.DATE'),
+      this.sharedService.translate.instant('LAYOUT.ASSET'),
+      this.sharedService.translate.instant('LAYOUT.SENSOR'),
+      this.sharedService.translate.instant('GENERAL.SEVERITY'),
+      this.sharedService.translate.instant('LAYOUT.THRESHOLD_TEMPLATE'),
+      this.sharedService.translate.instant('LAYOUT.THING'),
+      this.sharedService.translate.instant('LAYOUT.LOCATION'),
+      this.sharedService.translate.instant('GENERAL.VALUE'),
+      this.sharedService.translate.instant('ALERTS.READ'),
+    ];
+    let csv = `${header.join(', ')}\n`;
     for (const alert of this.asset.alerts) {
       csv += moment(alert.timestamp).format('DD/MM/YYYY - hh:mm:ss') + ', ';
       csv += this.asset.name + ', ';

@@ -31,19 +31,19 @@
       >
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'GENERAL.NAME' | translate}}</th>
           <td mat-cell *matCellDef="let element" > {{element.name}} </td>
         </ng-container>
         
         <!-- LocationType Column -->
         <ng-container matColumnDef="location.name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Location name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'FILTERS.LOCATION_NAME' | translate}}</th>
           <td mat-cell *matCellDef="let element">{{element.location?.name}}</td>
         </ng-container>
 
         <!-- Threshold template -->
         <ng-container matColumnDef="thresholdTemplate.name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Threshold template </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'LAYOUT.THRESHOLD_TEMPLATE' | translate}}</th>
             <td mat-cell *matCellDef="let element">
               <pxs-badge *ngIf="element.thresholdTemplate">{{element.thresholdTemplate?.name}}</pxs-badge>
             </td>
@@ -51,7 +51,7 @@
 
         <!-- Actions template -->
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <th mat-header-cell *matHeaderCellDef> {{'GENERAL.ACTIONS' | translate}} </th>
             <td mat-cell *matCellDef="let element" >
               <span [ngSwitch]="element.module">
                 <span *ngSwitchCase="'TANK_MONITORING'">

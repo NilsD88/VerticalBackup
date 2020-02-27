@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { SubSink } from 'subsink';
 import { cloneDeep } from 'lodash';
@@ -36,7 +37,8 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
   constructor(
     public thresholdTemplateService: ThresholdTemplateService,
     private changeDetectorRef: ChangeDetectorRef,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private translateService: TranslateService
     ) {}
 
   async ngOnInit() {
@@ -94,8 +96,8 @@ export class ListThresholdTemplatesComponent implements OnInit, OnDestroy {
     if (thresholdTemplate.hasAssetsAttached) {
       this.dialog.open(PopupConfirmationComponent, {
         data: {
-          title: `Warning`,
-          content: 'Are you sure you want to delete? Assets are using this template'
+          title: this.translateService.instant('GENERAL.WARNING'),
+          content: this.translateService.instant('DIALOGS.DELETE.ARE_YOU_SURE_ASSETS_ARE_USING_THIS_TEMPLATE')
         },
         minWidth: '320px',
         maxWidth: '400px',

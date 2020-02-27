@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { MoveAssetsPopupComponent } from './move-assets-popup/move-assets-popup.component';
 import { Router } from '@angular/router';
@@ -99,7 +100,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
             parentId: null,
             geolocation: null,
             image: null,
-            name: 'Locations',
+            name: this.sharedService.translate.instant('LAYOUT.LOCATIONS'),
             description: null,
             children: locations,
           };
@@ -121,8 +122,8 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     if (assets.length > 0) {
       const wantToDelete = await this.dialog.open(PopupConfirmationComponent, {
         data: {
-          title: `Are you sure to delete this location?`,
-          content: PEOPLE_COUNTING_ASSETS.length ? 'Be careful, its people counting assets will be deleted and the others transfered' : null
+          title: this.sharedService.translate.instant('DIALOGS.DELETE.ARE_YOU_SURE_TO_DELETE_THIS_LOCATION'),
+          content: PEOPLE_COUNTING_ASSETS.length ? this.sharedService.translate.instant('DIALOGS.DELETE.BE_CAREFUL_PEOPLE_COUNTING_ASSETS_WILL_BE_DELETED') : null
         },
         minWidth: '320px',
         maxWidth: '400px',

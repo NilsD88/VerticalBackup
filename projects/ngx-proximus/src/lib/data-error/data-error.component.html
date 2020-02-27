@@ -1,4 +1,6 @@
 <div class="container">
-    An error has occured during getting the data.<br>
-    <button mat-flat-button color="accent" (click)="tryAgain.emit()">Try again</button>
+    {{'ERRORS.ERROR_OCCURED_GETTING_DATA' | translate}}<br>
+    <button mat-flat-button color="accent" (click)="tryAgain.emit()">
+        {{'ERRORS.TRY_AGAIN' | translate}}
+    </button>
 </div>
