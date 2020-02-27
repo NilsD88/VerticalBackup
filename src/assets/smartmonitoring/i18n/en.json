@@ -484,20 +484,6 @@
       "CONTENT": "Sorry, an error has occured, our servers might be down!"
     }
   },
-  "LOGIN_ERROR": {
-    "single_logout": "You've been successfully logged out.",
-    "token_refresh_failed": "Your session has expired, please login again.",
-    "no_session": "Your session has expired, please login again",
-    "grant_application_access": "You do not have access to this application. Please contact support.",
-    "internal_server_error": "Something went wrong, please try again.",
-    "other": "Access denied. Often clearing your browser's cache and restarting your browser will solve the problem. Please try logging in again. If the issue persists, please contact support.",
-    "403": "You have successfully logged in, but our records show that you do not have access to this application.  Click the button below to logout. To request access to this application, please contact us using the",
-    "CONTACT": "contact form",
-    "access_denied": "Access has been denied."
-  },
-  "LOGOUT_SUCCESS": {
-    "logout_ok": "You've been successfully logged out."
-  },
   "temperature": "Temperature",
   "humidity": "Humidity",
   "motion": "Motion",
