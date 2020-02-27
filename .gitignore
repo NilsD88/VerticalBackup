@@ -188,3 +188,5 @@ node_modules/
 mvnw
 mvnw.cmd
 *.pdf
+
+src/app/mocks/
