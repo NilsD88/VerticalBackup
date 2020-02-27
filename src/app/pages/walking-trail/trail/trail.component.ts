@@ -53,7 +53,7 @@ export class TrailComponent implements OnInit {
           }
         } catch (error2) {
           await this.router.navigate(['/error/404']);
-          console.log(error2);
+          console.error(error2);
         }
       }
       this.assetColors = randomColor({
@@ -64,12 +64,23 @@ export class TrailComponent implements OnInit {
       if (this.leaf.parent) {
         this.parentLocation = this.leaf.parent;
       } else {
-        this.parentLocation = {
-          id: UNKNOWN_PARENT_ID,
-          children: [
-            this.leaf
-          ]
-        };
+        let locationTree = await this.locationService.getLocationsTree().toPromise();
+        locationTree = locationTree.filter(location => location.module === 'PEOPLE_COUNTING_WALKING_TRAIL');
+        if (locationTree.length > 1 && locationTree.some(location => location.id === this.leaf.id)) {
+          this.parentLocation = {
+            id: null,
+            children: [
+              ...locationTree
+            ]
+          };
+        } else {
+          this.parentLocation = {
+            id: UNKNOWN_PARENT_ID,
+            children: [
+              this.leaf
+            ]
+          };
+        }
         this.leaf.parent = this.parentLocation;
       }
     });

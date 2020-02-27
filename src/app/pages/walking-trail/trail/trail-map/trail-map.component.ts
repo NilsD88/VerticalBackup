@@ -236,7 +236,6 @@ export class TrailMapComponent implements OnInit {
   }
 
   private populateMarkersWithAssets(assets: IAsset[]) {
-    console.log('populateMarkersWithAssets', assets);
     this.assetsLayer = [];
     this.trailsLayer = [];
 
