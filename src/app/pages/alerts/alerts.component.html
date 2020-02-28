@@ -130,7 +130,7 @@
             <div
               [matTooltip]="displayRange(element)"
               [ngClass]="{'severity': element.severity, 'low': element.severity=='LOW', 'medium': element.severity=='MEDIUM', 'critical': element.severity=='CRITICAL'}">
-              <span>{{element.severity}}</span>
+              <span>{{('THRESHOLD_TEMPLATE.SEVERITIES.'+element.severity) | translate}}</span>
               <span *ngIf="element.label"> ({{element.label}})</span>
             </div>
           </td>

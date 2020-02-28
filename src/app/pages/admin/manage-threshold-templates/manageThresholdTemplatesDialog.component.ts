@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import {Component, Optional, Inject, ChangeDetectorRef} from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -31,7 +32,8 @@ export class ManageThresholdTemplatesDialogComponent extends ManageThresholdTemp
     public thresholdTemplateService: ThresholdTemplateService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public translateService: TranslateService
   ) {
       super(
         changeDetectorRef,
@@ -40,6 +42,7 @@ export class ManageThresholdTemplatesDialogComponent extends ManageThresholdTemp
         router,
         activeRoute,
         dialog,
+        translateService
       );
   }
 

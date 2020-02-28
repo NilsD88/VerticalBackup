@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MatTableModule, MatSortModule, MatProgressSpinnerModule, MatCardModule } from '@angular/material';
 import { LoaderModule } from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import { NgModule } from '@angular/core';
@@ -15,7 +16,8 @@ import { RouterModule } from '@angular/router';
     MatSortModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    RouterModule
+    RouterModule,
+    TranslateModule
   ],
   exports: [AssetsCounterComponent]
 })

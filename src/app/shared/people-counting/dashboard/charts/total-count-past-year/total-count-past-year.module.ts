@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { DataErrorModule } from './../../../../../../../projects/ngx-proximus/src/lib/data-error/data-error.module';
 import { LoaderModule } from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import { NgModule } from '@angular/core';
@@ -11,7 +12,8 @@ import { TotalCountPastYearComponent } from './total-count-past-year.component';
   imports: [
     CommonModule,
     LoaderModule,
-    DataErrorModule
+    DataErrorModule,
+    TranslateModule
   ],
   exports: [TotalCountPastYearComponent],
   providers: [

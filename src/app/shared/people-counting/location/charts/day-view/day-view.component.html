@@ -1,9 +1,9 @@
 <div class="filter">
     <mat-button-toggle-group (change)="periodOnChange($event)" [value]="periodValue">
-        <mat-button-toggle value="day">Day</mat-button-toggle>
-        <mat-button-toggle value="week">Week</mat-button-toggle>
-        <mat-button-toggle value="month">Month</mat-button-toggle>
-        <mat-button-toggle value="year">Year</mat-button-toggle>
+        <mat-button-toggle value="day">{{'GENERAL.DAY' | translate}}</mat-button-toggle>
+        <mat-button-toggle value="week">{{'GENERAL.WEEK' | translate}}</mat-button-toggle>
+        <mat-button-toggle value="month">{{'GENERAL.MONTH' | translate}}</mat-button-toggle>
+        <mat-button-toggle value="year">{{'GENERAL.YEAR' | translate}}</mat-button-toggle>
     </mat-button-toggle-group>
 </div>
 <div [hidden]="chartLoading || loadingError" id="day-view-chart-container"></div>

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
@@ -20,11 +21,12 @@ export class PopupConfirmationComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PopupConfirmationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IPopupConfirmation,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
-    this.data.continueButton = this.data.continueButton || 'Continue';
-    this.data.cancelButton = this.data.cancelButton || 'Cancel';
+    this.data.continueButton = this.data.continueButton || this.translateService.instant('GENERAL.CONTINUE');
+    this.data.cancelButton = this.data.cancelButton || this.translateService.instant('GENERAL.CANCEL');
   }
 
   cancel(): void {

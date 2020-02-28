@@ -1,4 +1,4 @@
-<h2>Last week</h2>
+<h2>{{'PEOPLE_COUNTING.LAST_WEEK' | translate}}</h2>
 <div [hidden]="loading || loadingError" id="count-past-week-chart-container"></div>
 <pxs-loader *ngIf="loading"></pxs-loader>  
 <pxs-data-error *ngIf="loadingError && !loading" (tryAgain)="wantTryAgain.emit()"></pxs-data-error>

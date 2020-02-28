@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    TranslateModule
   ],
   exports: [FormCustomFieldsComponent]
 })

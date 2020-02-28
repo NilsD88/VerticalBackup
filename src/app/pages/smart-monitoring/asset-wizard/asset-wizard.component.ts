@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { AssetService } from 'src/app/services/asset.service';
@@ -47,7 +48,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private assetService: AssetService,
     private router: Router,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    private translateService: TranslateService,
   ) {
   }
 
@@ -141,8 +143,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
         width: '100vw',
         maxHeight: '80vh',
         data: {
-          title: 'Warning',
-          content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
+          title: this.translateService.instant('GENERAL.WARNING'),
+          content: this.translateService.instant('DIALOGS.WARNINGS.NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE')
         }
       });
       dialogRef.afterClosed().subscribe(result => {

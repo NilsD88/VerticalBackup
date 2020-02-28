@@ -1,4 +1,3 @@
-import { DialogModule } from './../../../../projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { SubSink } from 'subsink';
 import { SensorService } from 'src/app/services/sensor.service';
 import { cloneDeep } from 'lodash';
@@ -241,8 +240,8 @@ export class AlertsComponent implements OnInit, OnDestroy {
         maxHeight: '80vh',
         data: {
           hideContinue: true,
-          title: 'Warning',
-          content: 'Mark as read of more than 5000 alerts is not allowed'
+          title: this.sharedService.translate.instant('GENERAL.WARNING'),
+          content: this.sharedService.translate.instant('DIALOGS.FAILS.MARK_AS_READ_MORE_THAN_5000_NOT_ALLOWED')
         }
       });
     }
@@ -269,7 +268,7 @@ export class AlertsComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          this.snackBar.open(`Failed to read the alerts`, null, {
+          this.snackBar.open(this.sharedService.translate.instant('NOTIFS.FAILS.READ_THE_ALERTS'), null, {
             duration: 2000,
           });
           console.error(error);
@@ -292,8 +291,8 @@ export class AlertsComponent implements OnInit, OnDestroy {
         maxHeight: '80vh',
         data: {
           hideContinue: true,
-          title: 'Warning',
-          content: 'Mark as unread of more than 5000 alerts is not allowed'
+          title: this.sharedService.translate.instant('GENERAL.WARNING'),
+          content: this.sharedService.translate.instant('DIALOGS.FAILS.MARK_AS_UNREAD_MORE_THAN_5000_NOT_ALLOWED')
         }
       });
     }
@@ -320,7 +319,8 @@ export class AlertsComponent implements OnInit, OnDestroy {
           }
         },
         error => {
-          this.snackBar.open(`Failed to unread the alerts`, null, {
+          this.snackBar.open(
+            this.sharedService.translate.instant('NOTIFS.FAILS.UNREAD_THE_ALERTS'), null, {
             duration: 2000,
           });
           console.error(error);
@@ -341,7 +341,17 @@ export class AlertsComponent implements OnInit, OnDestroy {
   }
 
   public downloadSelectedAlertsCSV() {
-    let csv = 'Asset, Location, Date, Message, Threshold template, Thing, Value, read\n';
+    const header: string[] = [
+      this.sharedService.translate.instant('LAYOUT.ASSET'),
+      this.sharedService.translate.instant('LAYOUT.LOCATION'),
+      this.sharedService.translate.instant('GENERAL.DATE'),
+      this.sharedService.translate.instant('GENERAL.MESSAGE'),
+      this.sharedService.translate.instant('LAYOUT.THRESHOLD_TEMPLATE'),
+      this.sharedService.translate.instant('LAYOUT.THING'),
+      this.sharedService.translate.instant('GENERAL.VALUE'),
+      this.sharedService.translate.instant('ALERTS.READ'),
+    ];
+    let csv = `${header.join(', ')}\n`;
     this.selectedAlerts.map((alertId) => {
       const index = this.postFilteredAlerts.findIndex((alert) => alert.id === alertId);
       if (index >= 0) {
@@ -362,7 +372,16 @@ export class AlertsComponent implements OnInit, OnDestroy {
 
   public downloadSelectedAlertsPDF() {
     const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF (210 x 297)
-    const cols = ['Asset', 'Location', 'Date', 'Message', 'Threshold template', 'Thing', 'Value', 'Read'];
+    const cols = [
+      this.sharedService.translate.instant('LAYOUT.ASSET'),
+      this.sharedService.translate.instant('LAYOUT.LOCATION'),
+      this.sharedService.translate.instant('GENERAL.DATE'),
+      this.sharedService.translate.instant('GENERAL.MESSAGE'),
+      this.sharedService.translate.instant('LAYOUT.THRESHOLD_TEMPLATE'),
+      this.sharedService.translate.instant('LAYOUT.THING'),
+      this.sharedService.translate.instant('GENERAL.VALUE'),
+      this.sharedService.translate.instant('ALERTS.READ'),
+    ];
     const rows = [];
 
     this.selectedAlerts.map((alertId) => {

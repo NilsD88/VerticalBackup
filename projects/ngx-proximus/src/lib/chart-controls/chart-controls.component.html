@@ -2,7 +2,7 @@
     <div>
         <mat-button-toggle-group (change)="intervalChanged.emit($event)" [value]="filter?.interval">
             <mat-button-toggle *ngFor="let interval of intervals" [value]="interval">
-            {{interval}}
+            {{('FILTERS.INTERVALS.'+interval) | translate}}
             </mat-button-toggle>
         </mat-button-toggle-group>
     </div>

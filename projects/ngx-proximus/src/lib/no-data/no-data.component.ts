@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -7,12 +8,11 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class NoDataComponent implements OnInit {
 
-  @Input() title = 'No data available';
+  @Input() title = this.translateService.instant('GENERAL.NO_DATA_AVAILABLE');
   @Input() height: number;
 
-  constructor() { }
+  constructor(private translateService: TranslateService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

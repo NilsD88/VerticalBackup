@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { isNullOrUndefined } from 'util';
 import { PointOfAttentionItemDialogComponent } from './point-of-attention-item-dialog/point-of-attention-item-dialog.component';
 import { IAsset } from 'src/app/models/asset.model';
@@ -23,6 +24,7 @@ export class ListPointOfAttentionItemsComponent implements OnInit {
   public displayedColumns: string[] = ['sensorType', 'name', 'aggregation', 'assets', 'actions'];
 
   constructor(
+    private translateService: TranslateService,
     private dialog: MatDialog,
   ) { }
 
@@ -103,8 +105,8 @@ export class ListPointOfAttentionItemsComponent implements OnInit {
   public deleteItem(item: IPointOfAttentionItem) {
     this.dialog.open(PopupConfirmationComponent, {
       data: {
-        title: `Warning`,
-        content: 'Are you sure you want to delete? It will not be accessible anymore.'
+        title: this.translateService.instant('GENERAL.WARNING'),
+        content: this.translateService.instant('DIALOGS.DELETE.ARE_YOU_SURE_NO_MORE_ACCESSIBLE')
       },
       minWidth: '320px',
       maxWidth: '400px',

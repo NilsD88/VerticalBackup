@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { Router } from '@angular/router';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
@@ -57,6 +58,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
+    private translateService: TranslateService
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
@@ -96,7 +98,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
         type: 'pie',
       },
       title: {
-        text: 'Count by asset'
+        text: this.translateService.instant('PEOPLE_COUNTING.COUNT_BY_ASSET')
       },
       tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

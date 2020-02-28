@@ -43,7 +43,7 @@
         </div>
         <div class="dropListItem">
           <div class="new" (click)="openAssetPicker()">
-            <pxs-icon icon="plus-o"></pxs-icon> Add new asset
+            <pxs-icon icon="plus-o"></pxs-icon> {{'ASSETS.ADD_NEW_ASSET' | translate}}
           </div>
         </div>
       </div>
@@ -51,6 +51,6 @@
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-button (click)="cancel()">{{'GENERAL.CANCEL' | translate}}</button>
   <pxs-stepper-next [formGroup]="fieldFormGroup" [completed]="pointOfAttentionItem.assets.length > 0" [text]="'Save'" [color]="'success'" (next)="save()"></pxs-stepper-next>
 </div>

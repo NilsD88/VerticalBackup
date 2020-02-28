@@ -22,8 +22,8 @@
       (selectionChange)="setValue(field.id, $event.value)"
     >
       <mat-option [value]="null"></mat-option>
-      <mat-option value="'TRUE'">TRUE</mat-option>
-      <mat-option value="'FALSE'">FALSE</mat-option>
+      <mat-option value="'TRUE'">{{'GENERAL.TRUE' | translate}}</mat-option>
+      <mat-option value="'FALSE'">{{'GENERAL.FALSE' | translate}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

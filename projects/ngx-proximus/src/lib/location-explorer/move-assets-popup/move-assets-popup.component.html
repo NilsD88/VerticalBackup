@@ -1,6 +1,6 @@
-<h1 mat-dialog-title>Transfer attached assets</h1>
+<h1 mat-dialog-title>{{'DIALOGS.TRANSFERS.TRANSFER_ATTACHED_ASSETS' | translate}}</h1>
 <div mat-dialog-content>
-  <p>Choose a location where to move the attached assets. If you cancel the transfer, the assets will be linked to the parent location automatically. If there is no parent the assets will become orphans.</p>
+  <p>{{'DIALOGS.TRANSFERS.CHOOSE_WHERE_TO_TRANSFER' | translate}}</p>
   <pxs-location-explorer
     [rootLocation]="data.rootLocation"
     [selectedLocation]="data.selectedLocation"
@@ -9,6 +9,6 @@
   ></pxs-location-explorer>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="cancel()">Cancel the transfer</button>
-  <button mat-button [mat-dialog-close]="selectedLocationId" cdkFocusInitial>Transfer the assets</button>
+  <button mat-button (click)="cancel()">{{'DIALOGS.TRANSFERS.CANCEL_TRANSFER' | translate}}</button>
+  <button mat-button [mat-dialog-close]="selectedLocationId" cdkFocusInitial>{{'DIALOGS.TRANSFERS.TRANSFER_ASSETS' | translate}}</button>
 </div>

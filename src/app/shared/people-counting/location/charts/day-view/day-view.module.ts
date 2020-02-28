@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { DataErrorModule } from './../../../../../../../projects/ngx-proximus/src/lib/data-error/data-error.module';
 import { MatButtonToggleModule } from '@angular/material';
 import { NgModule } from '@angular/core';
@@ -13,7 +14,8 @@ import { LoaderModule } from 'projects/ngx-proximus/src/lib/loader/loader.module
     CommonModule,
     LoaderModule,
     MatButtonToggleModule,
-    DataErrorModule
+    DataErrorModule,
+    TranslateModule
   ],
   exports: [DayViewComponent]
 })

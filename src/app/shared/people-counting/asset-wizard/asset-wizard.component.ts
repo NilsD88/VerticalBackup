@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { SensorService } from 'src/app/services/sensor.service';
 import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
@@ -43,6 +44,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
     public sensorService: SensorService,
     public activatedRoute: ActivatedRoute,
     public router: Router,
+    public translateService: TranslateService,
   ) {
   }
 
@@ -120,8 +122,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
           width: '100vw',
           maxHeight: '80vh',
           data: {
-            title: 'Warning',
-            content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
+            title: this.translateService.instant('GENERAL.WARNING'),
+            content: this.translateService.instant('DIALOGS.WARNINGS.NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE')
           }
         });
         dialogRef.afterClosed().subscribe(result => {
@@ -143,8 +145,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
         width: '100vw',
         maxHeight: '80vh',
         data: {
-          title: 'Warning',
-          content: 'You can an only add an asset with at least one thing defined for your module',
+          title: this.translateService.instant('GENERAL.WARNING'),
+          content: this.translateService.instant('DIALOGS.FAILS.AT_LEAST_ONE_THING_FOR_YOUR_MODULE'),
           hideContinue: true,
         }
       });
@@ -171,8 +173,8 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
         width: '100vw',
         maxHeight: '80vh',
         data: {
-          title: 'Warning',
-          content: 'Not all the sensors defined in the threshold template are matching the sensor assigned to this asset'
+          title: this.translateService.instant('GENERAL.WARNING'),
+          content: this.translateService.instant('DIALOGS.WARNINGS.NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE')
         }
       });
       dialogRef.afterClosed().subscribe(result => {

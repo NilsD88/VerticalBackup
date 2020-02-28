@@ -197,7 +197,7 @@ export const AppRoutes: Routes = [
   },
   {
     path: 'error',
-    component: PrivateLayoutComponent,
+    component: PublicLayoutComponent,
     canActivate: [PublicAuthGuard],
     children: [{
       path: '',

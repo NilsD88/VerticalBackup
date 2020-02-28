@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AggregatedValuesComponent } from './aggregated-values.component';
@@ -7,7 +8,8 @@ import {IconModule} from '../icon/icon.module';
   declarations: [AggregatedValuesComponent],
   imports: [
     CommonModule,
-    IconModule
+    IconModule,
+    TranslateModule,
   ],
   exports:[
     AggregatedValuesComponent

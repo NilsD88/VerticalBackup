@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import {Component, OnInit, ChangeDetectorRef, OnDestroy} from '@angular/core';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
@@ -34,7 +35,8 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
     public thresholdTemplateService: ThresholdTemplateService,
     public router: Router,
     public activeRoute: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public translateService: TranslateService,
   ) {}
 
   async ngOnInit() {
@@ -257,8 +259,8 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
       if (this.thresholdTemplate.hasAssetsAttached) {
         this.dialog.open(PopupConfirmationComponent, {
           data: {
-            title: `Warning`,
-            content: 'Are you sure you want to edit? Assets are using this template'
+            title: this.translateService.instant('GENERAL.WARNING'),
+            content: this.translateService.instant('DIALOGS.DELETE.ARE_YOU_SURE_ASSETS_ARE_USING_THIS_TEMPLATE')
           },
           minWidth: '320px',
           maxWidth: '400px',
@@ -320,8 +322,8 @@ export class ManageThresholdTemplatesComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exists`,
-            message: 'Please choose an other threshold template name to be able to save it'
+            title: `${nameAlreadyUsed} ${this.translateService.instant('DIALOGS.FAILS.ALREADY_EXISTS')}`,
+            message: this.translateService.instant('DIALOGS.FAILS.CHOOSE_AN_OTHER_THRESHOLD_TEMPLATE_NAME')
           },
           minWidth: '320px',
           maxWidth: '400px',

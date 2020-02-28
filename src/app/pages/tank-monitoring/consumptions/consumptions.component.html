@@ -7,7 +7,7 @@
           *ngIf="asset"
           style="display: flex;"
           [loading]="chartLoading"
-          [title]="'Consumption'"
+          [title]="'TANK_MONITORING.CONSUMPTION' | translate"
           [chartData]="chartData"
           (updateChartData)="updateChartData($event)"
           (download)="downloadPdfDetail()"

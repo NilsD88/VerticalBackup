@@ -256,7 +256,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
         pdf.text(min, 105, marginTop - 10);
         const average = await this.getTranslation('DETAIL.AGGREGATED.AVERAGE');
         pdf.text(average, 140, marginTop - 10);
-        const standardDeviation = await this.getTranslation('DETAIL.AGGREGATED.STANDARDDEVIATION');
+        const standardDeviation = await this.getTranslation('DETAIL.AGGREGATED.STD_DEV');
         pdf.text(standardDeviation, 175, marginTop - 10);
 
         const aggregatedValues = this.myAggregatedValues.aggregatedValues;

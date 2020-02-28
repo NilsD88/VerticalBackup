@@ -26,7 +26,7 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     ChartModule,
     NoDataModule,
     LastAlertsModule,
-    DialogModule
+    DialogModule,
   ]
 })
 export class ConsumptionsModule { }

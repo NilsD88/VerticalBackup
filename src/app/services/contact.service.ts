@@ -20,14 +20,14 @@ export class ContactService {
       this.http.post(`${environment.baseUrl}/contact`, body)
         .subscribe(() => {
           const snackBarRef = this.snackBar.open(
-            'Successfully sent your message.',
+            this.sharedService.translate.instant('NOTIFS.SUCCESS.SENT_YOUR_MESSAGE'),
             null, {
               duration: 3000,
               panelClass: 'success-snackbar'
             });
           resolve();
         }, (err) => {
-          this.sharedService.rejectPromise('Error! Failed to send message. Please try again.', reject);
+          this.sharedService.rejectPromise(this.sharedService.translate.instant('NOTIFS.FAILS.SENT_YOUR_MESSAGE'), reject);
         });
     });
   }

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { IField } from './../../../../models/field.model';
 import { ILocation } from 'src/app/models/location.model';
@@ -33,10 +34,10 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
   public subs = new SubSink();
 
   public changeFloorPlanConfirmationMessage: IPopupConfirmation = {
-    title: 'Warning',
-    content: 'Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?',
-    continueButton: 'Yes',
-    cancelButton: 'No'
+    title: this.translateService.instant('GENERAL.WARNING'),
+    content: this.translateService.instant('DIALOGS.WARNINGS.PAY_ATTENTION_FLOOR_PLAN'),
+    continueButton: this.translateService.instant('GENERAL.YES'),
+    cancelButton: this.translateService.instant('GENERAL.NO')
   };
 
   private parentIdParam: string;
@@ -49,6 +50,7 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
     public locationService: LocationService,
     public dialog: MatDialog,
     public router: Router,
+    public translateService: TranslateService
   ) {
   }
 
@@ -201,8 +203,8 @@ export class LocationWizardComponent implements OnInit, OnDestroy {
       if (nameAlreadyUsed) {
         this.dialog.open(DialogComponent, {
           data: {
-            title: `${nameAlreadyUsed} already exists`,
-            message: 'Please choose an other location name to be able to save it'
+            title: `${nameAlreadyUsed} ${this.translateService.instant('DIALOGS.FAILS.ALREADY_EXISTS')}`,
+            message: this.translateService.instant('DIALOGS.FAILS.CHOOSE_AN_OTHER_LOCATION_NAME')
           },
           minWidth: '320px',
           maxWidth: '400px',

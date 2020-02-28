@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
@@ -25,6 +26,7 @@ export class ListPointsOfAttentionComponent implements OnInit, OnDestroy {
   constructor(
     private pointOfAttentionService: PointOfAttentionService,
     private dialog: MatDialog,
+    private translateService: TranslateService
   ) { }
 
   public async ngOnInit() {
@@ -42,8 +44,8 @@ export class ListPointsOfAttentionComponent implements OnInit, OnDestroy {
   public deletePointOfAttention(id: string) {
     this.dialog.open(PopupConfirmationComponent, {
       data: {
-        title: `Warning`,
-        content: 'Are you sure you want to delete? It will not be accessible anymore.'
+        title: this.translateService.instant('GENERAL.WARNING'),
+        content: this.translateService.instant('DIALOGS.DELETE.ARE_YOU_SURE_NO_MORE_ACCESSIBLE')
       },
       minWidth: '320px',
       maxWidth: '400px',

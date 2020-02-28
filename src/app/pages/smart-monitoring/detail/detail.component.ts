@@ -265,7 +265,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         pdf.text(min, 105, marginTop - 10);
         const average = await this.getTranslation('DETAIL.AGGREGATED.AVERAGE');
         pdf.text(average, 140, marginTop - 10);
-        const standardDeviation = await this.getTranslation('DETAIL.AGGREGATED.STANDARDDEVIATION');
+        const standardDeviation = await this.getTranslation('DETAIL.AGGREGATED.STD_DEV');
         pdf.text(standardDeviation, 175, marginTop - 10);
 
         const aggregatedValues = this.myAggregatedValues.aggregatedValues;
@@ -325,8 +325,8 @@ export class DetailComponent implements OnInit, OnDestroy {
         return this.assetService.getAssetDataById(this.asset.id, filter.interval, filter.from, filter.to).pipe(catchError(() => {
           this.dialog.open(DialogComponent, {
             data: {
-              title: 'Sorry, an error has occured!',
-              message: 'An error has occured during getting the sensor data'
+              title: this.translateService.instant('ERRORS.SORRY_ERROR_OCCURED'),
+              message: this.translateService.instant('ERRORS.ERROR_OCCURED_GETTING_DATA')
             },
             minWidth: '320px',
             maxWidth: '400px',
