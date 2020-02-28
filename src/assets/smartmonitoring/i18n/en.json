@@ -379,7 +379,7 @@
   "DETAIL": {
     "LINKED_THINGS": "Linked things",
     "AGGREGATED": {
-      "MEASUREMENT" : "Measurement",
+      "MEASUREMENT": "Measurement",
       "MAX": "Max",
       "MIN": "Min",
       "AVERAGE": "Avg",
@@ -467,6 +467,14 @@
       }
     }
   },
+  "MANAGE_THRESHOLD_TEMPLATES": {
+    "NEW": "New threshold template",
+    "VALIDATORS": {
+      "NAME": {
+        "MIN_LENGHT": "Name not long enough"
+      }
+    }
+  },
   "SENSOR_BOTTOMSHEET": {
     "TEMPERATURE": "High temperatures can cause chemical damages and increase degradation rate of art, and are good conditions for insects and moldgrowth. Low temperatures can cause condensation of moisture. Temperature fluctuations can effect humidity levels",
     "HUMIDITY": "High humidity can cause moldgrowth or corrosion, and creates good conditions for insects. Low humidity causes risk of mechanical deformation and brittleness of hygroscopic materials. Fluctuations of humidity increase risk of mechanical damage.",
@@ -531,7 +539,7 @@
     },
     "500": {
       "TITLE": "Server Error",
-      "CONTENT": "Sorry, an error has occured, our servers might be down!" 
+      "CONTENT": "Sorry, an error has occured, our servers might be down!"
     },
     "SORRY_ERROR_OCCURED": "Sorry, an error has occured!",
     "ERROR_OCCURED_GETTING_DATA": "An error has occured during getting the data",
