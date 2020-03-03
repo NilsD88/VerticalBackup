@@ -428,24 +428,12 @@ export class LocationService {
   }
 
 
-  /*
-  public getLocations(filter: any = null): Observable<ILocation[]>  {
-      let request = this.locationsUrl;
-      if (filter) {
-          if (filter.name) {
-              request += `?name=${filter.name}`;
-          }
-      }
-      return this.http.get<ILocation[]>(request);
-  }
-  */
 
   public searchLocationsWithFilter(filters: Observable < any > ) {
     return filters.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap(filter => {
-        // return this.getLocations(filter);
         return this.getLocationsByName(filter.name);
       })
     );
