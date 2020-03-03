@@ -227,12 +227,12 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         formatter: function () {
           if (!isNullOrUndefined(this.point.value)) {
             return `
-              ${moment(this.point.date).format('L')}
+              ${moment(this.point.date).format('DD/MM/YYYY')}
               <br><div>${instance.translateService.instant('GENERAL.VALUE')}: ${instance.decimalPipe.transform(this.point.value, '1.0-2','fr-FR')} </div>
             `;
           } else {
             return `
-              ${moment(this.point.date).format('L')}
+              ${moment(this.point.date).format('DD/MM/YYYY')}
               <br><div>${instance.translateService.instant('GENERAL.VALUE')}: null </div>
             `;
           }
