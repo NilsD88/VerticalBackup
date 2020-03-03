@@ -11,6 +11,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {catchError, debounceTime, switchMap} from 'rxjs/operators';
 import {StairwayToHealthLocationService} from 'src/app/services/stairway-to-health/location.service';
+import { DecimalPipe } from '@angular/common';
 
 declare global {
   interface Window {
@@ -69,7 +70,8 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private translateService: TranslateService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private decimalPipe: DecimalPipe,
   ) {
   }
 
@@ -225,12 +227,12 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         formatter: function () {
           if (!isNullOrUndefined(this.point.value)) {
             return `
-              ${moment(this.point.date).format('L')}
-              <br><div>${instance.translateService.instant('GENERAL.VALUE')}: ${this.point.value} </div>
+              ${moment(this.point.date).format('DD/MM/YYYY')}
+              <br><div>${instance.translateService.instant('GENERAL.VALUE')}: ${instance.decimalPipe.transform(this.point.value, '1.0-2','fr-FR')} </div>
             `;
           } else {
             return `
-              ${moment(this.point.date).format('L')}
+              ${moment(this.point.date).format('DD/MM/YYYY')}
               <br><div>${instance.translateService.instant('GENERAL.VALUE')}: null </div>
             `;
           }
