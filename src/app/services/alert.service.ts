@@ -259,6 +259,11 @@ export class AlertService {
           label,
           timestamp,
           value,
+          thing {
+            id,
+            devEui,
+            name
+          }
         }
       }`;
 

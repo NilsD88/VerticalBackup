@@ -40,7 +40,7 @@ export class LastAlertsComponent implements OnInit {
       csv += (alert.sensorType || {}).name + ', ';
       csv += alert.severity + (alert.label ? ': ' + alert.label : '') + ', ';
       csv += alert.thresholdTemplateName + ', ';
-      csv += (alert.thing || {}).name + ', ';
+      csv += ((alert.thing || {}).name || (alert.thing || {}).devEui) + ', ';
       csv += (this.asset.location || {}).name + ', ';
       csv += alert.value + (alert.sensorType || {}).postfix + ', ';
       csv += alert.read;
