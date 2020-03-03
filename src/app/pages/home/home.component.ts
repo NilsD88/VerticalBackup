@@ -1,7 +1,8 @@
-import { Apollo } from 'apollo-angular';
 import {Component, OnInit} from '@angular/core';
-import gql from 'graphql-tag';
-import { map } from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
+import {MatSnackBar} from '@angular/material';
+import {SharedService} from '../../services/shared.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'pvf-home',
@@ -23,9 +24,38 @@ export class HomeComponent implements OnInit {
     {translationPostfix: '3', image: 'assets/smartmonitoring/images/home/smart-care.jpg'},
   ];
 
-  constructor() {}
+  constructor(private route: ActivatedRoute,
+              private snackBar: MatSnackBar,
+              private sharedService: SharedService,
+              private translateService: TranslateService) {
+  }
 
   ngOnInit() {
+
+    const errorCode = this.route.snapshot.queryParams.error;
+    const successCode = this.route.snapshot.queryParams.success;
+
+    console.log(errorCode);
+    console.log(successCode);
+
+    if (errorCode !== null && typeof errorCode !== 'undefined') {
+      let errorText = '';
+      this.translateService.get('LOGIN_ERROR.' + errorCode).subscribe((result) => {
+        errorText = result;
+      });
+
+      this.sharedService.showNotification(errorText, 'error', 0, 'Close');
+    }
+
+    if (successCode !== null && typeof successCode !== 'undefined') {
+      let successText = '';
+      this.translateService.get('LOGOUT_SUCCESS.' + successCode).subscribe((result) => {
+        successText = result;
+      });
+
+      this.sharedService.showNotification(successText, 'success', 5000);
+    }
+
   }
 
 }

@@ -31,7 +31,7 @@
       }
     },
     "HOVER": {
-      "MORE_INFO" : "Click here for more info"
+      "MORE_INFO": "Click here for more info"
     },
     "LIST": {
       "L1": "Effortless. link any sensor to your account and gather specific data about your assets.",
@@ -379,7 +379,7 @@
   "DETAIL": {
     "LINKED_THINGS": "Linked things",
     "AGGREGATED": {
-      "MEASUREMENT" : "Measurement",
+      "MEASUREMENT": "Measurement",
       "MAX": "Max",
       "MIN": "Min",
       "AVERAGE": "Avg",
@@ -462,8 +462,16 @@
     "TITLE": "Manage assets",
     "NEW": "New asset",
     "VALIDATORS": {
-      "NAME" : {
-        "MIN_LENGHT" : "Name not long enough"
+      "NAME": {
+        "MIN_LENGHT": "Name not long enough"
+      }
+    }
+  },
+  "MANAGE_THRESHOLD_TEMPLATES": {
+    "NEW": "New threshold template",
+    "VALIDATORS": {
+      "NAME": {
+        "MIN_LENGHT": "Name not long enough"
       }
     }
   },
@@ -490,27 +498,27 @@
     },
     "SUPPORT_DETAILS": ""
   },
-  "LOGIN_ERROR":{
-    "single_logout" : "You've been successfully logged out.",
-    "token_refresh_failed" : "Your session has expired, please login again.",
+  "LOGIN_ERROR": {
+    "single_logout": "You've been successfully logged out.",
+    "token_refresh_failed": "Your session has expired, please login again.",
     "no_session": "Your session has expired, please login again",
-    "grant_application_access" : "You do not have access to this application. Please contact support.",
-    "internal_server_error" : "Something went wrong, please try again.",
-    "other" : "Access denied. Often clearing your browser's cache and restarting your browser will solve the problem. Please try logging in again. If the issue persists, please contact support.",
-    "403" : "You have successfully logged in, but our records show that you do not have access to this application.  Click the button below to logout. To request access to this application, please contact us using the",
-    "CONTACT" : "contact form",
-    "access_denied" : "Access has been denied."
+    "grant_application_access": "You do not have access to this application. Please contact support.",
+    "internal_server_error": "Something went wrong, please try again.",
+    "other": "Access denied. Often clearing your browser's cache and restarting your browser will solve the problem. Please try logging in again. If the issue persists, please contact support.",
+    "403": "You have successfully logged in, but our records show that you do not have access to this application.  Click the button below to logout. To request access to this application, please contact us using the",
+    "CONTACT": "contact form",
+    "access_denied": "Access has been denied."
   },
-  "LOGOUT_SUCCESS" : {
-    "logout_ok" : "You've been successfully logged out."
+  "LOGOUT_SUCCESS": {
+    "logout_ok": "You've been successfully logged out."
   },
   "PDF": {
     "ASSET_NAME": "Asset name",
-    "CLIENT_NAME" : "Client name",
-    "CHART" : "CHART",
-    "MEASURE_PERIOD" : "Measure period from",
-    "TO" : "to",
-    "AGGREGATED_VALUES" : "AGGREGATED VALUES"
+    "CLIENT_NAME": "Client name",
+    "CHART": "CHART",
+    "MEASURE_PERIOD": "Measure period from",
+    "TO": "to",
+    "AGGREGATED_VALUES": "AGGREGATED VALUES"
   },
   "ERRORS": {
     "HEADER": "Oops! This is awkward",
@@ -519,19 +527,19 @@
     },
     "401": {
       "TITLE": "Unauthorized",
-      "CONTENT": "Sorry, an error has occured, you are not authorized to see the requested page!" 
+      "CONTENT": "Sorry, an error has occured, you are not authorized to see the requested page!"
     },
     "403": {
       "TITLE": "Forbidden",
-      "CONTENT": "Sorry, an error has occured, you are not authorized to see the requested page!" 
+      "CONTENT": "Sorry, an error has occured, you are not authorized to see the requested page!"
     },
     "404": {
       "TITLE": "This page is no longer available …",
-      "CONTENT": "Sorry, an error has occured, requested page not found!" 
+      "CONTENT": "Sorry, an error has occured, requested page not found!"
     },
     "500": {
       "TITLE": "Server Error",
-      "CONTENT": "Sorry, an error has occured, our servers might be down!" 
+      "CONTENT": "Sorry, an error has occured, our servers might be down!"
     },
     "SORRY_ERROR_OCCURED": "Sorry, an error has occured!",
     "ERROR_OCCURED_GETTING_DATA": "An error has occured during getting the data",

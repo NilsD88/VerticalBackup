@@ -2,11 +2,12 @@
   <div class="row" style="margin-top: 1rem;">
     <div class="col-md-12 manage-header">
       <h1 class="pxs-title">{{'LAYOUT.MANAGE_THRESHOLD_TEMPLATES' | translate}}</h1>
-      <button 
+      <button
         mat-mini-fab color="primary"
         routerLink="/private/admin/manage-threshold-templates/new"
-        [matTooltip]="'MANAGE_ASSETS.NEW' | translate"
-      ><pxs-icon icon="plus-o"></pxs-icon></button>
+        [matTooltip]="'MANAGE_THRESHOLD_TEMPLATES.NEW' | translate">
+        <pxs-icon icon="plus-o"></pxs-icon>
+      </button>
     </div>
   </div>
   <pxs-list-threshold-templates [admin]="true"></pxs-list-threshold-templates>

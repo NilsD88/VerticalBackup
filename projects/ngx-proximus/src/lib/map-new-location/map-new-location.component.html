@@ -1,23 +1,23 @@
 <div class="container" style="height:400px;" (keyup.enter)="eventHandler($event)">
-    <div
-      *ngIf="options"
-      leaflet 
-      [leafletOptions]="options"
-      [leafletLayers]="markers"
-      (leafletMapReady)="onMapReady($event)"
-      (leafletClick)="onMapClick($event)"
-      style="height:400px;"
-    >
-    </div>
-    <div *ngIf="!imageBounds" class="widget-mylocation" (click)="addMarkerWithUserPosition()">
-      <a>
-        <mat-icon>person_pin</mat-icon>
-      </a>
-    </div>
-    <div *ngIf="!markers.length" class="no-position-selected">
-      {{'MAPS.NO_POSITION_SELECTED' || translate }}
-    </div>
-    <div *ngIf="markers.length" class="position-selected">
-      {{'MAPS.POSITION_SELECTED' || translate }} (<a (click)="removeMarker()">{{'MAPS.REMOVE_POSITION' || translate }}</a>)
-    </div>
+  <div
+    *ngIf="options"
+    leaflet
+    [leafletOptions]="options"
+    [leafletLayers]="markers"
+    (leafletMapReady)="onMapReady($event)"
+    (leafletClick)="onMapClick($event)"
+    style="height:400px;"
+  >
+  </div>
+  <div *ngIf="!imageBounds" class="widget-mylocation" (click)="addMarkerWithUserPosition()">
+    <a>
+      <mat-icon>person_pin</mat-icon>
+    </a>
+  </div>
+  <div *ngIf="!markers.length" class="no-position-selected">
+    {{'MAPS.NO_POSITION_SELECTED' | translate }}
+  </div>
+  <div *ngIf="markers.length" class="position-selected">
+    {{'MAPS.POSITION_SELECTED' | translate }} (<a (click)="removeMarker()">{{'MAPS.REMOVE_POSITION' | translate }}</a>)
+  </div>
 </div>

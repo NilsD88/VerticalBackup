@@ -1,5 +1,5 @@
-import { isNullOrUndefined } from 'util';
-import { IPointOfAttention } from './../../../../models/point-of-attention.model';
+import {isNullOrUndefined} from 'util';
+import {IPointOfAttention} from './../../../../models/point-of-attention.model';
 import {ISensorDefinition} from '../../../../models/sensor-definition.model';
 import {PeriodicDuration} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild} from '@angular/core';
@@ -104,9 +104,11 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
 
   constructor(
     public translateService: TranslateService
-  ) {}
+  ) {
+  }
 
-  public ngOnInit() {}
+  public ngOnInit() {
+  }
 
   public ngOnChanges() {
     const filename = this.pointOfAttention ? (this.pointOfAttention.name) : 'Chart';
@@ -176,7 +178,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
     };
 
     for (const data of this.chartData) {
-      this.addYAxisOption((data.series || []).length, data.label);
+      this.addYAxisOption((data.series || []).length, data.label);
       this.addYAxisValues(data);
     }
 
@@ -229,7 +231,8 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
         type: 'spline',
         showInLegend: (item.series.length) ? true : false,
         data: item.series.map((serie) => {
-          return [serie.timestamp, !isNullOrUndefined(serie.value) ? parseFloat(serie.value.toFixed(2)) : null];
+          return [serie.timestamp,
+            isNullOrUndefined(serie.value) ? null : parseFloat(serie.value.toFixed(2))];
         })
       });
     }

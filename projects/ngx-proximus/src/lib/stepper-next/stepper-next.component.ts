@@ -1,6 +1,6 @@
-import { TranslateService } from '@ngx-translate/core';
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {TranslateService} from '@ngx-translate/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'pxs-stepper-next',
@@ -21,11 +21,12 @@ export class StepperNextComponent implements OnInit {
 
   constructor(
     private translateService: TranslateService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     if (!this.text) {
-      this.text = this.translateService.instant('LAYOUT.NEXT');
+      this.text = this.translateService.instant('GENERAL.NEXT');
     }
   }
 

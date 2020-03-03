@@ -1,15 +1,19 @@
 <div class="row">
-    <div class="col-xs-12 col-md-6 mx-auto stepper-next-container">
-      <div>
-        <button mat-flat-button *ngIf="showCancel"  color="warn" (click)="callCancel()">{{ 'LAYOUT.CANCEL' | translate }}</button>
-      </div>
-      <pxs-button *ngIf="(formGroup && formGroup.status==='INVALID') || !completed" color="inactive" disabled="true" size="large" (click)="callNext()">
-        {{text}}
-        <pxs-icon [icon]="'chevron-right'"></pxs-icon>
-      </pxs-button>
-      <pxs-button [class.spinner]="loading" [disabled]="loading" *ngIf="(formGroup && formGroup.status==='VALID') && completed" [color]="color" size="large" (click)="callNext()">
-        {{text}}
-        <pxs-icon [icon]="'chevron-right'"></pxs-icon>
-      </pxs-button>
+  <div class="col-xs-12 col-md-6 mx-auto stepper-next-container">
+    <div>
+      <button mat-flat-button *ngIf="showCancel" color="warn"
+              (click)="callCancel()">{{ 'GENERAL.CANCEL' | translate }}</button>
     </div>
+    <pxs-button *ngIf="(formGroup && formGroup.status==='INVALID') || !completed" color="inactive" disabled="true"
+                size="large" (click)="callNext()">
+      {{text}}
+      <pxs-icon [icon]="'chevron-right'"></pxs-icon>
+    </pxs-button>
+    <pxs-button [class.spinner]="loading" [disabled]="loading"
+                *ngIf="(formGroup && formGroup.status==='VALID') && completed" [color]="color" size="large"
+                (click)="callNext()">
+      {{text}}
+      <pxs-icon [icon]="'chevron-right'"></pxs-icon>
+    </pxs-button>
+  </div>
 </div>
