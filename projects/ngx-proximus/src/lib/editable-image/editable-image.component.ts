@@ -7,7 +7,7 @@ import {EditImageDialogComponent} from './edit-image-dialog/edit-image-dialog.co
 @Component({
   selector: 'pxs-editable-image',
   templateUrl: './editable-image.component.html',
-  styleUrls: ['./editable-image.component.css']
+  styleUrls: ['./editable-image.component.scss']
 })
 export class EditableImageComponent implements OnInit {
 
