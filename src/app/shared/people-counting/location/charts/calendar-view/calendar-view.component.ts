@@ -7,10 +7,11 @@ import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, Simpl
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {TranslateService} from '@ngx-translate/core';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, of, Subject, from} from 'rxjs';
 import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {catchError, debounceTime, switchMap} from 'rxjs/operators';
 import {StairwayToHealthLocationService} from 'src/app/services/stairway-to-health/location.service';
+import {cloneDeep} from 'lodash';
 import { DecimalPipe } from '@angular/common';
 
 declare global {
@@ -28,6 +29,8 @@ const exporting = require('highcharts/modules/exporting');
 const exportData = require('highcharts/modules/export-data');
 
 const Highcharts = require('highcharts/highstock');
+require('highcharts/modules/heatmap')(Highcharts);
+require('highcharts/modules/series-label')(Highcharts);
 
 Boost(Highcharts);
 noData(Highcharts);
@@ -35,9 +38,6 @@ More(Highcharts);
 noData(Highcharts);
 exporting(Highcharts);
 exportData(Highcharts);
-
-require('highcharts/modules/heatmap')(Highcharts);
-require('highcharts/modules/series-label')(Highcharts);
 
 @Component({
   selector: 'pvf-peoplecounting-calendar-view',
@@ -131,7 +131,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         marginTop: 50,
         marginBottom: 40,
         events: {
-          render: function () {
+          render() {
             const series = this.series;
             let bbox;
 
@@ -142,7 +142,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
               instance.svgElements = [];
             }
 
-            series.forEach(function (s) {
+            series.forEach((s) => {
               bbox = s.group.getBBox(true);
               instance.svgElements.push(this.renderer.text(
                 s.name,
@@ -204,7 +204,6 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         },
       },
 
-
       colorAxis: {
         tickInterval: 1,
         tickmarkPlacement: 'on',
@@ -224,7 +223,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
       tooltip: {
         useHTML: true,
-        formatter: function () {
+        formatter() {
           if (!isNullOrUndefined(this.point.value)) {
             return `
               ${moment(this.point.date).format('DD/MM/YYYY')}
@@ -246,7 +245,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
             y: 20,
             crop: false,
             overflow: 'allow',
-            formatter: function () {
+            formatter() {
               return null;
             },
             style: {
@@ -316,6 +315,7 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   private displayChart() {
     this.chartLoading = false;
     try {
+      console.log(cloneDeep(this.chartOptions));
       this.chart = Highcharts.chart('calendar-view-chart-container', this.chartOptions);
     } catch (error) {
       this.chartOptions.series = [];
