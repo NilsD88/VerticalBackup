@@ -7,9 +7,8 @@ import {CommonModule} from '@angular/common';
 import {DetailComponent} from './detail.component';
 import {RouterModule} from '@angular/router';
 import {DetailRoutes} from './detail.routing';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { MatDividerModule, MatExpansionModule, MatTooltipModule, MatCardModule } from '@angular/material';
-import {HighchartsChartModule} from 'highcharts-angular';
 import {ChartModule} from '../lib/chart/chart.module';
 import {RangeSliderModule} from 'projects/ngx-proximus/src/lib/range-slider/range-slider.module';
 import {AggregatedValuesModule} from 'projects/ngx-proximus/src/lib/aggregated-values/aggregated-values.module';
@@ -29,7 +28,6 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     MatDividerModule,
     MatExpansionModule,
     MatTooltipModule,
-    HighchartsChartModule,
     ChartModule,
     AggregatedValuesModule,
     MapAssetModule,
