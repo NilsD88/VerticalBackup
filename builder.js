@@ -18,8 +18,8 @@ prebuild.stderr.pipe(process.stdout);
 prebuild.on('close', (code) => {
   console.log(`[BUILDER]\tprebuild process exited with code ${code}`);
   console.log(`ng build ${config}`);
-  console.log(`node --max-old-space-size=2048 node_modules/@angular/cli/bin/ng build ${config}`);
-  const build = spawn(`node --max-old-space-size=2048 node_modules/@angular/cli/bin/ng build ${config}`, {
+  console.log(`node --max-old-space-size=1028 node_modules/@angular/cli/bin/ng build ${config}`);
+  const build = spawn(`node --max-old-space-size=1028 node_modules/@angular/cli/bin/ng build ${config}`, {
     shell: true
   });
   build.stdout.pipe(process.stdout);
