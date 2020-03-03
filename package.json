@@ -9,7 +9,7 @@
     "angury": "ng serve --port=5151",
     "start": "node server",
     "prebuild": "npm i -g @angular/cli",
-    "build": "node --max_old_space_size=8192 builder",
+    "build": "node builder",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
