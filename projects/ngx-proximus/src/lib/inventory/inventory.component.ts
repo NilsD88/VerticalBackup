@@ -44,7 +44,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   public assetUrl = '/private/smartmonitoring/detail/';
 
   public pageNumber = 0;
-  public pageSize = 10;
+  public pageSize = 12;
   public totalItems = 0;
 
   public rootLocation: ILocation;

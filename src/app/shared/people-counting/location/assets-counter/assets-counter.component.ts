@@ -67,8 +67,8 @@ export class AssetsCounterComponent implements OnInit, OnDestroy {
       this.assetService.getAssetsDataByIds(
         this.assets.map(asset => asset.id),
         'DAILY',
-        moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-        moment().valueOf()
+        moment().startOf('day').valueOf(),
+        moment().endOf('day').valueOf()
       ).subscribe((assets) => {
         assets.forEach(asset => {
           const index = this.checkpoints.findIndex(a => a.id === asset.id);
@@ -86,8 +86,8 @@ export class AssetsCounterComponent implements OnInit, OnDestroy {
       this.assetService.getAssetsDataByIds(
         this.assets.map(asset => asset.id),
         'WEEKLY',
-        moment().subtract(1, 'week').startOf('isoWeek').valueOf(),
         moment().startOf('isoWeek').valueOf(),
+        moment().endOf('isoWeek').valueOf(),
       ).subscribe((assets) => {
         assets.forEach(asset => {
           const index = this.checkpoints.findIndex(a => a.id === asset.id);

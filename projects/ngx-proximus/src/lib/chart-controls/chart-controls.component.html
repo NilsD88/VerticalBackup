@@ -18,7 +18,7 @@
             </button>
             <button mat-menu-item disabled (click)="downloadCSV.emit()" [disabled]="chartDataIsLoading || !chartDataLength">
                 <mat-icon>insert_drive_file</mat-icon>
-                <span>{{ 'GENERAL.EXPORT_PDF' | translate}}</span>
+                <span>{{ 'GENERAL.EXPORT_CSV' | translate}}</span>
             </button>
         </mat-menu>
     </div>

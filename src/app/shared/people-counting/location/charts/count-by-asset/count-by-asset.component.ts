@@ -182,8 +182,8 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
         return this.assetService.getAssetsDataByIds(
           this.assets.map(asset => asset.id),
           'DAILY',
-          moment().set({hour: 0, minute: 0, second: 0, millisecond: 0}).valueOf(),
-          moment().valueOf(),
+          moment().startOf('day').valueOf(),
+          moment().endOf('day').valueOf(),
         ).pipe(catchError((error) => {
           console.error(error);
           this.chartLoading = false;
