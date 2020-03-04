@@ -2,7 +2,7 @@ import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model'
 import { WalkingTrailLocationService } from './../../../../services/walkingtrail/location.service';
 import { IAsset } from '../../../../models/asset.model';
 import { ILocation } from 'src/app/models/location.model';
-import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef, NgZone } from '@angular/core';
 import { Map, Layer, LatLngBounds, latLngBounds, imageOverlay, CRS, tileLayer, latLng, geoJSON, divIcon, marker, Point, layerGroup } from 'leaflet';
 import { IGeolocation, Geolocation } from 'src/app/models/geolocation.model';
 import { GeoJsonObject } from 'geojson';
@@ -54,6 +54,7 @@ export class TrailMapComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef,
     private locationService: WalkingTrailLocationService,
     private router: Router,
+    private ngZone: NgZone,
   ) {}
 
   ngOnInit() {
@@ -207,7 +208,7 @@ export class TrailMapComponent implements OnInit {
           {
             icon: trailIcon(child.name, status, this.leaf.id === child.id)
           }
-        ).on('click', async () => {
+        ).on('click', () => {
           if (this.leaf.id === child.id) {
             if (this.leaf.assets.length) {
               if (!(!this.location.image && !child.image)) {
@@ -221,8 +222,7 @@ export class TrailMapComponent implements OnInit {
               this.initMap();
             }
           } else {
-            this.router.navigateByUrl(`private/walkingtrail/trail/${child.id}`);
-            this.ngOnInit();
+            this.ngZone.run(() => this.navigateTo(`/private/walkingtrail/trail/${child.id}`));
           }
         });
         markers.push(newMarker);
@@ -365,6 +365,10 @@ export class TrailMapComponent implements OnInit {
       this.currentMap.fitBounds(this.imageBounds);
       this.currentMap.setMaxBounds(this.imageBounds);
     }
+  }
+
+  private navigateTo(url) {
+    this.router.navigate([url]);
   }
 
   public resetMap() {

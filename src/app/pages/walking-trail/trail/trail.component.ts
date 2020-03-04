@@ -1,7 +1,6 @@
-import { SharedService } from './../../../services/shared.service';
+import { cloneDeep } from 'lodash';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
-import { findLocationById } from 'src/app/shared/utils';
 import { ActivatedRoute, Router } from '@angular/router';
 import { WalkingTrailLocationService } from './../../../services/walkingtrail/location.service';
 import { Component, OnInit } from '@angular/core';
@@ -39,7 +38,9 @@ export class TrailComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('ngOnInit: activatedRoute');
     this.activatedRoute.params.subscribe(async (params) => {
+      console.log('ngOnInit: activatedRoute', cloneDeep(params));
       try {
         this.leaf = await this.locationService.getLocationById(params.id).toPromise();
       } catch (error) {
