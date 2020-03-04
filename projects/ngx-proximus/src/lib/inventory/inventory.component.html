@@ -57,9 +57,11 @@
     </div>
 
     <!-- Asset Results -->
-    <div class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2" *ngFor="let asset of assets">
-      <pxs-asset-tile [asset]="asset" [assetUrl]="assetUrl"></pxs-asset-tile>
-    </div>
+    <ng-container *ngIf="!assetsLoading">
+      <div class="card col-sm-6 col-xs-12 col-md-4 col-lg-3 col-xl-2" *ngFor="let asset of assets">
+        <pxs-asset-tile [asset]="asset" [assetUrl]="assetUrl"></pxs-asset-tile>
+      </div>
+    </ng-container>
   </div>
 
   <!--Paginator -->
