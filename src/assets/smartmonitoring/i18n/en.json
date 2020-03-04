@@ -219,7 +219,8 @@
       "DAILY": "Daily",
       "WEEKLY": "Weekly",
       "MONTHLY": "Monthly",
-      "YEARLY": "Yearly"
+      "YEARLY": "Yearly",
+      "ALL": "All"
     },
     "PRESETS": {
       "LAST_24_HOURS": "Last 24 hours",
