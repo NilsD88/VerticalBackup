@@ -12,10 +12,10 @@
 <pvf-peoplecounting-calendar-view [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-calendar-view>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-6 col-sm-12" style="position: inherit;">
       <pvf-peoplecounting-count-by-asset [assetColors]="assetColors" [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-6 col-sm-12" style="position: inherit;">
       <pvf-peoplecounting-assets-counter [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-assets-counter>
     </div>
   </div>

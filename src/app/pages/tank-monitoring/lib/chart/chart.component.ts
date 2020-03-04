@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { IAsset } from 'src/app/models/asset.model';
 import { isNullOrUndefined } from 'util';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 
 declare global {
@@ -105,7 +106,12 @@ export class ChartComponent implements OnInit, OnChanges {
           dateFormat: '%d-%m-%Y %H:%M:%S',
         },
         enabled: true,
-        filename
+        filename,
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       credits: {
         enabled: false

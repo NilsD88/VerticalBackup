@@ -1383,3 +1383,7 @@ mat-form-field {
 .highcharts-container {
   overflow: visible !important;
 }
+
+.highcharts-contextmenu {
+  z-index: 9999 !important;
+}

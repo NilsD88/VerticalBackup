@@ -20,6 +20,7 @@ import * as moment from 'moment';
 import * as randomColor from 'randomcolor';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare global {
   interface Window {
@@ -105,6 +106,15 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
       },
       credits: {
         enabled: false
+      },
+      exporting: {
+        enabled: true,
+        filename: 'count-by-asset',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       plotOptions: {
         pie: {

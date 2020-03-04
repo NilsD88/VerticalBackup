@@ -15,6 +15,7 @@ declare global {
 import * as Highcharts from 'highcharts';
 import { ILeafColors } from '../../leaf.model';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare var require: any;
 require('highcharts/modules/boost');
@@ -84,6 +85,11 @@ export class TotalCountPastYearComponent implements OnInit, OnChanges {
         },
         enabled: true,
         filename: 'count-past-year',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       colors: [],
       credits: {

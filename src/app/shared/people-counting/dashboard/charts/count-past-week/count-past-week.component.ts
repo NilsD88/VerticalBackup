@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ILeafColors } from '../../leaf.model';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { Router } from '@angular/router';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare global {
   interface Window {
@@ -121,6 +122,9 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
             onclick: () => {
               this.decrease.emit();
             },
+          },
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
           }
         }
       },

@@ -13,6 +13,7 @@ import {catchError, debounceTime, switchMap} from 'rxjs/operators';
 import {StairwayToHealthLocationService} from 'src/app/services/stairway-to-health/location.service';
 import {cloneDeep} from 'lodash';
 import { DecimalPipe } from '@angular/common';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare global {
   interface Window {
@@ -170,6 +171,11 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
         },
         enabled: true,
         filename: 'calendar-view',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       credits: {
         enabled: false
