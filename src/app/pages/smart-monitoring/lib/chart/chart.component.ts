@@ -6,6 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {IAsset} from 'src/app/models/asset.model';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 
 declare global {
@@ -133,17 +134,7 @@ export class ChartComponent implements OnInit, OnChanges {
         filename,
         buttons: {
           contextButton: {
-            menuItems: [
-              'viewFullscreen',
-              'printChart',
-              'separator',
-              'downloadPNG',
-              'downloadJPEG',
-              'separator',
-              'downloadCSV',
-              'downloadXLS',
-              'viewData'
-            ]
+            menuItems: HIGHCHARTS_MENU_ITEMS
           }
         }
       },

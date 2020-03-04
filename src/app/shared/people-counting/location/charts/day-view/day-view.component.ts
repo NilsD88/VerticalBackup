@@ -26,6 +26,7 @@ import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { allIntervalBetween } from 'src/app/shared/utils';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare global {
   interface Window {
@@ -183,6 +184,11 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
         },
         enabled: true,
         filename: 'count-past-year',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       credits: {
         enabled: false

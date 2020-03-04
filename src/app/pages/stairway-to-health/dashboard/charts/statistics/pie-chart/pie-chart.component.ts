@@ -11,6 +11,7 @@ import {
   Output
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -73,6 +74,15 @@ export class PieChartComponent implements OnInit, OnChanges, AfterViewInit {
       accessibility: {
         point: {
           valueSuffix: '%'
+        }
+      },
+      exporting: {
+        enabled: true,
+        filename: this.title,
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
         }
       },
       plotOptions: {

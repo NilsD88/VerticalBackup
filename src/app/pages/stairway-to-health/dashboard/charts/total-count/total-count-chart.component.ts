@@ -35,6 +35,7 @@ import {
 } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare var require: any;
 const Boost = require('highcharts/modules/boost');
@@ -230,6 +231,11 @@ export class TotalCountChartComponent implements OnInit, OnChanges, OnDestroy {
         },
         enabled: true,
         filename: 'stairway-to-health',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       credits: {
         enabled: false

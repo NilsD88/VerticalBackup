@@ -4,14 +4,28 @@ const MAP_TILES_URL = {
 }
 
 const MAP_TILES_URL_ACTIVE = MAP_TILES_URL.OSM;
+const UNKNOWN_PARENT_ID = 'xXxXx';
+
 const DEFAULT_LOCATION = {
     lat: 50.860180,
     lng: 4.358606
 };
-const UNKNOWN_PARENT_ID = 'xXxXx';
+
+const HIGHCHARTS_MENU_ITEMS = [
+    'viewFullscreen',
+    'printChart',
+    'separator',
+    'downloadPNG',
+    'downloadJPEG',
+    'separator',
+    'downloadCSV',
+    'downloadXLS',
+    'viewData'
+];
 
 export {
     MAP_TILES_URL_ACTIVE,
     UNKNOWN_PARENT_ID,
     DEFAULT_LOCATION,
+    HIGHCHARTS_MENU_ITEMS,
 }

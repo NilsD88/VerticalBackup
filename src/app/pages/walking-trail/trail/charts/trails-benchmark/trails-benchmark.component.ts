@@ -16,6 +16,7 @@ import {
 } from 'src/app/models/peoplecounting/location.model';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare global {
   interface Window {
@@ -125,6 +126,11 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
         },
         enabled: true,
         filename: 'count-past-year',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       colors: [],
       credits: {

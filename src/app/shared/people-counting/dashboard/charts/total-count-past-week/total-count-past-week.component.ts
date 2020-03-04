@@ -7,6 +7,7 @@ import * as Highcharts from 'highcharts';
 import { increaseLeafs } from 'src/app/shared/utils';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { ILeafColors } from '../../leaf.model';
+import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 declare var require: any;
 require('highcharts/highcharts-more')(Highcharts);
 require('highcharts/modules/treemap')(Highcharts);
@@ -60,6 +61,11 @@ export class TotalCountPastWeekComponent implements OnInit, OnChanges {
         },
         enabled: true,
         filename: 'count-past-week',
+        buttons: {
+          contextButton: {
+            menuItems: HIGHCHARTS_MENU_ITEMS
+          }
+        }
       },
       credits: {
         enabled: false
