@@ -38,9 +38,7 @@ export class TrailComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('ngOnInit: activatedRoute');
     this.activatedRoute.params.subscribe(async (params) => {
-      console.log('ngOnInit: activatedRoute', cloneDeep(params));
       try {
         this.leaf = await this.locationService.getLocationById(params.id).toPromise();
       } catch (error) {
