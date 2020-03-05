@@ -144,17 +144,18 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
             to: this.currentFilter.to,
             interval: this.currentFilter.interval,
           };
+          let standardDeviation;
           try {
-            const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
-            aggregatedValues.push({
-                label: labelTranslation,
-                series: sensor.series,
-                standardDeviation: (standardDeviation) ? standardDeviation.value : null,
-                postfix: sensor.sensorType.postfix
-            });
+            standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
           } catch (error) {
             console.error(error);
           }
+          aggregatedValues.push({
+            label: labelTranslation,
+            series: sensor.series,
+            standardDeviation: (standardDeviation) ? standardDeviation.value : null,
+            postfix: sensor.sensorType.postfix
+          });
         }
         // END STANDARD DEVIATION
 

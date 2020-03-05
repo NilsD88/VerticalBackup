@@ -1,16 +1,16 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-7">
+    <div class="col-xl-7 col-md-12">
       <pvf-peoplecounting-day-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-day-view>
     </div>
-    <div class="col-md-5">
+    <div class="col-xl-5 col-md-12" style="display: flex; justify-content: center; align-items: center;">
      <pvf-peoplecounting-summary [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-summary>
     </div>
   </div>
 </div>
 <pvf-peoplecounting-month-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-month-view>
-<pvf-peoplecounting-calendar-view [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-calendar-view>
-<div class="container-fluid">
+<pvf-peoplecounting-calendar-view [leaf]="leaf" [locationService]="locationService" style="position:relative; z-index:2;"></pvf-peoplecounting-calendar-view>
+<div class="container-fluid" style="position:relative; z-index:1;">
   <div class="row">
     <div class="col-md-6 col-sm-12" style="position: inherit;">
       <pvf-peoplecounting-count-by-asset [assetColors]="assetColors" [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
