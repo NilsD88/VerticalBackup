@@ -115,7 +115,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
     this.chartOptions = {
       chart: {
         type: 'column',
-        marginBottom: 30,
+        marginBottom: 60,
         zoomType: 'x'
       },
       title: '',
