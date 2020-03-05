@@ -59,9 +59,15 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
 
     if (!isNullOrUndefined(data.series)) {
       data.series.forEach((item) => {
-        avg.push(item.avg);
-        max.push(item.max);
-        min.push(item.min);
+        if (!isNullOrUndefined(item.avg)) {
+          avg.push(item.avg);
+        }
+        if (!isNullOrUndefined(item.min)) {
+          min.push(item.min);
+        }
+        if (!isNullOrUndefined(item.max)) {
+          max.push(item.max);
+        }
       });
 
       let sum = 0;
@@ -72,7 +78,7 @@ export class AggregatedValuesComponent implements OnInit, OnChanges {
       aggregatedValue.label = data.label ? data.label : '';
       aggregatedValue.max = (max.length > 0) ? Math.max(...max).toFixed(2) : null;
       aggregatedValue.min = (min.length > 0) ? Math.min(...min).toFixed(2) : null;
-      aggregatedValue.average = ((data.series || []).length > 0) ? (sum / (data.series || []).length).toFixed(2) : null;
+      aggregatedValue.average = (avg.length > 0) ? (sum / avg.length).toFixed(2) : null;
       aggregatedValue.standardDeviation = data.standardDeviation ? data.standardDeviation.toFixed(2) : null;
       aggregatedValue.postfix = data.postfix ? data.postfix : null;
     }

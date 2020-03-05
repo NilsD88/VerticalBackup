@@ -137,17 +137,18 @@ export class DetailComponent implements OnInit, OnDestroy {
               to: this.currentFilter.to,
               interval: this.currentFilter.interval,
             };
+            let standardDeviation;
             try {
-              const standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
-              aggregatedValues.push({
+              standardDeviation = await this.logsService.getStandardDeviation(filter).toPromise();
+            } catch (error) {
+              console.error(error);
+            }
+            aggregatedValues.push({
                   label: labelTranslation,
                   series: sensor.series,
                   standardDeviation: (standardDeviation) ? standardDeviation.value : null,
                   postfix: sensor.sensorType.postfix
-              });
-            } catch (error) {
-              console.error(error);
-            }
+            });
           }
           // END STANDARD DEVIATION
 
