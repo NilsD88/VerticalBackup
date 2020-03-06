@@ -1,5 +1,5 @@
 ﻿{
-  "COOKIE": {
+    "COOKIE": {
     "MESSAGE": "Ce site utilise uniquement des cookies qui sont utiles à son bon fonctionnement.",
     "DISMISS": "Accepter!",
     "LINK": "En savoir plus"
@@ -12,155 +12,342 @@
     "ADDRESS": "Boulevard roi Albert II, 27 - B-1030 Bruxelles"
   },
   "HOME": {
+    "CHECKLIST_ITEMS": {
+      "ITEM1": "Sans effort. Associez n'importe quoi à votre compte et collectez des données spécifiques sur vos actifs.",
+      "ITEM2": "Automatique. Toutes les données d'un objet sont automatiquement envoyées à votre serveur - les données sont sécurisées et uniquement accessibles. Ou par profils prédéfinis.",
+      "ITEM3": "Vue claire. Le tableau de bord en ligne donne une vue en temps réel sur vos actifs et un historique complet.",
+      "ITEM4": "Polyvalent. Les API fournies injectent les données Smart Monitoring dans vos systèmes. De cette façon, vous pouvez optimiser tous vos processus de A à Z.",
+      "ITEM5": "Assistance pour le placement et l'installation."
+    },
     "INTRO": {
-      "TITLE": "Smart monitoring",
-      "SUBTITLE": "Mesures climatiques",
+      "TITLE": "Smart Monitoring",
+      "SUBTITLE": "Mesures environmentales",
       "P1": "Avez-vous une vue complète de vos actifs? Les contrôles de qualité sont-ils d'une grande importance pour vous? Ou avez-vous besoin de répondre à des certifications spécifiques?",
       "P2": "Smart Monitoring offre une vue unique de vos actifs afin de les gérer efficacement. Il fournit les informations pertinentes pour prendre des décisions calculées. Vous voulez plus d'informations sur des actifs spécifiques? Nous identifierons les éléments pour que vous puissiez générer les informations appropriées.",
-      "P3": "Nous offrons un petit enregistreur de données discret ne nécessitant ni carte SIM ni inscription. Cet enregistreur de données mesure les valeurs de température, d'humidité relative et de luminosité. Il utilise le réseau LoRaWAN® de Proximus, ce qui permet une longue durée de vie de la batterie et évite le recours à des câbles supplémentaires.",
+      "P3": "Nous offrons Smart Care, un petit enregistreur de données discret ne nécessitant ni carte SIM ni inscription. Cet enregistreur de données mesure les valeurs de température, d'humidité relative et de luminosité. Il utilise le réseau LoRaWAN® de Proximus, ce qui permet une longue durée de vie de la batterie et évite le recours à des câbles supplémentaires.",
       "P4": "Passez-vous beaucoup de temps à planifier et à calculer la quantité de carburant dont vous avez besoin pour livrer à un moment et à un endroit donnés? Smart Tank vous simplifie la vie: cette solution mesure quotidiennement le niveau de chaque réservoir. Et vous avertit, vous ou votre client, quand il est temps de faire le plein. Des livraisons inattendues? Ils ne perturberont plus votre planification.",
       "BUTTON": {
         "LABEL": "Essayez maintenant"
       }
     },
     "HOVER": {
-      "MORE_INFO" : "Appuyez ici pour plus d'info"
+      "MORE_INFO": "Cliquez ici pour plus d'information."
     },
     "LIST": {
       "L1": "Sans effort. Associez n'importe quoi à votre compte et collectez des données spécifiques sur vos actifs.",
       "L2": "Automatique. Toutes les données d'un objet sont automatiquement envoyées à votre serveur - les données sont sécurisées et uniquement accessibles. Ou par profils prédéfinis.",
       "L3": "Vue claire. Le tableau de bord en ligne donne une vue en temps réel sur vos actifs et un historique complet.",
       "L4": "Polyvalent. Les API fournies injectent les données Smart Monitoring dans vos systèmes. De cette façon, vous pouvez optimiser tous vos processus de A à Z.",
-      "L5": "Assistance pour le placement et l'installation"
+      "L5": "Assistance pour le placement et l'installation."
     },
     "SENSORS": {
-      "TITLE": {
-        "ONESENSOR": "Un capteur",
-        "OPPORTUNITY": "Beaucoup d'opportunités"
+      "TITLE": "Supervisez votre environement",
+      "SENSOR1": {
+        "TITLE": "Température",
+        "DESCRIPTION": "Les températures élevées peuvent causer des dommages chimiques et augmenter le taux de dégradation de l'art, et sont de bonnes conditions pour les insectes et la croissance des moisissures. Les basses températures peuvent provoquer la condensation de l'humidité. Les fluctuations de température peuvent affecter les niveaux d'humidité."
       },
-      "TYPES": {
-        "TEMPERATURE": "Température",
-        "HUMIDITY": "Humidité",
-        "LUMINOSITY": "Luminosité",
-        "MOTION": "Mouvement",
-        "BATTERY" : "Batterie"
+      "SENSOR2": {
+        "TITLE": "Humidité",
+        "DESCRIPTION": "Une humidité élevée peut provoquer des moisissures ou de la corrosion, et crée de bonnes conditions pour les insectes. Une faible humidité entraîne un risque de déformation mécanique et de fragilité des matériaux hygroscopiques. Les fluctuations de l'humidité augmentent le risque de dommages mécaniques."
+      },
+      "SENSOR3": {
+        "TITLE": "Luminosité",
+        "DESCRIPTION": "Des valeurs lumineuses élevées peuvent provoquer une décoloration et augmenter le risque de dommages chimiques des couches de peinture et des vernis."
+      },
+      "SENSOR4": {
+        "TITLE": "Mouvement",
+        "DESCRIPTION": "Les vibrations et les chocs créent un risque de dommages mécaniques."
+      }
+    },
+    "PRODUCTS": {
+      "TITLE": "Produits Smart monitoring",
+      "PRODUCT1": {
+        "TITLE": "Smart Monitoring",
+        "DESCRIPTION": "Avez-vous une vue complète de vos actifs? Les contrôles de qualité sont-ils très importants pour vous ? Ou devez-vous répondre à des certifications spécifiques ?\n\n La surveillance intelligente offre une vue unique de vos actifs afin de les gérer efficacement. Il fournit les informations pertinentes pour prendre des décisions calculées. Vous voulez plus d'informations sur des actifs spécifiques ? Nous identifierons le capteur qui vous permettra de générer les bonnes informations."
+      },
+      "PRODUCT2": {
+        "TITLE": "Smart Tank",
+        "DESCRIPTION": "Passez-vous beaucoup de temps à planifier et à calculer la quantité de carburant que vous devez livrer à un endroit et à un moment précis ? Smart Tank vous facilite la vie : cette solution mesure quotidiennement le niveau de chaque réservoir. Et vous avertit, vous ou votre client, lorsqu'il est temps de faire le plein. Des livraisons inattendues ? Elles ne perturberont plus votre planning."
+      },
+      "PRODUCT3": {
+        "TITLE": "Smart Care",
+        "DESCRIPTION": "Nous offrons Smart Care, un petit enregistreur de données discret ne nécessitant ni carte SIM ni inscription. Cet enregistreur de données mesure les valeurs de température, d'humidité relative et de luminosité. Il utilise le réseau LoRaWAN® de Proximus, ce qui permet une longue durée de vie de la batterie et évite le recours à des câbles supplémentaires."
       }
     }
   },
-  "MENU-ITEMS": {
-    "About": "A propos",
-    "Alerts": "Alertes",
-    "Inventory": "Inventaire",
-    "Locations": "Localisations"
-  },
   "GENERAL": {
+    "APP_NAME": "Smart Monitoring",
+    "APP_SUBTITLE": "Mesures environmentales",
+    "SELECT_ALL": "Tout sélectionner",
+    "NO_RESULTS_FOUND_FILTER": "Pas de résultat trouvé pour ce filtre",
+    "LOADING": "Chargement...",
     "MORE": "Plus",
     "BACK": "Retour",
     "EXPORT_PDF": "Exporter en PDF",
-    "EXPORT_CSV": "Exporter en CSV",
-    "SUBMIT": "Envoyer",
+    "EXPORT_EXCEL": "Exporter en Excel",
+    "EXPORT_CSV": "Export en CSV",
+    "DOWNLOAD": "Télécharger",
+    "SUBMIT": "Soumettre",
+    "EDIT": "Editer",
+    "DELETE": "Supprimer",
+    "SHOW": "Montrer",
+    "NAME": "Nom",
+    "DESCRIPTION": "Description",
+    "SAVE": "Enregistrer",
+    "SAVE_AND_CONTINUE": "Enregistrer et continuer",
+    "NEXT": "Suivqnt",
     "CANCEL": "Annuler",
-    "EDIT": "Modifier",
-    "DELETE": "Effacer",
-    "SHOW":  "Montrer"
+    "CONTINUE": "Continuer",
+    "DONE": "Fait",
+    "DATE": "Date",
+    "TIMESTAMP": "Horodatage",
+    "VALUE": " Valeur",
+    "RENAME_TO": "Renommer en",
+    "ACTIONS": "Actions",
+    "CATEGORY": "Catégorie",
+    "SEVERITY": "Séverité",
+    "LABEL": "Etiquette",
+    "THING_ID": "Objet ID",
+    "BATTERY_LEVEL": "Niveau de batterie",
+    "SHOW_DETAILS": "Montrer le détails",
+    "TODAY": "Aujourd'hui",
+    "DAY": "Jour",
+    "MONTH": "Mois",
+    "YEAR": "Année",
+    "WEEK": "Semaine",
+    "THIS_WEEK": "Cette semaine",
+    "INCREASE": "Augmenter",
+    "DECREASE": "Diminuer",
+    "TOTAL": "Total",
+    "WARNING": "Attention",
+    "AGGREGATION": "Aggrégation",
+    "SEE": "Voir",
+    "MESSAGE": "Message",
+    "NO_DATA_AVAILABLE": "Pas de donnée disponible",
+    "NO_DATA_FOR_SELECTED_PERIOD": "Pas de donnée disponible pour la période sélectionnée",
+    "YES": "Oui",
+    "NO": "Non",
+    "TRUE": "Vrai",
+    "FALSE": "Faux"
   },
   "LAYOUT": {
-    "SEARCH": "Rechercher",
+    "SEARCH": "Rechercher des actifs ou des lieux",
     "FULL_SCREEN": "Plein écran",
-    "EXIT_FULL_SCREEN": "Quitter le plein écran",
+    "EXIT_FULL_SCREEN": "Sortir du plein écran",
     "ADMINISTRATION": "Administration",
     "MANAGE_ASSETS": "Gérer les actifs",
-    "MANAGE_LOCATIONS": "Gérer les localisations",
-    "MANAGE_THINGS": "Gérer vos objets",
-    "MANAGE_THRESHOLD_TEMPLATES": "Gérer vos modèles de seuils",
-    "ALERT_DEFINITIONS": "Définitions d'alerte",
+    "MANAGE_LOCATIONS": "Gérer les lieux",
+    "MANAGE_THINGS": "Gérer les objets",
+    "MANAGE_THRESHOLD_TEMPLATES": "Gérer les templates de seuils",
+    "MANAGE_POINTS_OF_ATTENTION": "Gérer les points d'attention",
+    "ALERT_DEFINITIONS": "Définitions des alertes",
     "ALERTS": "Alertes",
+    "LOCATIONS": "Lieux",
+    "LOCATION": "Lieu",
+    "ASSETS": "Actifs",
+    "ASSET": "Actif",
+    "SENSORS": "Capteurs",
+    "SENSOR": "Capteur",
+    "SENSOR_TYPES": "Types de capteur",
+    "SENSOR_TYPE": "Type de capteur",
+    "VALUE": "Valeur",
+    "POINTS_OF_ATTENTION": "Points d'attention",
+    "POINT_OF_ATTENTION": "Point d'attention",
+    "THRESHOLDS": "Seuils",
+    "THRESHOLD": "Seuil",
+    "ITEMS": "Articles",
+    "ITEM": "Article",
+    "THINGS": "Objets",
+    "THING": "Objet",
+    "IMAGES": "Images",
+    "PARENT": "Parent",
+    "FLOOR_PLAN": "Plan du site",
+    "GEOLOCATION": "Géolocalisation",
+    "THRESHOLD_TEMPLATE": "Template de seuil",
+    "THRESHOLD_TEMPLATES": "Template de seuils",
     "LANGUAGE": "Langue",
     "ACCOUNT": "Compte",
     "CONTACT": "Contact",
-    "SIGN_OUT": "Se déconnecter",
-    "SIGN_IN": "Se connecter",
+    "DASHBOARD": "Tableau de bord",
+    "INVENTORY": "Inventaire",
+    "SIGN_OUT": "Logout",
+    "SIGN_IN": "Login",
     "SIGN_IN_ENCO": "EnCo",
     "SIGN_IN_MYPROXIMUS": "MyProximus",
     "PRIVACY_POLICY": "Politique de confidentialité",
-    "TODAY": "Aujourd'hui",
-    "NO_ALERTS_TODAY": "Pas d'alerte aujourd'hui",
-    "UNREAD_ALERTS": "Alerte non-lue",
-    "NO_UNREAD_ALERTS": "Pas d'alerte non-lue",
     "ADMIN": "Admin"
   },
-  "FILTER": {
-    "TITLE": "Filtre",
-    "TOGGLE": "Basculer le filtre",
-    "SAVE_AS_DEFAULT": "Enregistrer comme filtre par défaut",
-    "REVERT_DEFAULT": "Revenir au filtre par défaut",
-    "PLACEHOLDER_SENSORTYPE": "Choisir un type de capteur",
-    "PLACEHOLDER_THRESHOLD_TEMPLATE": "Choisir un modèle de seuil",
-    "THRESHOLD_TEMPLATES": {
-      "NOT_FOUND": "Pas de modèle de seuil trouvé",
-      "PLACEHOLDER": "Choisir un modèle de seuil",
-      "LOADING_TEXT": "Chargement des modèles de seuils"
-    },
-    "LOCATION": "Location",
-    "LOCATION_TYPE": {
-      "NOT_FOUND": "Pas de type de localisation trouvé",
-      "PLACEHOLDER": "Choisir un type de localisation",
-      "LOADING_TEXT": "Chargement des types de localisation"
-    },
-    "STATUS": {
-      "NOT_FOUND": "Pas de statut trouvé",
-      "PLACEHOLDER": "Choisir un statut",
-      "LOADING_TEXT": "Chargement des statuts"
-    },
-    "NAME": {
-      "PLACEHOLDER": "Nom"
-    },
-    "SUBMIT": "Envoyer"
+  "THINGS": {
+    "CHART_TYPE": "Type de graphique",
+    "USE_ON_CHART": "Utiliser dans les graphiques",
+    "USE_ON_NOTIFICATION": "Utiliser dans les alertes",
+    "ONLY_APPLY_FOR_TANK_MONITORING": "Ceci ne s'applique qu'aux graphiques de monitoring",
+    "ONLY_APPLY_FOR_SMART_COUNTING": "Ceci ne s'applique qu'aux graphiques de smart counting"
   },
   "ALERTS": {
     "MARK_AS_READ": "Marquer comme lu",
     "MARK_AS_UNREAD": "Marquer comme non-lu",
-    "TITLE": "Alertes",
-    "ASSET": "Actif",
-    "LOCATION_TYPE": "Type de localisation",
-    "DATE": "Date",
-    "MESSAGE": "Message",
-    "THRESHOLD_TEMPLATE": "Modèle de seuils",
-    "MARK_SELECTED_READ": "Marquer la sélection comme lu",
-    "MARK_SELECTED_UNREAD": "Marquer la sélection comme non-lu"
+    "READ": "Lu",
+    "UNREAD": "Non-lu",
+    "ALL": "Tous",
+    "ALERT(S)_SELECTED": "alerte(s) sélectionné(e)s",
+    "LAST_ALERTS": "Dernières alertes",
+    "LAST_ALERT": "Dernière alerte"
   },
-  "SENSORTYPES": {
-    "range": "min/max"
-  },
-  "ALERT_TYPE": {
-    "high": "Haut",
-    "low": "Bas"
-  },
-  "LOCATIONTYPE_SELECT": {
-    "NOT_FOUND_TEXT": "Pas de type de localisation trouvé",
-    "LOADING_TEXT": "Chargement des types de localisation",
-    "PLACEHOLDER": "Choisir le type de localisation"
-  },
-  "THRESHOLD_TEMPLATE_INPUT": {
-    "CUSTOM": "Spécialisé",
-    "ENABLED": "Activité",
-    "DISABLED": "Désactivé"
-  },
-  "INVENTORY": {
-    "TITLE": "Inventaire",
-    "NONE_FOUND": "Pas d'actif trouvé.",
-    "FILTER": {
-      "PLACEHOLDERS": {
-        "NAME": "Nom de l'actif"
-      }
+  "FILTERS": {
+    "ASSET_NAME": "Nom d'actif",
+    "POINT_OF_ATTENTION_NAME": "Nom de point d'attention",
+    "THRESHOLD_TEMPLATE_NAME": "Nom de template de seuil",
+    "THRESHOLD_TEMPLATES": {
+      "NOT_FOUND": "Pas de template de seuil trouvé",
+      "LOADING_TEXT": "Chargement du template de seuil"
+    },
+    "THRESHOLD_TEMPLATE_ITEM_CUSTOM_NAME": "Nom personnalisé de l'élément du template de seuil",
+    "LOCATION_NAME": "Nom du lieu",
+    "TRAIL_NAME": "Nom du parcours",
+    "PLACE_NAME": "Nom de la place",
+    "STORE_NAME": "Nom du magasin",
+    "SELECT_AGGREGATION": "Sélectionner une aggrégation",
+    "SELECT_SENSOR_TYPE": "Sélectionner un type de capteur",
+    "THING_NAME": "Nom d'objet",
+    "SENSOR_TYPE_NAME": "Nom du type de capteur",
+    "DEVICE_ID": "Appareil ID",
+    "THING_NAME_OR_DEVEUI": "Nom de l'objet ou identifiant",
+    "ONLY_ALPHANUMERIC": "Seuls les caractères alphanumériques sont autorisés",
+    "INTERVALS": {
+      "HOURLY": "Par heure",
+      "DAILY": "Par jour",
+      "WEEKLY": "Par semaine",
+      "MONTHLY": "Par mois",
+      "YEARLY": "Par an"
+    },
+    "PRESETS": {
+      "LAST_24_HOURS": "Dernière 24 heures",
+      "LAST_7_DAYS": "Dernier 7 jours",
+      "LAST_30_DAYS": "Dernier 30 jours"
     }
   },
+  "SENSORTYPES": {
+    "range": "gamme",
+    "temperature": "Température",
+    "humidity": "Humidité",
+    "motion": "Mouvement",
+    "luminosity": "Luminosité",
+    "battery": "Batterie",
+    "pulse": "Impulsion",
+    "counter": "Compteur",
+    "Counter A": "Compteur A",
+    "Counter B": "Compteur B",
+    "Payload Counter": "Compteur de charge utile",
+    "RSSI": "RSSI",
+    "Sensor Status": "Statut du capteur",
+    "Total Counter A": "Total Compteur A",
+    "Total Counter B": "Total Compteur B",
+    "battery level": "Niveau de batterie",
+    "battery percentage": "Pourcentage de batterie",
+    "battery voltage": "Voltage de batterie",
+    "battery_current_level": "Niveau de batterie courant",
+    "co2": "CO2",
+    "consumption": "Consommation",
+    "device id": "Dispositif ID",
+    "device status": "Statut du dispositif",
+    "measurement interval": "Interval de mesure",
+    "payload type": "Type de charge utile",
+    "presence": "Présence",
+    "resistance": "Résistance",
+    "shock": "Choc",
+    "shock counter": "Compteur de choc",
+    "tank fill level": "Niveau de remplissage du réservoir",
+    "total_count": "Comptage total",
+    "transmit interval": "Intervalle de transmission",
+    "type variant": "Variante de type"
+  },
   "LOCATIONS": {
+    "SEARCH_LOCATION_BY_NAME": "Rechercher un lieu par nom",
     "TITLE": "Actifs par localisation",
     "TOGGLE_MAP": "Basculer en vue carte",
     "NAME": {
-      "PLACEHOLDER": "Rechercher le nom de l'actif pour l'emplacement sélectionné"
+      "PLACEHOLDER": "Recherche sur le nom de l'actif pour le lieu sélectionné"
+    },
+    "CREATE_NEW_LOCATION": "Créer une nouvelle localisation",
+    "NO_ASSET_FOUND_IN_LOCATIONS": "Pas d'actif trouvé pour ce lieu",
+    "NO_POA_FOUND_IN_LOCATIONS": "Pas de point d'attention trouvé pour ce lieu",
+    "OPEN_THIS_LOCATION": "Ouvrir cette localisation",
+    "NONE_FOUND": "Pas de lieu trouvé"
+  },
+  "ASSETS": {
+    "CREATE_NEW_ASSET": "Créer un nouvel actif",
+    "ADD_NEW_ASSET": "Ajouter un nouvel actif",
+    "NEW_ASSET": "Nouvel actif",
+    "NONE_FOUND": "Pas d'actif trouvé"
+  },
+  "POINTS_OF_ATTENTION": {
+    "MY_POINTS_OF_ATTENTION": "Mes points d'attention",
+    "NEW_POINT_OF_ATTENTION": "Nouveau point d'attention"
+  },
+  "THRESHOLD_TEMPLATE": {
+    "CREATE_NEW_THRESHOLD_TEMPLATE": "Créer un nouveau template de seuil",
+    "NO_THRESHOLD_TEMPLATE": "Pas de template de seuil",
+    "THRESHOLD_ITEM_LABEL": "Etiquette d'article de seuil",
+    "THRESHOLD_ITEM_MIN": "Article de seuil min",
+    "THRESHOLD_ITEM_MAX": "Article de seuil max",
+    "ADD_THRESHOLD": "Ajouter un seuil",
+    "NO_THRESHOLD": "Pas de seuil ajouté",
+    "ADD_THRESHOLD_ITEM": "Ajouter un article de seuil",
+    "SAVE_THRESHOLD_TEMPLATE": "Enregistrer le template de seuil",
+    "FROM": "De",
+    "TO": "Vèrs",
+    "MAIL": "E-mail",
+    "WEB": "Web",
+    "SMS": "Sms",
+    "SEVERITIES": {
+      "LOW": "Basse",
+      "MEDIUM": "Medium",
+      "CRITICAL": "Critique"
     }
+  },
+  "TANK_MONITORING": {
+    "TANK_INVENTORY": "Inventaire des réservoirs",
+    "NEW_TANK": "Nouveau réservoir",
+    "FUEL_LEVEL": "Niveau de carburant",
+    "LAST_REFILL": "Dernier remplissage",
+    "STATUS": {
+      "EMPTY": "Carburant vide",
+      "LOW": "Bas carburant",
+      "OK": "OK",
+      "UNKNOWN": "Inconnuu"
+    },
+    "CONSUMPTION": "Consommation",
+    "CONSUMPTIONS": {
+      "FILLED_TO": "Rempli à",
+      "FILLED_TO_ON": "le"
+    }
+  },
+  "WALKING_TRAIL": {
+    "TRAILS_OVERVIEW": "Aperçu des parcours",
+    "NEW_TRAIL": "Nouveau parcour",
+    "BENCHMARK_LAST_WEEK": "Benchmark de la semaine dernière",
+    "WEEK_TOTAL": "total de la semaine",
+    "DAY_TOTAL": "Total du jour",
+    "WEEK_AVERAGE": "Moyenne de la semaine",
+    "DAY_AVERAGE": "Moyenne du jour"
+  },
+  "PEOPLE_COUNTING_RETAIL": {
+    "STORES_OVERVIEW": "Aperçu des emplacements",
+    "NEW_STORE": "Nouvel emplacement",
+    "TOTAL_COUNT_YESTERDAY": "Nombre total pour hier",
+    "TOTAL_COUNT_LAST_WEEK": "Nombre total pour la semaine dernière",
+    "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Différence entre la semaine dernière et la semaine avant la semaine dernière",
+    "DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK": "Différence entre aujourd'hui et le même jour la semaine dernière"
+  },
+  "STAIRWAY_TO_HEALTH": {
+    "PLACES_OVERVIEW": "Aperçu des emplacements",
+    "NEW_PLACE": "Nouvel emplacement"
+  },
+  "PEOPLE_COUNTING": {
+    "LAST_WEEK": "Semaine dernière",
+    "LAST_YEAR": "Année précédente",
+    "COUNT_BY_ASSET": "Compter par actif"
   },
   "PRIVACY_POLICY": {
     "TITLE": "Politique de confidentialité",
@@ -190,41 +377,13 @@
     "CONTINUE": "Continuer"
   },
   "DETAIL": {
-    "LOADING_UNREAD_ALERTS": "Chargement des alertes non lues",
-    "NO_CHART_DATA":"Pas de données disponible pour  le filtre sélectionné",
-    "PLACEHOLDER_CHARTTYPE": "Type de graphique",
-    "THRESHOLD_TEMPLATE": "Modèle de seuils",
-    "DESCRIPTION": "Description",
-    "NO_DESCRIPTION": "Pas de description pour cet actif",
-    "LAST_MEASUREMENTS": "Dernières mesures",
-    "NO_LAST_MEASURE": "Pas encore de mesure disponible.",
-    "DATA_CHART": "Donnée graphique",
-    "NO_ASSET_ALERTS": "Aucune alertes",
-    "PLACEHOLDER_SENSORTYPE": "Choisir les capteurs du graphique",
-    "THRESHOLDS": "Seuils",
-    "ALERTS": "Alertes",
-    "CHART_CONFIGURATION": "Graphique",
-    "RECEIVED_VALUE": "Valeur reçue",
-    "THRESHOLD_LOW": "Seuil bas",
-    "THRESHOLD_HIGH": "Seuil haut",
     "LINKED_THINGS": "Objets liés",
-    "CHART": "Graphique",
-    "CONFIGURATIONS": "Paramètres",
-    "RECIPIENT": "Destinataire",
-    "CHARTTYPES": {
-      "24HOURS": "Toutes les données des dernières 24 heures",
-      "MONTHLY" : "Par mois",
-      "HOURLY": "Par heure",
-      "DAILY": "Par jour",
-      "WEEKLY": "Par semaine",
-      "YEARLY": "Par an"
-    },
     "AGGREGATED": {
       "MEASUREMENT" : "Mesure",
-      "MAX" : "Max",
-      "MIN" : "Min",
-      "AVERAGE" : "Moyenne",
-      "STANDARDDEVIATION" : "StD"
+      "MAX": "Max",
+      "MIN": "Min",
+      "AVERAGE": "Moy",
+      "STD_DEV": "StdDev"
     }
   },
   "DELETE_CONFIRM": {
@@ -233,43 +392,26 @@
     "CANCEL": "Annuler"
   },
   "IMAGE_INPUT": {
-    "SELECT_IMAGE": "Choisir une image",
+    "ADD": "Ajouter une image",
+    "SELECT_IMAGE": "Sélectionner une image",
     "CHANGE": "Changer",
     "REMOVE": "Enlever"
   },
   "ALERT_DEF": {
-    "TITLE": "Définition d'alerte",
-    "EMAIL_SETTINGS": "Paramètres email",
+    "TITLE": "Définitions d'alerte",
+    "EMAIL_SETTINGS": "Paramètre e-mail",
     "ENABLED": "Activé",
-    "DELETE_RECIPIENT": "Enlever un destinataire",
-    "ADD_RECIPIENT": "Ajouter un destinataire",
+    "DELETE_RECIPIENT": "Supprimer destinataire",
+    "ADD_RECIPIENT": "Ajouter destinataire",
     "SUBJECT": "Sujet",
     "BODY": "Corps",
-    "PLACEHOLDERS": "Espaces réservés",
+    "PLACEHOLDERS": "Placeholders",
+    "RECIPIENT": "Destinataire",
     "ASSET": "Actif",
     "LOG": "Journal",
-    "THRESHOLD_TEMPLATE": "Modèle de seuil",
-    "CATEGORY": "Catégorie",
-    "SAVE_EMAIL": "Enregistrer les paramètres Email",
-    "SMS_SETTINGS": "Paramètres SMS",
-    "SAVE_SMS": "Enregistrer les paramètres SMS",
-    "BUTTON_LABELS" : {
-      "ASSET_NAME" : "Nom de l'actif",
-      "LOCATION_NAME" : "Nom de la localisation",
-      "SUBLOCATION_NAME" : "nom de sous-localisation",
-      "DEVICE_ID" : "Référence du capteur",
-      "TIMESTAMP" : "Horodatage",
-      "VALUE" : "Valeur",
-      "MATERIAL_NAME" : "Nom du modèle",
-      "THRESHOLD_MIN" : "Seuil minimum",
-      "THRESHOLD_MAX" : "Seuil maximum"
-    }
-  },
-  "ASSET_MODAL": {
-    "DETAIL": "Détails",
-    "PLACEHOLDERS": {
-      "NAME": "Nom"
-    }
+    "SAVE_EMAIL": "Enregistrer les paramètres e-mail",
+    "SMS_SETTINGS": "Paramètre SMS",
+    "SAVE_SMS": "Enregistrer les paramètres SMS"
   },
   "SUPPORT": {
     "TITLE": "Support",
@@ -279,7 +421,7 @@
       "NAME": "Votre nom"
     },
     "INFO": {
-     "MORE_INFO": "Pour plus d'information et de support, merci de nous contacter à ",
+     "MORE_INFO": "Pour plus d'information et de support, merci de nous contacter à",
       "KIND_OF_SUPPORT": "Quel support offrons-nous?",
       "TECHINCAL_PROBLEMS": "Problème technique",
       "RELOCATION": "Déplacement d'un capteur ou d'un actif",
@@ -301,43 +443,43 @@
     }
   },
   "MANAGE_THINGS": {
-    "TITLE": "Gérer vos objets",
-    "DETAILS_TEXT": "CHOISISSEZ POUR VOIR LES DÉTAILS",
+    "TITLE": "Gérer les objets",
+    "DETAILS_TEXT": "Sélectionner un objet pour voir le détails",
     "PLACEHOLDERS": {
-      "SELECT_THING": "Choisir un objet",
+      "SELECT_THING": "Sélectionner un objet",
       "THING_NAME": "Nom d'objet"
     }
+  },
+  "MANAGE_POINTS_OF_ATTENTION": {
+    "TITLE": "Gérer les points d'attention",
+    "NEW": "Nouveau point d'attention"
+  },
+  "MANAGE_POINT_OF_ATTENTION_ITEMS": {
+    "TITLE": "Gérer les articles de point d'attention",
+    "NEW": "Nouvel article"
   },
   "MANAGE_ASSETS": {
     "TITLE": "Gérer les actifs",
     "NEW": "Nouvel actif",
     "VALIDATORS": {
-      "NAME" : {
-        "MIN_LENGHT" : "Nom pas assez long"
+      "NAME": {
+        "MIN_LENGHT": "Le nom n'est pas assez long"
       }
-    },
-    "TABLE_HEADERS": {
-      "NAME": "Nom",
-      "ACTIONS": "Actions",
-      "LOCATION_TYPE":  "Type de lieu",
-      "LOCATION": "Emplacement",
-      "SUBLOCATION":  "Sous-location",
-      "THRESHOLD_TEMPLATE": "Modèle de seuil"
     }
   },
   "SENSOR_BOTTOMSHEET": {
-    "TEMPERATURE": "Niveau de remplissage. Mesurer le niveau de tout type de conteneur.",
-    "HUMIDITY": "Comptage de personnes. Mesurez le nombre de visiteurs dans vos bâtiments, parcours..",
-    "MOTION": "Environnement. Obtenez une surveillance constante de votre environnement.",
-    "LUMINOSITY": "Autres paramètres. Surveillez le type d'objet que vous souhaitez en temps réel."
+    "TEMPERATURE": "Les températures élevées peuvent causer des dommages chimiques et augmenter le taux de dégradation de l'art, et sont de bonnes conditions pour les insectes et la croissance des moisissures. Les basses températures peuvent provoquer la condensation de l'humidité. Les fluctuations de température peuvent affecter les niveaux d'humidité.",
+    "HUMIDITY": "Une humidité élevée peut provoquer des moisissures ou de la corrosion, et crée de bonnes conditions pour les insectes. Une faible humidité entraîne un risque de déformation mécanique et de fragilité des matériaux hygroscopiques. Les fluctuations de l'humidité augmentent le risque de dommages mécaniques.",
+    "MOTION": "Les vibrations et les chocs créent un risque de dommages mécaniques.",
+    "LUMINOSITY": "Des valeurs lumineuses élevées peuvent provoquer une décoloration et augmenter le risque de dommages chimiques des couches de peinture et des vernis."
   },
   "CONTACT": {
     "TECHNICAL_SUPPORT": {
       "TITLE": "Support technique:",
       "MAILTO": "mailto:ict-servicedesk@proximus.com",
       "EMAIL": "ict-servicedesk@proximus.com",
-      "TELTO": "tel:080033200",
-      "TEL": "0800 33 200"
+      "TELTO": "tel:080055200",
+      "TEL": "0800 55 200"
     },
     "SALES": {
       "TITLE": "Marketing et ventes:",
@@ -348,32 +490,100 @@
     },
     "SUPPORT_DETAILS": ""
   },
-  "LOGIN_ERROR":{
-    "single_logout" : "Vous avez été déconnecté avec succès.",
-    "token_refresh_failed" : "Votre session a expiré, veuillez vous reconnecter.",
-    "no_session": "Votre session a expiré, veuillez vous reconnecter.",
-    "grant_application_access" : "Vous n'avez pas accès à cette application. S'il vous plaît contacter le support.",
-    "other" : "Accès refusé. Souvent, vider le cache de votre navigateur et le redémarrer permettra de résoudre le problème. S'il vous plaît essayez de vous connecter à nouveau. Si le problème persiste, veuillez contacter le support.",
-    "403" : "Vous vous êtes connecté avec succès, mais nos enregistrements montrent que vous n'avez pas accès à cette application. Cliquez sur le bouton ci-dessous pour vous déconnecter. Pour demander l'accès à cette application, s'il vous plaît contactez-nous en utilisant le",
-    "CONTACT" : "formulaire de contact",
+  "LOGIN_ERROR": {
+    "single_logout": "Vous vous êtes déconnecté avec succès.",
+    "token_refresh_failed": "Votre session a expiré, merci de vous reconnecter.",
+    "no_session": "Votre session a expiré, merci de vous reconnecter",
+    "grant_application_access": "Vous n'avez pas accès à cette application. Veuillez contacter le support.",
+    "internal_server_error": "Un problème est survenu, merci de réessayer.",
+    "other": "Accès refusé. Souvent, le fait de vider le cache de votre navigateur et de le redémarrer permet de résoudre le problème. Veuillez essayer de vous connecter à nouveau. Si le problème persiste, veuillez contacter le support.",
+    "403": "Vous êtes bien connecté mais vous n'avez pas les droits d'accès à cette application.  Cliquez sur le bouton ci-dessous pour vous déconnecter. Pour demander l'accès à cette application, veuillez nous contacter en utilisant le",
+    "CONTACT": "formulaire de contact",
     "access_denied": "L'accès a été refusé."
   },
-  "LOGOUT_SUCCESS" : {
-    "logout_ok" : "Vous avez été déconnecté avec succès."
+  "LOGOUT_SUCCESS": {
+    "logout_ok": "Vous vous êtes déconnecté avec succès."
   },
   "PDF": {
     "ASSET_NAME": "Nom d'actif",
-    "ClIENT_NAME" : "Nom de client",
-    "LOCATION_NAME" : "Nom de localisation",
-    "SUBLOCATION_NAME" : "Nom de sous-localisation",
-    "CHART" : "GRAPHIQUE",
-    "MEASURE_PERIOD" : "Période de mesure de",
-    "TO" : "à",
-    "AGGREGATED_VALUES" : "VALEURS AGRÉGÉES"
+    "CLIENT_NAME": "Nom du client",
+    "CHART": "Graphique",
+    "MEASURE_PERIOD": "Période de mesure de",
+    "TO": "à",
+    "AGGREGATED_VALUES": "Valeurs aggrégées"
   },
-  "temperature": "Température",
-  "humidity": "Humidité",
-  "motion": "Mouvement",
-  "battery": "Batterie",
-  "luminosity": "Luminosité"
+  "ERRORS": {
+    "HEADER": "Oops! C'est embêtant",
+    "BUTTONS": {
+      "BACK_HOME": "Ramenez moi à la maison"
+    },
+    "401": {
+      "TITLE": "Non autorisé",
+      "CONTENT": "Désolé, une erreur s'est produite, vous n'êtes pas autorisé à voir la page demandée!"
+    },
+    "403": {
+      "TITLE": "Interdit",
+      "CONTENT": "Désolé, une erreur s'est produite, vous n'êtes pas autorisé à voir la page demandée!"
+    },
+    "404": {
+      "TITLE": "Cette page n'existe plus…",
+      "CONTENT": "Désolé, une erreur s'est produite, la page demandée n'a pas été trouvée!"
+    },
+    "500": {
+      "TITLE": "Erreur serveur",
+      "CONTENT": "Désolé, une erreur s'est produite, nos serveurs rencontrent un problème!" 
+    },
+    "SORRY_ERROR_OCCURED": "Désolé, une erreur s'est produite!",
+    "ERROR_OCCURED_GETTING_DATA": "Une erreur s'est produit en récupérant des données",
+    "TRY_AGAIN": "Veuillez réessayer"
+  },
+  "DIALOGS": {
+    "TRANSFERS": {
+      "TRANSFER_ATTACHED_ASSETS": "Transfert des actifs attachés",
+      "CHOOSE_WHERE_TO_TRANSFER": "Choisissez un lieu où déplacer les actifs attachés. Si vous annulez le transfert, les actifs seront automatiquement rattachés au parent de ce lieu. S'il n'y a pas de parent, les actifs deviendront orphelins.",
+      "CANCEL_TRANSFER": "Annuler le transfert",
+      "TRANSFER_ASSETS": "Transférer les actifs"
+    },
+    "DELETE": {
+      "ARE_YOU_SURE_TO_DELETE_THIS_LOCATION": "Etes-vous sûr de vouloir supprimer cette localisation?",
+      "ARE_YOU_SURE_NO_MORE_ACCESSIBLE": "Etes-vous sûr de vouloir supprimer? Il ne sera plus possible d'y accéder.",
+      "BE_CAREFUL_PEOPLE_COUNTING_ASSETS_WILL_BE_DELETED": "Attention, Les actifs pour le Smart Counting seront supprimé les autres actifs seront transférés",
+      "ARE_YOU_SURE_ASSETS_ARE_USING_THIS_TEMPLATE": "Etes-vous sûr de vouloir supprimer? Des actifs utilisents ce template"
+    },
+    "FAILS": {
+      "ALREADY_EXISTS": "existe déjà",
+      "CHOOSE_AN_OTHER_LOCATION_NAME": "Veuillez choisir un autre nom de lieu pour pouvoir l'enregistrer",
+      "CHOOSE_AN_OTHER_THRESHOLD_TEMPLATE_NAME": "Veuillez choisir un autre nom de template de seuil pour pouvoir l'enregistrer",
+      "CHOOSE_AN_OTHER_POINT_OF_ATTENTION_NAME": "Veuillez choisir un autre nom de point d'attention pour pouvoir l'enregistrer",
+      "MARK_AS_READ_MORE_THAN_5000_NOT_ALLOWED": "Il n'est pas possible de marquer comme lu plus de 5000 alertes",
+      "MARK_AS_UNREAD_MORE_THAN_5000_NOT_ALLOWED": "Il est interdit de marquer comme non-lu plus de 5000 alertes",
+      "AT_LEAST_ONE_THING_FOR_YOUR_MODULE": "Vous ne pouvez ajouter un actif que si au moins un de ces capteurs est défini pour ce module"
+    },
+    "WARNINGS": {
+      "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Tous les capteurs définis dans le template de seuil ne correspondent pas au capteur attribué à cet actif",
+      "PAY_ATTENTION_FLOOR_PLAN": "Attention, si vous remplacez le plan du site, les localisations enfants et leurs actifs devront être repositionnés sur la nouvelle image du plan de site, voulez-vous procéder?"
+    }
+  },
+  "MAPS": {
+    "NO_POSITION_SELECTED": "Pas de position sélectionnée",
+    "POSITION_SELECTED": "Position sélectionnée",
+    "REMOVE_POSITION": "Enlever la position"
+  },
+  "NOTIFS": {
+    "SUCCESS": {
+      "UPDATED_ALERT_DEFINITION_ASSET_SETTINGS": "Mise à jour réussie des paramètres d'actifs de la définition d'alerte",
+      "UPDATED_ALERT_DEFINITION_SETTINGS": "Mise à jour réussie des paramètres de la définition d'alerte",
+      "SENT_YOUR_MESSAGE": "Votre message a été envoyé avec succès"
+    },
+    "FAILS": {
+      "UPDATE_SENSOR_DEFINITION": "La mise à jour de la définion du capteur n'a pas réussie!",
+      "UPDATE_THINGS_NAME": "La mise à jour du nom de l'objet n'a pas réussie!",
+      "READ_THE_ALERTS": "Le marquage comme lu des alertes n'a pas réussie",
+      "UNREAD_THE_ALERTS": "Le marquage comme non-lu des alertes n'a pas réussie",
+      "UPDATE_ALERT_DEFINITION_SETTINGS": "Erreur! La mise à jour des paramètres de la définition d'alerte n'a pas réussi",
+      "SENT_YOUR_MESSAGE": "Erreur! L'envoi de message a échoué. Merci de réessayer."
+    },
+    "NO_ADDRESS_FOUND": "Pas d'adresse trouvée!",
+    "ASSETS_WITHOUT_POSITION": "actif(s) sans position"
+  }
 }

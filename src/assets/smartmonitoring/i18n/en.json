@@ -66,7 +66,7 @@
         "DESCRIPTION": "Do you have a complete view of your assets? Are quality controls of high importance to you? Or do you need to meet specific certifications?\n\nSmart Monitoring offers a unique view of your assets in order to manage them efficiently. It provides the relevant information to make calculated decisions. Want more information about specific assets? We will identify the sensor for you to generate the right insights."
       },
       "PRODUCT2": {
-        "TITLE": "Smart Tank Monitoring",
+        "TITLE": "Smart Tank",
         "DESCRIPTION": "Do you spend a lot of time planning and calculating how much fuel you need to deliver at a certain place and time? Smart Tank makes life easier: this solution measures the level of each tank daily. And notifies you or your customer when it’s time to tank up. Unexpected deliveries? They won’t disrupt your planning anymore."
       },
       "PRODUCT3": {
@@ -219,8 +219,7 @@
       "DAILY": "Daily",
       "WEEKLY": "Weekly",
       "MONTHLY": "Monthly",
-      "YEARLY": "Yearly",
-      "ALL": "All"
+      "YEARLY": "Yearly"
     },
     "PRESETS": {
       "LAST_24_HOURS": "Last 24 hours",
@@ -353,8 +352,8 @@
   "PRIVACY_POLICY": {
     "TITLE": "Privacy Policy",
     "P1": "Proximus operates a public Internet-of-Things network with which devices and sensors can send data to the MyThings platform of Proximus. For reasons of privacy, this service is not suitable for locating people.",
-    "P2": "When you log into Smartcare, the following information is collected to identify and authenticate you:",
-    "P3": "All your actions on Smartcare are tracked for security purposes for 1 month.",
+    "P2": "When you log into Smart Monitoring, the following information is collected to identify and authenticate you:",
+    "P3": "All your actions on Smart Monitoring are tracked for security purposes for 1 month.",
     "P4": "Your e-mail address is used to keep you informed of novelties and updates of the service, unless you unsubscribe via your user settings.",
     "P5": "Your account information will be kept as long as your account is active. Once your account has been inactive for 2 years, it will be removed.",
     "P6": "For the exercise of your privacy rights you can send an e-mail to",
@@ -380,7 +379,7 @@
   "DETAIL": {
     "LINKED_THINGS": "Linked things",
     "AGGREGATED": {
-      "MEASUREMENT": "Measurement",
+      "MEASUREMENT" : "Measurement",
       "MAX": "Max",
       "MIN": "Min",
       "AVERAGE": "Avg",
@@ -468,14 +467,6 @@
       }
     }
   },
-  "MANAGE_THRESHOLD_TEMPLATES": {
-    "NEW": "New threshold template",
-    "VALIDATORS": {
-      "NAME": {
-        "MIN_LENGHT": "Name not long enough"
-      }
-    }
-  },
   "SENSOR_BOTTOMSHEET": {
     "TEMPERATURE": "High temperatures can cause chemical damages and increase degradation rate of art, and are good conditions for insects and moldgrowth. Low temperatures can cause condensation of moisture. Temperature fluctuations can effect humidity levels",
     "HUMIDITY": "High humidity can cause moldgrowth or corrosion, and creates good conditions for insects. Low humidity causes risk of mechanical deformation and brittleness of hygroscopic materials. Fluctuations of humidity increase risk of mechanical damage.",
@@ -540,7 +531,7 @@
     },
     "500": {
       "TITLE": "Server Error",
-      "CONTENT": "Sorry, an error has occured, our servers might be down!"
+      "CONTENT": "Sorry, an error has occured, our servers might be down!" 
     },
     "SORRY_ERROR_OCCURED": "Sorry, an error has occured!",
     "ERROR_OCCURED_GETTING_DATA": "An error has occured during getting the data",
@@ -556,7 +547,7 @@
     "DELETE": {
       "ARE_YOU_SURE_TO_DELETE_THIS_LOCATION": "Are you sure to delete this location?",
       "ARE_YOU_SURE_NO_MORE_ACCESSIBLE": "Are you sure you want to delete? It will not be accessible anymore.",
-      "BE_CAREFUL_PEOPLE_COUNTING_ASSETS_WILL_BE_DELETED": "Be careful, its people counting assets will be deleted and the others transfered",
+      "BE_CAREFUL_PEOPLE_COUNTING_ASSETS_WILL_BE_DELETED": "Be careful, the Smart Counting assets will be deleted and the others transfered",
       "ARE_YOU_SURE_ASSETS_ARE_USING_THIS_TEMPLATE": "Are you sure you want to delete? Assets are using this template"
     },
     "FAILS": {
@@ -566,7 +557,7 @@
       "CHOOSE_AN_OTHER_POINT_OF_ATTENTION_NAME": "Please choose an other point of attention name to be able to save it",
       "MARK_AS_READ_MORE_THAN_5000_NOT_ALLOWED": "Mark as read of more than 5000 alerts is not allowed",
       "MARK_AS_UNREAD_MORE_THAN_5000_NOT_ALLOWED": "Mark as unread of more than 5000 alerts is not allowed",
-      "AT_LEAST_ONE_THING_FOR_YOUR_MODULE": "You can an only add an asset with at least one thing defined for your module"
+      "AT_LEAST_ONE_THING_FOR_YOUR_MODULE": "You can only add an asset with at least one thing defined for this module"
     },
     "WARNINGS": {
       "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Not all the sensors defined in the threshold template are matching the sensor assigned to this asset",
