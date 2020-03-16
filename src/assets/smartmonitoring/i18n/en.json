@@ -128,7 +128,8 @@
     "YES": "Yes",
     "NO": "No",
     "TRUE": "True",
-    "FALSE": "False"
+    "FALSE": "False",
+    "ZOOMIN_OUT":"Zoom in or out on your locations structure"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",
@@ -330,7 +331,21 @@
     "WEEK_TOTAL": "Week total",
     "DAY_TOTAL": "Day total",
     "WEEK_AVERAGE": "Week average",
-    "DAY_AVERAGE": "Day average"
+    "DAY_AVERAGE": "Day average",
+    "TRAIL_POSITION": "Trail position on map",
+    "IMAGE_GALLERY": "Image gallery",
+    "STATISTICS_SUMMERY": "Statistics Summary",
+    "LAST_MONTH_OVERVIEW_DAY":"Last month overview grouped by day",
+    "LAST_WEEK_BENCHMARK": "Benchmark over the last week",
+    "DISTRIBUTION_BY_ASSETS": "Distribution by assets",
+    "ALL_ASSETS_TRAIL_OVERVIEW": "All assets of the trail overview",
+    "SELECT_OR_CREATE": "Select the parent location of the trail or create it if it doesn’t exist yet",
+    "PROVIDE_NAME_DESCRIPTION": "Provide a name and description to your trail",
+    "POSITION_ON_MAP": "Position it on the map (mandatory)",
+    "SELECT_IMAGES_TRAIL": "Select some images of the trail (optional)",
+    "SELECT_PLAN_VIEW_TRAIL": "Select a plan view image of your trail (optional)",
+    "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)"
+
   },
   "PEOPLE_COUNTING_RETAIL": {
     "STORES_OVERVIEW": "Stores overview",
@@ -338,11 +353,34 @@
     "TOTAL_COUNT_YESTERDAY": "Total count yesterday",
     "TOTAL_COUNT_LAST_WEEK": "Total count last week",
     "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Difference between last week and the week before last week",
-    "DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK": "Difference between today and same day last week"
+    "DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK": "Difference between today and same day last week",
+    "PLACES_OVERVIEW":"Places overview",
+    "TOTAL_COUNT_PLACES":"Total count view of the place",
+    "STATISTICS_SUMMERY":"Statistics Summary",
+    "LAST_MONTH_OVERVIEW_DAY":"Last month overview grouped by day",
+    "CALENDAR_VIEW":"Calendar view",
+    "DISTRIBUTION_BY_ASSETS":"Distribution by assets",
+    "ASSETS_OVERVIEW":"All assets of the place overview",
+    "SELECT_PARENT_LOC":"Select the parent location of the place or create it if it doesn’t exist yet",
+    "PROVIDE_NAME_DESCRIPTION":"Provide a name and description to your place",
+    "POSITION_ON_MAP ":"Position it on the map (mandatory)",
+    "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
+    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
   },
   "STAIRWAY_TO_HEALTH": {
     "PLACES_OVERVIEW": "Places overview",
-    "NEW_PLACE": "New place"
+    "NEW_PLACE": "New place",
+    "TOTAL_COUNT_PLACE ": "Total count view of the place",
+    "STATISTICS_SUMMERY":"Statistics Summary",
+    "LAST_MONTH_OVERVIEW_DAY":"Last month overview grouped by day",
+    "CALENDAR_VIEW":"Calendar view",
+    "DISTRIBUTION_BY_ASSETS":"Distribution by assets",
+    "ASSETS_OVERVIEW":"All assets of the place overview",
+    "SELECT_PARENT_LOC":"Select the parent location of the place or create it if it doesn’t exist yet",
+    "PROVIDE_NAME_DESCRIPTION":"Provide a name and description to your place",
+    "POSITION_ON_MAP ":"Position it on the map (mandatory)",
+    "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
+    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
   },
   "PEOPLE_COUNTING": {
     "LAST_WEEK": "Last week",
