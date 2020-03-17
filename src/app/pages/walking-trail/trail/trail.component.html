@@ -19,6 +19,7 @@
 <pvf-trails-benchmark *ngIf="parentLocation?.id !== leaf?.id" [parentLocation]="parentLocation"></pvf-trails-benchmark>
 <div class="container-fluid">
   <div class="row">
+    <h2>{{'WALKING_TRAIL.DISTRIBUTION_BY_ASSETS' | translate}}</h2>
     <div class="col-md-6 col-sm-12">
       <pvf-peoplecounting-count-by-asset [assetColors]="assetColors" [assetService]="assetService" *ngIf="assets" [assets]="assets" [assetUrl]="assetUrl"></pvf-peoplecounting-count-by-asset>
     </div>
@@ -27,6 +28,7 @@
     </div>
   </div>
   <div class="row">
+    <h2>{{'WALKING_TRAIL.ALL_ASSETS_TRAIL_OVERVIEW' | translate}}</h2>
     <div class="col-md-6 col-sm-12" style="height: 300px;">
       <pxs-map *ngIf="parentLocation" [rootLocation]="parentLocation" [selectedLocation]="leaf"></pxs-map>
     </div>
