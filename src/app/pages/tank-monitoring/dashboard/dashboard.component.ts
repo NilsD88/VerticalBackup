@@ -1,3 +1,6 @@
+import { TTankMonitoringStatus } from './../../../models/tankmonitoring/asset.model';
+import { isNullOrUndefined } from 'util';
+import { ITankMonitoringLocation } from './../../../models/tankmonitoring/location.model';
 import { SharedService } from './../../../services/shared.service';
 import { SubSink } from 'subsink';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
@@ -25,6 +28,8 @@ interface IFilterFE {
   fillLevel: IRange;
   batteryLevel: IRange;
 }
+
+const STATUSES: TTankMonitoringStatus[] = ['UNKNOWN', 'OK', 'LOW', 'EMPTY'];
 
 @Component({
   selector: 'pvf-dashboard',
@@ -80,10 +85,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     this.isLoading = true;
+    let rootLocation: ITankMonitoringLocation;
     if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
-      this.rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
+      rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
     } else {
-      this.rootLocation = {
+      rootLocation = {
         id: null,
         parentId: null,
         geolocation: null,
@@ -124,6 +130,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
     this.updateDataSourceWithFilteredAssets(this.assets);
+    this.updateLocationWithStatus(rootLocation);
+    this.rootLocation = rootLocation;
     this.isLoading = false;
     this.subs.sink = filteredAssetsObs(this.filterFE$).subscribe(() => { 
       this.updateFilteredAssetsOnMap();
@@ -132,7 +140,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.changeFilterFE();
   }
 
- 
+
 
   private updateFilteredAssetsOnTable() {
     const filteredAssets = cloneDeep(this.assets).filter((asset: ITankMonitoringAsset) => {
@@ -335,6 +343,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.sharedService.downloadCSV('TankMonitoring_' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
   }
 
+  private updateLocationWithStatus(location: ITankMonitoringLocation) {
+    let status: TTankMonitoringStatus;
+    const statuses: TTankMonitoringStatus[] = [];
+
+    if (!isNullOrUndefined(location.id)) {
+      const assets = this.assets.filter(asset => (asset.location || {}).id === location.id);
+      if (assets.length) {
+        for (const asset of assets) {
+          statuses.push(asset.status);
+        }
+      }
+    }
+
+    if ((location.children || []).length) {
+      for (const leaf of location.children) {
+        this.updateLocationWithStatus(leaf);
+        statuses.push(leaf.status);
+      }
+    }
+
+    for (const STATUS of STATUSES) {
+      if (statuses.some(x => x === STATUS)) {
+        status = STATUS;
+      }
+    }
+
+    location.status = status;
+  }
+
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
@@ -353,3 +390,4 @@ function filteredAssetsObs(obs: Observable<IFilterFE>) {
       })
   );
 }
+
