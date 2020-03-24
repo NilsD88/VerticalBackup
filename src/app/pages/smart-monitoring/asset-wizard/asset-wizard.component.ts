@@ -2,12 +2,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { AssetService } from 'src/app/services/asset.service';
-import {Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ThingService } from 'src/app/services/thing.service';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/location.model';
 import { IThing } from 'src/app/models/thing.model';
 import { MatStepper } from '@angular/material/stepper';
-import { MatDialog } from '@angular/material';
+import { MatDialogMat } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
@@ -17,7 +18,7 @@ import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 import { IField } from 'src/app/models/field.model';
-
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-smartmonitoring-asset-wizard',
@@ -41,12 +42,15 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
 
   private originalAsset: IAsset;
   private subs = new SubSink();
+  public foundAssets;
+  public thing: IThing;
 
   constructor(
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
     private assetService: AssetService,
+    private thingService: ThingService,
     private router: Router,
     public activatedRoute: ActivatedRoute,
     private translateService: TranslateService,
@@ -106,7 +110,30 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-      this.asset.things.push(thing);
+        //check if assigned to something else
+        this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
+        this.foundAssets = this.thing.assets;
+        if(this.foundAssets) {
+          this.dialog.open(PopupConfirmationComponent, {
+            data: {
+              title: `Warning`,
+              content: 'This thing is already assigned to another asset, are you sure you want to proceed?'
+            },
+            minWidth: '320px',
+            maxWidth: '400px',
+            width: '100vw',
+            maxHeight: '80vh',
+          }).afterClosed().subscribe(
+            result => {
+              if (result) {
+                this.asset.things.push(thing);
+              }
+            }
+          );
+        } else{
+          this.asset.things.push(thing);
+        }
+      }
     }
   }
 
@@ -132,7 +159,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       return true;
     }
   }
-
 
   public wantToSaveAsset() {
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();

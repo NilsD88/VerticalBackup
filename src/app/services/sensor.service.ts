@@ -117,7 +117,4 @@ export class SensorService {
           }) => data.updated)
         );
     }
-
-
-
 }

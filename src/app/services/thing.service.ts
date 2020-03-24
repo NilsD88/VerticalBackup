@@ -118,6 +118,34 @@ export class ThingService {
         }).pipe(map(({data}) => data.thing));
     }
 
+    public getThingAndAssetsById(id: string): Observable<IThing> {
+        const GET_THING_BY_ID = gql`
+            query findThingById($input: ThingByIdInput!) {
+                thing: findThingById(input: $input) {
+                    id,
+                    name,
+                    assets {
+                        id
+                    }
+                }
+            }
+        `;
+
+        interface GetThingByIdQuery {
+            thing: IThing | null;
+        }
+
+        return this.apollo.query<GetThingByIdQuery>({
+            query: GET_THING_BY_ID,
+            fetchPolicy: 'network-only',
+            variables: {
+                input: {
+                    id
+                }
+            }
+        }).pipe(map(({data}) => data.thing));
+    }
+
     public updateThing(thing: IThing): Observable<boolean> {
         const UPDATE_THING = gql`
             mutation updateThing($input: ThingUpdateInput!) {
