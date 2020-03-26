@@ -4,6 +4,7 @@
       <ng-template matStepLabel>{{ 'LAYOUT.PARENT' |translate }}</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
+            <h2>{{'WALKING_TRAIL.SELECT_OR_CREATE' | translate}}</h2>
             <pxs-location-explorer
               *ngIf="displayLocationExplorer"
               [selectableLocation]="true"
@@ -27,6 +28,7 @@
       <ng-template matStepLabel>{{ 'GENERAL.DESCRIPTION' | translate }}</ng-template>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
+          <h2>{{'WALKING_TRAIL.PROVIDE_NAME_DESCRIPTION' | translate}}</h2>
           <mat-form-field>
             <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="NameCtrl" [(ngModel)]="location.name" required>
           </mat-form-field>
@@ -42,6 +44,7 @@
   <mat-step [completed]="location.geolocation">
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
+      <h2>{{'WALKING_TRAIL.POSITION_ON_MAP' | translate}}</h2>
       <pxs-form-geolocation 
         *ngIf="location.parent && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
         [location]="location.parent"
@@ -54,6 +57,7 @@
   <mat-step>
     <ng-template matStepLabel>{{ 'LAYOUT.IMAGES' | translate }}</ng-template>
     <div class="row">
+      <h2>{{'WALKING_TRAIL.SELECT_IMAGES_TRAIL' | translate}}</h2>
       <div class="location-images">
         <div *ngFor="let image of location.images; index as i">
           <pxs-editable-image (change)="changeLocationImages(i, $event)" [image]="image" [removeButton]="false"></pxs-editable-image>
@@ -70,6 +74,7 @@
     <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
+        <h2>{{'WALKING_TRAIL.SELECT_PLAN_VIEW_TRAIL' | translate}}</h2>
         <div class="location-image">
           <pxs-editable-image (change)="location.image=$event" [image]="location.image" [confirmationMessage]="editMode ? changeFloorPlanConfirmationMessage : null"></pxs-editable-image>
         </div>
@@ -80,6 +85,7 @@
   <mat-step>
       <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
       <div class="row">
+        <h2>{{'WALKING_TRAIL.SELECT_ASSETS_TRAIL' | translate}}</h2>
         <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
           <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
             <div>

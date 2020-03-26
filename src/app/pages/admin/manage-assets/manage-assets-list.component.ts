@@ -6,7 +6,8 @@ import { AssetService } from 'src/app/services/asset.service';
 import { IAsset } from 'src/app/models/asset.model';
 import { Subject } from 'rxjs';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatDialog } from '@angular/material';
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-manage-assets-list',
@@ -32,7 +33,8 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
 
   constructor(
     public assetService: AssetService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog,
   ) {}
 
   public async ngOnInit() {
@@ -75,11 +77,27 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
   }
 
   public async deleteAsset(id: string) {
-    this.subs.sink = this.assetService.deleteAsset(id).subscribe((result) => {
-      this.assets = null;
-      this.changeDetectorRef.detectChanges();
-      this.getAssets();
-    });
+    this.dialog.open(PopupConfirmationComponent, {
+      data: {
+        title: `Warning`,
+        content: 'Are you sure you want to delete? It will not be accessible anymore.'
+      },
+      minWidth: '320px',
+      maxWidth: '400px',
+      width: '100vw',
+      maxHeight: '80vh',
+    }).afterClosed().subscribe(
+      result => {
+        if (result) {
+          this.subs.sink = this.assetService.deleteAsset(id).subscribe(
+            () => {
+              this.assets = null;
+              this.changeDetectorRef.detectChanges();
+              this.getAssets();
+            });
+        }
+      }
+    );
   }
 
   ngOnDestroy() {

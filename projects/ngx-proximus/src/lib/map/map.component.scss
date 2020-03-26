@@ -46,26 +46,26 @@
         }
 
         &.tank-monitoring {
-            .pxi-map-marker {
+            .pxi-map-marker, .pxi-map-hotspot {
                 background: $severity-ok;
                 color: white;
             }
 
             &.unknown-fuel {
-                .pxi-map-marker {
+                .pxi-map-marker, .pxi-map-hotspot {
                     background: $inactive;
                     color: white;
                 }
             }
 
             &.low-fuel {
-                .pxi-map-marker {
+                .pxi-map-marker, .pxi-map-hotspot {
                     background: $severity-low;
                     color: white;
                 }
             }
             &.empty-fuel {
-                .pxi-map-marker {
+                .pxi-map-marker, .pxi-map-hotspot {
                     background: $severity-critical;
                     color: white;
                 }

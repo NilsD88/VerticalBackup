@@ -6,4 +6,5 @@ export interface IThing {
     name?: string;
     batteryPercentage?: number;
     sensors?: ISensor[];
+    assets?: IAsset[];
 }

@@ -128,7 +128,8 @@
     "YES": "Oui",
     "NO": "Non",
     "TRUE": "Vrai",
-    "FALSE": "Faux"
+    "FALSE": "Faux",
+    "ZOOMIN_OUT": "Zoom avant/arrière dans la structure des lieux"
   },
   "LAYOUT": {
     "SEARCH": "Rechercher des actifs ou des lieux",
@@ -330,7 +331,21 @@
     "WEEK_TOTAL": "total de la semaine",
     "DAY_TOTAL": "Total du jour",
     "WEEK_AVERAGE": "Moyenne de la semaine",
-    "DAY_AVERAGE": "Moyenne du jour"
+    "DAY_AVERAGE": "Moyenne du jour",
+
+    "TRAIL_POSITION": "Position du parcours sur carte",
+    "IMAGE_GALLERY": "Gallerie d’images",
+    "STATISTICS_SUMMERY": "Résumé des statistiques",
+    "LAST_MONTH_OVERVIEW_DAY":"Aperçu du mois dernier groupé par jour",
+    "LAST_WEEK_BENCHMARK": "Comparaison de la semaine passée",
+    "DISTRIBUTION_BY_ASSETS": "Distribution des étapes",
+    "ALL_ASSETS_TRAIL_OVERVIEW": "Aperçu de toutes les étapes du parcours",
+    "SELECT_OR_CREATE": "Sélectionnez le lieu d'origine du parcours ou créez-le s'il n'existe pas encore",
+    "PROVIDE_NAME_DESCRIPTION": "Donnez un nom et une description à votre parcours",
+    "POSITION_ON_MAP": "Positionnez le sur la carte (obligatoire)",
+    "SELECT_IMAGES_TRAIL": "Sélectionnez quelques images du parcours (optionnel)",
+    "SELECT_PLAN_VIEW_TRAIL": "Sélectionnez un image en plan de votre parcours (optionnel)",
+    "SELECT_ASSETS_TRAIL": "Sélectionnez ou ajoutez les étapes appartenant à votre parcours (obligatoire)"
   },
   "PEOPLE_COUNTING_RETAIL": {
     "STORES_OVERVIEW": "Aperçu des emplacements",
@@ -338,11 +353,34 @@
     "TOTAL_COUNT_YESTERDAY": "Nombre total pour hier",
     "TOTAL_COUNT_LAST_WEEK": "Nombre total pour la semaine dernière",
     "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Différence entre la semaine dernière et la semaine avant la semaine dernière",
-    "DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK": "Différence entre aujourd'hui et le même jour la semaine dernière"
+    "DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK": "Différence entre aujourd'hui et le même jour la semaine dernière",
+    "PLACES_OVERVIEW":"Aperçu des emplacements",
+    "TOTAL_COUNT_PLACES":"Nombre total de vues de l’emplacement",
+    "STATISTICS_SUMMERY":"Résumé des statistiques",
+    "LAST_MONTH_OVERVIEW_DAY":"Aperçu du mois dernier groupé par jour",
+    "CALENDAR_VIEW":"Vue calendrier",
+    "DISTRIBUTION_BY_ASSETS":"Distribution des biens",
+    "ASSETS_OVERVIEW":"Aperçu de tous les biens de l’emplacement",
+    "SELECT_PARENT_LOC":"Sélectionnez le lieu d'origine de l’emplacement ou créez-le s'il n'existe pas encore",
+    "PROVIDE_NAME_DESCRIPTION":"Fournissez un nom et une description à votre emplacement",
+    "POSITION_ON_MAP ":"Positionnez le sur la carte (obligatoire)",
+    "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
+    "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
   },
   "STAIRWAY_TO_HEALTH": {
     "PLACES_OVERVIEW": "Aperçu des emplacements",
-    "NEW_PLACE": "Nouvel emplacement"
+    "NEW_PLACE": "Nouvel emplacement",
+    "TOTAL_COUNT_PLACES":"Nombre total de vues de l’emplacement",
+    "STATISTICS_SUMMERY":"Résumé des statistiques",
+    "LAST_MONTH_OVERVIEW_DAY":"Aperçu du mois dernier groupé par jour",
+    "CALENDAR_VIEW":"Vue calendrier",
+    "DISTRIBUTION_BY_ASSETS":"Distribution des biens",
+    "ASSETS_OVERVIEW":"Aperçu de tous les biens de l’emplacement",
+    "SELECT_PARENT_LOC":"Sélectionnez le lieu d'origine de l’emplacement ou créez-le s'il n'existe pas encore",
+    "PROVIDE_NAME_DESCRIPTION":"Fournissez un nom et une description à votre emplacement",
+    "POSITION_ON_MAP ":"Positionnez le sur la carte (obligatoire)",
+    "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
+    "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
   },
   "PEOPLE_COUNTING": {
     "LAST_WEEK": "Semaine dernière",
@@ -488,6 +526,12 @@
       "TELTO": "tel:080022200",
       "TEL": "0800 222 00"
     },
+    "DOCUMENTATION": {
+      "TITLE": "Documentation:",
+      "SMARTMONITORING": "Guide utilisateur Smart Monitoring",
+      "SMARTMONITORINGURL": "https://mythings.proximus.be/files/SmartMonitoringUserManual_V1.pdf",
+      "SMARTTANK": "Guide utilisateur Smart Tank",
+      "SMARTTANKURL": "https://mythings.proximus.be/files/SmartTankUserManual_V1.pdf"},
     "SUPPORT_DETAILS": ""
   },
   "LOGIN_ERROR": {

@@ -109,8 +109,6 @@ function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
   return leafColors;
 }
 
-
-
 function allIntervalBetween(from: number, to: number, interval: moment.unitOfTime.DurationConstructor): IPeopleCountingLocationSerie[] {
   let currentTimestamp: number = from;
   const emptySeries: IPeopleCountingLocationSerie[] = [];
