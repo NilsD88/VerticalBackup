@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { TrailImagesComponent } from './trail-images.component';
-import { MatProgressSpinnerModule, MatCardModule } from '@angular/material';
-import { SlideshowModule } from 'ng-simple-slideshow';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {TrailImagesComponent} from './trail-images.component';
+import {MatCardModule, MatProgressSpinnerModule} from '@angular/material';
+import {SlideshowModule} from 'ng-simple-slideshow';
+import {TranslateModule} from '@ngx-translate/core';
 
 
 @NgModule({
@@ -12,8 +12,10 @@ import { SlideshowModule } from 'ng-simple-slideshow';
     CommonModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    SlideshowModule
+    SlideshowModule,
+    TranslateModule
   ],
   exports: [TrailImagesComponent]
 })
-export class TrailImagesModule { }
+export class TrailImagesModule {
+}
