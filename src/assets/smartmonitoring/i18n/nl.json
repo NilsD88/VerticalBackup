@@ -525,6 +525,12 @@
       "TELTO": "tel:080022200",
       "TEL": "0800 222 00"
     },
+    "DOCUMENTATION": {
+      "TITLE": "Documentatie:",
+      "SMARTMONITORING": "Smart Monitoring User Guide",
+      "SMARTMONITORINGURL": "https://mythings.proximus.be/files/SmartMonitoringUserGuide_V1.pdf",
+      "SMARTTANK": "Smart Tank User Guide",
+      "SMARTTANKURL": "https://mythings.proximus.be/files/SmartTankUserGuide_V1.pdf"},
     "SUPPORT_DETAILS": ""
   },
   "LOGIN_ERROR": {
