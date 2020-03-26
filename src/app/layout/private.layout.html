@@ -1,3 +1,6 @@
+<div *ngIf="sharedService.user.impersonation" class="impersonation">
+  IMPERSONATING
+</div>
 <pxs-top-menu *ngIf="topMenuConfig" (languageChange)="layoutService.changeLanguage($event)"
   (contactClick)="navigateTo(['private', 'contact'])" (autocompleteClick)="autocompleteClick($event)"
   [searchResults]="searchResults" (search)="searchTerm$.next($event)" [config]="topMenuConfig">
@@ -27,36 +30,38 @@
           {{ 'LAYOUT.ADMIN' | translate }}
         </div>
         <div mat-menu-item *ngIf="!layoutService.user?.hasRole('pxs:iot:location_admin')">
-          <a mat-menu-item [routerLink]="['/private','admin','manage-alert-definition']" routerLinkActive="router-link-active">
+          <a mat-menu-item [routerLink]="['/private','admin','manage-alert-definition']"
+             routerLinkActive="router-link-active">
             {{ 'LAYOUT.ALERT_DEFINITIONS' | translate }}
           </a>
         </div>
         <div mat-menu-item>
           <a mat-menu-item [routerLink]="['/private','admin','manage-locations']"
-                  routerLinkActive="router-link-active">
+             routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_LOCATIONS' | translate }}
-        </a>
+          </a>
         </div>
         <div mat-menu-item>
           <a mat-menu-item [routerLink]="['/private','admin','manage-assets']"
-                  routerLinkActive="router-link-active">
+             routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_ASSETS' | translate }}
           </a>
         </div>
         <div mat-menu-item>
           <a mat-menu-item [routerLink]="['/private','admin','manage-things']"
-                  routerLinkActive="router-link-active">
+             routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_THINGS' | translate }}
           </a>
         </div>
         <div mat-menu-item *ngIf="!layoutService.user?.hasRole('pxs:iot:location_admin')">
-          <a mat-menu-item [routerLink]="['/private','admin','manage-threshold-templates']" routerLinkActive="router-link-active">
+          <a mat-menu-item [routerLink]="['/private','admin','manage-threshold-templates']"
+             routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_THRESHOLD_TEMPLATES' | translate }}
           </a>
         </div>
         <div mat-menu-item>
           <a mat-menu-item [routerLink]="['/private','admin','manage-points-of-attention']"
-                  routerLinkActive="router-link-active">
+             routerLinkActive="router-link-active">
             {{ 'LAYOUT.MANAGE_POINTS_OF_ATTENTION' | translate }}
           </a>
         </div>
@@ -103,7 +108,7 @@
   <div mat-menu-item>
     <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention']"
        routerLinkActive="router-link-active">
-      {{ 'POINTS_OF_ATTENTION.MY_POINTS_OF_ATTENTION' | translate }}
+      {{ 'POINTS_OF_ATTENTION.MY_POINTS_OF_ATTENTION' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
@@ -111,7 +116,7 @@
       mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'POINTS_OF_ATTENTION.NEW_POINT_OF_ATTENTION' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'POINTS_OF_ATTENTION.NEW_POINT_OF_ATTENTION' | translate }}</span>
     </a>
   </div>
 </mat-menu>
@@ -188,7 +193,7 @@
   <div mat-menu-item>
     <button mat-menu-item [routerLink]="['/private','stairwaytohealth', 'overview']"
             routerLinkActive="router-link-active">
-      {{ 'STAIRWAY_TO_HEALTH.PLACES_OVERVIEW' | translate }}
+      {{ 'STAIRWAY_TO_HEALTH.PLACES_OVERVIEW' | translate }}
     </button>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
@@ -196,7 +201,7 @@
       mat-menu-item [routerLink]="['/private','stairwaytohealth', 'place', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'STAIRWAY_TO_HEALTH.NEW_PLACE' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'STAIRWAY_TO_HEALTH.NEW_PLACE' | translate }}</span>
     </a>
   </div>
 </mat-menu>
