@@ -529,9 +529,9 @@
     "DOCUMENTATION": {
       "TITLE": "Documentation:",
       "SMARTMONITORING": "Guide utilisateur Smart Monitoring",
-      "SMARTMONITORINGURL": "https://mythings.proximus.be/files/SmartMonitoringUserGuide_V1.pdf",
+      "SMARTMONITORINGURL": "https://mythings.proximus.be/files/SmartMonitoringUserManual_V1.pdf",
       "SMARTTANK": "Guide utilisateur Smart Tank",
-      "SMARTTANKURL": "https://mythings.proximus.be/files/SmartTankUserGuide_V1.pdf"},
+      "SMARTTANKURL": "https://mythings.proximus.be/files/SmartTankUserManual_V1.pdf"},
     "SUPPORT_DETAILS": ""
   },
   "LOGIN_ERROR": {
