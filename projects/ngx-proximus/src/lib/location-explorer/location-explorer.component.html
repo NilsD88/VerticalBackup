@@ -1,7 +1,8 @@
 <div *ngIf="searchBar">
   <mat-form-field>
-    <input matInput type="text" [matAutocomplete]="auto" [placeholder]="'LOCATIONS.SEARCH_LOCATION_BY_NAME' | translate" [(ngModel)]="filter.name"
-      (ngModelChange)="onFilterChange()">
+    <input matInput type="text" [matAutocomplete]="auto" [placeholder]="'LOCATIONS.SEARCH_LOCATION_BY_NAME' | translate"
+           [(ngModel)]="filter.name"
+           (ngModelChange)="onFilterChange()">
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of searchResults" [value]="option" (click)="selectAutocompletedOption(option)">
@@ -14,47 +15,51 @@
   <mat-progress-spinner *ngIf="isDownloading" style="margin:0 auto;" color="primary" mode="indeterminate">
   </mat-progress-spinner>
   <mat-tab-group *ngIf="!isDownloading" [selectedIndex]="selectedIndex"
-    (selectedIndexChange)="selectedIndexChange($event)">
+                 (selectedIndexChange)="selectedIndexChange($event)">
     <mat-tab *ngFor="let tab of tabs; let index = index" [label]="tab.name">
-      <div *ngIf="tab?.children?.length" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="!admin" class="dropList">
+      <div *ngIf="tab?.children?.length" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListDisabled]="!admin"
+           class="dropList">
         <hr [attr.data-content]="'LAYOUT.LOCATIONS' | translate">
         <div cdkDrag class="dropListItem" *ngFor="let location of tab.children"
-          [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
-          (click)="clickOnLocation(location)">
+             [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
+             (click)="clickOnLocation(location)">
           <div>
             <pxs-icon icon="globe" class="location"></pxs-icon>
             {{location.name}}
-            <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent" [ngSwitch]="location.module">
+            <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent"
+                    [ngSwitch]="location.module">
               <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
-                [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
+                        [routerLink]="['/private/walkingtrail/trail/update/'+location.id]"></pxs-icon>
               <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_RETAIL'" icon="edit"
-                [routerLink]="['/private/peoplecounting/store/update/'+location.id]"></pxs-icon>
+                        [routerLink]="['/private/peoplecounting/store/update/'+location.id]"></pxs-icon>
               <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'" icon="edit"
-                [routerLink]="['/private/stairwaytohealth/place/update/'+location.id]"></pxs-icon>
+                        [routerLink]="['/private/stairwaytohealth/place/update/'+location.id]"></pxs-icon>
               <pxs-icon *ngSwitchCase="'SMART_MONITORING'" icon="edit"
-                [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
+                        [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>
             </button>
             <button *ngIf="admin && (location.children.length === 0 || !location.children)" mat-icon-button
-              matTooltip="Delete location" color="warn">
+                    matTooltip="Delete location" color="warn">
               <pxs-icon icon="trash" (click)="wantToDeleteLocation(location.id)"></pxs-icon>
             </button>
           </div>
-          <div *ngIf="location.id !== ghostLocationId">
+          <div *ngIf="location.id !== ghostLocationId && location.children">
             <span (click)="openLocation(location)">
               <pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon>
             </span>
           </div>
         </div>
         <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)"
-          [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
+             [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
           <div>
-            <pxs-icon icon="plus-o"></pxs-icon> {{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}
+            <pxs-icon icon="plus-o"></pxs-icon>
+            {{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}
           </div>
         </div>
         <div class="dropListItem newItem" *ngIf="admin && isNullOrUndefined(tab.id)"
-          [routerLink]="['/private/admin/manage-locations/new/'+'root']">
+             [routerLink]="['/private/admin/manage-locations/new/'+'root']">
           <div>
-            <pxs-icon icon="plus-o"></pxs-icon> {{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}
+            <pxs-icon icon="plus-o"></pxs-icon>
+            {{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}
           </div>
         </div>
       </div>
