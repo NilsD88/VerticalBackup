@@ -42,7 +42,7 @@
               <pxs-icon icon="trash" (click)="wantToDeleteLocation(location.id)"></pxs-icon>
             </button>
           </div>
-          <div *ngIf="location.id !== ghostLocationId && location.children">
+          <div *ngIf="location.id !== ghostLocationId && location.children.length !== 0">
             <span (click)="openLocation(location)">
               <pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon>
             </span>
