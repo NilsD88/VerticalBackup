@@ -31,7 +31,7 @@
       }
     },
     "HOVER": {
-      "MORE_INFO": "Cliquez ici pour plus d'information."
+      "MORE_INFO": "Cliquez ici pour plus d'informations."
     },
     "LIST": {
       "L1": "Sans effort. Associez n'importe quoi à votre compte et collectez des données spécifiques sur vos actifs.",
@@ -84,7 +84,7 @@
     "MORE": "Plus",
     "BACK": "Retour",
     "EXPORT_PDF": "Exporter en PDF",
-    "EXPORT_EXCEL": "Exporter en Excel",
+    "EXPORT_EXCEL": "Export en Excel",
     "EXPORT_CSV": "Export en CSV",
     "DOWNLOAD": "Télécharger",
     "SUBMIT": "Soumettre",
@@ -95,10 +95,10 @@
     "DESCRIPTION": "Description",
     "SAVE": "Enregistrer",
     "SAVE_AND_CONTINUE": "Enregistrer et continuer",
-    "NEXT": "Suivqnt",
+    "NEXT": "Suivant",
     "CANCEL": "Annuler",
     "CONTINUE": "Continuer",
-    "DONE": "Fait",
+    "DONE": "Terminé",
     "DATE": "Date",
     "TIMESTAMP": "Horodatage",
     "VALUE": " Valeur",
@@ -134,7 +134,7 @@
   "LAYOUT": {
     "SEARCH": "Rechercher des actifs ou des lieux",
     "FULL_SCREEN": "Plein écran",
-    "EXIT_FULL_SCREEN": "Sortir du plein écran",
+    "EXIT_FULL_SCREEN": "Sortir du mode plein écran",
     "ADMINISTRATION": "Administration",
     "MANAGE_ASSETS": "Gérer les actifs",
     "MANAGE_LOCATIONS": "Gérer les lieux",
@@ -182,8 +182,8 @@
     "CHART_TYPE": "Type de graphique",
     "USE_ON_CHART": "Utiliser dans les graphiques",
     "USE_ON_NOTIFICATION": "Utiliser dans les alertes",
-    "ONLY_APPLY_FOR_TANK_MONITORING": "Ceci ne s'applique qu'aux graphiques de monitoring",
-    "ONLY_APPLY_FOR_SMART_COUNTING": "Ceci ne s'applique qu'aux graphiques de smart counting"
+    "ONLY_APPLY_FOR_TANK_MONITORING": "Ceci ne s'applique qu'aux graphiques de Monitoring",
+    "ONLY_APPLY_FOR_SMART_COUNTING": "Ceci ne s'applique qu'aux graphiques de Smart Counting"
   },
   "ALERTS": {
     "MARK_AS_READ": "Marquer comme lu",
@@ -214,7 +214,7 @@
     "SENSOR_TYPE_NAME": "Nom du type de capteur",
     "DEVICE_ID": "Appareil ID",
     "THING_NAME_OR_DEVEUI": "Nom de l'objet ou identifiant",
-    "ONLY_ALPHANUMERIC": "Seuls les caractères alphanumériques sont autorisés",
+    "ONLY_ALPHANUMERIC": "Seuls les caractères alphanumérique sont autorisés",
     "INTERVALS": {
       "HOURLY": "Par heure",
       "DAILY": "Par jour",
@@ -223,9 +223,9 @@
       "YEARLY": "Par an"
     },
     "PRESETS": {
-      "LAST_24_HOURS": "Dernière 24 heures",
-      "LAST_7_DAYS": "Dernier 7 jours",
-      "LAST_30_DAYS": "Dernier 30 jours"
+      "LAST_24_HOURS": "24 dernières heures",
+      "LAST_7_DAYS": "7 derniers jours",
+      "LAST_30_DAYS": "30 derniers jours"
     }
   },
   "SENSORTYPES": {
@@ -270,7 +270,7 @@
     "NAME": {
       "PLACEHOLDER": "Recherche sur le nom de l'actif pour le lieu sélectionné"
     },
-    "CREATE_NEW_LOCATION": "Créer une nouvelle localisation",
+    "CREATE_NEW_LOCATION": "Ajouter un lieu",
     "NO_ASSET_FOUND_IN_LOCATIONS": "Pas d'actif trouvé pour ce lieu",
     "NO_POA_FOUND_IN_LOCATIONS": "Pas de point d'attention trouvé pour ce lieu",
     "OPEN_THIS_LOCATION": "Ouvrir cette localisation",
@@ -300,10 +300,10 @@
     "TO": "Vèrs",
     "MAIL": "E-mail",
     "WEB": "Web",
-    "SMS": "Sms",
+    "SMS": "SMS",
     "SEVERITIES": {
       "LOW": "Basse",
-      "MEDIUM": "Medium",
+      "MEDIUM": "Moyenne",
       "CRITICAL": "Critique"
     }
   },
@@ -316,7 +316,7 @@
       "EMPTY": "Carburant vide",
       "LOW": "Bas carburant",
       "OK": "OK",
-      "UNKNOWN": "Inconnuu"
+      "UNKNOWN": "Inconnu"
     },
     "CONSUMPTION": "Consommation",
     "CONSUMPTIONS": {
@@ -324,15 +324,17 @@
       "FILLED_TO_ON": "le"
     }
   },
+  "WIZARD" : {
+    "CUSTOM_FIELDS": "Champs personnalisés"
+  },
   "WALKING_TRAIL": {
     "TRAILS_OVERVIEW": "Aperçu des parcours",
-    "NEW_TRAIL": "Nouveau parcour",
+    "NEW_TRAIL": "Nouveau parcours",
     "BENCHMARK_LAST_WEEK": "Benchmark de la semaine dernière",
     "WEEK_TOTAL": "total de la semaine",
     "DAY_TOTAL": "Total du jour",
     "WEEK_AVERAGE": "Moyenne de la semaine",
     "DAY_AVERAGE": "Moyenne du jour",
-
     "TRAIL_POSITION": "Position du parcours sur carte",
     "IMAGE_GALLERY": "Gallerie d’images",
     "STATISTICS_SUMMERY": "Résumé des statistiques",
@@ -421,7 +423,7 @@
       "MAX": "Max",
       "MIN": "Min",
       "AVERAGE": "Moy",
-      "STD_DEV": "StdDev"
+      "STD_DEV": "Std Dev"
     }
   },
   "DELETE_CONFIRM": {
@@ -473,7 +475,7 @@
     },
     "ERRORS": {
       "EMAIL_REQUIRED": "Email est obligatoire.",
-      "EMAIL_FORMAT": "format invalide d'email.",
+      "EMAIL_FORMAT": "Format invalide d'email.",
       "NAME_REQUIRED": "Nom est obligatoire.",
       "MESSAGE_REQUIRED": "Message est obligatoire.",
       "MESSAGE_MIN_CHAR": "Minimum 50 caractères.",
@@ -535,7 +537,7 @@
     "SUPPORT_DETAILS": ""
   },
   "LOGIN_ERROR": {
-    "single_logout": "Vous vous êtes déconnecté avec succès.",
+    "single_logout": "Vous avez été déconnecté avec succès.",
     "token_refresh_failed": "Votre session a expiré, merci de vous reconnecter.",
     "no_session": "Votre session a expiré, merci de vous reconnecter",
     "grant_application_access": "Vous n'avez pas accès à cette application. Veuillez contacter le support.",
@@ -546,7 +548,7 @@
     "access_denied": "L'accès a été refusé."
   },
   "LOGOUT_SUCCESS": {
-    "logout_ok": "Vous vous êtes déconnecté avec succès."
+    "logout_ok": "Vous avez été déconnecté avec succès."
   },
   "PDF": {
     "ASSET_NAME": "Nom d'actif",

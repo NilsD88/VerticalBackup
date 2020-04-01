@@ -324,6 +324,9 @@
       "FILLED_TO_ON": "aan"
     }
   },
+  "WIZARD" : {
+    "CUSTOM_FIELDS": "Gepersonaliseerde velden"
+  },
   "WALKING_TRAIL": {
     "TRAILS_OVERVIEW": "Trails overzicht",
     "NEW_TRAIL": "Nieuwe trail",
