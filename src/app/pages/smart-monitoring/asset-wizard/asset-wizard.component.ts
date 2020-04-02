@@ -110,32 +110,32 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-        //check if assigned to something else
-        this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
-        this.foundAssets = this.thing.assets;
-        if(this.foundAssets) {
-          this.dialog.open(PopupConfirmationComponent, {
-            data: {
-              title: `Warning`,
-              content: 'This thing is already assigned to another asset, are you sure you want to proceed?'
-            },
-            minWidth: '320px',
-            maxWidth: '400px',
-            width: '100vw',
-            maxHeight: '80vh',
-          }).afterClosed().subscribe(
-            result => {
-              if (result) {
-                this.asset.things.push(thing);
-              }
+      //check if assigned to something else
+      this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
+      this.foundAssets = this.thing.assets;
+      if(this.foundAssets) {
+        this.dialog.open(PopupConfirmationComponent, {
+          data: {
+            title: `Warning`,
+            content: 'This thing is already assigned to another asset, are you sure you want to proceed?'
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
+        }).afterClosed().subscribe(
+          result => {
+            if (result) {
+              this.asset.things.push(thing);
             }
-          );
-        } else{
-          this.asset.things.push(thing);
-        }
+          }
+        );
+      } else {
+        this.asset.things.push(thing);
       }
     }
   }
+  
 
   public thresholdTemplateIsCompatibleWithThings() {
     const thresholdTemplate = this.asset.thresholdTemplate;

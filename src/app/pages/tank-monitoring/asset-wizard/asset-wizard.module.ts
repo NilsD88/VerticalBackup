@@ -6,12 +6,12 @@ import { ListThingsModule } from 'projects/ngx-proximus/src/lib/list-things/list
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TankMonitoringAssetWizardComponent } from './asset-wizard.component';
-import {RouterModule} from '@angular/router';
-import {TankMonitoringAssetWizardRoutes} from './asset-wizard.routing';
+import { RouterModule} from '@angular/router';
+import { TankMonitoringAssetWizardRoutes} from './asset-wizard.routing';
 import { MatStepperModule, MatInputModule, MatButtonModule, MatSelectModule, MatListModule, MatDialogModule } from '@angular/material';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule} from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
+import { IconModule} from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import { FormGeolocationModule } from 'projects/ngx-proximus/src/lib/form-geolocation/form-geolocation.module';
 import { EditableImageModule } from 'projects/ngx-proximus/src/lib/editable-image/editable-image.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
