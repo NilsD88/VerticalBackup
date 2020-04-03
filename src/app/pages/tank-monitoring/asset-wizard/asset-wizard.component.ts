@@ -41,6 +41,8 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
 
   private originalAsset: IAsset;
   private subs = new SubSink();
+  public foundAssets;
+  public thing: IThing;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,6 +50,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private tankMonitoringAssetService: TankMonitoringAssetService,
     private sensorService: SensorService,
+    private thingService: ThingService,
     private router: Router,
     private translateService: TranslateService,
     public activatedRoute: ActivatedRoute,
@@ -104,10 +107,11 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectedThingsChange(thing: IThing) {
+  async selectedThingsChange(thing: IThing) {
     const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
+
     } else {
       //check if assigned to something else
       this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();

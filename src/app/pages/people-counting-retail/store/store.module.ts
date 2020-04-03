@@ -4,6 +4,7 @@ import { CountByAssetModule } from 'src/app/shared/people-counting/location/char
 import { CalendarViewModule } from './../../../shared/people-counting/location/charts/calendar-view/calendar-view.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { StoreComponent } from './store.component';
 import { RouterModule } from '@angular/router';
@@ -17,6 +18,7 @@ import { SummaryModule } from 'src/app/shared/people-counting/location/summary/s
   declarations: [StoreComponent],
   imports: [
     CommonModule,
+    TranslateModule,
     RouterModule.forChild(StoreRoutes),
     CalendarViewModule,
     MonthViewModule,

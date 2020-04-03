@@ -5,6 +5,7 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlaceComponent } from './place.component';
+import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
 import { PlaceRoutes } from './place.routing';
 import { MonthViewModule } from 'src/app/shared/people-counting/location/charts/month-view/month-view.module';
@@ -19,6 +20,7 @@ import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explore
     CommonModule,
     RouterModule.forChild(PlaceRoutes),
     CalendarViewModule,
+    TranslateModule,
     MonthViewModule,
     CalendarViewModule,
     CountByAssetModule,

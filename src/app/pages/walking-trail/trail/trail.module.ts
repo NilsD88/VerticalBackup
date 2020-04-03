@@ -4,6 +4,7 @@ import { SummaryStatisticsModule } from './summary-statistics/summary-statistics
 import { TrailMapModule } from './trail-map/trail-map.module';
 import { TrailsBenchmarkModule } from './charts/trails-benchmark/trails-benchmark.module';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { TrailComponent } from './trail.component';
 import { RouterModule } from '@angular/router';
@@ -14,13 +15,13 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/location/ass
 import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explorer/asset-explorer.module';
 
 
-
 @NgModule({
   declarations: [TrailComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(TrailRoutes),
     TrailImagesModule,
+    TranslateModule,
     MonthViewModule,
     TrailsBenchmarkModule,
     CountByAssetModule,

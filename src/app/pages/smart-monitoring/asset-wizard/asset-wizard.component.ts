@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { ILocation } from 'src/app/models/location.model';
 import { IThing } from 'src/app/models/thing.model';
 import { MatStepper } from '@angular/material/stepper';
-import { MatDialogMat } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
@@ -18,7 +18,6 @@ import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 import { IField } from 'src/app/models/field.model';
-import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
   selector: 'pvf-smartmonitoring-asset-wizard',
@@ -105,7 +104,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectedThingsChange(thing: IThing) {
+  async selectedThingsChange(thing: IThing) {
     const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);

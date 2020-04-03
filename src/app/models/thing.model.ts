@@ -1,4 +1,5 @@
 import { ISensor } from './sensor.model';
+import { IAsset } from './asset.model';
 
 export interface IThing {
     id?: string;

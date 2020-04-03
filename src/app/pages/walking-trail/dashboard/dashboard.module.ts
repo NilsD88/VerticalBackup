@@ -2,6 +2,7 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
 import { MatButtonToggleModule, MatIconModule } from '@angular/material';
 import { WalkingTrailMapModule } from '../lib/map/map.module';
 import { RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
@@ -15,6 +16,7 @@ import { TotalCountPastYearModule } from 'src/app/shared/people-counting/dashboa
   imports: [
     CommonModule,
     RouterModule.forChild(DashboardRoutes),
+    TranslateModule,
     MatButtonToggleModule,
     MatIconModule,
     LocationExplorerModule,

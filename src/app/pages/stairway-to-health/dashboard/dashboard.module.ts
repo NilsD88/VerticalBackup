@@ -1,6 +1,7 @@
 import { StairwayToHealthDashboardStatisticsModule } from './charts/statistics/statistics.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { DashboardComponent } from './dashboard.component';
 import { RouterModule } from '@angular/router';
 import {DashboardRoutes} from './dashboard.routing';
@@ -18,6 +19,7 @@ import { StairwayToHealthDashboardTotalCountModule } from './charts/total-count/
     RouterModule.forChild(DashboardRoutes),
     MatButtonToggleModule,
     MatIconModule,
+    TranslateModule,
     LocationExplorerModule,
     StairwayToHealthMapModule,
     TotalCountPastYearModule,
