@@ -1,4 +1,6 @@
-<h2>{{'PEOPLE_COUNTING.LAST_YEAR' | translate}}</h2>
+<div class="center">
+	<h2>{{'PEOPLE_COUNTING.LAST_YEAR' | translate}}</h2>
+</div>
 <div [hidden]="loading || loadingError" id="total-count-past-year-chart-container"></div>
 <pxs-loader *ngIf="loading"></pxs-loader>  
 <pxs-data-error *ngIf="loadingError && !loading" (tryAgain)="wantTryAgain.emit()"></pxs-data-error>

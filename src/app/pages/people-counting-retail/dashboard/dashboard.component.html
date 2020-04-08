@@ -16,8 +16,11 @@
 </div>
 
 <div class="container-fluid" *ngIf="listStyleValue === 'map'">
-    <div class="row">
+    <div class="center">
         <h2>{{'PEOPLE_COUNTING_RETAIL.STORES_OVERVIEW' | translate}}</h2>
+    </div>
+    <div class="row">
+       
         <div class="col-md-12" style="min-height: 400px;">
             <pvf-peoplecountingretail-map *ngIf="rootLocation" [rootLocation]="rootLocation" (changeLocation)="changeLocation($event)" [displayAssets]="false"></pvf-peoplecountingretail-map>
         </div>

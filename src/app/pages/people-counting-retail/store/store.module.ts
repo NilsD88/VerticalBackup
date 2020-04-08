@@ -13,7 +13,6 @@ import { MonthViewModule } from 'src/app/shared/people-counting/location/charts/
 import { DayViewModule } from 'src/app/shared/people-counting/location/charts/day-view/day-view.module';
 import { SummaryModule } from 'src/app/shared/people-counting/location/summary/summary.module';
 
-
 @NgModule({
   declarations: [StoreComponent],
   imports: [
