@@ -111,12 +111,11 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
-
     } else {
       //check if assigned to something else
       this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
       this.foundAssets = this.thing.assets;
-      if(this.foundAssets) {
+      if(this.foundAssets.length > 0) {
         this.dialog.open(PopupConfirmationComponent, {
           data: {
             title: `Warning`,

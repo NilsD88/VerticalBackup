@@ -120,7 +120,7 @@ export class ThingService {
 
     public getThingAndAssetsById(id: string): Observable<IThing> {
         const GET_THING_BY_ID = gql`
-            query findThingById($input: ThingByIdInput!) {
+            query findThingById($input: ThingFindInput!) {
                 thing: findThingById(input: $input) {
                     id,
                     name,
