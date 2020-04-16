@@ -1,11 +1,12 @@
 import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { SensorService } from 'src/app/services/sensor.service';
+import { ThingService } from 'src/app/services/thing.service';
 import { ISensorType } from '../../../models/sensor-type.model';
 import { TankMonitoringAssetService } from './../../../services/tankmonitoring/asset.service';
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import {Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/location.model';
 import { IThing } from 'src/app/models/thing.model';
 import { MatStepper } from '@angular/material/stepper';
@@ -19,7 +20,6 @@ import { cloneDeep } from 'lodash';
 import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
 import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
 import { IField } from 'src/app/models/field.model';
-
 
 @Component({
   selector: 'pvf-tankmonitoring-asset-wizard',
@@ -41,6 +41,8 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
 
   private originalAsset: IAsset;
   private subs = new SubSink();
+  public foundAssets;
+  public thing: IThing;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,6 +50,7 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private tankMonitoringAssetService: TankMonitoringAssetService,
     private sensorService: SensorService,
+    private thingService: ThingService,
     private router: Router,
     private translateService: TranslateService,
     public activatedRoute: ActivatedRoute,
@@ -104,14 +107,37 @@ export class TankMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public selectedThingsChange(thing: IThing) {
+  async selectedThingsChange(thing: IThing) {
     const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-      this.asset.things.push(thing);
+      //check if assigned to something else
+      this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
+      this.foundAssets = this.thing.assets;
+      if(this.foundAssets.length > 0) {
+        this.dialog.open(PopupConfirmationComponent, {
+          data: {
+            title: `Warning`,
+            content: 'This thing is already assigned to another asset, are you sure you want to proceed?'
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
+        }).afterClosed().subscribe(
+          result => {
+            if (result) {
+              this.asset.things.push(thing);
+            }
+          }
+        );
+      } else {
+        this.asset.things.push(thing);
+      }
     }
   }
+
 
   public checkThings() {
     if (this.oneThingCompatibleWithModule()) {

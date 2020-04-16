@@ -363,9 +363,9 @@
     "CALENDAR_VIEW":"Vue calendrier",
     "DISTRIBUTION_BY_ASSETS":"Distribution des biens",
     "ASSETS_OVERVIEW":"Aperçu de tous les biens de l’emplacement",
-    "SELECT_PARENT_LOC":"Sélectionnez le lieu d'origine de l’emplacement ou créez-le s'il n'existe pas encore",
+    "SELECT_OR_CREATE":"Sélectionnez le lieu d'origine de l’emplacement ou créez-le s'il n'existe pas encore",
     "PROVIDE_NAME_DESCRIPTION":"Fournissez un nom et une description à votre emplacement",
-    "POSITION_ON_MAP ":"Positionnez le sur la carte (obligatoire)",
+    "POSITION_ON_MAP":"Positionnez le sur la carte (obligatoire)",
     "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
     "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
   },
@@ -380,7 +380,7 @@
     "ASSETS_OVERVIEW":"Aperçu de tous les biens de l’emplacement",
     "SELECT_PARENT_LOC":"Sélectionnez le lieu d'origine de l’emplacement ou créez-le s'il n'existe pas encore",
     "PROVIDE_NAME_DESCRIPTION":"Fournissez un nom et une description à votre emplacement",
-    "POSITION_ON_MAP ":"Positionnez le sur la carte (obligatoire)",
+    "POSITION_ON_MAP":"Positionnez le sur la carte (obligatoire)",
     "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
     "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
   },

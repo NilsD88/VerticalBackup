@@ -9,6 +9,12 @@ main {
   min-height: calc(100vh - 130px - 50px);
 }
 
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .highcharts-data-table table {
   border-collapse: collapse;

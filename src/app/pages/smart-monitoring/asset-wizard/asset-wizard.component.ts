@@ -1,23 +1,23 @@
-import {TranslateService} from '@ngx-translate/core';
-import {SubSink} from 'subsink';
-import {LocationWizardDialogComponent} from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import {AssetService} from 'src/app/services/asset.service';
-import {ThingService} from 'src/app/services/thing.service';
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ILocation} from 'src/app/models/location.model';
-import {IThing} from 'src/app/models/thing.model';
-import {MatStepper} from '@angular/material/stepper';
-import {PopupConfirmationComponent} from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
-import {ActivatedRoute, Router} from '@angular/router';
-import {isNullOrUndefined} from 'util';
-import {IAsset} from 'src/app/models/asset.model';
-import {compareTwoObjectOnSpecificProperties} from 'src/app/shared/utils';
-import {cloneDeep} from 'lodash';
-import {IThresholdTemplate} from 'src/app/models/threshold-template.model';
-import {ManageThresholdTemplatesDialogComponent} from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
-import {IField} from 'src/app/models/field.model';
-import {MatDialog} from '@angular/material';
+import { TranslateService } from '@ngx-translate/core';
+import { SubSink } from 'subsink';
+import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
+import { AssetService } from 'src/app/services/asset.service';
+import { ThingService } from 'src/app/services/thing.service';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { ILocation } from 'src/app/models/location.model';
+import { IThing } from 'src/app/models/thing.model';
+import { MatStepper } from '@angular/material/stepper';
+import { MatDialog } from '@angular/material';
+import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { isNullOrUndefined } from 'util';
+import { IAsset } from 'src/app/models/asset.model';
+import { compareTwoObjectOnSpecificProperties } from 'src/app/shared/utils';
+import { cloneDeep } from 'lodash';
+import { IThresholdTemplate } from 'src/app/models/threshold-template.model';
+import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-threshold-templates/manageThresholdTemplatesDialog.component';
+import { IField } from 'src/app/models/field.model';
 
 @Component({
   selector: 'pvf-smartmonitoring-asset-wizard',
@@ -104,15 +104,16 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public async selectedThingsChange(thing: IThing) {
+  async selectedThingsChange(thing: IThing) {
     const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-      // check if assigned to something else
+      //check if assigned to something else
       this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
       this.foundAssets = this.thing.assets;
-      if (this.foundAssets) {
+      if(this.foundAssets.length > 0) {
+
         this.dialog.open(PopupConfirmationComponent, {
           data: {
             title: `Warning`,
@@ -134,6 +135,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       }
     }
   }
+  
 
   public thresholdTemplateIsCompatibleWithThings() {
     const thresholdTemplate = this.asset.thresholdTemplate;

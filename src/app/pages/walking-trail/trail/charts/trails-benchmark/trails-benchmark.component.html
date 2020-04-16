@@ -1,4 +1,6 @@
-<h2 style="text-align: center;">{{'WALKING_TRAIL.BENCHMARK_LAST_WEEK' | translate}}</h2>
+<div class="center">
+	<h2>{{'WALKING_TRAIL.BENCHMARK_LAST_WEEK' | translate}}</h2>
+</div>
 <div [hidden]="chartLoading || loadingError" id="trails-benchmark-chart-container"></div>
 <pxs-loader *ngIf="chartLoading"></pxs-loader>
 <pxs-data-error *ngIf="loadingError && !chartLoading" (tryAgain)="tryAgain()"></pxs-data-error>

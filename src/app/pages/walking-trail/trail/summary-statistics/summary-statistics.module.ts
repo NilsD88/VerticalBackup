@@ -5,7 +5,6 @@ import { SummaryStatisticsComponent } from './summary-statistics.component';
 import { MatTableModule, MatSortModule, MatProgressSpinnerModule, MatCardModule } from '@angular/material';
 
 
-
 @NgModule({
   declarations: [SummaryStatisticsComponent],
   imports: [
