@@ -13,7 +13,6 @@ import { DayViewModule } from 'src/app/shared/people-counting/location/charts/da
 import { SummaryModule } from 'src/app/shared/people-counting/location/summary/summary.module';
 import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explorer/asset-explorer.module';
 
-
 @NgModule({
   declarations: [PlaceComponent],
   imports: [
@@ -28,8 +27,10 @@ import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explore
     MapModule,
     SummaryModule,
     AssetExplorerModule,
-    DayViewModule
+    DayViewModule,
+    TranslateModule
   ],
   exports: [PlaceComponent]
 })
-export class PlaceModule { }
+export class PlaceModule {
+}

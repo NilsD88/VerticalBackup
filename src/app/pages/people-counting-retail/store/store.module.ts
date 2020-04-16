@@ -27,8 +27,10 @@ import { SummaryModule } from 'src/app/shared/people-counting/location/summary/s
     MapModule,
     SummaryModule,
     AssetExplorerModule,
-    DayViewModule
+    DayViewModule,
+    TranslateModule
   ],
   exports: [StoreComponent]
 })
-export class StoreModule { }
+export class StoreModule {
+}

@@ -1,14 +1,14 @@
-import { SharedService } from './../../../../../src/app/services/shared.service';
-import { SubSink } from 'subsink';
-import { ThresholdTemplateService } from 'src/app/services/threshold-templates';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { LocationService } from 'src/app/services/location.service';
-import { ILocation } from 'src/app/models/location.model';
-import { Subject, Observable } from 'rxjs';
-import { AssetService } from 'src/app/services/asset.service';
-import { IAsset, IPagedAssets } from 'src/app/models/asset.model';
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import {SharedService} from './../../../../../src/app/services/shared.service';
+import {SubSink} from 'subsink';
+import {ThresholdTemplateService} from 'src/app/services/threshold-templates';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {LocationService} from 'src/app/services/location.service';
+import {ILocation} from 'src/app/models/location.model';
+import {Observable, Subject} from 'rxjs';
+import {AssetService} from 'src/app/services/asset.service';
+import {IAsset, IPagedAssets} from 'src/app/models/asset.model';
+import {debounceTime, switchMap} from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
 
 export interface IInventoryFilterBE {
   name: string;
@@ -59,7 +59,8 @@ export class InventoryComponent implements OnInit, OnDestroy {
     public locationService: LocationService,
     public activatedRoute: ActivatedRoute,
     protected sharedService: SharedService,
-  ) {}
+  ) {
+  }
 
   async ngOnInit() {
     this.getPagedAssets();
@@ -134,7 +135,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   public listStyleOnChange(event) {
-    const { value } = event;
+    const {value} = event;
     this.listStyleValue = value;
   }
 
@@ -142,7 +143,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
     return filters.pipe(
       debounceTime(500),
       switchMap(() => {
-        return this.assetService.getPagedAssets(this.pageNumber, this.pageSize, this.filterBE);
+        return this.assetService.getPagedAssets(0, this.pageSize, this.filterBE);
       })
     );
   }

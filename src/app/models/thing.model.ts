@@ -8,5 +8,4 @@ export interface IThing {
     batteryPercentage?: number;
     sensors?: ISensor[];
     assets?: IAsset[];
-    checked?: boolean;
 }

@@ -1,11 +1,11 @@
-<h6>Custom fields</h6>
+<h6>{{'WIZARD.CUSTOM_FIELDS' | translate}}</h6>
 <div *ngFor="let field of fields">
   <mat-form-field *ngIf="field.type === 'text' || field.type === 'number'">
     <input matInput [placeholder]="getLabelName(field.label)" [type]="field.type" [value]="getValue(field.id)"
-      (change)="setValue(field.id, $event.target.value)">
+           (change)="setValue(field.id, $event.target.value)">
   </mat-form-field>
   <mat-form-field *ngIf="field.type === 'list'">
-    <mat-select 
+    <mat-select
       matInput
       [placeholder]="getLabelName(field.label)"
       [value]="getValue(field.id)"
@@ -17,7 +17,7 @@
   <mat-form-field *ngIf="field.type === 'boolean'">
     <mat-select
       matInput
-      [placeholder]="getLabelName(field.label)" 
+      [placeholder]="getLabelName(field.label)"
       [value]="getValue(field.id)"
       (selectionChange)="setValue(field.id, $event.value)"
     >

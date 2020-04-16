@@ -324,6 +324,9 @@
       "FILLED_TO_ON": "on"
     }
   },
+  "WIZARD" : {
+    "CUSTOM_FIELDS": "Custom fields"
+  },
   "WALKING_TRAIL": {
     "TRAILS_OVERVIEW": "Trails overview",
     "NEW_TRAIL": "New trail",

@@ -5,6 +5,7 @@ import { TrailImagesComponent } from './trail-images.component';
 import { MatProgressSpinnerModule, MatCardModule } from '@angular/material';
 import { SlideshowModule } from 'ng-simple-slideshow';
 
+
 @NgModule({
   declarations: [TrailImagesComponent],
   imports: [
@@ -12,8 +13,10 @@ import { SlideshowModule } from 'ng-simple-slideshow';
     TranslateModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    SlideshowModule
+    SlideshowModule,
+    TranslateModule
   ],
   exports: [TrailImagesComponent]
 })
-export class TrailImagesModule { }
+export class TrailImagesModule {
+}

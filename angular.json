@@ -68,7 +68,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
+              "buildOptimizer": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -90,7 +90,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "extractCss": true,
               "namedChunks": false,
               "aot": true,
@@ -139,6 +139,12 @@
           "configurations": {
             "production": {
               "browserTarget": "vertical-foundations:build:production"
+            },
+            "uat": {
+              "browserTarget": "vertical-foundations:build:uat"
+            },
+            "development": {
+              "browserTarget": "vertical-foundations:build:development"
             }
           }
         },

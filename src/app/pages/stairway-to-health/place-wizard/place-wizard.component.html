@@ -14,15 +14,18 @@
               [ghostLocationId]="location.id"
               (changeLocation)="updateLocation($event)"
             ></pxs-location-explorer>
+
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
           <hr>
-          <button mat-button color="primary" (click)="openAddLocation()">{{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}</button>
+          <button mat-button color="primary"
+                  (click)="openAddLocation()">{{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}</button>
         </div>
       </div>
-      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.parent"
+                        (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
@@ -34,15 +37,19 @@
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
           <mat-form-field>
-            <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="NameCtrl" [(ngModel)]="location.name" required>
+            <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="NameCtrl"
+                   [(ngModel)]="location.name" required>
           </mat-form-field>
           <mat-form-field>
-            <textarea matInput [placeholder]="'GENERAL.DESCRIPTION' | translate" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
+            <textarea matInput [placeholder]="'GENERAL.DESCRIPTION' | translate" formControlName="DescriptionCtrl"
+                      [(ngModel)]="location.description"></textarea>
           </mat-form-field>
-          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields"
+                                  [(customFields)]="location.customFields"></pxs-form-custom-fields>
         </div>
       </div>
-      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup"
+                        (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation">
@@ -57,7 +64,8 @@
         (notify)="location.geolocation=$event"
         [geolocation]="location.geolocation"
       ></pxs-form-geolocation>
-      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next> 
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation"
+                        (next)="stepper.next()"></pxs-stepper-next>
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
@@ -67,12 +75,16 @@
      </div>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
+
         <div class="location-image">
-          <pxs-editable-image (change)="location.image=$event" [image]="location.image" [confirmationMessage]="editMode ? changeFloorPlanConfirmationMessage : null"></pxs-editable-image>
+          <pxs-editable-image (change)="location.image=$event" [image]="location.image"
+                              [confirmationMessage]="editMode ? changeFloorPlanConfirmationMessage : null"></pxs-editable-image>
         </div>
       </div>
     </div>
-    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" [text]="'GENERAL.SAVE_AND_CONTINUE' | translate" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation"
+                      [text]="'GENERAL.SAVE_AND_CONTINUE' | translate" [color]="'success'"
+                      (next)="submitAndContinue()"></pxs-stepper-next>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
@@ -89,12 +101,14 @@
           </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
-          <hr>
-          <button mat-button color="primary" (click)="openAddAsset()">{{ 'ASSETS.CREATE_NEW_ASSET' | translate }}</button>
-        </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+        <hr>
+        <button mat-button color="primary" (click)="openAddAsset()">{{ 'ASSETS.CREATE_NEW_ASSET' | translate }}</button>
       </div>
-      <pxs-stepper-next [completed]="location.geolocation" [text]="'LAYOUT.DONE' | translate" [color]="'success'" (next)="done()"></pxs-stepper-next> 
-    </mat-step>
+    </div>
+    <pxs-stepper-next [completed]="location.geolocation" [text]="'GENERAL.DONE' | translate" [color]="'success'"
+                      (next)="done()"></pxs-stepper-next>
+  </mat-step>
 </mat-horizontal-stepper>

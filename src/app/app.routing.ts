@@ -13,7 +13,8 @@ export class PublicAuthGuard implements CanActivate {
     public authService: AuthService,
     public sharedService: SharedService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     try {
@@ -68,7 +69,8 @@ export class HomeUserAuthGuard implements CanActivate {
     public authService: AuthService,
     public sharedService: SharedService,
     private router: Router
-  ) {}
+  ) {
+  }
 
   async canActivate(): Promise<boolean> {
     try {
@@ -163,6 +165,11 @@ export const AppRoutes: Routes = [
       path: '',
       loadChildren: () => import('./pages/devtest/devtest.module').then(m => m.DevtestModule)
     }]
+  },
+  {
+    component: PublicLayoutComponent,
+    path: 'autoclose',
+    loadChildren: './pages/general/autoclose/autoclose.module#AutocloseModule'
   },
   {
     path: 'contact',

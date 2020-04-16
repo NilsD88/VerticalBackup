@@ -127,8 +127,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
           result => {
             if (result) {
               this.asset.things.push(thing);
-            } else {
-              //this.thing.checked = false;
             }
           }
         );
@@ -241,7 +239,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
   }
 
 
-  // POPUPS
+// POPUPS
 
 
   public async openAddLocation() {

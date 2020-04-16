@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { MonthViewComponent } from './month-view.component';
 import { MatButtonModule, MatDialogModule } from '@angular/material';
 
+
 @NgModule({
   declarations: [MonthViewComponent],
   imports: [
@@ -18,8 +19,10 @@ import { MatButtonModule, MatDialogModule } from '@angular/material';
     MatDialogModule,
     IconModule,
     DialogModule,
-    DataErrorModule
+    DataErrorModule,
+    TranslateModule
   ],
   exports: [MonthViewComponent]
 })
-export class MonthViewModule {}
+export class MonthViewModule {
+}

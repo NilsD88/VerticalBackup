@@ -25,6 +25,8 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
     CountPastWeekModule,
     TotalCountPastWeekModule,
     TotalCountPastYearModule,
+    TranslateModule,
   ]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}

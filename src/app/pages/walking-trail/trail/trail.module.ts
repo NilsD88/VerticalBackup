@@ -15,6 +15,7 @@ import { AssetsCounterModule } from 'src/app/shared/people-counting/location/ass
 import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explorer/asset-explorer.module';
 
 
+
 @NgModule({
   declarations: [TrailComponent],
   imports: [
@@ -29,8 +30,10 @@ import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explore
     TrailMapModule,
     SummaryStatisticsModule,
     AssetExplorerModule,
-    MapModule
+    MapModule,
+    TranslateModule
   ],
   exports: [TrailComponent]
 })
-export class TrailModule { }
+export class TrailModule {
+}
