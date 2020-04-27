@@ -3,17 +3,17 @@
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.PARENT' |translate }}</ng-template>
       <div class="center">
-        <h2>{{'STAIRWAY_TO_HEALTH.SELECT_PARENT_LOC' | translate}}</h2>
+        <h2>{{'STAIRWAY_TO_HEALTH.SELECT_PARENT_LOC' | translate}}</h2>
       </div>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
-            <pxs-location-explorer
-              *ngIf="displayLocationExplorer"
-              [selectableLocation]="true"
-              [selectedLocation]="location.parent"
-              [ghostLocationId]="location.id"
-              (changeLocation)="updateLocation($event)"
-            ></pxs-location-explorer>
+          <pxs-location-explorer
+            *ngIf="displayLocationExplorer"
+            [selectableLocation]="true"
+            [selectedLocation]="location.parent"
+            [ghostLocationId]="location.id"
+            (changeLocation)="updateLocation($event)"
+          ></pxs-location-explorer>
 
         </div>
       </div>
@@ -31,9 +31,9 @@
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
       <ng-template matStepLabel>{{ 'GENERAL.DESCRIPTION' | translate }}</ng-template>
-       <div class="center">
-         <h2>{{'STAIRWAY_TO_HEALTH.PROVIDE_NAME_DESCRIPTION' | translate}}</h2>
-       </div>
+      <div class="center">
+        <h2>{{'STAIRWAY_TO_HEALTH.PROVIDE_NAME_DESCRIPTION' | translate}}</h2>
+      </div>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
           <mat-form-field>
@@ -54,11 +54,11 @@
   </mat-step>
   <mat-step [completed]="location.geolocation">
     <form>
-      <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
+      <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
       <div class="center">
-        <h2>{{'STAIRWAY_TO_HEALTH.POSITION_ON_MAP' | translate}}</h2>
+        <h2>{{'STAIRWAY_TO_HEALTH.POSITION_ON_MAP' | translate}}</h2>
       </div>
-      <pxs-form-geolocation 
+      <pxs-form-geolocation
         *ngIf="location.parent && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
         [location]="location.parent"
         (notify)="location.geolocation=$event"
@@ -69,10 +69,10 @@
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
-    <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
-     <div class="center">
-       <h2>{{'STAIRWAY_TO_HEALTH.SELECT_PLAN_VIEW_PLACE' | translate}}</h2>
-     </div>
+    <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
+    <div class="center">
+      <h2>{{'STAIRWAY_TO_HEALTH.SELECT_PLAN_VIEW_PLACE' | translate}}</h2>
+    </div>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
 
@@ -87,17 +87,16 @@
                       (next)="submitAndContinue()"></pxs-stepper-next>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
-     <div class="center">
-       <h2>{{'STAIRWAY_TO_HEALTH.SELECT_ADD_ASSET_PLACE' | translate}}</h2>
-     </div>
-      <div class="row">
-        <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
-          <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
-            <div>
-              <pxs-icon icon="document-img" class="asset"></pxs-icon>
-              {{asset.name}}
-            </div>
+    <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
+    <div class="center">
+      <h2>{{'STAIRWAY_TO_HEALTH.SELECT_ADD_ASSET_PLACE' | translate}}</h2>
+    </div>
+    <div class="row">
+      <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
+        <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
+          <div>
+            <pxs-icon icon="document-img" class="asset"></pxs-icon>
+            {{asset.name}}
           </div>
         </div>
       </div>
