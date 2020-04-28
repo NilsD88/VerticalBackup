@@ -5,7 +5,6 @@ import {SharedService} from './services/shared.service';
 import {User} from './models/user.model';
 import {PublicLayoutComponent} from './layout/public.layout.component';
 import {PrivateLayoutComponent} from './layout/private.layout.component';
-import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class PublicAuthGuard implements CanActivate {
@@ -124,7 +123,7 @@ export class HomeUserAuthGuard implements CanActivate {
 @Injectable()
 export class AdminAuthGuard implements CanActivate {
 
-  constructor(public authService: AuthService, public sharedService: SharedService, private router: Router, private translateService: TranslateService) {
+  constructor(public authService: AuthService, public sharedService: SharedService, private router: Router) {
   }
 
   async canActivate(): Promise<boolean> {
@@ -138,20 +137,7 @@ export class AdminAuthGuard implements CanActivate {
     } catch (err) {
       switch (err.status) {
         case 401:
-          let message = '';
-          if (this.sharedService.user.impersonation) {
-            message = await this.translateService.get('GENERAL.SESSION_EXPIRED_WILL_STOP_IMPERSONATION').toPromise();
-          } else {
-            message = await this.translateService.get('GENERAL.SESSION_EXPIRED_WILL_LOGOUT').toPromise();
-          }
-          const snackBarRef = this.sharedService.showNotification(message, 'warning', 5000);
-          snackBarRef.afterDismissed().subscribe(null, null, () => {
-            if (this.sharedService.user.impersonation) {
-              this.router.navigate(['/autoclose']);
-            } else {
-              this.router.navigate(['/']);
-            }
-          });
+          this.router.navigate(['/error/401']);
           break;
         case 403:
           this.router.navigate(['/error/403']);
