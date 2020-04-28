@@ -536,8 +536,13 @@
       "SMARTMONITORING": "Smart Monitoring User Guide",
       "SMARTMONITORINGURL": "https://mythings.proximus.be/files/SmartMonitoringUserManual_V1.pdf",
       "SMARTTANK": "Smart Tank User Guide",
-      "SMARTTANKURL": "https://mythings.proximus.be/files/SmartTankUserManual_V1.pdf"
-    },
+      "SMARTTANKURL": "https://mythings.proximus.be/files/SmartTankUserManual_V1.pdf",
+      "SMARTCOUNTING": "Smart Counting User Guide",
+      "SMARTCOUNTINGURL": "https://mythings.proximus.be/files/SmartCountingUserManual_V1.pdf",
+      "WALKINGTRAILS": "Walking Trails User Guide",
+      "WALKINGTRAILSURL": "https://mythings.proximus.be/files/WalkingTrailsUserManual_V1.pdf",
+      "STAIRWAY": "Stairway 2 Health User Guide",
+      "STAIRWAYURL": "https://mythings.proximus.be/files/StairwayToHealthUserManual_V1.pdf"},
     "SUPPORT_DETAILS": ""
   },
   "LOGIN_ERROR": {

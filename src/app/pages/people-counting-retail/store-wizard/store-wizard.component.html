@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" [text]="'Save and continue'" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" [text]="'GENERAL.SAVE_AND_CONTINUE' | translate" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
 
   <mat-step>
