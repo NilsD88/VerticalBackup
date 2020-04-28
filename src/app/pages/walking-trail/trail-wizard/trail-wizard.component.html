@@ -113,6 +113,6 @@
           <button mat-button color="primary" (click)="openAddAsset()">{{ 'ASSETS.CREATE_NEW_ASSET' | translate }}</button>
         </div>
       </div>
-      <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'LAYOUT.DONE' | translate" [color]="'success'" (next)="done()"></pxs-stepper-next> 
+      <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'GENERAL.DONE' | translate" [color]="'success'" (next)="done()"></pxs-stepper-next> 
     </mat-step>
 </mat-horizontal-stepper>
