@@ -10,7 +10,7 @@
     </div>
     <div *ngIf="selectedLocation && selectedLocation.parent" class="parent-location-container">
       <a (click)="goToParentLocation(selectedLocation.parent)" *ngIf="selectedLocation.parent && selectedLocation.parent.id !== UNKNOWN_PARENT_ID">
-        <pxs-icon icon="chevron-left"></pxs-icon>
+        <pxs-icon icon="chevron-left" class="chevron-left"></pxs-icon>
         {{selectedLocation.name}}
       </a>
       <a *ngIf="selectedLocation.parent.id === UNKNOWN_PARENT_ID">

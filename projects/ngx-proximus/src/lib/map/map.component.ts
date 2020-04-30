@@ -1,4 +1,3 @@
-import { TranslateService } from '@ngx-translate/core';
 import { SharedService } from './../../../../../src/app/services/shared.service';
 import { SubSink } from 'subsink';
 import { MapDialogComponent } from '../map-dialog/map-dialog.component';
@@ -65,7 +64,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.assetFilter) {
       if (changes.assetFilter.currentValue !== changes.assetFilter.previousValue) {
-        this.populateMarkersWithAssets();
+        this.populateAssets();
       }
     }
   }
@@ -83,7 +82,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         if (isNullOrUndefined(this.selectedLocation.id)) {
           return of([]);
         } else {
-          // TODO: reach only asset with the filter?
+          // TODO: reach only asset with the filter? (asset name, location name)
           return this.getAssetsByLocation();
         }
       })
@@ -94,7 +93,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         (data: IAsset[]) => {
           this.markers = [];
           this.assets = data;
-          this.populateMarkersWithAssets();
+          this.populateAssets();
         }
       )
     );
@@ -163,15 +162,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.initMap();
   }
 
-  public populateMarkersWithAssets() {
+  public populateAssets() {
     this.markers = [];
     const assetWithoutPosition: IAsset[] = [];
 
     if (this.assets && this.assets.length) {
       for (const asset of this.assets) {
         if (asset.geolocation) {
-          const that = this;
-          const assetIcon = this.generateAssetMarker(asset);
+          const assetIcon = this.generateAssetIcon(asset);
           const newMarker = marker(
             [asset.geolocation.lat, asset.geolocation.lng],
             {
@@ -181,6 +179,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           newMarker.on('mouseover', function() {
             this.openPopup();
           });
+          newMarker['asset'] = asset;
           this.markers.push(newMarker);
         } else {
           assetWithoutPosition.push(asset);
@@ -211,7 +210,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public generateAssetMarker(asset: IAsset = {}) {
+  public generateAssetIcon(asset: IAsset = {}) {
     return divIcon({
         className: 'map-marker-asset',
         iconSize: null,
@@ -219,7 +218,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  protected populateMarkersWithchildren() {
+  protected populateLocations() {
     this.locationsLayer = [];
     const locationIcon = divIcon({
       className: 'map-marker-location',
@@ -247,7 +246,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initMap() {
-    this.populateMarkersWithchildren();
+    this.populateLocations();
     this.imageBounds = null;
     const floorPlan = (this.selectedLocation) ? this.selectedLocation.image : null;
     if (floorPlan) {
@@ -369,7 +368,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     if (this.selectedLocation.assets && this.selectedLocation.assets.length) {
       this.assets = this.selectedLocation.assets;
       this.assetsRequestSource.next('STOP');
-      this.populateMarkersWithAssets();
+      this.populateAssets();
     } else {
       this.markers = [];
       this.assets = [];

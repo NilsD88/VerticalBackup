@@ -12,3 +12,5 @@ export interface ITankMonitoringAsset extends IAsset {
 }
 
 export type TTankMonitoringStatus = 'EMPTY' | 'LOW' | 'OK' | 'UNKNOWN';
+
+export const STATUSES: TTankMonitoringStatus[] = ['OK', 'LOW', 'UNKNOWN', 'EMPTY'];

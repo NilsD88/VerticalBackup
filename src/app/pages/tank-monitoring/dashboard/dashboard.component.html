@@ -11,8 +11,8 @@
         <pxs-range-slider [min]="0" [max]="100" [startFrom]="0" [startTo]="100" [postfix]="'%'"
           (rangeChange)="updateFillLevelFilter($event)"></pxs-range-slider>
       </div>
-      <pxs-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="300"
-        [colors]="chartColors"></pxs-pie-chart>
+      <pvf-tankmonitoring-pie-chart *ngIf="chartData" [series]="chartData" (filter)="pieClicked($event)" [height]="300"
+        [colors]="chartColors"></pvf-tankmonitoring-pie-chart>
     </div>
     <div class="col-md-9 col-xs-12" style="padding-left:0; min-height: 400px;">
       <pvf-tankmonitoring-map *ngIf="rootLocation" [rootLocation]="rootLocation" [tanks]="filteredAssetsOnMap" [assetUrl]="assetUrl"></pvf-tankmonitoring-map>

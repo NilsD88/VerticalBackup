@@ -97,24 +97,35 @@
             }            
         }
     }
-    
-}
 
-.map-trail-container {
-    position: relative;
-    height: 100%;
-    z-index: 1;
-    > .parent-location-container {
-        position: absolute;
-        z-index: 999999;
-        background: $primary;
-        right: 10px;
-        top: 10px;
-        padding: 10px;
-        color: white;
-        a {
-            text-decoration: none;
+    .map-trail-container {
+        position: relative;
+        height: 100%;
+        z-index: 1;
+        > .parent-location-container {
+            position: absolute;
+            z-index: 999999;
+            background: $primary;
+            right: 10px;
+            top: 10px;
+            padding: 10px;
             color: white;
+            
+            a {
+                text-decoration: none;
+                color: rgba(255,255,255,0.8);
+    
+                &:hover {
+                    color: white !important;
+                    text-decoration: none !important;
+    
+                    span:hover {
+                        color: white !important;
+                        text-decoration: none !important;
+                    }
+                }
+            }
         }
     }
+    
 }

@@ -321,7 +321,6 @@ export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
   private displayChart() {
     this.chartLoading = false;
     try {
-      console.log(cloneDeep(this.chartOptions));
       this.chart = Highcharts.chart('calendar-view-chart-container', this.chartOptions);
     } catch (error) {
       this.chartOptions.series = [];
