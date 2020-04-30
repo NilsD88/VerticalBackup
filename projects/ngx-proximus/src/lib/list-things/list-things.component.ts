@@ -9,6 +9,8 @@ import { ThingService } from 'src/app/services/thing.service';
 import { isNullOrUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import {uniqBy} from 'lodash';
+import { MAT_CHECKBOX_CLICK_ACTION} from '@angular/material/checkbox';
+
 
 
 
@@ -20,7 +22,10 @@ interface IThingEditing extends IThing {
 @Component({
   selector: 'pxs-list-things',
   templateUrl: './list-things.component.html',
-  styleUrls: ['./list-things.component.scss']
+  styleUrls: ['./list-things.component.scss'],
+  providers: [
+    { provide: MAT_CHECKBOX_CLICK_ACTION, useValue: 'noop' }
+  ]
 })
 export class ListThingsComponent implements OnInit, OnDestroy {
 

@@ -112,8 +112,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       //check if assigned to something else
       this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
       this.foundAssets = this.thing.assets;
-      if(this.foundAssets.length > 0) {
-
+      if (this.foundAssets.length > 0) {
         this.dialog.open(PopupConfirmationComponent, {
           data: {
             title: `Warning`,
@@ -135,7 +134,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
 
   public thresholdTemplateIsCompatibleWithThings() {
     const thresholdTemplate = this.asset.thresholdTemplate;
