@@ -1,5 +1,5 @@
 import { SharedService } from './../../../../services/shared.service';
-import { ITankMonitoringAsset } from './../../../../models/tankmonitoring/asset.model';
+import { ITankMonitoringAsset, STATUSES, TTankMonitoringStatus } from './../../../../models/tankmonitoring/asset.model';
 import { MapComponent } from './../../../../../../projects/ngx-proximus/src/lib/map/map.component';
 import { Component, OnInit, ChangeDetectorRef, OnChanges, Input, SimpleChanges } from '@angular/core';
 import { AssetService } from 'src/app/services/asset.service';
@@ -7,7 +7,7 @@ import { LocationService } from 'src/app/services/location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
 import { TankMonitoringMapPopupComponent } from './popup/popup.component';
-import { divIcon, Marker, marker } from 'leaflet';
+import { divIcon, Marker, marker, Point } from 'leaflet';
 import { of } from 'rxjs';
 import { ILocation } from 'src/app/models/location.model';
 import { ITankMonitoringLocation } from 'src/app/models/tankmonitoring/location.model';
@@ -89,6 +89,37 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
 
   ngOnInit() {
     super.ngOnInit();
+    // If there is only one root location, open it
+    if (!this.rootLocation.id && this.rootLocation.children.length === 1) {
+      this.goToChild(this.rootLocation.children[0], true);
+    }
+    this.markerClusterOptions = {
+      iconCreateFunction(cluster) {
+        const childCount = cluster.getChildCount();
+        const markers = cluster.getAllChildMarkers();
+
+        let status: TTankMonitoringStatus;
+        const statuses = markers.map((x: any) => x.asset.status);
+        for (const STATUS of STATUSES) {
+          if (statuses.some(x => x === STATUS)) {
+            status = STATUS;
+          }
+        }
+
+        let c = ' marker-cluster-';
+
+        if (childCount < 10) {
+          c += 'small';
+        } else if (childCount < 100) {
+          c += 'medium';
+        } else {
+          c += 'large';
+        }
+
+        return divIcon({ html: '<div><span>' + childCount + '</span></div>',
+         className: 'marker-cluster tank-monitoring ' + status.toLocaleLowerCase() + c, iconSize: new Point(40, 40) });
+        }
+    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,18 +132,22 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
 
   getAssetsByLocation() {
     const locationId = this.selectedLocation.id;
-    return of(this.tanks.filter(tank => (tank.location || {}).id === locationId));
+    if (this.tanks) {
+      return of(this.tanks.filter(tank => (tank.location || {}).id === locationId));
+    } else {
+      return of([]);
+    }
   }
 
-  protected populateMarkersWithchildren() {
+  protected populateLocations() {
     this.locationsLayer = [];
     this.selectedLocation = this.selectedLocation ? this.selectedLocation : this.rootLocation;
     const children = this.selectedLocation.children;
+
     if (children && children.length) {
       for (const child of children as ITankMonitoringLocation[]) {
         child.parent = this.selectedLocation;
         let locationIcon;
-        console.log(child.status);
         switch (child.status) {
           case 'EMPTY':
             locationIcon = locationIconTankMonitoringEmptyFuel;
@@ -129,7 +164,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
         const newMarker = marker(
           [child.geolocation.lat, child.geolocation.lng],
           {
-            icon: locationIcon
+            icon: locationIcon,
           }
         ).bindPopup(() => this.createLocationPopup(child, this.leafUrl, newMarker));
         newMarker.on('mouseover', function() {
@@ -163,9 +198,7 @@ export class TankMonitoringMapComponent extends MapComponent implements OnInit, 
     return popupEl;
   }
 
-
-
-  generateAssetMarker(asset: ITankMonitoringAsset) {
+  generateAssetIcon(asset: ITankMonitoringAsset) {
     const status = asset.status;
     switch (status) {
       case 'EMPTY':

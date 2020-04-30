@@ -18,6 +18,28 @@
                 font-size: 1.6em;
             }
         }
+
+        &.tank-monitoring {
+            &.unknown {
+                background: $severity-unknown;
+            }
+
+            &.low {
+                .pxi-map-marker, .pxi-map-hotspot {
+                    background: $severity-low;
+                }
+            }
+            &.empty {
+                .pxi-map-marker, .pxi-map-hotspot {
+                    background: $severity-critical;
+                }
+            }
+            &.ok {
+                .pxi-map-marker, .pxi-map-hotspot {
+                    background: $severity-ok;
+                }
+            }
+        }
     }
 
     .leaflet-marker-icon {
@@ -53,7 +75,7 @@
 
             &.unknown-fuel {
                 .pxi-map-marker, .pxi-map-hotspot {
-                    background: $inactive;
+                    background: $severity-unknown;
                     color: white;
                 }
             }
@@ -72,24 +94,36 @@
             }
         }
     }
+
+    .map-asset-container {
+        position: relative;
+        height: 100%;
+        z-index: 1;
+        > .parent-location-container {
+            position: absolute;
+            z-index: 999999;
+            background: $primary;
+            right: 10px;
+            top: 10px;
+            padding: 10px;
+            color: white;
+    
+            a {
+                text-decoration: none;
+                color: rgba(255,255,255,0.8);
+    
+                &:hover {
+                    color: white !important;
+                    text-decoration: none !important;
+
+                    span:hover {
+                        color: white !important;
+                        text-decoration: none !important;
+                    }
+                }
+            }
+        }
+    }
     
 }
 
-.map-asset-container {
-    position: relative;
-    height: 100%;
-    z-index: 1;
-    > .parent-location-container {
-        position: absolute;
-        z-index: 999999;
-        background: $primary;
-        right: 10px;
-        top: 10px;
-        padding: 10px;
-        color: white;
-        a {
-            text-decoration: none;
-            color: white;
-        }
-    }
-}

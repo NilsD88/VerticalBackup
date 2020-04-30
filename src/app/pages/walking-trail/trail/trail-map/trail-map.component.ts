@@ -126,14 +126,14 @@ export class TrailMapComponent implements OnInit {
       };
     }
     if (this.selectedTrail) {
-      this.populateMarkersWithAssets(this.selectedTrail.assets);
+      this.populateAssets(this.selectedTrail.assets);
     } else {
-      this.populateMarkersWithTrails();
+      this.populateTrails();
     }
     this.changeDetectorRef.detectChanges();
   }
 
-  private async populateMarkersWithTrails() {
+  private async populateTrails() {
     this.trailsLayer = [];
     this.assetsLayer = [];
 
@@ -235,7 +235,7 @@ export class TrailMapComponent implements OnInit {
     }
   }
 
-  private populateMarkersWithAssets(assets: IAsset[]) {
+  private populateAssets(assets: IAsset[]) {
     this.assetsLayer = [];
     this.trailsLayer = [];
 

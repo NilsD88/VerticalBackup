@@ -1,4 +1,4 @@
-import { TTankMonitoringStatus } from './../../../models/tankmonitoring/asset.model';
+import { TTankMonitoringStatus, STATUSES } from './../../../models/tankmonitoring/asset.model';
 import { isNullOrUndefined } from 'util';
 import { ITankMonitoringLocation } from './../../../models/tankmonitoring/location.model';
 import { SharedService } from './../../../services/shared.service';
@@ -16,6 +16,7 @@ import { ILocation } from 'src/app/models/location.model';
 import { TankMonitoringLocationService } from 'src/app/services/tankmonitoring/location.service';
 import * as moment from 'moment';
 
+
 interface IRange {
   min: number;
   max: number;
@@ -28,8 +29,6 @@ interface IFilterFE {
   fillLevel: IRange;
   batteryLevel: IRange;
 }
-
-const STATUSES: TTankMonitoringStatus[] = ['UNKNOWN', 'OK', 'LOW', 'EMPTY'];
 
 @Component({
   selector: 'pvf-dashboard',
@@ -66,10 +65,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   };
 
   public chartColors = [
-    'rgba(204, 0, 0, 0.7)',
-    'rgba(255, 204, 51, 1)',
-    'rgba(102, 204, 0, 0.7)',
-    'rgba(100, 100, 100, 0.7)',
+    'rgba(204, 0, 0, 0.7)', // empty
+    'rgba(255, 204, 51, 1)', // low
+    'rgba(102, 204, 0, 0.7)', // ok
+    'rgba(100, 100, 100, 0.7)', // unknow
   ];
 
   public displayedColumns: string[] = ['name', 'thing', 'location.name', 'fill', 'battery', 'actions'];
@@ -100,6 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       };
     }
     this.assets = await this.assetService.getAssets().toPromise();
+
     this.assets.forEach((asset) => {
       const THINGS = asset.things;
       if ((THINGS || []).length) {
@@ -129,6 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       }
     });
+
     this.updateDataSourceWithFilteredAssets(this.assets);
     this.updateLocationWithStatus(rootLocation);
     this.rootLocation = rootLocation;
@@ -139,8 +140,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     this.changeFilterFE();
   }
-
-
 
   private updateFilteredAssetsOnTable() {
     const filteredAssets = cloneDeep(this.assets).filter((asset: ITankMonitoringAsset) => {
@@ -270,7 +269,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.createChartData(assets);
   }
 
-
   public async createChartData(assets: ITankMonitoringAsset[]) {
     const chartData = [];
     const STATUS_ASSETS = {
@@ -295,7 +293,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.chartData = chartData;
   }
-
 
   public pieClicked(keyNames: string[]) {
     this.filterFE.statuses = keyNames;
@@ -342,6 +339,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.sharedService.downloadCSV('TankMonitoring_' + moment().format('DD/MM/YYYY - hh:mm:ss'), csv);
   }
+
 
   private updateLocationWithStatus(location: ITankMonitoringLocation) {
     let status: TTankMonitoringStatus;
