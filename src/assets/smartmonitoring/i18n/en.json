@@ -370,7 +370,7 @@
     "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
     "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
   },
-  "STAIRWAY_TO_HEALTH": {
+  "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Places overview",
     "NEW_PLACE": "New place",
     "TOTAL_COUNT_PLACES": "Total count view of the place",

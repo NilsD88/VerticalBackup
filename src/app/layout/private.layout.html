@@ -150,7 +150,7 @@
   </div>
   <div mat-menu-item>
     <a mat-menu-item [routerLink]="['/private','walking-trails', 'overview']" routerLinkActive="router-link-active">
-      {{ 'WALKING_TRAIL.TRAILS_OVERVIEW' | translate }}
+      {{ 'WALKING_TRAILS.TRAILS_OVERVIEW' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
@@ -158,7 +158,7 @@
       mat-menu-item [routerLink]="['/private','walking-trails', 'trail', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'WALKING_TRAIL.NEW_TRAIL' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'WALKING_TRAILS.NEW_TRAIL' | translate }}</span>
     </a>
   </div>
 </mat-menu>
@@ -193,7 +193,7 @@
   <div mat-menu-item>
     <button mat-menu-item [routerLink]="['/private','stairway-2-health', 'overview']"
             routerLinkActive="router-link-active">
-      {{ 'STAIRWAY_TO_HEALTH.PLACES_OVERVIEW' | translate }}
+      {{ 'STAIRWAY_2_HEALTH.PLACES_OVERVIEW' | translate }}
     </button>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
@@ -201,7 +201,7 @@
       mat-menu-item [routerLink]="['/private','stairway-2-health', 'place', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'STAIRWAY_TO_HEALTH.NEW_PLACE' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'STAIRWAY_2_HEALTH.NEW_PLACE' | translate }}</span>
     </a>
   </div>
 </mat-menu>

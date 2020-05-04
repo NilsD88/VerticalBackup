@@ -3,7 +3,7 @@
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.PARENT' |translate }}</ng-template>
       <div class="center">
-        <h2>{{'STAIRWAY_TO_HEALTH.SELECT_PARENT_LOC' | translate}}</h2>
+        <h2>{{'STAIRWAY_2_HEALTH.SELECT_PARENT_LOC' | translate}}</h2>
       </div>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
@@ -32,7 +32,7 @@
     <form [formGroup]="descriptionFormGroup">
       <ng-template matStepLabel>{{ 'GENERAL.DESCRIPTION' | translate }}</ng-template>
        <div class="center">
-         <h2>{{'STAIRWAY_TO_HEALTH.PROVIDE_NAME_DESCRIPTION' | translate}}</h2>
+         <h2>{{'STAIRWAY_2_HEALTH.PROVIDE_NAME_DESCRIPTION' | translate}}</h2>
        </div>
       <div class="row">
         <div class="col-xs-12 col-md-6 mx-auto">
@@ -56,7 +56,7 @@
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
       <div class="center">
-        <h2>{{'STAIRWAY_TO_HEALTH.POSITION_ON_MAP' | translate}}</h2>
+        <h2>{{'STAIRWAY_2_HEALTH.POSITION_ON_MAP' | translate}}</h2>
       </div>
       <pxs-form-geolocation 
         *ngIf="location.parent && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
@@ -71,7 +71,7 @@
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
     <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
      <div class="center">
-       <h2>{{'STAIRWAY_TO_HEALTH.SELECT_PLAN_VIEW_PLACE' | translate}}</h2>
+       <h2>{{'STAIRWAY_2_HEALTH.SELECT_PLAN_VIEW_PLACE' | translate}}</h2>
      </div>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
@@ -89,7 +89,7 @@
   <mat-step>
     <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
      <div class="center">
-       <h2>{{'STAIRWAY_TO_HEALTH.SELECT_ADD_ASSET_PLACE' | translate}}</h2>
+       <h2>{{'STAIRWAY_2_HEALTH.SELECT_ADD_ASSET_PLACE' | translate}}</h2>
      </div>
       <div class="row">
         <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">

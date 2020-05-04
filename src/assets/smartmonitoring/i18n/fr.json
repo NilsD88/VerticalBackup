@@ -369,7 +369,7 @@
     "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
     "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
   },
-  "STAIRWAY_TO_HEALTH": {
+  "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Aperçu des emplacements",
     "NEW_PLACE": "Nouvel emplacement",
     "TOTAL_COUNT_PLACES":"Nombre total de vues de l’emplacement",
