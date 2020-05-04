@@ -182,7 +182,7 @@
     "CHART_TYPE": "Chart type",
     "USE_ON_CHART": "Use on chart",
     "USE_ON_NOTIFICATION": "Use on notification",
-    "ONLY_APPLY_FOR_TANK_MONITORING": "This applies only for the monitoring charts",
+    "ONLY_APPLY_FOR_SMART_TANK": "This applies only for the monitoring charts",
     "ONLY_APPLY_FOR_SMART_COUNTING": "This applies only for the smart counting chart"
   },
   "ALERTS": {
@@ -307,7 +307,7 @@
       "CRITICAL": "Critical"
     }
   },
-  "TANK_MONITORING": {
+  "SMART_TANK": {
     "TANK_INVENTORY": "Tank inventory",
     "NEW_TANK": "New tank",
     "FUEL_LEVEL": "Fuel level",

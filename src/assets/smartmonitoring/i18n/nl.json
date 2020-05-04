@@ -182,7 +182,7 @@
     "CHART_TYPE": "Grafiek type",
     "USE_ON_CHART": "Gebruik op grafiek",
     "USE_ON_NOTIFICATION": "Gebruik bij notificatie",
-    "ONLY_APPLY_FOR_TANK_MONITORING": "Dit geldt enkel voor de monitoring grafieken",
+    "ONLY_APPLY_FOR_SMART_TANK": "Dit geldt enkel voor de monitoring grafieken",
     "ONLY_APPLY_FOR_SMART_COUNTING": "Dit geldt enkel voor de Smart counting grafiek"
   },
   "ALERTS": {
@@ -307,7 +307,7 @@
       "CRITICAL": "Kritisch"
     }
   },
-  "TANK_MONITORING": {
+  "SMART_TANK": {
     "TANK_INVENTORY": "Tankinventarisatie",
     "NEW_TANK": "Nieuwe tank",
     "FUEL_LEVEL": "Brandstofniveau",

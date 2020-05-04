@@ -20,9 +20,6 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
     {label: 'Inventory', url: '/private/inventory'},
     {label: 'Locations', url: '/private/locations'},
     {label: 'Alerts', url: '/private/alerts', badge: {label: '4', class: 'bg-error text-white'}},
-    {label: 'Tank Monitoring', url: ''},
-    {label: 'Visitor Counting', url: ''},
-    {label: 'Manage', url: ''}
   ];
   public footerConfig: IFooterConfig;
   public searchResults: any[];
@@ -93,9 +90,9 @@ export class PrivateLayoutComponent implements OnInit, OnDestroy {
 
   autocompleteClick(event: {name: string; id: string; type: string}) {
     if (event.type === 'asset') {
-      this.router.navigateByUrl(`/private/smartmonitoring/detail/${event.id}`);
+      this.router.navigateByUrl(`/private/smart-monitoring/detail/${event.id}`);
     } else if (event.type === 'location') {
-      this.router.navigateByUrl(`/private/smartmonitoring/inventory/locations/${event.id}`);
+      this.router.navigateByUrl(`/private/smart-monitoring/inventory/locations/${event.id}`);
     }
     this.searchResults = null;
   }

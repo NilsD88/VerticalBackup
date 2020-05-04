@@ -71,10 +71,10 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item [label]="'Smart monitoring'" [url]="'/private/smartmonitoring'"
+  <pxs-menu-item [label]="'Smart monitoring'" [url]="'/private/smart-monitoring'"
     [mat-menu-trigger-for]="smartMonitoring"></pxs-menu-item>
-  <pxs-menu-item [label]="'Tank monitoring'" [url]="'/private/tankmonitoring'"
-    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
+  <pxs-menu-item [label]="'Smart tank'" [url]="'/private/smart-tank'"
+    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" [mat-menu-trigger-for]="smartTank"></pxs-menu-item>
   <pxs-menu-item [label]="'Walking trail'" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
     [mat-menu-trigger-for]="walkingtrail"></pxs-menu-item>
   <pxs-menu-item [label]="'Asset tracking'" *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
@@ -93,27 +93,27 @@
 
 <mat-menu #smartMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'inventory']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','smart-monitoring', 'inventory']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.INVENTORY' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
     <a
-      mat-menu-item [routerLink]="['/private','smartmonitoring', 'assets', 'new']"
+      mat-menu-item [routerLink]="['/private','smart-monitoring', 'assets', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">{{ 'ASSETS.NEW_ASSET' | translate }}</span>
     </a>
   </div>
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention']"
+    <a mat-menu-item [routerLink]="['/private','smart-monitoring', 'points-of-attention']"
        routerLinkActive="router-link-active">
       {{ 'POINTS_OF_ATTENTION.MY_POINTS_OF_ATTENTION' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
     <a
-      mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new']"
+      mat-menu-item [routerLink]="['/private','smart-monitoring', 'points-of-attention', 'point-of-attention', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">{{ 'POINTS_OF_ATTENTION.NEW_POINT_OF_ATTENTION' | translate }}</span>
@@ -121,23 +121,23 @@
   </div>
 </mat-menu>
 
-<mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
+<mat-menu #smartTank="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','tankmonitoring', 'dashboard']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','smart-tank', 'dashboard']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.DASHBOARD' | translate }}
     </a>
   </div>
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','tankmonitoring', 'inventory']" routerLinkActive="router-link-active">
-      {{ 'TANK_MONITORING.TANK_INVENTORY' | translate }}
+    <a mat-menu-item [routerLink]="['/private','smart-tank', 'inventory']" routerLinkActive="router-link-active">
+      {{ 'SMART_TANK.TANK_INVENTORY' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item  [routerLink]="['/private', 'tankmonitoring', 'assets', 'new']"
+      mat-menu-item  [routerLink]="['/private', 'smart-tank', 'assets', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'TANK_MONITORING.NEW_TANK' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'SMART_TANK.NEW_TANK' | translate }}</span>
     </a>
   </div>
 </mat-menu>

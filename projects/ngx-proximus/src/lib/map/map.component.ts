@@ -31,7 +31,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedLocation: ILocation;
   @Input() customAssetService;
   @Input() displayAssets = true;
-  @Input() assetUrl = '/private/smartmonitoring/detail/';
+  @Input() assetUrl = '/private/smart-monitoring/detail/';
   @Input() leafUrl: string;
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();

@@ -21,7 +21,7 @@ import { findLocationById } from 'src/app/shared/utils';
 export class AssetExplorerProjectionComponent extends LocationExplorerComponent implements OnInit, OnDestroy {
 
   @Input() customAssetService;
-  @Input() assetUrl = '/private/smartmonitoring/detail/';
+  @Input() assetUrl = '/private/smart-monitoring/detail/';
   @Input() assetPicker = false;
 
   @Output() assetClicked: EventEmitter<IAsset> = new EventEmitter<IAsset>();

@@ -182,7 +182,7 @@
     "CHART_TYPE": "Type de graphique",
     "USE_ON_CHART": "Utiliser dans les graphiques",
     "USE_ON_NOTIFICATION": "Utiliser dans les alertes",
-    "ONLY_APPLY_FOR_TANK_MONITORING": "Ceci ne s'applique qu'aux graphiques de Monitoring",
+    "ONLY_APPLY_FOR_SMART_TANK": "Ceci ne s'applique qu'aux graphiques de Monitoring",
     "ONLY_APPLY_FOR_SMART_COUNTING": "Ceci ne s'applique qu'aux graphiques de Smart Counting"
   },
   "ALERTS": {
@@ -307,7 +307,7 @@
       "CRITICAL": "Critique"
     }
   },
-  "TANK_MONITORING": {
+  "SMART_TANK": {
     "TANK_INVENTORY": "Inventaire des réservoirs",
     "NEW_TANK": "Nouveau réservoir",
     "FUEL_LEVEL": "Niveau de carburant",

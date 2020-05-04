@@ -1,8 +1,10 @@
 import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
-import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
-import { AssetService } from 'src/app/services/asset.service';
+import { SensorService } from 'src/app/services/sensor.service';
 import { ThingService } from 'src/app/services/thing.service';
+import { ISensorType } from '../../../models/sensor-type.model';
+import { SmartTankAssetService } from './../../../services/smart-tank/asset.service';
+import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { ILocation } from 'src/app/models/location.model';
@@ -20,23 +22,21 @@ import { ManageThresholdTemplatesDialogComponent } from '../../admin/manage-thre
 import { IField } from 'src/app/models/field.model';
 
 @Component({
-  selector: 'pvf-smartmonitoring-asset-wizard',
+  selector: 'pvf-smarttank-asset-wizard',
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })
-export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
+export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
   public asset: IAsset;
   public editMode = false;
-
   public displayLocationExplorer = true;
   public displayThresholdTemplateList = true;
-
   public descriptionFormGroup: FormGroup;
-
   public fields: IField[];
+  public compatibleSensorTypes: ISensorType[];
   public isSavingOrUpdating: boolean;
 
   private originalAsset: IAsset;
@@ -48,11 +48,12 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private changeDetectorRef: ChangeDetectorRef,
     public dialog: MatDialog,
-    private assetService: AssetService,
+    private smartTankAssetService: SmartTankAssetService,
+    private sensorService: SensorService,
     private thingService: ThingService,
     private router: Router,
-    public activatedRoute: ActivatedRoute,
     private translateService: TranslateService,
+    public activatedRoute: ActivatedRoute,
   ) {
   }
 
@@ -63,11 +64,13 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       DescriptionCtrl: ['', null],
     });
 
-    this.fields = await this.assetService.getCustomFields().toPromise();
+    this.fields = await this.smartTankAssetService.getCustomFields().toPromise();
+    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule('TANK_MONITORING').toPromise();
+
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {
       try {
-        this.asset = await this.assetService.getAssetById(assetId).toPromise();
+        this.asset = await this.smartTankAssetService.getAssetById(assetId).toPromise();
         this.editMode = true;
         this.originalAsset = cloneDeep(this.asset);
         this.originalAsset.locationId = (this.originalAsset.location || {}).id;
@@ -87,7 +90,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       locationId: null,
       things: [],
       thresholdTemplate: null,
-      customFields: []
+      customFields: [],
     };
   }
 
@@ -112,7 +115,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       //check if assigned to something else
       this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
       this.foundAssets = this.thing.assets;
-      if (this.foundAssets.length > 0) {
+      if(this.foundAssets.length > 0) {
         this.dialog.open(PopupConfirmationComponent, {
           data: {
             title: `Warning`,
@@ -135,7 +138,37 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public thresholdTemplateIsCompatibleWithThings() {
+
+  public checkThings() {
+    if (this.oneThingCompatibleWithModule()) {
+      this.stepper.next();
+    } else {
+      this.dialog.open(PopupConfirmationComponent, {
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+        data: {
+          title: this.translateService.instant('GENERAL.WARNING'),
+          content: this.translateService.instant('DIALOGS.FAILS.AT_LEAST_ONE_THING_FOR_YOUR_MODULE'),
+          hideContinue: true,
+        }
+      });
+    }
+  }
+
+  public oneThingCompatibleWithModule(): boolean {
+    for (const thing of this.asset.things) {
+      for (const sensor of thing.sensors) {
+        if (this.compatibleSensorTypes.findIndex( x => x.id === sensor.sensorType.id) > -1) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  public thresholdTemplateIsCompatibleWithThings(): boolean {
     const thresholdTemplate = this.asset.thresholdTemplate;
     if (thresholdTemplate && thresholdTemplate.thresholds) {
       for (const threshold of thresholdTemplate.thresholds) {
@@ -186,7 +219,6 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
-
       const asset: IAsset = {
         id: this.asset.id,
       };
@@ -205,7 +237,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       }
 
       this.subs.add(
-        this.assetService.updateAsset(asset).subscribe(
+        this.smartTankAssetService.updateAsset(asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
             this.goToInventory();
@@ -218,7 +250,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       );
     } else {
       this.subs.add(
-        this.assetService.createAsset(this.asset).subscribe(
+        this.smartTankAssetService.createAsset(this.asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
             this.goToInventory();
@@ -233,11 +265,11 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
   }
 
   private goToInventory() {
-    this.router.navigateByUrl('/private/smart-monitoring/inventory');
+    this.router.navigateByUrl('/private/smart-tank/inventory');
   }
 
 
-// POPUPS
+  // POPUPS
 
 
   public async openAddLocation() {
@@ -259,15 +291,12 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public cancelWizard() {
-    this.router.navigateByUrl('/private/smart-monitoring/inventory');
-  }
-
   public async openAddThresholdTemplate() {
     const dialogRef = this.dialog.open(ManageThresholdTemplatesDialogComponent, {
       minWidth: '320px',
       maxWidth: '1024px',
       width: '100vw',
+      maxHeight: '80vh',
       data: {
         parentLocation: this.asset.location,
         fromPopup: true,
@@ -280,6 +309,11 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
       this.asset.thresholdTemplate = result;
       this.displayThresholdTemplateList = true;
     }
+  }
+
+
+  public cancelWizard() {
+    this.router.navigateByUrl('/private/smart-tank/dashboard');
   }
 
   ngOnDestroy() {
