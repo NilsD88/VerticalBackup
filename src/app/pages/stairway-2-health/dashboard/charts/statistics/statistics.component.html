@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4">
+      <pvf-stairway2health-pie-chart [series]="series['day']" [title]="titles['day']" [chartLoading]="chartsLoading['day']" [loadingError]="loadingErrors['day']" (wantTryAgain)="tryAgain('day')"></pvf-stairway2health-pie-chart>
+    </div>
+    <div class="col-md-4">
+      <pvf-stairway2health-pie-chart [series]="series['week']" [title]="titles['week']" [chartLoading]="chartsLoading['week']" [loadingError]="loadingErrors['week']" (wantTryAgain)="tryAgain('week')"></pvf-stairway2health-pie-chart>
+    </div>
+    <div class="col-md-4">
+      <pvf-stairway2health-pie-chart [series]="series['all']" [title]="titles['all']" [chartLoading]="chartsLoading['all']" [loadingError]="loadingErrors['all']" (wantTryAgain)="tryAgain('all')"></pvf-stairway2health-pie-chart>
+    </div>
+  </div>
+</div>

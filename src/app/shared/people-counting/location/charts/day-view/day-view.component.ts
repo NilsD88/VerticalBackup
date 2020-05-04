@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { StairwayToHealthAssetService } from './../../../../../services/stairway-to-health/asset.service';
+import { Stairway2HealthAssetService } from './../../../../../services/stairway-2-health/asset.service';
 import { PeopleCountingRetailAssetService } from './../../../../../services/peoplecounting-retail/asset.service';
 import { SubSink } from 'subsink';
 import { IPeopleCountingLocationSerie } from './../../../../../models/peoplecounting/location.model';
@@ -52,7 +52,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
   @Input() assetUrl: string;
-  @Input() assetService: PeopleCountingRetailAssetService | StairwayToHealthAssetService;
+  @Input() assetService: PeopleCountingRetailAssetService | Stairway2HealthAssetService;
   @Input() assetColors: string[];
 
   public chartData$ = new Subject<any>();

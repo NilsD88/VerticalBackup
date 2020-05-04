@@ -75,7 +75,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
       case 'peoplecounting':
         this.moduleName = 'PEOPLE_COUNTING_RETAIL';
         break;
-      case 'stairwaytohealth':
+      case 'stairway-2-health':
         this.moduleName = 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH';
         break;
     }

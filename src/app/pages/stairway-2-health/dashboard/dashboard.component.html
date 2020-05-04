@@ -1,0 +1,55 @@
+<div class="filter-container">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <mat-button-toggle-group (change)="listStyleOnChange($event)" [value]="listStyleValue">
+            <mat-button-toggle value="map">
+              <mat-icon>map</mat-icon>
+            </mat-button-toggle>
+            <mat-button-toggle value="list">
+              <mat-icon>list</mat-icon>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="listStyleValue === 'map'">
+    <div class="row">
+        <div class="col-md-12" style="min-height: 400px;">
+            <pvf-stairway2health-map *ngIf="rootLocation" [rootLocation]="rootLocation" (changeLocation)="changeLocation($event)" [displayAssets]="false"></pvf-stairway2health-map>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="listStyleValue === 'list'">
+    <div class="row">
+        <div class="col-md-12" style="min-height: 400px;">
+            <pxs-location-explorer
+                *ngIf="rootLocation"
+                [rootLocation]="rootLocation"
+                [leafUrl]="leafUrl"
+                (changeLocation)="changeLocation($event)"
+            ></pxs-location-explorer>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <pvf-stairway2health-dashboard-total-count-chart [locations]="currentLocations" [locationColors]="locationColors"></pvf-stairway2health-dashboard-total-count-chart>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <pvf-peoplecounting-total-count-past-year [leafs]="lastYearLocations" [leafColors]="locationColors" [leafUrl]="leafUrl"  [loading]="lastYearLocationsLoading" [loadingError]="lastYearLocationsLoadingError" (wantTryAgain)="lastYearLocations$.next()"></pvf-peoplecounting-total-count-past-year>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <pvf-stairway2health-dashboard-statistics [locations]="currentLocations" [locationColors]="locationColors" style="height:400px"></pvf-stairway2health-dashboard-statistics>
+        </div>
+    </div>
+</div>

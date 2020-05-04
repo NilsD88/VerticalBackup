@@ -80,7 +80,7 @@
   <pxs-menu-item [label]="'Asset tracking'" *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
   <pxs-menu-item [label]="'People counting'" [mat-menu-trigger-for]="peopleCounting" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"></pxs-menu-item>
-  <pxs-menu-item [label]="'Stairway to health'" [mat-menu-trigger-for]="stairwayToHealth" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
+  <pxs-menu-item [label]="'Stairway 2 health'" [mat-menu-trigger-for]="stairway2Health" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
     label: ((numberOfUnreadAlerts$ | async) > 99 ? '99+' : (numberOfUnreadAlerts$ | async)),
     class: 'red-badge'
@@ -184,21 +184,21 @@
   </div>
 </mat-menu>
 
-<mat-menu #stairwayToHealth="matMenu" class="main-menu-dropdown">
+<mat-menu #stairway2Health="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','stairwaytohealth', 'dashboard']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','stairway-2-health', 'dashboard']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.DASHBOARD' | translate }}
     </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item [routerLink]="['/private','stairwaytohealth', 'overview']"
+    <button mat-menu-item [routerLink]="['/private','stairway-2-health', 'overview']"
             routerLinkActive="router-link-active">
       {{ 'STAIRWAY_TO_HEALTH.PLACES_OVERVIEW' | translate }}
     </button>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item [routerLink]="['/private','stairwaytohealth', 'place', 'new']"
+      mat-menu-item [routerLink]="['/private','stairway-2-health', 'place', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">{{ 'STAIRWAY_TO_HEALTH.NEW_PLACE' | translate }}</span>
