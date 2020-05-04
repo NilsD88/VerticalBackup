@@ -48,7 +48,7 @@ export class CountPastWeekComponent implements OnChanges, OnInit {
 
   @Input() leafs: IPeopleCountingLocation[];
   @Input() leafColors: ILeafColors[];
-  @Input() leafUrl = '/private/walkingtrail/trail';
+  @Input() leafUrl = '/private/walking-trails/trail';
   @Input() loading = false;
   @Input() loadingError = false;
 

@@ -82,7 +82,7 @@ export class HomeUserAuthGuard implements CanActivate {
             this.router.navigate(['private/smart-tank/dashboard']);
             break;
           case 'PEOPLE_COUNTING_WALKING_TRAIL':
-            this.router.navigate(['private/walkingtrail/dashboard']);
+            this.router.navigate(['private/walking-trails/dashboard']);
             break;
           case 'PEOPLE_COUNTING_RETAIL':
             this.router.navigate(['private/peoplecounting/dashboard']);
@@ -250,9 +250,9 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./pages/smart-tank/smart-tank.module').then(m => m.SmartTankModule)
       },
       {
-        path: 'walkingtrail',
+        path: 'walking-trails',
         canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/walking-trail/walking-trail.module').then(m => m.WalkingTrailModule)
+        loadChildren: () => import('./pages/walking-trails/walking-trails.module').then(m => m.WalkingTrailsModule)
       },
       {
         path: 'peoplecounting',

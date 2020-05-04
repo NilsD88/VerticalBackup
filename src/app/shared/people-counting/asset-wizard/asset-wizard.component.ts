@@ -17,7 +17,7 @@ import { ISensorType } from 'src/app/models/sensor-type.model';
 import { AssetService } from 'src/app/services/asset.service';
 
 @Component({
-  selector: 'pvf-walkingtrail-asset-wizard',
+  selector: 'pvf-walkingtrails-asset-wizard',
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })

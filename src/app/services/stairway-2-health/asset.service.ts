@@ -56,11 +56,11 @@ export class Stairway2HealthAssetService extends PeopleCountingAssetService {
         }
       `;
 
-    interface GetAssetsWalkingTrailResponse {
+    interface GetAssetsWalkingTrailsResponse {
       assets: IPeopleCountingAsset[];
     }
 
-    return this.apollo.query < GetAssetsWalkingTrailResponse > ({
+    return this.apollo.query < GetAssetsWalkingTrailsResponse > ({
       query: GET_ASSETS_BY_MODULE,
       fetchPolicy: 'network-only',
       variables: {

@@ -12,7 +12,7 @@ import { PeopleCountingAssetWizardComponent } from './asset-wizard.component';
 import { SensorService } from 'src/app/services/sensor.service';
 
 @Component({
-  selector: 'pvf-walkingtrail-asset-wizard',
+  selector: 'pvf-walkingtrails-asset-wizard',
   templateUrl: './asset-wizard.component.html',
   styleUrls: ['./asset-wizard.component.scss'],
 })

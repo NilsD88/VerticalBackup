@@ -2,7 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { Router } from '@angular/router';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
+import { WalkingTrailsAssetService } from 'src/app/services/walking-trails/asset.service';
 import {
   Component,
   OnInit,
@@ -45,7 +45,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
   @Input() assetUrl: string;
-  @Input() assetService: WalkingTrailAssetService;
+  @Input() assetService: WalkingTrailsAssetService;
   @Input() assetColors: string[];
 
   public chartData$ = new Subject<any>();

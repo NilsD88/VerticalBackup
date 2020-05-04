@@ -1,5 +1,9 @@
-import { PeopleCountingAssetService } from './../peoplecounting/asset.service';
-import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
+import {
+  PeopleCountingAssetService
+} from './../peoplecounting/asset.service';
+import {
+  IPeopleCountingAsset
+} from 'src/app/models/peoplecounting/asset.model';
 import {
   Injectable
 } from '@angular/core';
@@ -12,16 +16,18 @@ import {
 import {
   HttpClient
 } from '@angular/common/http';
-import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { map } from 'rxjs/operators';
+import {
+  Intervals
+} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import gql from 'graphql-tag';
+import { map } from 'rxjs/operators';
 
 
-const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
 @Injectable({
   providedIn: 'root'
 })
-export class PeopleCountingRetailAssetService extends PeopleCountingAssetService {
+export class WalkingTrailsAssetService extends PeopleCountingAssetService {
   constructor(
     public apollo: Apollo,
     public http: HttpClient,
@@ -31,7 +37,6 @@ export class PeopleCountingRetailAssetService extends PeopleCountingAssetService
       http
     );
   }
-
 
   public getAssets(): Observable < IPeopleCountingAsset[] > {
 

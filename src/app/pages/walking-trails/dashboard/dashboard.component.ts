@@ -1,11 +1,11 @@
-import { Router } from '@angular/router';
 import { SharedService } from './../../../services/shared.service';
-import { Subject, of, Observable } from 'rxjs';
 import { SubSink } from 'subsink';
-import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
 import {
   cloneDeep
 } from 'lodash';
+import {
+  WalkingTrailsLocationService
+} from './../../../services/walking-trails/location.service';
 import {
   Component,
   OnInit,
@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import {
   findLeafLocations
-} from '../../walking-trails/utils';
+} from '../utils';
 import {
   generateLeafColors,
   increaseLeafs,
@@ -29,7 +29,9 @@ import * as mTZ from 'moment-timezone';
 import {
   IPeopleCountingLocation,
 } from 'src/app/models/peoplecounting/location.model';
-import { switchMap, catchError } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
+import { of, Observable, Subject } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 moment.locale('nl-be');
@@ -47,7 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public leafs: IPeopleCountingLocation[];
   public leafColors: ILeafColors[];
   public listStyleValue = 'map';
-  public leafUrl = '/private/peoplecounting/store';
+  public leafUrl = '/private/walking-trails/trail';
 
   public lastYearLeafs$: Subject<null> = new Subject();
   public lastYearLeafs: IPeopleCountingLocation[];
@@ -59,11 +61,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public lastWeekLeafsLoading = false;
   public lastWeekLeafsLoadingError = false;
 
-
   private subs = new SubSink();
 
   constructor(
-    private locationService: PeopleCountingRetailLocationService,
+    private locationService: WalkingTrailsLocationService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService,
     private router: Router,
@@ -73,7 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
       this.rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
       const { module, id } = this.rootLocation;
-      if (module === 'PEOPLE_COUNTING_RETAIL') {
+      if (module === 'PEOPLE_COUNTING_WALKING_TRAIL') {
         this.router.navigateByUrl(`${this.leafUrl}/${id}`);
       }
     } else {
@@ -152,7 +153,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.lastYearLeafs$.next();
   }
 
-
   private getLastWeekData(request: Observable <null>): Observable < IPeopleCountingLocation[] > {
     return request.pipe(
       switchMap(() => {
@@ -198,6 +198,5 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
-
 }
 

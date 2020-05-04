@@ -1,6 +1,6 @@
 import { Router } from '@angular/router';
 import { SubSink } from 'subsink';
-import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
+import { WalkingTrailsAssetService } from 'src/app/services/walking-trails/asset.service';
 import {
   cloneDeep
 } from 'lodash';
@@ -52,7 +52,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
   @Input() assetUrl: string;
-  @Input() assetService: WalkingTrailAssetService ;
+  @Input() assetService: WalkingTrailsAssetService ;
   @Input() assetColors: string[];
 
   public chartData$ = new Subject<any>();
