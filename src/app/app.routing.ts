@@ -79,23 +79,23 @@ export class HomeUserAuthGuard implements CanActivate {
       if (modules.length === 1) {
         switch (modules[0]) {
           case 'TANK_MONITORING':
-            this.router.navigate(['private/tankmonitoring/dashboard']);
+            this.router.navigate(['private/smart-tank/dashboard']);
             break;
           case 'PEOPLE_COUNTING_WALKING_TRAIL':
-            this.router.navigate(['private/walkingtrail/dashboard']);
+            this.router.navigate(['private/walking-trails/dashboard']);
             break;
           case 'PEOPLE_COUNTING_RETAIL':
             this.router.navigate(['private/peoplecounting/dashboard']);
             break;
           case 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH':
-            this.router.navigate(['private/stairwaytohealth/dashboard']);
+            this.router.navigate(['private/stairway-2-health/dashboard']);
             break;
           default:
-            this.router.navigate(['private/smartmonitoring/inventory']);
+            this.router.navigate(['private/smart-monitoring/inventory']);
             break;
         }
       } else {
-        this.router.navigate(['private/smartmonitoring/inventory']);
+        this.router.navigate(['private/smart-monitoring/inventory']);
       }
       return true;
     } catch (err) {
@@ -235,7 +235,7 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./pages/contact/contact.module').then(m => m.ContactModule)
       },
       {
-        path: 'smartmonitoring',
+        path: 'smart-monitoring',
         canActivate: [UserAuthGuard],
         loadChildren: () => import('./pages/smart-monitoring/smart-monitoring.module').then(m => m.SmartMonitoringModule)
       },
@@ -245,14 +245,14 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./pages/alerts/alerts.module').then(m => m.AlertsModule)
       },
       {
-        path: 'tankmonitoring',
+        path: 'smart-tank',
         canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/tank-monitoring/tank-monitoring.module').then(m => m.TankMonitoringModule)
+        loadChildren: () => import('./pages/smart-tank/smart-tank.module').then(m => m.SmartTankModule)
       },
       {
-        path: 'walkingtrail',
+        path: 'walking-trails',
         canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/walking-trail/walking-trail.module').then(m => m.WalkingTrailModule)
+        loadChildren: () => import('./pages/walking-trails/walking-trails.module').then(m => m.WalkingTrailsModule)
       },
       {
         path: 'peoplecounting',
@@ -260,14 +260,9 @@ export const AppRoutes: Routes = [
         loadChildren: () => import('./pages/people-counting-retail/people-counting-retail.module').then(m => m.PeopleCountingRetailModule)
       },
       {
-        path: 'stairwaytohealth',
+        path: 'stairway-2-health',
         canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
-      },
-      {
-        path: 'stairwaytohealth',
-        canActivate: [UserAuthGuard],
-        loadChildren: () => import('./pages/stairway-to-health/stairway-to-health.module').then(m => m.StairwayToHealthModule)
+        loadChildren: () => import('./pages/stairway-2-health/stairway-2-health.module').then(m => m.Stairway2HealthModule)
       },
       {
         path: 'admin',

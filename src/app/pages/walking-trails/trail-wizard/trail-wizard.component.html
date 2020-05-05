@@ -1,0 +1,118 @@
+<mat-horizontal-stepper [linear]="true" #stepper *ngIf="location">
+  <mat-step [completed]="location.parent">
+    <form>
+      <ng-template matStepLabel>{{ 'LAYOUT.PARENT' |translate }}</ng-template>
+      <div class="center">
+          <h2>{{'WALKING_TRAILS.SELECT_OR_CREATE' | translate}}</h2>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+            <pxs-location-explorer
+              *ngIf="displayLocationExplorer"
+              [selectableLocation]="true"
+              [selectedLocation]="location.parent"
+              [ghostLocationId]="location.id"
+              (changeLocation)="updateLocation($event)"
+            ></pxs-location-explorer>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+          <hr>
+          <button mat-button color="primary" (click)="openAddLocation()">{{ 'LOCATIONS.CREATE_NEW_LOCATION' | translate }}</button>
+        </div>
+      </div>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.parent" (next)="stepper.next()"></pxs-stepper-next>  
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="descriptionFormGroup">
+    <form [formGroup]="descriptionFormGroup">
+      <ng-template matStepLabel>{{ 'GENERAL.DESCRIPTION' | translate }}</ng-template>
+       <div class="center">
+          <h2>{{'WALKING_TRAILS.PROVIDE_NAME_DESCRIPTION' | translate}}</h2>
+        </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto">
+          <mat-form-field>
+            <input matInput [placeholder]="'GENERAL.NAME' | translate" formControlName="NameCtrl" [(ngModel)]="location.name" required>
+          </mat-form-field>
+          <mat-form-field>
+            <textarea matInput [placeholder]="'GENERAL.DESCRIPTION' | translate" formControlName="DescriptionCtrl" [(ngModel)]="location.description"></textarea>
+          </mat-form-field>
+          <pxs-form-custom-fields *ngIf="fields && fields.length > 0" [fields]="fields" [(customFields)]="location.customFields"></pxs-form-custom-fields>
+        </div>
+      </div>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [formGroup]="descriptionFormGroup" (next)="stepper.next()"></pxs-stepper-next>
+    </form>
+  </mat-step>
+  <mat-step [completed]="location.geolocation">
+    <form>
+      <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
+        <div class="center">
+          <h2>{{'WALKING_TRAILS.POSITION_ON_MAP' | translate}}</h2>
+        </div>
+        <pxs-form-geolocation 
+          *ngIf="location.parent && descriptionFormGroup.status === 'VALID' && stepper.selectedIndex === 2"
+          [location]="location.parent"
+          (notify)="location.geolocation=$event"
+          [geolocation]="location.geolocation"
+        ></pxs-form-geolocation>
+      <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="location.geolocation" (next)="stepper.next()"></pxs-stepper-next>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>{{ 'LAYOUT.IMAGES' | translate }}</ng-template>
+    <div class="center">
+        <h2>{{'WALKING_TRAILS.SELECT_IMAGES_TRAIL' | translate}}</h2>
+    </div>
+    <div class="row">
+      <div class="location-images">
+        <div *ngFor="let image of location.images; index as i">
+          <pxs-editable-image (change)="changeLocationImages(i, $event)" [image]="image" [removeButton]="false"></pxs-editable-image>
+          <button mat-button color="warn" (click)="removeImage(i)">{{ 'IMAGE_INPUT.REMOVE' | translate }}</button>
+        </div>
+        <div style="height: 100%;">
+          <button mat-button color="primary" (click)="addImage()">{{ 'IMAGE_INPUT.ADD' | translate }}</button>
+        </div>
+      </div>
+    </div>
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="true" (next)="stepper.next()"></pxs-stepper-next> 
+  </mat-step>
+  <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
+    <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
+     <div class="center">
+        <h2>{{'WALKING_TRAILS.SELECT_PLAN_VIEW_TRAIL' | translate}}</h2>
+    </div>
+    <div class="row"> 
+      <div class="col-xs-12 col-md-6 mx-auto">
+        <div class="location-image">
+          <pxs-editable-image (change)="location.image=$event" [image]="location.image" [confirmationMessage]="editMode ? changeFloorPlanConfirmationMessage : null"></pxs-editable-image>
+        </div>
+      </div>
+    </div>
+    <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'GENERAL.SAVE_AND_CONTINUE' | translate" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
+  </mat-step>
+  <mat-step>
+      <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
+      <div class="center">
+          <h2>{{'WALKING_TRAILS.SELECT_ASSETS_TRAIL' | translate}}</h2>
+      </div>
+      <div class="row">
+        <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">
+          <div cdkDrag class="dropListItem" *ngFor="let asset of location.assets">
+            <div>
+              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+              {{asset.name}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 mx-auto" style="text-align:center;">
+          <hr>
+          <button mat-button color="primary" (click)="openAddAsset()">{{ 'ASSETS.CREATE_NEW_ASSET' | translate }}</button>
+        </div>
+      </div>
+      <pxs-stepper-next [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'GENERAL.DONE' | translate" [color]="'success'" (next)="done()"></pxs-stepper-next> 
+    </mat-step>
+</mat-horizontal-stepper>

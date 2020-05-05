@@ -1,0 +1,48 @@
+<pvf-smarttank-detail-header [asset]="asset"></pvf-smarttank-detail-header>
+<div class="detail-main-content">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <pvf-smarttank-chart
+          *ngIf="asset"
+          style="display: flex;"
+          [loading]="chartLoading"
+          [title]="'SMART_TANK.CONSUMPTION' | translate"
+          [chartData]="chartData"
+          (updateChartData)="updateChartData($event)"
+          (download)="downloadPdfDetail()"
+          [filter]="currentFilter"
+          [asset]="asset"
+          #myChart
+        ></pvf-smarttank-chart>
+      </div>
+    </div>
+    <div class="row" *ngIf="asset && (asset?.geolocation && asset.location || asset?.location && asset?.image)">
+        <div class="col-lg-8 col-md-7">
+          <pxs-map-asset *ngIf="asset?.geolocation && asset?.location" [height]="400" [assets]="[asset]"
+            [imageUrl]="asset?.location?.image"></pxs-map-asset>
+          <pxs-no-data *ngIf="!asset?.geolocation || !asset?.location" title="NO POSITION">
+          </pxs-no-data>
+        </div>
+        <div class="col-lg-4 col-md-5">
+          <div id="asset-image" [style.background-image]="'url('+asset?.image+')'"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-md-7">
+          <pxs-threshold-templates-detail *ngIf="asset?.thresholdTemplate"
+            [thresholdTemplate]="asset?.thresholdTemplate"></pxs-threshold-templates-detail>
+          <pxs-no-data *ngIf="!asset?.thresholdTemplate" [title]="'THRESHOLD_TEMPLATE.NO_THRESHOLD_TEMPLATE' | translate"></pxs-no-data>
+        </div>
+        <div class="col-lg-4 col-md-5">
+          <div>
+            <pxs-last-alerts *ngIf="asset?.alerts" [asset]="asset"></pxs-last-alerts>
+          </div>
+          <div>
+            <pxs-linked-things [things]="asset?.things"></pxs-linked-things>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+

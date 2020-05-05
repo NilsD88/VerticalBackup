@@ -1,6 +1,6 @@
 import { SubSink } from 'subsink';
 import { IPeopleCountingAsset } from './../../../../models/peoplecounting/asset.model';
-import { WalkingTrailAssetService } from 'src/app/services/walkingtrail/asset.service';
+import { WalkingTrailsAssetService } from 'src/app/services/walking-trails/asset.service';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -34,7 +34,7 @@ export class AssetsCounterComponent implements OnInit, OnDestroy {
   @Input() leaf: IPeopleCountingLocation;
   @Input() assets: IPeopleCountingAsset[];
   @Input() assetUrl: string;
-  @Input() assetService: WalkingTrailAssetService;
+  @Input() assetService: WalkingTrailsAssetService;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 

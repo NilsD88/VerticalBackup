@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import {
   findLeafLocations
-} from '../../walking-trail/utils';
+} from '../../walking-trails/utils';
 import {
   generateLeafColors,
   increaseLeafs,

@@ -10,7 +10,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {Observable, of, Subject, from} from 'rxjs';
 import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {catchError, debounceTime, switchMap} from 'rxjs/operators';
-import {StairwayToHealthLocationService} from 'src/app/services/stairway-to-health/location.service';
+import {Stairway2HealthLocationService} from 'src/app/services/stairway-2-health/location.service';
 import {cloneDeep} from 'lodash';
 import { DecimalPipe } from '@angular/common';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
@@ -48,7 +48,7 @@ exportData(Highcharts);
 export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
-  @Input() locationService: PeopleCountingRetailLocationService | StairwayToHealthLocationService;
+  @Input() locationService: PeopleCountingRetailLocationService | Stairway2HealthLocationService;
 
   public chartData$ = new Subject<any>();
   public chartLoading = false;

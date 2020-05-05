@@ -15,7 +15,7 @@ export class AssetExplorerComponent implements OnInit {
   @Input() selectedLocation: ILocation;
   @Input() customAssetService;
   @Input() searchBar = true;
-  @Input() assetUrl = '/private/smartmonitoring/detail/';
+  @Input() assetUrl = '/private/smart-monitoring/detail/';
   @Input() assetPicker = false;
 
   @Output() assetClicked: EventEmitter<IAsset> = new EventEmitter<IAsset>();

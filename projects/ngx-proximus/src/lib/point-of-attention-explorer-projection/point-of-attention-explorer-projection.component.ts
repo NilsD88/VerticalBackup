@@ -13,7 +13,7 @@ import { findLocationById } from 'src/app/shared/utils';
 import { IPointOfAttention } from 'src/app/models/point-of-attention.model';
 import { SharedService } from 'src/app/services/shared.service';
 
-const pointOfAttentionUrl = 'private/smartmonitoring/points-of-attention/point-of-attention/';
+const pointOfAttentionUrl = 'private/smart-monitoring/points-of-attention/point-of-attention/';
 
 @Component({
   selector: 'pxs-point-of-attention-explorer-projection',

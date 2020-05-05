@@ -71,16 +71,16 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item [label]="'Smart monitoring'" [url]="'/private/smartmonitoring'"
+  <pxs-menu-item [label]="'Smart monitoring'" [url]="'/private/smart-monitoring'"
     [mat-menu-trigger-for]="smartMonitoring"></pxs-menu-item>
-  <pxs-menu-item [label]="'Tank monitoring'" [url]="'/private/tankmonitoring'"
-    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" [mat-menu-trigger-for]="tankMonitoring"></pxs-menu-item>
-  <pxs-menu-item [label]="'Walking trail'" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
-    [mat-menu-trigger-for]="walkingtrail"></pxs-menu-item>
+  <pxs-menu-item [label]="'Smart tank'" [url]="'/private/smart-tank'"
+    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" [mat-menu-trigger-for]="smartTank"></pxs-menu-item>
+  <pxs-menu-item [label]="'Walking trails'" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
+    [mat-menu-trigger-for]="walkingTrails"></pxs-menu-item>
   <pxs-menu-item [label]="'Asset tracking'" *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
     [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
   <pxs-menu-item [label]="'People counting'" [mat-menu-trigger-for]="peopleCounting" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"></pxs-menu-item>
-  <pxs-menu-item [label]="'Stairway to health'" [mat-menu-trigger-for]="stairwayToHealth" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
+  <pxs-menu-item [label]="'Stairway 2 health'" [mat-menu-trigger-for]="stairway2Health" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
   <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
     label: ((numberOfUnreadAlerts$ | async) > 99 ? '99+' : (numberOfUnreadAlerts$ | async)),
     class: 'red-badge'
@@ -93,27 +93,27 @@
 
 <mat-menu #smartMonitoring="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'inventory']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','smart-monitoring', 'inventory']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.INVENTORY' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
     <a
-      mat-menu-item [routerLink]="['/private','smartmonitoring', 'assets', 'new']"
+      mat-menu-item [routerLink]="['/private','smart-monitoring', 'assets', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">{{ 'ASSETS.NEW_ASSET' | translate }}</span>
     </a>
   </div>
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention']"
+    <a mat-menu-item [routerLink]="['/private','smart-monitoring', 'points-of-attention']"
        routerLinkActive="router-link-active">
       {{ 'POINTS_OF_ATTENTION.MY_POINTS_OF_ATTENTION' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')" >
     <a
-      mat-menu-item [routerLink]="['/private','smartmonitoring', 'points-of-attention', 'point-of-attention', 'new']"
+      mat-menu-item [routerLink]="['/private','smart-monitoring', 'points-of-attention', 'point-of-attention', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
       <span style="margin-left: 10px;">{{ 'POINTS_OF_ATTENTION.NEW_POINT_OF_ATTENTION' | translate }}</span>
@@ -121,44 +121,44 @@
   </div>
 </mat-menu>
 
-<mat-menu #tankMonitoring="matMenu" class="main-menu-dropdown">
+<mat-menu #smartTank="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','tankmonitoring', 'dashboard']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','smart-tank', 'dashboard']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.DASHBOARD' | translate }}
     </a>
   </div>
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','tankmonitoring', 'inventory']" routerLinkActive="router-link-active">
-      {{ 'TANK_MONITORING.TANK_INVENTORY' | translate }}
+    <a mat-menu-item [routerLink]="['/private','smart-tank', 'inventory']" routerLinkActive="router-link-active">
+      {{ 'SMART_TANK.TANK_INVENTORY' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item  [routerLink]="['/private', 'tankmonitoring', 'assets', 'new']"
+      mat-menu-item  [routerLink]="['/private', 'smart-tank', 'assets', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'TANK_MONITORING.NEW_TANK' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'SMART_TANK.NEW_TANK' | translate }}</span>
     </a>
   </div>
 </mat-menu>
 
-<mat-menu #walkingtrail="matMenu" class="main-menu-dropdown">
+<mat-menu #walkingTrails="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','walkingtrail', 'dashboard']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','walking-trails', 'dashboard']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.DASHBOARD' | translate }}
     </a>
   </div>
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','walkingtrail', 'overview']" routerLinkActive="router-link-active">
-      {{ 'WALKING_TRAIL.TRAILS_OVERVIEW' | translate }}
+    <a mat-menu-item [routerLink]="['/private','walking-trails', 'overview']" routerLinkActive="router-link-active">
+      {{ 'WALKING_TRAILS.TRAILS_OVERVIEW' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item [routerLink]="['/private','walkingtrail', 'trail', 'new']"
+      mat-menu-item [routerLink]="['/private','walking-trails', 'trail', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'WALKING_TRAIL.NEW_TRAIL' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'WALKING_TRAILS.NEW_TRAIL' | translate }}</span>
     </a>
   </div>
 </mat-menu>
@@ -184,24 +184,24 @@
   </div>
 </mat-menu>
 
-<mat-menu #stairwayToHealth="matMenu" class="main-menu-dropdown">
+<mat-menu #stairway2Health="matMenu" class="main-menu-dropdown">
   <div mat-menu-item>
-    <a mat-menu-item [routerLink]="['/private','stairwaytohealth', 'dashboard']" routerLinkActive="router-link-active">
+    <a mat-menu-item [routerLink]="['/private','stairway-2-health', 'dashboard']" routerLinkActive="router-link-active">
       {{ 'LAYOUT.DASHBOARD' | translate }}
     </a>
   </div>
   <div mat-menu-item>
-    <button mat-menu-item [routerLink]="['/private','stairwaytohealth', 'overview']"
+    <button mat-menu-item [routerLink]="['/private','stairway-2-health', 'overview']"
             routerLinkActive="router-link-active">
-      {{ 'STAIRWAY_TO_HEALTH.PLACES_OVERVIEW' | translate }}
+      {{ 'STAIRWAY_2_HEALTH.PLACES_OVERVIEW' | translate }}
     </button>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item [routerLink]="['/private','stairwaytohealth', 'place', 'new']"
+      mat-menu-item [routerLink]="['/private','stairway-2-health', 'place', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'STAIRWAY_TO_HEALTH.NEW_PLACE' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'STAIRWAY_2_HEALTH.NEW_PLACE' | translate }}</span>
     </a>
   </div>
 </mat-menu>

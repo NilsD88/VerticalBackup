@@ -17,7 +17,7 @@ export class LocationPopupComponent implements OnInit, OnDestroy {
   public displayAssets = true;
   public selectedLocation: ILocation;
   public rootLocation: ILocation;
-  public assetUrl = '/private/smartmonitoring/detail/';
+  public assetUrl = '/private/smart-monitoring/detail/';
 
   private subs = new SubSink();
 

@@ -1,0 +1,53 @@
+<div class="container" *ngIf="asset">
+  <div *ngIf="asset.image" class="asset-picture" [ngStyle]="{'background-image': 'url(' + asset.image + ')'}"></div>
+  <div class="title">
+    <a routerLink="{{assetUrl+''+asset.id}}">
+      <h6>{{asset.name}}</h6>
+    </a>
+  </div>
+  <div class="devEui">
+    {{asset.things[0]?.devEui}}
+  </div>
+  <div class="subtitle" *ngIf="asset.location">
+    <b>{{fullLocationName}}</b>
+  </div>
+  <div class="column">
+      <ul *ngIf="asset.things">
+        <li class="thing">
+            <strong>{{asset?.things[0]?.name}}</strong>
+            <ul>
+              <li>
+                <b>{{'SENSORTYPES.battery' | translate}}:</b>
+                <span [ngClass]="{'empty': asset?.batteryLevel < 10, 'low': asset?.batteryLevel >= 10 && asset?.batteryLevel < 20, 'ok': asset?.batteryLevel >= 20, 'unknown': asset?.status === 'UNKNOWN'}">
+                  {{asset?.batteryLevel ? asset?.batteryLevel+'%': 'unknown'}}
+                </span>
+              </li>
+              <li>
+                <b>{{'SMART_TANK.FUEL_LEVEL' | translate}}:</b>
+                <span [ngClass]="{'empty': asset?.fillLevel < 10, 'low': asset?.fillLevel >= 10 && asset?.fillLevel < 20, 'ok': asset?.fillLevel >= 20, 'unknown': asset?.status === 'UNKNOWN'}">
+                  {{asset?.fillLevel ? asset?.fillLevel+'%': 'unknown'}}
+                </span>
+              </li>
+              <li>
+                <b>{{'SMART_TANK.LAST_REFILL' | translate}}:</b>
+                <span>
+                  {{(asset?.lastRefill?.timestamp) ? (asset?.lastRefill?.timestamp | date) : 'unknown'}}
+                </span>
+              </li>
+              <li>
+                  <b>{{'GENERAL.DESCRIPTION' | translate}}:</b> {{asset?.description}}
+              </li>
+            </ul>
+        </li>
+      </ul>
+  </div>
+</div>
+
+<div class="container" *ngIf="location">
+  <div class="title">
+    <h6>{{location.name}}</h6>
+  </div>
+  <div class="subtitle">
+    <a (click)="openLocation()">{{'LOCATIONS.OPEN_THIS_LOCATION' | translate}}</a>
+  </div>
+</div>

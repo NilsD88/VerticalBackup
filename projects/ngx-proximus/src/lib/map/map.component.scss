@@ -19,7 +19,7 @@
             }
         }
 
-        &.tank-monitoring {
+        &.smart-tank {
             &.unknown {
                 background: $severity-unknown;
             }
@@ -67,7 +67,7 @@
             top: -15px;
         }
 
-        &.tank-monitoring {
+        &.smart-tank {
             .pxi-map-marker, .pxi-map-hotspot {
                 background: $severity-ok;
                 color: white;

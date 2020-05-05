@@ -182,7 +182,7 @@
     "CHART_TYPE": "Type de graphique",
     "USE_ON_CHART": "Utiliser dans les graphiques",
     "USE_ON_NOTIFICATION": "Utiliser dans les alertes",
-    "ONLY_APPLY_FOR_TANK_MONITORING": "Ceci ne s'applique qu'aux graphiques de Monitoring",
+    "ONLY_APPLY_FOR_SMART_TANK": "Ceci ne s'applique qu'aux graphiques de Monitoring",
     "ONLY_APPLY_FOR_SMART_COUNTING": "Ceci ne s'applique qu'aux graphiques de Smart Counting"
   },
   "ALERTS": {
@@ -307,7 +307,7 @@
       "CRITICAL": "Critique"
     }
   },
-  "TANK_MONITORING": {
+  "SMART_TANK": {
     "TANK_INVENTORY": "Inventaire des réservoirs",
     "NEW_TANK": "Nouveau réservoir",
     "FUEL_LEVEL": "Niveau de carburant",
@@ -327,7 +327,7 @@
   "WIZARD" : {
     "CUSTOM_FIELDS": "Champs personnalisés"
   },
-  "WALKING_TRAIL": {
+  "WALKING_TRAILS": {
     "TRAILS_OVERVIEW": "Aperçu des parcours",
     "NEW_TRAIL": "Nouveau parcours",
     "BENCHMARK_LAST_WEEK": "Benchmark de la semaine dernière",
@@ -369,7 +369,7 @@
     "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
     "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
   },
-  "STAIRWAY_TO_HEALTH": {
+  "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Aperçu des emplacements",
     "NEW_PLACE": "Nouvel emplacement",
     "TOTAL_COUNT_PLACES":"Nombre total de vues de l’emplacement",

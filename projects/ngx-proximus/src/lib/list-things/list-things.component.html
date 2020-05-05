@@ -15,8 +15,7 @@
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
-          <mat-checkbox (click)="$event.stopPropagation()" (change)="selectChange.emit(element)"
-            [checked]="checkOneThing(element.id)"></mat-checkbox>
+          <mat-checkbox (click)="$event.stopPropagation(); selectChange.emit(element);" [checked]="checkOneThing(element.id)"></mat-checkbox>
         </td>
       </ng-container>
       

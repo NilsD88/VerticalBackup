@@ -182,7 +182,7 @@
     "CHART_TYPE": "Grafiek type",
     "USE_ON_CHART": "Gebruik op grafiek",
     "USE_ON_NOTIFICATION": "Gebruik bij notificatie",
-    "ONLY_APPLY_FOR_TANK_MONITORING": "Dit geldt enkel voor de monitoring grafieken",
+    "ONLY_APPLY_FOR_SMART_TANK": "Dit geldt enkel voor de monitoring grafieken",
     "ONLY_APPLY_FOR_SMART_COUNTING": "Dit geldt enkel voor de Smart counting grafiek"
   },
   "ALERTS": {
@@ -307,7 +307,7 @@
       "CRITICAL": "Kritisch"
     }
   },
-  "TANK_MONITORING": {
+  "SMART_TANK": {
     "TANK_INVENTORY": "Tankinventarisatie",
     "NEW_TANK": "Nieuwe tank",
     "FUEL_LEVEL": "Brandstofniveau",
@@ -327,7 +327,7 @@
   "WIZARD" : {
     "CUSTOM_FIELDS": "Gepersonaliseerde velden"
   },
-  "WALKING_TRAIL": {
+  "WALKING_TRAILS": {
     "TRAILS_OVERVIEW": "Trails overzicht",
     "NEW_TRAIL": "Nieuwe trail",
     "BENCHMARK_LAST_WEEK": "Benchmark van de laatste week",
@@ -369,7 +369,7 @@
     "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
     "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
   },
-  "STAIRWAY_TO_HEALTH": {
+  "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Plaatsen overzicht",
     "NEW_PLACE": "Nieuwe plaats",
     "TOTAL_COUNT_PLACE ": "Total count view of the place",
