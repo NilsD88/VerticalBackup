@@ -8,7 +8,7 @@ import { MatButtonToggleModule, MatIconModule } from '@angular/material';
 import { CountPastWeekModule } from 'src/app/shared/people-counting/dashboard/charts/count-past-week/count-past-week.module';
 import { TotalCountPastWeekModule } from 'src/app/shared/people-counting/dashboard/charts/total-count-past-week/total-count-past-week.module';
 import { TotalCountPastYearModule } from 'src/app/shared/people-counting/dashboard/charts/total-count-past-year/total-count-past-year.module';
-import { PeopleCountingRetailMapModule } from '../lib/map/map.module';
+import { SmartCountingMapModule } from '../lib/map/map.module';
 import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-explorer/location-explorer.module';
 
 
@@ -21,7 +21,7 @@ import { LocationExplorerModule } from 'projects/ngx-proximus/src/lib/location-e
     TranslateModule,
     MatIconModule,
     LocationExplorerModule,
-    PeopleCountingRetailMapModule,
+    SmartCountingMapModule,
     CountPastWeekModule,
     TotalCountPastWeekModule,
     TotalCountPastYearModule,

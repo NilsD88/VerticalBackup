@@ -350,7 +350,7 @@
     "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)"
 
   },
-  "PEOPLE_COUNTING_RETAIL": {
+  "SMART_COUNTING": {
     "STORES_OVERVIEW": "Stores overview",
     "NEW_STORE": "New store",
     "TOTAL_COUNT_YESTERDAY": "Total count yesterday",

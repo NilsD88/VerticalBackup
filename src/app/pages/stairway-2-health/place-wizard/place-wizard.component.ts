@@ -307,7 +307,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
   }
 
   public cancelWizard() {
-    this.router.navigateByUrl('/private/peoplecounting/dashboard');
+    this.router.navigateByUrl('/private/smart-counting/dashboard');
   }
 
   ngOnDestroy() {

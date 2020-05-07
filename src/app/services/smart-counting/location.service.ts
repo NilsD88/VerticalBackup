@@ -14,7 +14,7 @@ const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
 @Injectable({
     providedIn: 'root'
 })
-export class PeopleCountingRetailLocationService extends PeopleCountingLocationService {
+export class SmartCountingLocationService extends PeopleCountingLocationService {
 
     constructor(public http: HttpClient, public apollo: Apollo) {
         super(

@@ -349,7 +349,7 @@
     "SELECT_PLAN_VIEW_TRAIL": "Select a plan view image of your trail (optional)",
     "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)"
   },
-  "PEOPLE_COUNTING_RETAIL": {
+  "SMART_COUNTING": {
     "STORES_OVERVIEW": "Winkels overzicht",
     "NEW_STORE": "Nieuwe winkel",
     "TOTAL_COUNT_YESTERDAY": "Totale telling gisteren",

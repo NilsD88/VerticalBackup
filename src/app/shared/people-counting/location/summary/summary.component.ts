@@ -4,7 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {Stairway2HealthLocationService} from 'src/app/services/stairway-2-health/location.service';
-import {PeopleCountingRetailLocationService} from 'src/app/services/peoplecounting-retail/location.service';
+import {SmartCountingLocationService} from 'src/app/services/smart-counting/location.service';
 
 
 interface IData {
@@ -22,7 +22,7 @@ interface IData {
 export class SummaryComponent implements OnInit, OnChanges {
 
   @Input() leaf: IPeopleCountingLocation;
-  @Input() locationService: PeopleCountingRetailLocationService | Stairway2HealthLocationService;
+  @Input() locationService: SmartCountingLocationService | Stairway2HealthLocationService;
 
   public data: IData;
   public locale: string;

@@ -5,18 +5,18 @@ import { AssetService } from 'src/app/services/asset.service';
 import { LocationService } from 'src/app/services/location.service';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { NgElement, WithProperties } from '@angular/elements';
-import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
+import { SmartCountingMapPopupComponent } from './popup/popup.component';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import { Marker } from 'leaflet';
 
 
 @Component({
-  selector: 'pvf-peoplecountingretail-map',
+  selector: 'pvf-smartcounting-map',
   templateUrl: './../../../../../../projects/ngx-proximus/src/lib/map/map.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/map/map.component.scss']
 })
-export class PeopleCountingRetailMapComponent extends MapComponent implements OnInit, OnChanges {
+export class SmartCountingMapComponent extends MapComponent implements OnInit, OnChanges {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
@@ -41,8 +41,8 @@ export class PeopleCountingRetailMapComponent extends MapComponent implements On
   }
 
   createAssetPopup(asset: IPeopleCountingAsset,  assetUrl: string, marker: Marker): any {
-    const popupEl: NgElement & WithProperties<PeopleCountingRetailMapPopupComponent> =
-      document.createElement('peoplecountingretail-map-popup-element') as any;
+    const popupEl: NgElement & WithProperties<SmartCountingMapPopupComponent> =
+      document.createElement('smartcounting-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.asset = asset;
     popupEl.marker = marker;
@@ -51,8 +51,8 @@ export class PeopleCountingRetailMapComponent extends MapComponent implements On
   }
 
   createLocationPopup(location: IPeopleCountingLocation, leafUrl: string = null, marker: Marker): any {
-    const popupEl: NgElement & WithProperties<PeopleCountingRetailMapPopupComponent> =
-      document.createElement('peoplecountingretail-map-popup-element') as any;
+    const popupEl: NgElement & WithProperties<SmartCountingMapPopupComponent> =
+      document.createElement('smartcounting-map-popup-element') as any;
     popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
     popupEl.goToChild = (loc) => { this.goToChild(loc, true); };
     popupEl.location = location;
