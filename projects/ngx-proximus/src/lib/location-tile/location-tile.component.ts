@@ -25,7 +25,7 @@ export class LocationTileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subs.add(
-      this.locationService.getImageOfLocationById(this.location.id).subscribe(image => {
+      this.locationService.getFloorplanOfLocationById(this.location.id).subscribe(image => {
         this.location.image = image;
         this.floorPlanIsLoading = false;
       }),

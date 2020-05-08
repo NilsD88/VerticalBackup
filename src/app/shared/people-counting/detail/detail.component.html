@@ -19,7 +19,7 @@
       <div class="row" *ngIf="asset && (asset?.geolocation && asset.location || asset?.location && asset?.image)">
         <div class="col-lg-8 col-md-7">
           <pxs-map-asset *ngIf="asset?.geolocation && asset?.location" [height]="400" [assets]="[asset]"
-            [imageUrl]="asset?.location?.image"></pxs-map-asset>
+          [parentLocation]="asset?.location"></pxs-map-asset>
           <pxs-no-data *ngIf="!asset?.geolocation || !asset?.location" title="NO THRESHOLD TEMPLATE">
           </pxs-no-data>
         </div>

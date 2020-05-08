@@ -23,9 +23,8 @@ export class Stairway2HealthLocationService extends PeopleCountingLocationServic
         );
     }
 
-    public getLocationsTree(): Observable < IPeopleCountingLocation[] > {
-      const url = `${environment.baseUrl}/location/locationtrees?module=${MODULE_NAME}`;
-      return this.http.get < IPeopleCountingLocation[] > (url);
+    public getLocationsTree({floorplan} = {floorplan: false}): Observable < IPeopleCountingLocation[] > {
+      return super.getLocationsTree({floorplan, moduleName: MODULE_NAME});
     }
 
     public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedPeopleCountingLocations > {

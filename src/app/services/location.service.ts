@@ -298,15 +298,15 @@ export class LocationService {
     }) => data.fields));
   }
 
-  public getImageOfLocationById(id: string): Observable < string > {
+
+  public getFloorplanOfLocationById(id: string): Observable < string > {
     const GET_IMAGE_OF_LOCATION_BY_ID = gql `
-            query findLocationById($id: Long!) {
-                location: findLocationById(id: $id) {
-                    images,
-                    image
-                }
-            }
-        `;
+      query findLocationById($id: Long!) {
+        location: findLocationById(id: $id) {
+            image
+        }
+      }
+    `;
 
     interface GetImageLocationByIdResponse {
       location: ILocation;
@@ -422,11 +422,15 @@ export class LocationService {
 
   // END APOLLO
 
-  public getLocationsTree(): Observable < ILocation[] > {
-    const url = `${environment.baseUrl}/location/locationtrees`;
+  public getLocationsTree({floorplan} = {floorplan: false}): Observable < ILocation[] > {
+    let url = `${environment.baseUrl}/location/locationtrees`;
+    if (!floorplan) {
+      url += '?floorplan=false';
+    } else {
+      url += '?floorplan=true';
+    }
     return this.http.get < ILocation[] > (url);
   }
-
 
 
   public searchLocationsWithFilter(filters: Observable < any > ) {

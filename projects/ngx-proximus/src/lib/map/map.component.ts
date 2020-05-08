@@ -46,6 +46,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   imageBounds: LatLngBounds;
   bounds: LatLngBounds;
   markerClusterOptions: any;
+  floorplan: string;
 
   public assetsRequestSource = new Subject();
   public assets: IAsset[];
@@ -245,19 +246,24 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private initMap() {
+  private async initMap() {
     this.populateLocations();
     this.imageBounds = null;
-    const floorPlan = (this.selectedLocation) ? this.selectedLocation.image : null;
-    if (floorPlan) {
+    this.floorplan = null;
+
+    if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
+      this.floorplan = await this.locationService.getFloorplanOfLocationById(this.selectedLocation.id).toPromise();
+    }
+
+    if (this.floorplan) {
       const image: HTMLImageElement = new Image();
-      image.src = floorPlan;
+      image.src = this.floorplan;
       image.onload = () => {
         const { width, height } = image;
         const ratioW = height / width;
         const ratioH = width / height;
         this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
-        const imageMap = imageOverlay(floorPlan, this.imageBounds);
+        const imageMap = imageOverlay(this.floorplan, this.imageBounds);
         this.options = {
           crs: CRS.Simple,
           layers: [imageMap],
