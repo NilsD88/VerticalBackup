@@ -5,11 +5,11 @@ import { IAsset } from 'src/app/models/asset.model';
 import { AssetService } from 'src/app/services/asset.service';
 
 @Component({
-  selector: 'pvf-peoplecountingretail-map-popup',
+  selector: 'pvf-smartcounting-map-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.scss']
 })
-export class PeopleCountingRetailMapPopupComponent extends MapPopupComponent implements OnInit, OnDestroy {
+export class SmartCountingMapPopupComponent extends MapPopupComponent implements OnInit, OnDestroy {
 
   constructor(
     public assetService: AssetService,
@@ -36,7 +36,7 @@ export class PeopleCountingRetailMapPopupComponent extends MapPopupComponent imp
     if ((this.location.children || []).length) {
       this.goToChild(this.location);
     } else {
-      this.router.navigateByUrl(`/private/peoplecounting/store/${this.location.id}`);
+      this.router.navigateByUrl(`/private/smart-counting/store/${this.location.id}`);
     }
   }
 

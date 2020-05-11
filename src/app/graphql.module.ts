@@ -12,20 +12,12 @@ export function createApollo(httpLink: HttpLink, sharedService: SharedService) {
   const cache = new InMemoryCache({
     addTypename: false
   });
+
   const client = new ApolloClient({
     cache,
     link: httpLink.create({uri}),
     connectToDevTools: true
   });
-  /*
-  cache.writeData({
-    data: {
-      someField: {
-        test: 'ok'
-      },
-    },
-  });
-  */
 
   return client;
 }

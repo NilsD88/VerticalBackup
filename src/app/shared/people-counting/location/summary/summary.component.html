@@ -2,25 +2,25 @@
   <div class="itemcontainer">
     <div>
       <p class="data" [style.color]="'#686868'">{{data?.totalYesterday | number: '1.0-2':'fr-FR'}}</p>
-      <p class="info">{{'PEOPLE_COUNTING_RETAIL.TOTAL_COUNT_YESTERDAY' | translate}}</p>
+      <p class="info">{{'SMART_COUNTING.TOTAL_COUNT_YESTERDAY' | translate}}</p>
     </div>
   </div>
   <div class="itemcontainer">
     <div>
       <p class="data" [style.color]="'#686868'">{{data?.totalLastWeek | number: '1.0-2':'fr-FR'}}</p>
-      <p class="info">{{'PEOPLE_COUNTING_RETAIL.TOTAL_COUNT_LAST_WEEK' | translate}}</p>
+      <p class="info">{{'SMART_COUNTING.TOTAL_COUNT_LAST_WEEK' | translate}}</p>
     </div>
   </div>
   <div class="itemcontainer">
     <div>
       <p class="data" [style.color]="data?.differenceLastWeek > 0 ? 'green' : 'red'">{{data?.differenceLastWeek | number: '1.0-2':'fr-FR'}}</p>
-      <p class="info">{{'PEOPLE_COUNTING_RETAIL.DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE' | translate}}</p>
+      <p class="info">{{'SMART_COUNTING.DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE' | translate}}</p>
     </div>
   </div>
   <div class="itemcontainer">
     <div>
       <p class="data" [style.color]="data?.differenceToday > 0 ? 'green' : 'red'">{{data?.differenceToday | number: '1.0-2':'fr-FR'}}</p>
-      <p class="info">{{'PEOPLE_COUNTING_RETAIL.DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK' | translate}}</p>
+      <p class="info">{{'SMART_COUNTING.DIFFERENCE_TODAY_AND_SAME_DAY_LAST_WEEK' | translate}}</p>
     </div>
   </div>
 </div>

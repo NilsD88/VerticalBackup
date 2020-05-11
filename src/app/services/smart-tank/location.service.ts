@@ -21,9 +21,14 @@ export class SmartTankLocationService extends LocationService {
         );
     }
 
-    public getLocationsTree(): Observable < ILocation[] > {
-      const url = `${environment.baseUrl}/location/locationtrees?module=${MODULE_NAME}`;
-      return this.http.get < IPeopleCountingLocation[] > (url);
+    public getLocationsTree({floorplan} = {floorplan: false}): Observable < ILocation[] > {
+        let url = `${environment.baseUrl}/location/locationtrees?module=${MODULE_NAME}&`;
+        if (!floorplan) {
+            url += 'floorplan=false';
+        } else {
+            url += 'floorplan=true';
+        }
+        return this.http.get < ILocation[] > (url);
     }
 
 }

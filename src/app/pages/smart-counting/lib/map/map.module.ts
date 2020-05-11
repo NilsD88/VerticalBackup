@@ -8,14 +8,14 @@ import { MatButtonModule, MatSnackBarModule, MatDialogModule } from '@angular/ma
 import { IconModule } from 'projects/ngx-proximus/src/public-api';
 import { RouterModule } from '@angular/router';
 import { createCustomElement } from '@angular/elements';
-import { PeopleCountingRetailMapComponent } from './map.component';
-import { PeopleCountingRetailMapPopupComponent } from './popup/popup.component';
+import { SmartCountingMapComponent } from './map.component';
+import { SmartCountingMapPopupComponent } from './popup/popup.component';
 import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map-dialog.component';
 
 @NgModule({
   declarations: [
-    PeopleCountingRetailMapComponent,
-    PeopleCountingRetailMapPopupComponent
+    SmartCountingMapComponent,
+    SmartCountingMapPopupComponent
   ],
   imports: [
     CommonModule,
@@ -30,19 +30,19 @@ import { MapDialogComponent } from 'projects/ngx-proximus/src/lib/map-dialog/map
     TranslateModule
   ],
   exports: [
-    PeopleCountingRetailMapComponent,
-    PeopleCountingRetailMapPopupComponent
+    SmartCountingMapComponent,
+    SmartCountingMapPopupComponent
   ],
   entryComponents: [
-    PeopleCountingRetailMapPopupComponent,
+    SmartCountingMapPopupComponent,
     MapDialogComponent
   ]
 })
-export class PeopleCountingRetailMapModule {
+export class SmartCountingMapModule {
   constructor(private injector: Injector) {
-    if (!customElements.get('peoplecountingretail-map-popup-element')) {
-      const PeopleCountingRetailMapPopupElement = createCustomElement(PeopleCountingRetailMapPopupComponent, {injector});
-      customElements.define('peoplecountingretail-map-popup-element', PeopleCountingRetailMapPopupElement);
+    if (!customElements.get('smartcounting-map-popup-element')) {
+      const SmartCountingMapPopupElement = createCustomElement(SmartCountingMapPopupComponent, {injector});
+      customElements.define('smartcounting-map-popup-element', SmartCountingMapPopupElement);
     }
   }
 }

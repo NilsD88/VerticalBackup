@@ -148,4 +148,18 @@ export class PeopleCountingLocationService extends LocationService {
                  }) => data.location));
   }
 
+  public getLocationsTree({floorplan, moduleName} = {floorplan: false, moduleName: null}): Observable < IPeopleCountingLocation[] > {
+    if (!moduleName) {
+      return super.getLocationsTree({floorplan});
+    }
+
+    let url = `${environment.baseUrl}/location/locationtrees?module=${moduleName}&`;
+    if (!floorplan) {
+      url += 'floorplan=false';
+    } else {
+      url += 'floorplan=true';
+    }
+    return this.http.get < IPeopleCountingLocation[] > (url);
+  }
+
 }

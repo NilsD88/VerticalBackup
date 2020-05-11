@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 
-export const PeopleCountingRetailRoutes: Routes = [
+export const SmartCountingRoutes: Routes = [
   {
     path: '',
     redirectTo: 'dashboard',
@@ -36,7 +36,7 @@ export const PeopleCountingRetailRoutes: Routes = [
     path: 'overview',
     children: [{
       path: '',
-      loadChildren: () => import('./lib/inventory-locations/inventory-locations.module').then(m => m.PeopleCountingRetailInventoryLocationsModule)
+      loadChildren: () => import('./lib/inventory-locations/inventory-locations.module').then(m => m.SmartCountingInventoryLocationsModule)
     }]
   },
   {

@@ -1,4 +1,4 @@
-import {PeopleCountingRetailLocationService} from './../../../../../services/peoplecounting-retail/location.service';
+import {SmartCountingLocationService} from './../../../../../services/smart-counting/location.service';
 import {SubSink} from 'subsink';
 import {isNullOrUndefined} from 'util';
 import {IPeopleCountingLocation, IPeopleCountingLocationSerie} from 'src/app/models/peoplecounting/location.model';
@@ -48,7 +48,7 @@ exportData(Highcharts);
 export class CalendarViewComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() leaf: IPeopleCountingLocation;
-  @Input() locationService: PeopleCountingRetailLocationService | Stairway2HealthLocationService;
+  @Input() locationService: SmartCountingLocationService | Stairway2HealthLocationService;
 
   public chartData$ = new Subject<any>();
   public chartLoading = false;

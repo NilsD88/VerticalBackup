@@ -349,7 +349,7 @@
     "SELECT_PLAN_VIEW_TRAIL": "Sélectionnez un image en plan de votre parcours (optionnel)",
     "SELECT_ASSETS_TRAIL": "Sélectionnez ou ajoutez les étapes appartenant à votre parcours (obligatoire)"
   },
-  "PEOPLE_COUNTING_RETAIL": {
+  "SMART_COUNTING": {
     "STORES_OVERVIEW": "Aperçu des emplacements",
     "NEW_STORE": "Nouvel emplacement",
     "TOTAL_COUNT_YESTERDAY": "Nombre total pour hier",

@@ -1,6 +1,6 @@
 import {SharedService} from './../../../services/shared.service';
-import {PeopleCountingRetailAssetService} from './../../../services/peoplecounting-retail/asset.service';
-import {PeopleCountingRetailLocationService} from './../../../services/peoplecounting-retail/location.service';
+import {SmartCountingAssetService} from './../../../services/smart-counting/asset.service';
+import {SmartCountingLocationService} from './../../../services/smart-counting/location.service';
 import {findLocationById} from 'src/app/shared/utils';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
@@ -20,13 +20,13 @@ export class StoreComponent implements OnInit {
   public lastMonthLeafData: IPeopleCountingLocation;
   public parentLocation: IPeopleCountingLocation;
   public assets: IPeopleCountingAsset[];
-  public assetUrl = '/private/peoplecounting/detail/';
+  public assetUrl = '/private/smart-counting/detail/';
   public assetColors: string[];
   public locale: string;
 
   constructor(
-    public locationService: PeopleCountingRetailLocationService,
-    public assetService: PeopleCountingRetailAssetService,
+    public locationService: SmartCountingLocationService,
+    public assetService: SmartCountingAssetService,
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService,
     private router: Router

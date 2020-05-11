@@ -14,7 +14,7 @@ const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
 @Injectable({
     providedIn: 'root'
 })
-export class PeopleCountingRetailLocationService extends PeopleCountingLocationService {
+export class SmartCountingLocationService extends PeopleCountingLocationService {
 
     constructor(public http: HttpClient, public apollo: Apollo) {
         super(
@@ -23,9 +23,9 @@ export class PeopleCountingRetailLocationService extends PeopleCountingLocationS
         );
     }
 
-    public getLocationsTree(): Observable < IPeopleCountingLocation[] > {
-      const url = `${environment.baseUrl}/location/locationtrees?module=${MODULE_NAME}`;
-      return this.http.get < IPeopleCountingLocation[] > (url);
+
+    public getLocationsTree({floorplan} = {floorplan: false}): Observable < IPeopleCountingLocation[] > {
+      return super.getLocationsTree({floorplan, moduleName: MODULE_NAME});
     }
 
     public getPagedLeafLocations(pageNumber: number = 0, pageSize: number = 10, filter = {}): Observable < IPagedPeopleCountingLocations > {

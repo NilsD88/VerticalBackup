@@ -1,3 +1,4 @@
+import { LocationService } from 'src/app/services/location.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {Component, OnInit, Output, EventEmitter, Input, SimpleChanges, OnChanges} from '@angular/core';
@@ -28,24 +29,27 @@ export class MapNewLocationComponent implements OnInit {
   backgroundLayer: Layer;
   provider: OpenStreetMapProvider;
   showNotifIfNoAddress = false;
+  floorplan: string;
 
   constructor(
     public snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private locationService: LocationService
   ) {}
 
-  ngOnInit() {
+  public async ngOnInit() {
+    this.floorplan = null;
     if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
-      const floorPlan = this.parentLocation.image;
-      if (floorPlan) {
+      this.floorplan = await this.locationService.getFloorplanOfLocationById(this.parentLocation.id).toPromise();
+      if (this.floorplan) {
         const image: HTMLImageElement = new Image();
-        image.src = floorPlan;
+        image.src = this.floorplan;
         image.onload = () => {
           const { width, height } = image;
           const ratioW = height / width;
           const ratioH = width / height;
           this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
-          const imageMap = imageOverlay(floorPlan, this.imageBounds);
+          const imageMap = imageOverlay(this.floorplan, this.imageBounds);
           this.backgroundLayer = imageMap;
           this.options = {
             crs: CRS.Simple,

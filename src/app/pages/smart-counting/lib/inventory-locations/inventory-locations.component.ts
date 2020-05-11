@@ -1,5 +1,5 @@
 import { SharedService } from './../../../../services/shared.service';
-import { PeopleCountingRetailLocationService } from './../../../../services/peoplecounting-retail/location.service';
+import { SmartCountingLocationService } from './../../../../services/smart-counting/location.service';
 import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { InventoryLocationsComponent } from '../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component';
@@ -12,11 +12,11 @@ export interface IInventoryFilterBE {
   templateUrl: './../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component.html',
   styleUrls: ['./../../../../../../projects/ngx-proximus/src/lib/inventory-locations/inventory-locations.component.scss']
 })
-export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLocationsComponent implements OnInit {
+export class SmartCountingInventoryLocationsComponent extends InventoryLocationsComponent implements OnInit {
 
   constructor(
     public changeDetectorRef: ChangeDetectorRef,
-    public locationService: PeopleCountingRetailLocationService,
+    public locationService: SmartCountingLocationService,
     public activatedRoute: ActivatedRoute,
     protected sharedService: SharedService,
   ) {
@@ -26,7 +26,7 @@ export class PeopleCountingRetailInventoryLocationsComponent extends InventoryLo
       activatedRoute,
       sharedService
     );
-    this.leafUrl = 'private/peoplecounting/store';
+    this.leafUrl = 'private/smart-counting/store';
     this.locationPlaceholderName = 'FILTERS.STORE_NAME';
   }
 

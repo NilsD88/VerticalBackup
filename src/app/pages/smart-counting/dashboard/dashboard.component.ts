@@ -2,7 +2,7 @@ import { Router } from '@angular/router';
 import { SharedService } from './../../../services/shared.service';
 import { Subject, of, Observable } from 'rxjs';
 import { SubSink } from 'subsink';
-import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
+import { SmartCountingLocationService } from './../../../services/smart-counting/location.service';
 import {
   cloneDeep
 } from 'lodash';
@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public leafs: IPeopleCountingLocation[];
   public leafColors: ILeafColors[];
   public listStyleValue = 'map';
-  public leafUrl = '/private/peoplecounting/store';
+  public leafUrl = '/private/smart-counting/store';
 
   public lastYearLeafs$: Subject<null> = new Subject();
   public lastYearLeafs: IPeopleCountingLocation[];
@@ -63,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
 
   constructor(
-    private locationService: PeopleCountingRetailLocationService,
+    private locationService: SmartCountingLocationService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService,
     private router: Router,

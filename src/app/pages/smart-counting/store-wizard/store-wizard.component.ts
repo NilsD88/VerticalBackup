@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
-import { PeopleCountingRetailLocationService } from './../../../services/peoplecounting-retail/location.service';
+import { SmartCountingLocationService } from './../../../services/smart-counting/location.service';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
 import { AssetService } from 'src/app/services/asset.service';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
@@ -59,7 +59,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
     public changeDetectorRef: ChangeDetectorRef,
     public activatedRoute: ActivatedRoute,
     public locationService: LocationService,
-    public peopleCountingRetailLocationService: PeopleCountingRetailLocationService,
+    public smartCountingLocationService: SmartCountingLocationService,
     public assetService: AssetService,
     public dialog: MatDialog,
     public router: Router,
@@ -160,7 +160,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
       }
 
       this.subs.add(
-        this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
+        this.smartCountingLocationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             if (updatedLocation) {
               this.originalLocation = cloneDeep(location);
@@ -177,7 +177,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
       );
     } else {
       this.subs.add(
-        this.peopleCountingRetailLocationService.createLocation(this.location).subscribe(
+        this.smartCountingLocationService.createLocation(this.location).subscribe(
           (location: IPeopleCountingLocation | null) => {
             this.location.id = location.id;
             this.originalLocation = cloneDeep(location);
@@ -210,7 +210,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
       }
 
       this.subs.add(
-        this.peopleCountingRetailLocationService.updateLocation(location).subscribe(
+        this.smartCountingLocationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             if (updatedLocation) {
               this.goToStorePage(this.location.id);
@@ -231,7 +231,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
 
 
   private goToStorePage(locationId: string) {
-    this.router.navigateByUrl(`/private/peoplecounting/store/${locationId}`);
+    this.router.navigateByUrl(`/private/smart-counting/store/${locationId}`);
   }
 
 
@@ -307,7 +307,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
   }
 
   public cancelWizard() {
-    this.router.navigateByUrl('/private/peoplecounting/dashboard');
+    this.router.navigateByUrl('/private/smart-counting/dashboard');
   }
 
   ngOnDestroy() {

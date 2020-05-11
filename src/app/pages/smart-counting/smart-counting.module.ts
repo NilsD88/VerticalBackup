@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {PeopleCountingRetailRoutes} from './people-counting-retail.routing'
+import {SmartCountingRoutes} from './smart-counting.routing'
 
 
 
@@ -11,7 +11,7 @@ import {PeopleCountingRetailRoutes} from './people-counting-retail.routing'
   declarations: [],
   imports: [
     CommonModule,
-    RouterModule.forChild(PeopleCountingRetailRoutes)
+    RouterModule.forChild(SmartCountingRoutes)
   ]
 })
-export class PeopleCountingRetailModule { }
+export class SmartCountingModule { }

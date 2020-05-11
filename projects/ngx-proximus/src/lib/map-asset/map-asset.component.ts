@@ -1,3 +1,4 @@
+import { LocationService } from 'src/app/services/location.service';
 import { Geolocation } from './../../../../../src/app/models/geolocation.model';
 import {Component, Input, OnInit, EventEmitter, Output, ChangeDetectorRef} from '@angular/core';
 import {NgElement, WithProperties} from '@angular/elements';
@@ -8,6 +9,7 @@ import { GeoJsonObject } from 'geojson';
 import { ILocation } from 'src/app/models/location.model';
 import { IGeolocation } from 'src/app/models/geolocation.model';
 import {MAP_TILES_URL_ACTIVE} from 'src/app/shared/global';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -21,7 +23,7 @@ export class MapAssetComponent implements OnInit {
   @Input() assets: IAsset[];
   @Input() location: ILocation;
   @Input() parentLocation: ILocation;
-  @Input() imageUrl: string;
+
 
   @Output() change: EventEmitter<{location: ILocation, parent: ILocation}> = new EventEmitter<{location: ILocation, parent: ILocation}>();
 
@@ -32,14 +34,19 @@ export class MapAssetComponent implements OnInit {
   locationsLayer: Layer[] = [];
   imageBounds: LatLngBounds;
   assetsBounds: LatLngBounds;
+  floorplan: string;
 
   markerClusterOptions: any;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {}
+  constructor(
+    private changeDetectorRef: ChangeDetectorRef,
+    private locationService: LocationService,
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
 
     this.center = new Geolocation();
+    this.floorplan = null;
 
     this.markerClusterOptions = {
       iconCreateFunction(cluster) {
@@ -100,17 +107,19 @@ export class MapAssetComponent implements OnInit {
       }
     }
 
-    this.imageUrl = (this.imageUrl) ? (this.imageUrl) : (this.location) ? this.location.image : null;
+    if (this.parentLocation && !isNullOrUndefined(this.parentLocation.id)) {
+      this.floorplan = await this.locationService.getFloorplanOfLocationById(this.parentLocation.id).toPromise();
+    }
 
-    if (this.imageUrl) {
+    if (this.floorplan) {
       const image: HTMLImageElement = new Image();
-      image.src = this.imageUrl;
+      image.src = this.floorplan;
       image.onload = () => {
         const { width, height } = image;
         const ratioW = height / width;
         const ratioH = width / height;
         this.imageBounds = latLngBounds([0, 0], [(image.width / 100) * ratioW, (image.height / 100) * ratioH]);
-        const imageMap = imageOverlay(this.imageUrl, this.imageBounds);
+        const imageMap = imageOverlay(this.floorplan, this.imageBounds);
         this.options = {
           crs: CRS.Simple,
           layers: [imageMap],
