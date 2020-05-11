@@ -274,7 +274,8 @@
     "NO_ASSET_FOUND_IN_LOCATIONS": "Geen asset gevonden op deze locatie",
     "NO_POA_FOUND_IN_LOCATIONS": "Geen aandachtspunt gevonden op deze locatie",
     "OPEN_THIS_LOCATION": "Open deze locatie",
-    "NONE_FOUND": "Geen locatie gevonden"
+    "NONE_FOUND": "Geen locatie gevonden",
+    "ADD_NORMAL_OR_INTERMEDIATE_LOCATION": "Add a normal or intermediate location"
   },
   "ASSETS": {
     "CREATE_NEW_ASSET": "Creëer een nieuwe asset",
@@ -347,7 +348,8 @@
     "POSITION_ON_MAP": "Position it on the map (mandatory)",
     "SELECT_IMAGES_TRAIL": "Select some images of the trail (optional)",
     "SELECT_PLAN_VIEW_TRAIL": "Select a plan view image of your trail (optional)",
-    "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)"
+    "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)",
+    "ADD_TRAIL":"Add a trail"
   },
   "SMART_COUNTING": {
     "STORES_OVERVIEW": "Winkels overzicht",
@@ -367,7 +369,8 @@
     "PROVIDE_NAME_DESCRIPTION":"Provide a name and description to your place",
     "POSITION_ON_MAP":"Position it on the map (mandatory)",
     "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
-    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
+    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)",
+    "ADD_PLACE":"Add a place"
   },
   "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Plaatsen overzicht",
@@ -383,7 +386,8 @@
     "PROVIDE_NAME_DESCRIPTION":"Provide a name and description to your place",
     "POSITION_ON_MAP":"Position it on the map (mandatory)",
     "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
-    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
+    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)",
+    "ADD_PLACE":"Add a place"
   },
   "PEOPLE_COUNTING": {
     "LAST_WEEK": "Vorige week",

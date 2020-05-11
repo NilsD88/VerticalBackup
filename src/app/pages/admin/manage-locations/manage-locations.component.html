@@ -4,10 +4,36 @@
       <h1 class="pxs-title">{{'LAYOUT.MANAGE_LOCATIONS' | translate}}</h1>
       <button
         mat-mini-fab color="primary"
-        routerLink="/private/admin/manage-locations/new"
+        [matMenuTriggerFor]="locationsMenu"
         [matTooltip]="'LOCATIONS.CREATE_NEW_LOCATION' | translate">
         <pxs-icon icon="plus-o"></pxs-icon>
       </button>
+      <mat-menu #locationsMenu xPosition="before">
+        <div>
+          <a mat-menu-item routerLink="/private/admin/manage-locations/new">
+            <pxs-icon icon="plus"></pxs-icon>
+            <span style="margin-left: 10px;">{{ 'LOCATIONS.ADD_NORMAL_OR_INTERMEDIATE_LOCATION' | translate }}</span>
+          </a>
+        </div>
+        <div *ngIf="sharedService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')">
+          <a mat-menu-item [routerLink]="['/private','walking-trails', 'trail', 'new']">
+            <pxs-icon icon="plus"></pxs-icon>
+            <span style="margin-left: 10px;">{{ 'WALKING_TRAILS.ADD_TRAIL' | translate }}</span>
+          </a>
+        </div>
+        <div *ngIf="sharedService.user?.hasModule('PEOPLE_COUNTING_RETAIL')">
+          <a mat-menu-item [routerLink]="['/private','smart-counting', 'store', 'new']">
+            <pxs-icon icon="plus"></pxs-icon>
+            <span style="margin-left: 10px;">{{ 'SMART_COUNTING.ADD_PLACE' | translate }}</span>
+          </a>
+        </div>
+        <div *ngIf="sharedService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')">
+          <a mat-menu-item [routerLink]="['/private','stairway-2-health', 'place', 'new']">
+            <pxs-icon icon="plus"></pxs-icon>
+            <span style="margin-left: 10px;">{{ 'STAIRWAY_2_HEALTH.ADD_PLACE' | translate }}</span>
+          </a>
+        </div>
+      </mat-menu>
     </div>
   </div>
   <div class="row">

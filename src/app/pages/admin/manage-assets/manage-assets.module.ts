@@ -11,7 +11,7 @@ import {
   MatCheckboxModule, MatChipsModule, MatIconModule,
   MatInputModule,
   MatPaginatorModule,
-  MatSelectModule, MatTooltipModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatCardModule
+  MatSelectModule, MatTooltipModule, MatSortModule, MatTableModule, MatProgressSpinnerModule, MatCardModule, MatMenuModule
 } from '@angular/material';
 import {LoaderModule} from 'projects/ngx-proximus/src/lib/loader/loader.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -33,13 +33,14 @@ import { AssetService } from 'src/app/services/asset.service';
     MatSelectModule,
     MatCheckboxModule,
     MatAutocompleteModule,
+    MatButtonModule,
+    MatMenuModule,
     MatSortModule,
     MatTableModule,
     MatProgressSpinnerModule,
     MatCardModule,
     LoaderModule,
     FlexLayoutModule,
-    MatButtonModule,
     EditableImageModule,
     MatChipsModule,
     MatIconModule,

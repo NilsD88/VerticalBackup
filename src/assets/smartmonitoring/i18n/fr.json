@@ -274,7 +274,8 @@
     "NO_ASSET_FOUND_IN_LOCATIONS": "Pas d'actif trouvé pour ce lieu",
     "NO_POA_FOUND_IN_LOCATIONS": "Pas de point d'attention trouvé pour ce lieu",
     "OPEN_THIS_LOCATION": "Ouvrir cette localisation",
-    "NONE_FOUND": "Pas de lieu trouvé"
+    "NONE_FOUND": "Pas de lieu trouvé",
+    "ADD_NORMAL_OR_INTERMEDIATE_LOCATION": "Ajouter un lieu régulier ou intermédiaire"
   },
   "ASSETS": {
     "CREATE_NEW_ASSET": "Créer un nouvel actif",
@@ -347,7 +348,8 @@
     "POSITION_ON_MAP": "Positionnez le sur la carte (obligatoire)",
     "SELECT_IMAGES_TRAIL": "Sélectionnez quelques images du parcours (optionnel)",
     "SELECT_PLAN_VIEW_TRAIL": "Sélectionnez un image en plan de votre parcours (optionnel)",
-    "SELECT_ASSETS_TRAIL": "Sélectionnez ou ajoutez les étapes appartenant à votre parcours (obligatoire)"
+    "SELECT_ASSETS_TRAIL": "Sélectionnez ou ajoutez les étapes appartenant à votre parcours (obligatoire)",
+    "ADD_TRAIL":"Ajouter un trail"
   },
   "SMART_COUNTING": {
     "STORES_OVERVIEW": "Aperçu des emplacements",
@@ -367,7 +369,8 @@
     "PROVIDE_NAME_DESCRIPTION":"Fournissez un nom et une description à votre emplacement",
     "POSITION_ON_MAP":"Positionnez le sur la carte (obligatoire)",
     "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
-    "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
+    "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)",
+    "ADD_PLACE":"Ajouter un emplacement"
   },
   "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Aperçu des emplacements",
@@ -382,7 +385,8 @@
     "PROVIDE_NAME_DESCRIPTION":"Fournissez un nom et une description à votre emplacement",
     "POSITION_ON_MAP":"Positionnez le sur la carte (obligatoire)",
     "SELECT_PLAN_VIEW_PLACE":"Sélectionnez une image de vue en plan de votre emplacement (optionnel)",
-    "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)"
+    "SELECT_ADD_ASSET_PLACE":"Sélectionnez ou ajoutez les biens appartenant à votre emplacement (obligatoire)",
+    "ADD_PLACE":"Ajouter un emplacement"
   },
   "PEOPLE_COUNTING": {
     "LAST_WEEK": "Semaine dernière",
