@@ -1,3 +1,4 @@
+import { ThingService } from './../../../services/thing.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AssetService } from 'src/app/services/asset.service';
 import {Component, OnInit, Optional, Inject, OnDestroy} from '@angular/core';
@@ -28,6 +29,7 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public translateService: TranslateService,
+    public thingService: ThingService,
   ) {
       super(
         formBuilder,
@@ -36,7 +38,8 @@ export class PeopleCountingAssetWizardDialogComponent extends PeopleCountingAsse
         sensorService,
         activatedRoute,
         router,
-        translateService
+        translateService,
+        thingService,
       );
       this.showCancel = false;
   }

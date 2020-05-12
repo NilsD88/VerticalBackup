@@ -109,10 +109,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-      //check if assigned to something else
-      this.thing = await this.thingService.getThingAndAssetsById(thing.id).toPromise();
-      this.foundAssets = this.thing.assets;
-      if (this.foundAssets.length > 0) {
+      const alreadyAssigned = this.thingService.checkIfThingAssignedToOtherAssets(thing.id, this.asset.id);
+      if (alreadyAssigned) {
         this.dialog.open(PopupConfirmationComponent, {
           data: {
             title: `Warning`,
