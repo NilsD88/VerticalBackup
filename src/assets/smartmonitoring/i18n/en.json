@@ -274,7 +274,8 @@
     "NO_ASSET_FOUND_IN_LOCATIONS": "No asset found in this location",
     "NO_POA_FOUND_IN_LOCATIONS": "No point of attention found in this location",
     "OPEN_THIS_LOCATION": "Open this location",
-    "NONE_FOUND": "No location found"
+    "NONE_FOUND": "No location found",
+    "ADD_NORMAL_OR_INTERMEDIATE_LOCATION": "Add a normal or intermediate location"
   },
   "ASSETS": {
     "CREATE_NEW_ASSET": "Create a new asset",
@@ -347,8 +348,8 @@
     "POSITION_ON_MAP": "Position it on the map (mandatory)",
     "SELECT_IMAGES_TRAIL": "Select some images of the trail (optional)",
     "SELECT_PLAN_VIEW_TRAIL": "Select a plan view image of your trail (optional)",
-    "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)"
-
+    "SELECT_ASSETS_TRAIL": "Select or add assets belonging to the trail (mandatory)",
+    "ADD_TRAIL":"Add a trail"
   },
   "SMART_COUNTING": {
     "STORES_OVERVIEW": "Stores overview",
@@ -368,7 +369,8 @@
     "PROVIDE_NAME_DESCRIPTION":"Provide a name and description to your place",
     "POSITION_ON_MAP":"Position it on the map (mandatory)",
     "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
-    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
+    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)",
+    "ADD_PLACE":"Add a place"
   },
   "STAIRWAY_2_HEALTH": {
     "PLACES_OVERVIEW": "Places overview",
@@ -383,7 +385,8 @@
     "PROVIDE_NAME_DESCRIPTION":"Provide a name and description to your place",
     "POSITION_ON_MAP":"Position it on the map (mandatory)",
     "SELECT_PLAN_VIEW_PLACE":"Select a plan view image of your place(optional)",
-    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)"
+    "SELECT_ADD_ASSET_PLACE":"Select or add assets belonging to the place(mandatory)",
+    "ADD_PLACE":"Add a place"
   },
   "PEOPLE_COUNTING": {
     "LAST_WEEK": "Last week",

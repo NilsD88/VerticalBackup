@@ -1,3 +1,4 @@
+import { ThingService } from './../../../services/thing.service';
 import { TranslateService } from '@ngx-translate/core';
 import { SubSink } from 'subsink';
 import { SensorService } from 'src/app/services/sensor.service';
@@ -45,6 +46,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public router: Router,
     public translateService: TranslateService,
+    public thingService: ThingService,
   ) {
   }
 
@@ -80,12 +82,32 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
   }
 
 
-  public selectedThingsChange(thing: IThing) {
+  public async selectedThingsChange(thing: IThing) {
     const thingIndex = this.asset.things.findIndex((t) => thing.id === t.id);
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-      this.asset.things.push(thing);
+      const alreadyAssigned = this.thingService.checkIfThingAssignedToOtherAssets(thing.id, this.asset.id);
+      if (alreadyAssigned) {
+        this.dialog.open(PopupConfirmationComponent, {
+          data: {
+            title: `Warning`,
+            content: 'This thing is already assigned to another asset, are you sure you want to proceed?'
+          },
+          minWidth: '320px',
+          maxWidth: '400px',
+          width: '100vw',
+          maxHeight: '80vh',
+        }).afterClosed().subscribe(
+          result => {
+            if (result) {
+              this.asset.things.push(thing);
+            }
+          }
+        );
+      } else {
+        this.asset.things.push(thing);
+      }
     }
   }
 

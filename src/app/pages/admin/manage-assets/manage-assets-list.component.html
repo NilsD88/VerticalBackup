@@ -2,6 +2,26 @@
   <div class="row" style="margin-top: 1rem;">
     <div class="col-md-12 manage-header">
       <h1 class="pxs-title">{{'LAYOUT.MANAGE_ASSETS' | translate}}</h1>
+      <button
+        mat-mini-fab color="primary"
+        [matMenuTriggerFor]="assetsMenu"
+        [matTooltip]="'ASSETS.CREATE_NEW_ASSET' | translate">
+        <pxs-icon icon="plus-o"></pxs-icon>
+      </button>
+      <mat-menu #assetsMenu xPosition="before">
+        <div>
+          <a mat-menu-item [routerLink]="['/private','smart-monitoring', 'assets', 'new']">
+            <pxs-icon icon="plus"></pxs-icon>
+            <span style="margin-left: 10px;">{{ 'ASSETS.NEW_ASSET' | translate }}</span>
+          </a>
+        </div>
+        <div *ngIf="sharedService.user?.hasModule('TANK_MONITORING')">
+          <a mat-menu-item [routerLink]="['/private', 'smart-tank', 'assets', 'new']">
+            <pxs-icon icon="plus"></pxs-icon>
+            <span style="margin-left: 10px;">{{ 'SMART_TANK.NEW_TANK' | translate }}</span>
+          </a>
+        </div>
+      </mat-menu>
     </div>
   </div>
   <div class="row">

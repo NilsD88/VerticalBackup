@@ -1,3 +1,4 @@
+import { SharedService } from './../../../services/shared.service';
 import { SubSink } from 'subsink';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import { LocationService } from 'src/app/services/location.service';
@@ -10,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './manage-locations.component.html',
   styleUrls: ['./manage-locations.component.scss'],
 })
-export class ManageLocationsComponent implements OnInit, OnDestroy{
+export class ManageLocationsComponent implements OnInit, OnDestroy {
 
   public rootLocation: ILocation;
   public selectedLocation: ILocation;
@@ -20,6 +21,7 @@ export class ManageLocationsComponent implements OnInit, OnDestroy{
   constructor(
     private locationService: LocationService,
     private activedRoute: ActivatedRoute,
+    public sharedService: SharedService
   ) {}
 
   ngOnInit() {

@@ -4,10 +4,10 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import { AssetService } from 'src/app/services/asset.service';
 import { IAsset } from 'src/app/models/asset.model';
-import { Subject } from 'rxjs';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import { MatPaginator, MatDialog } from '@angular/material';
 import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'pvf-manage-assets-list',
@@ -35,12 +35,12 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
     public assetService: AssetService,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
+    public sharedService: SharedService
   ) {}
 
   public async ngOnInit() {
     this.getAssets();
   }
-
 
   private async getAssets() {
     this.isLoading = true;

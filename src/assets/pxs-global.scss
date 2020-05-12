@@ -1356,6 +1356,14 @@ mat-form-field {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  mat-menu {
+    position: absolute;
+  }
+}
+
+.mat-menu-panel {
+  max-width: none !important;
 }
 
 .red-badge {
