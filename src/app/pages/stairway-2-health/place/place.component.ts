@@ -4,10 +4,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
 import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
-import * as randomColor from 'randomcolor';
 import {Stairway2HealthAssetService} from 'src/app/services/stairway-2-health/asset.service';
 import { isNullOrUndefined } from 'util';
 import { IField } from 'src/app/models/field.model';
+import { generaterPxsGradientColor } from 'src/app/shared/utils';
 
 @Component({
   selector: 'pvf-place',
@@ -50,9 +50,9 @@ export class PlaceComponent implements OnInit {
             await this.router.navigate(['/error/404']);
           }
         }
-        this.assetColors = randomColor({
-          count: this.leaf.assets.length
-        });
+
+        this.assetColors = generaterPxsGradientColor(this.leaf.assets.length);
+
         try {
           this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
         } catch (error) {

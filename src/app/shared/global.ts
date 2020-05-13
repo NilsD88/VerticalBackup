@@ -23,9 +23,15 @@ const HIGHCHARTS_MENU_ITEMS = [
     'viewData'
 ];
 
+const COLORS = {
+    blue: '#0073CF',
+    red: '#DE2A56'
+};
+
 export {
     MAP_TILES_URL_ACTIVE,
     UNKNOWN_PARENT_ID,
     DEFAULT_LOCATION,
     HIGHCHARTS_MENU_ITEMS,
-}
+    COLORS
+};

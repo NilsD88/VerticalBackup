@@ -2,7 +2,9 @@ import {isEqual, reduce} from 'lodash';
 import {ILocation} from 'src/app/models/location.model';
 import {ILeafColors} from './people-counting/dashboard/leaf.model';
 
-import * as randomColor from 'randomcolor';
+import gradstop from 'gradstop';
+import { COLORS } from 'src/app/shared/global';
+
 import {IPeopleCountingLocation, IPeopleCountingLocationSerie} from '../models/peoplecounting/location.model';
 import * as moment from 'moment';
 
@@ -102,11 +104,26 @@ function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocatio
 }
 
 function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
-  const leafColors = randomColor({count: leafs.length}).map((element, index) => ({
+  const gradient = gradstop({
+    stops: leafs.length,
+    inputFormat: 'hex',
+    colorArray: [COLORS.blue, COLORS.red]
+  });
+
+  const leafColors = gradient.map((element, index) => ({
     id: leafs[index].id,
     color: element
   }));
+
   return leafColors;
+}
+
+function generaterPxsGradientColor(count: number = 1): string[] {
+  return gradstop({
+    stops: count,
+    inputFormat: 'hex',
+    colorArray: [COLORS.blue, COLORS.red]
+  });
 }
 
 function allIntervalBetween(from: number, to: number, interval: moment.unitOfTime.DurationConstructor): IPeopleCountingLocationSerie[] {
@@ -130,7 +147,8 @@ export {
   decreaseLeafs,
   increaseLeafs,
   generateLeafColors,
-  allIntervalBetween
+  allIntervalBetween,
+  generaterPxsGradientColor
 };
 
 

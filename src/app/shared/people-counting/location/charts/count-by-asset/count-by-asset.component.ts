@@ -17,10 +17,10 @@ import {
 import * as Highcharts from 'highcharts';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import * as moment from 'moment';
-import * as randomColor from 'randomcolor';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
+import { generaterPxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -156,9 +156,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
   private async updateChart(assets: IPeopleCountingAsset[]) {
     if ((assets || []).length) {
       const data = [];
-      const assetColors = this.assetColors || randomColor({
-        count: this.assets.length
-      });
+      const assetColors = this.assetColors || generaterPxsGradientColor(this.assets.length);
       assets.forEach((asset, assetIndex) => {
         const series = asset.series || [];
         data.push({
