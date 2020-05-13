@@ -11,11 +11,11 @@ import { isNullOrUndefined } from 'util';
 import { IField } from 'src/app/models/field.model';
 
 @Component({
-  selector: 'pvf-store',
-  templateUrl: './store.component.html',
-  styleUrls: ['./store.component.scss']
+  selector: 'pvf-place',
+  templateUrl: './place.component.html',
+  styleUrls: ['./place.component.scss']
 })
-export class StoreComponent implements OnInit {
+export class PlaceComponent implements OnInit {
 
   public leaf: IPeopleCountingLocation;
   public lastMonthLeafData: IPeopleCountingLocation;

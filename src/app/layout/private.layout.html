@@ -171,15 +171,15 @@
   </div>
   <div mat-menu-item>
     <a mat-menu-item [routerLink]="['/private','smart-counting', 'overview']" routerLinkActive="router-link-active">
-      {{ 'SMART_COUNTING.STORES_OVERVIEW' | translate }}
+      {{ 'SMART_COUNTING.PLACES_OVERVIEW' | translate }}
     </a>
   </div>
   <div mat-menu-item *ngIf="sharedService.user?.roles.includes('pxs:iot:localadmin')">
     <a
-      mat-menu-item [routerLink]="['/private','smart-counting', 'store', 'new']"
+      mat-menu-item [routerLink]="['/private','smart-counting', 'place', 'new']"
       routerLinkActive="router-link-active">
       <pxs-icon icon="plus"></pxs-icon>
-      <span style="margin-left: 10px;">{{ 'SMART_COUNTING.NEW_STORE' | translate }}</span>
+      <span style="margin-left: 10px;">{{ 'SMART_COUNTING.NEW_PLACE' | translate }}</span>
     </a>
   </div>
 </mat-menu>

@@ -25,11 +25,11 @@ import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.com
 import { IPopupConfirmation } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
 
 @Component({
-  selector: 'pvf-store-wizard',
-  templateUrl: './store-wizard.component.html',
-  styleUrls: ['./store-wizard.component.scss']
+  selector: 'pvf-place-wizard',
+  templateUrl: './place-wizard.component.html',
+  styleUrls: ['./place-wizard.component.scss']
 })
-export class StoreWizardComponent implements OnInit, OnDestroy {
+export class PlaceWizardComponent implements OnInit, OnDestroy {
 
   @ViewChild('stepper', {static: false}) stepper: MatStepper;
 
@@ -213,7 +213,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
         this.smartCountingLocationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             if (updatedLocation) {
-              this.goToStorePage(this.location.id);
+              this.goToPlacePage(this.location.id);
             }
             this.isSavingOrUpdating = false;
           },
@@ -225,13 +225,13 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
         )
       );
     } else {
-      this.goToStorePage(this.location.id);
+      this.goToPlacePage(this.location.id);
     }
   }
 
 
-  private goToStorePage(locationId: string) {
-    this.router.navigateByUrl(`/private/smart-counting/store/${locationId}`);
+  private goToPlacePage(locationId: string) {
+    this.router.navigateByUrl(`/private/smart-counting/place/${locationId}`);
   }
 
 
@@ -291,7 +291,7 @@ export class StoreWizardComponent implements OnInit, OnDestroy {
     if (errorExtensions) {
       const nameAlreadyUsed = errorExtensions.locationNameNotUnique;
       if (nameAlreadyUsed) {
-        console.error('Store\'s name is already used');
+        console.error('Place\'s name is already used');
         this.dialog.open(DialogComponent, {
           data: {
             title: `${nameAlreadyUsed} ${this.translateService.instant('DIALOGS.FAILS.ALREADY_EXISTS')}`,

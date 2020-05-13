@@ -352,8 +352,8 @@
     "ADD_TRAIL":"Add a trail"
   },
   "SMART_COUNTING": {
-    "STORES_OVERVIEW": "Stores overview",
-    "NEW_STORE": "New store",
+    "PLACES_OVERVIEW": "Places overview",
+    "NEW_PLACE": "New place",
     "TOTAL_COUNT_YESTERDAY": "Total count yesterday",
     "TOTAL_COUNT_LAST_WEEK": "Total count last week",
     "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Difference between last week and the week before last week",
