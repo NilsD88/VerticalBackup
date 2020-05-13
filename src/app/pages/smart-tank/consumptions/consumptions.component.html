@@ -43,6 +43,16 @@
           </div>
         </div>
       </div>
+      <div class="row" style="background: white; margin: 15px 0 0; padding: 0 25px 25px;" *ngIf="(assetFields && asset?.customFields?.length) || (locationFields && asset?.location?.customFields?.length)">
+        <div class="col-6 extra-fields" *ngIf="assetFields && asset?.customFields?.length">
+          <h2>Extra fields</h2>
+          <pxs-custom-fields [fields]="assetFields" [customFields]="asset?.customFields"></pxs-custom-fields>
+        </div>
+        <div class="col-6 extra-fields" *ngIf="locationFields && asset?.location?.customFields?.length">
+          <h2>{{asset?.location?.name}} extra fields</h2>
+          <pxs-custom-fields [fields]="locationFields" [customFields]="asset?.location?.customFields"></pxs-custom-fields>
+        </div>
+      </div>
   </div>
 </div>
 

@@ -8,6 +8,7 @@ import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.mo
 import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
 import * as randomColor from 'randomcolor';
 import { isNullOrUndefined } from 'util';
+import { IField } from 'src/app/models/field.model';
 
 @Component({
   selector: 'pvf-store',
@@ -23,6 +24,7 @@ export class StoreComponent implements OnInit {
   public assetUrl = '/private/smart-counting/detail/';
   public assetColors: string[];
   public locale: string;
+  public fields: IField[];
 
   constructor(
     public locationService: SmartCountingLocationService,
@@ -38,6 +40,7 @@ export class StoreComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
       try {
         this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+        this.fields = await this.locationService.getCustomFields().toPromise();
         if (isNullOrUndefined(this.leaf)) {
           throw {
             message: '404'

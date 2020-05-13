@@ -46,3 +46,9 @@
     </div>
   </div>
 </div>
+<div class="container-fluid extra-fields-container" *ngIf="fields && leaf?.customFields?.length">
+  <div class="extra-fields">
+    <h2>Extra fields</h2>
+    <pxs-custom-fields [fields]="fields" [customFields]="leaf?.customFields"></pxs-custom-fields>
+  </div>
+</div>

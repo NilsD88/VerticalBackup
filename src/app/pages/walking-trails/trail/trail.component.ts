@@ -9,6 +9,7 @@ import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.
 import * as randomColor from 'randomcolor';
 import { UNKNOWN_PARENT_ID } from 'src/app/shared/global';
 import { isNullOrUndefined } from 'util';
+import { IField } from 'src/app/models/field.model';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class TrailComponent implements OnInit {
   public locale: string;
   public assetUrl = '/private/walking-trails/detail/';
   public assetColors: string[];
+  public fields: IField[];
 
   constructor(
     private locationService: WalkingTrailsLocationService,
@@ -41,6 +43,7 @@ export class TrailComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
       try {
         this.leaf = await this.locationService.getLocationById(params.id).toPromise();
+        this.fields = await this.locationService.getCustomFields().toPromise();
       } catch (error) {
         console.error(error);
         try {

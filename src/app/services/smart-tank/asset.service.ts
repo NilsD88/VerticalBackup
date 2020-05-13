@@ -154,7 +154,11 @@ export class SmartTankAssetService extends AssetService {
                           lat,
                           lng
                       },
-                      image
+                      image,
+                      customFields {
+                        keyId,
+                        value
+                      }
                   },
                   customFields {
                       keyId,

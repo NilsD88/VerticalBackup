@@ -1,3 +1,4 @@
+import { CustomFieldsModule } from './../../../../../projects/ngx-proximus/src/lib/custom-fields/custom-fields.module';
 import { LastAlertsModule } from 'projects/ngx-proximus/src/lib/last-alerts/last-alerts.module';
 import { NoDataModule } from 'projects/ngx-proximus/src/lib/no-data/no-data.module';
 import { ThresholdTemplatesDetailModule } from 'projects/ngx-proximus/src/lib/threshold-templates-detail/threshold-templates-detail.module';
@@ -38,6 +39,7 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     LinkedThingsModule,
     LastAlertsModule,
     NoDataModule,
+    CustomFieldsModule
   ]
 })
 export class PeopleCountingDetailModule {

@@ -7,6 +7,7 @@ import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
 import * as randomColor from 'randomcolor';
 import {Stairway2HealthAssetService} from 'src/app/services/stairway-2-health/asset.service';
 import { isNullOrUndefined } from 'util';
+import { IField } from 'src/app/models/field.model';
 
 @Component({
   selector: 'pvf-place',
@@ -22,6 +23,7 @@ export class PlaceComponent implements OnInit {
   public assetUrl = '/private/stairway-2-health/detail/';
   public assetColors: string[];
   public locale: string;
+  public fields: IField[];
 
   constructor(
     public locationService: Stairway2HealthLocationService,
@@ -37,6 +39,7 @@ export class PlaceComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
         try {
           this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+          this.fields = await this.locationService.getCustomFields().toPromise();
           if (isNullOrUndefined(this.leaf)) {
             throw {
               message: '404'

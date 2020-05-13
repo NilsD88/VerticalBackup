@@ -49,3 +49,13 @@ main {
     display: block;
   }
 }
+
+.extra-fields-container {
+  background: #efefef;
+  padding: 25px 15px;
+
+  .extra-fields {
+    background: #fff;
+    padding: 25px;
+  }
+}
