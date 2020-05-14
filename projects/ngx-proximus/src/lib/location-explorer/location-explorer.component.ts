@@ -188,20 +188,22 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     if (this.selectableLocation) {
       if (this.currentLocation !== location) {
         if (this.ghostLocationId !== location.id) {
-          const moduleName: string = location.module || '';
-          if (moduleName.startsWith('PEOPLE_COUNTING')) {
-            this.dialog.open(PopupConfirmationComponent, {
-              data: {
-                title: 'IMPOSSIBLE',
-                content: 'DESCRIPTION',
-                hideContinue: true
-              },
-              minWidth: '320px',
-              maxWidth: '400px',
-              width: '100vw',
-              maxHeight: '80vh',
-            });
-            return;
+          if (!this.selectableSealedLeaf) {
+            const moduleName: string = location.module || '';
+            if (moduleName.startsWith('PEOPLE_COUNTING')) {
+              this.dialog.open(PopupConfirmationComponent, {
+                data: {
+                  title: '',
+                  content: 'This location is of a specific type, it cannot have children',
+                  hideContinue: true
+                },
+                minWidth: '320px',
+                maxWidth: '400px',
+                width: '100vw',
+                maxHeight: '80vh',
+              });
+              return;
+            }
           }
           this.selectLocation(location, true);
         }

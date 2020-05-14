@@ -42,13 +42,13 @@
               <pxs-icon icon="trash" (click)="wantToDeleteLocation(location.id)"></pxs-icon>
             </button>
           </div>
-          <div *ngIf="location.id !== ghostLocationId && location.children.length !== 0">
+          <div *ngIf="location.id !== ghostLocationId && ((selectableSealedLeaf===false && !location?.module?.startsWith('PEOPLE_COUNTING')) || selectableSealedLeaf===true)">
             <span (click)="openLocation(location)">
               <pxs-icon icon="chevron-right" class="chevron-right"></pxs-icon>
             </span>
           </div>
         </div>
-        <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id)"
+        <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id) && !location.startsWith('PEOPLE_COUNTING')"
              [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
           <div>
             <pxs-icon icon="plus-o"></pxs-icon>
