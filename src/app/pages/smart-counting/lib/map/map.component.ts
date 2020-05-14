@@ -36,7 +36,7 @@ export class SmartCountingMapComponent extends MapComponent implements OnInit, O
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     super.ngOnInit();
   }
 
