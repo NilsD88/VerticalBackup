@@ -11,6 +11,7 @@
               *ngIf="displayLocationExplorer"
               [selectableLocation]="true"
               [selectedLocation]="location.parent"
+              [selectableSealedLeaf]="false"
               [ghostLocationId]="location.id"
               (changeLocation)="updateLocation($event)"
             ></pxs-location-explorer>
@@ -96,6 +97,9 @@
       <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
       <div class="center">
           <h2>{{'WALKING_TRAILS.SELECT_ASSETS_TRAIL' | translate}}</h2>
+      </div>
+      <div class="center">
+        <i>The location you are creating cannot contain sub locations, it is the location to what you assign your assets</i>
       </div>
       <div class="row">
         <div cdkDropList class="col-xs-12 col-md-6 mx-auto dropList assetsList">

@@ -7,6 +7,7 @@
             <pxs-location-explorer
               *ngIf="canLoadLocationExplorer"
               [selectableLocation]="true"
+              [selectableSealedLeaf]="false"
               [selectedLocation]="location.parent"
               [ghostLocationId]="location.id"
               (changeLocation)="updateLocation($event)"

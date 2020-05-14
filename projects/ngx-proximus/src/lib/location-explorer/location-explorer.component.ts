@@ -31,6 +31,7 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
   @Input() leafUrl: string;
   @Input() searchBar = true;
   @Input() selectableLocation = false;
+  @Input() selectableSealedLeaf = true;
 
   @Output() changeLocation: EventEmitter<ILocation> = new EventEmitter<ILocation>();
   @Output() selectedLocationTree: EventEmitter<ILocation> = new EventEmitter<ILocation>();
@@ -187,6 +188,21 @@ export class LocationExplorerComponent implements OnInit, OnDestroy {
     if (this.selectableLocation) {
       if (this.currentLocation !== location) {
         if (this.ghostLocationId !== location.id) {
+          const moduleName: string = location.module || '';
+          if (moduleName.startsWith('PEOPLE_COUNTING')) {
+            this.dialog.open(PopupConfirmationComponent, {
+              data: {
+                title: 'IMPOSSIBLE',
+                content: 'DESCRIPTION',
+                hideContinue: true
+              },
+              minWidth: '320px',
+              maxWidth: '400px',
+              width: '100vw',
+              maxHeight: '80vh',
+            });
+            return;
+          }
           this.selectLocation(location, true);
         }
       }
