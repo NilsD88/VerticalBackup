@@ -129,7 +129,8 @@
     "NO": "Non",
     "TRUE": "Vrai",
     "FALSE": "Faux",
-    "ZOOMIN_OUT": "Zoom avant/arrière dans la structure des lieux"
+    "ZOOMIN_OUT": "Zoom avant/arrière dans la structure des lieux",
+    "EXTRA_FIELDS": "Champs supplémentaires"
   },
   "LAYOUT": {
     "SEARCH": "Rechercher des actifs ou des lieux",

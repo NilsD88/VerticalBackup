@@ -129,7 +129,8 @@
     "NO": "No",
     "TRUE": "True",
     "FALSE": "False",
-    "ZOOMIN_OUT":"Zoom in or out on your locations structure"
+    "ZOOMIN_OUT":"Zoom in or out on your locations structure",
+    "EXTRA_FIELDS": "Extra fields"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",

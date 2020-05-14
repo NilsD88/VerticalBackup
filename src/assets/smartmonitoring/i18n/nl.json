@@ -129,7 +129,8 @@
     "NO": "Nee",
     "TRUE": "Waar",
     "FALSE": "Vals",
-    "ZOOMIN_OUT": "Zoom in of uit op de locaties"
+    "ZOOMIN_OUT": "Zoom in of uit op de locaties",
+    "EXTRA_FIELDS": "Extra fields"
   },
   "LAYOUT": {
     "SEARCH": "Zoek assets of locaties",
