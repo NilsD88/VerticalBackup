@@ -16,7 +16,7 @@ import {
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
-import { generaterPxsGradientColor } from 'src/app/shared/utils';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -203,7 +203,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
-    const colors = generaterPxsGradientColor(locations.length);
+    const colors = generatePxsGradientColor(locations.length);
     const data = [];
     const xAxisCategories = [];
     this.chartOptions.colors = [];

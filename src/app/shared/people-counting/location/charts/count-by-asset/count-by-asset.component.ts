@@ -20,7 +20,7 @@ import * as moment from 'moment';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
-import { generaterPxsGradientColor } from 'src/app/shared/utils';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -156,7 +156,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
   private async updateChart(assets: IPeopleCountingAsset[]) {
     if ((assets || []).length) {
       const data = [];
-      const assetColors = this.assetColors || generaterPxsGradientColor(this.assets.length);
+      const assetColors = this.assetColors || generatePxsGradientColor(this.assets.length);
       assets.forEach((asset, assetIndex) => {
         const series = asset.series || [];
         data.push({

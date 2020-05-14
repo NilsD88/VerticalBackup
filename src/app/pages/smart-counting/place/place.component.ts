@@ -1,7 +1,7 @@
 import {SharedService} from './../../../services/shared.service';
 import {SmartCountingAssetService} from './../../../services/smart-counting/asset.service';
 import {SmartCountingLocationService} from './../../../services/smart-counting/location.service';
-import {findLocationById, generaterPxsGradientColor} from 'src/app/shared/utils';
+import {findLocationById, generatePxsGradientColor} from 'src/app/shared/utils';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
@@ -52,7 +52,7 @@ export class PlaceComponent implements OnInit {
         }
       }
 
-      this.assetColors = generaterPxsGradientColor(this.leaf.assets.length);
+      this.assetColors = generatePxsGradientColor(this.leaf.assets.length);
 
       try {
         this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();

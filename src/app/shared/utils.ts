@@ -118,7 +118,7 @@ function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
   return leafColors;
 }
 
-function generaterPxsGradientColor(count: number = 1): string[] {
+function generatePxsGradientColor(count: number = 1): string[] {
   return gradstop({
     stops: count,
     inputFormat: 'hex',
@@ -148,7 +148,7 @@ export {
   increaseLeafs,
   generateLeafColors,
   allIntervalBetween,
-  generaterPxsGradientColor
+  generatePxsGradientColor
 };
 
 

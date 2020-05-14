@@ -7,7 +7,7 @@ import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
 import {Stairway2HealthAssetService} from 'src/app/services/stairway-2-health/asset.service';
 import { isNullOrUndefined } from 'util';
 import { IField } from 'src/app/models/field.model';
-import { generaterPxsGradientColor } from 'src/app/shared/utils';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 @Component({
   selector: 'pvf-place',
@@ -51,7 +51,7 @@ export class PlaceComponent implements OnInit {
           }
         }
 
-        this.assetColors = generaterPxsGradientColor(this.leaf.assets.length);
+        this.assetColors = generatePxsGradientColor(this.leaf.assets.length);
 
         try {
           this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
