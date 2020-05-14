@@ -48,7 +48,7 @@
             </span>
           </div>
         </div>
-        <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id) && !location.startsWith('PEOPLE_COUNTING')"
+        <div class="dropListItem newItem" *ngIf="admin && !isNullOrUndefined(tab.id) && !location?.module?.startsWith('PEOPLE_COUNTING')"
              [routerLink]="['/private/admin/manage-locations/new/'+tab.id]">
           <div>
             <pxs-icon icon="plus-o"></pxs-icon>
