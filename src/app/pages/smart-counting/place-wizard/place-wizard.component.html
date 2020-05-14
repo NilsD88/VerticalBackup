@@ -49,6 +49,7 @@
   </mat-step>
 
   <mat-step [completed]="location.geolocation">
+    <h3 class="object-name">{{location.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
       <div class="center">
@@ -65,6 +66,7 @@
   </mat-step>
 
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
+    <h3 class="object-name">{{location.name}}</h3>
     <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
     <div class="center">
        <h2>{{'SMART_COUNTING.SELECT_PLAN_VIEW_PLACE' | translate}}</h2>
@@ -80,6 +82,7 @@
   </mat-step>
 
   <mat-step>
+    <h3 class="object-name">{{location.name}}</h3>
     <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
     <div class="center">
        <h2>{{'SMART_COUNTING.SELECT_ADD_ASSET_PLACE' | translate}}</h2>

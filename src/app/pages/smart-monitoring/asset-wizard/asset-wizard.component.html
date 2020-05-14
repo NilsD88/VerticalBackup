@@ -25,6 +25,7 @@
     </form>
   </mat-step>
   <mat-step [completed]="asset.location">
+    <h3 class="object-name">{{asset.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.LOCATION' | translate }}</ng-template>
       <div class="row">
@@ -47,6 +48,7 @@
     </form>
   </mat-step>
   <mat-step>
+    <h3 class="object-name">{{asset.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
       <pxs-form-geolocation
@@ -57,6 +59,7 @@
     </form>
   </mat-step>
   <mat-step [completed]="asset.things.length > 0">
+    <h3 class="object-name">{{asset.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.THINGS' | translate }}</ng-template>
       <div class="container">
@@ -71,6 +74,7 @@
     </form>
   </mat-step>
   <mat-step [completed]="asset.things.length > 0">
+    <h3 class="object-name">{{asset.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.THRESHOLD_TEMPLATE' | translate }}</ng-template>
       <div class="container">

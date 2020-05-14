@@ -1431,3 +1431,19 @@ mat-form-field {
   text-align: center;
   height: 21px;
 }
+
+.location-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: $primary;
+  h1 {
+    color: white;
+  }
+}
+
+.object-name {
+  text-align: center;
+  color: #747474;
+}

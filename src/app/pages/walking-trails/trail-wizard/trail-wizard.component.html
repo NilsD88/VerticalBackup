@@ -47,6 +47,7 @@
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation">
+    <h3 class="object-name">{{location.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
         <div class="center">
@@ -62,6 +63,7 @@
     </form>
   </mat-step>
   <mat-step>
+    <h3 class="object-name">{{location.name}}</h3>
     <ng-template matStepLabel>{{ 'LAYOUT.IMAGES' | translate }}</ng-template>
     <div class="center">
         <h2>{{'WALKING_TRAILS.SELECT_IMAGES_TRAIL' | translate}}</h2>
@@ -80,6 +82,7 @@
     <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="true" (next)="stepper.next()"></pxs-stepper-next> 
   </mat-step>
   <mat-step [completed]="location.geolocation && !isNullOrUndefined(location.id)">
+    <h3 class="object-name">{{location.name}}</h3>
     <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
      <div class="center">
         <h2>{{'WALKING_TRAILS.SELECT_PLAN_VIEW_TRAIL' | translate}}</h2>
@@ -94,6 +97,7 @@
     <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [loading]="isSavingOrUpdating" [completed]="location.geolocation" [text]="'GENERAL.SAVE_AND_CONTINUE' | translate" [color]="'success'" (next)="submitAndContinue()"></pxs-stepper-next> 
   </mat-step>
   <mat-step>
+      <h3 class="object-name">{{location.name}}</h3>
       <ng-template matStepLabel>{{ 'LAYOUT.ASSETS' | translate }}</ng-template>
       <div class="center">
           <h2>{{'WALKING_TRAILS.SELECT_ASSETS_TRAIL' | translate}}</h2>
