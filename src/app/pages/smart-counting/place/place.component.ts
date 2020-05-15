@@ -1,21 +1,20 @@
 import {SharedService} from './../../../services/shared.service';
 import {SmartCountingAssetService} from './../../../services/smart-counting/asset.service';
 import {SmartCountingLocationService} from './../../../services/smart-counting/location.service';
-import {findLocationById} from 'src/app/shared/utils';
+import {findLocationById, generatePxsGradientColor} from 'src/app/shared/utils';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
 import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
-import * as randomColor from 'randomcolor';
 import { isNullOrUndefined } from 'util';
 import { IField } from 'src/app/models/field.model';
 
 @Component({
-  selector: 'pvf-store',
-  templateUrl: './store.component.html',
-  styleUrls: ['./store.component.scss']
+  selector: 'pvf-place',
+  templateUrl: './place.component.html',
+  styleUrls: ['./place.component.scss']
 })
-export class StoreComponent implements OnInit {
+export class PlaceComponent implements OnInit {
 
   public leaf: IPeopleCountingLocation;
   public lastMonthLeafData: IPeopleCountingLocation;
@@ -52,11 +51,10 @@ export class StoreComponent implements OnInit {
           await this.router.navigate(['/error/404']);
         }
       }
-      this.assetColors = randomColor({
-        count: this.leaf.assets.length
-      });
+
       try {
         this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+        this.assetColors = generatePxsGradientColor(this.leaf.assets.length);
       } catch (error) {
         if (error.message.indexOf('404') !== -1) {
           await this.router.navigate(['/error/404']);

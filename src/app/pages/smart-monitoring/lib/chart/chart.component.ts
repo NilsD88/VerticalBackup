@@ -77,15 +77,6 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() loading: boolean;
   @Input() title = '';
   @Input() numeralValueFormatter = '';
-  @Input() colors = [
-    '#5C2D91', '#866C9D',
-    '#B22E87', '#C386A9',
-    '#EA4D71', '#F3A7B1',
-    '#FF835B', '#9E6450',
-    '#F9F871', '#C0BC84',
-    '#9BDE7E', '#7FA06F'
-  ];
-
   @Input() asset: IAsset;
 
   @Output() updateChartData = new EventEmitter<IFilterChartData>();
@@ -141,7 +132,6 @@ export class ChartComponent implements OnInit, OnChanges {
       credits: {
         enabled: false
       },
-      colors: this.colors,
       tooltip: {
         crosshairs: true,
         shared: true,

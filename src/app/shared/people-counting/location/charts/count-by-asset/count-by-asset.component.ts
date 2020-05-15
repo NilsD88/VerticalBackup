@@ -17,10 +17,10 @@ import {
 import * as Highcharts from 'highcharts';
 import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model';
 import * as moment from 'moment';
-import * as randomColor from 'randomcolor';
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -156,9 +156,7 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
   private async updateChart(assets: IPeopleCountingAsset[]) {
     if ((assets || []).length) {
       const data = [];
-      const assetColors = this.assetColors || randomColor({
-        count: this.assets.length
-      });
+      const assetColors = this.assetColors || generatePxsGradientColor(this.assets.length);
       assets.forEach((asset, assetIndex) => {
         const series = asset.series || [];
         data.push({
@@ -189,17 +187,22 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         // REAL DATA
-        return this.assetService.getAssetsDataByIds(
-          this.assets.map(asset => asset.id),
-          'DAILY',
-          moment().startOf('day').valueOf(),
-          moment().endOf('day').valueOf(),
-        ).pipe(catchError((error) => {
-          console.error(error);
+        if (this.assets.length) {
+          return this.assetService.getAssetsDataByIds(
+            this.assets.map(asset => asset.id),
+            'DAILY',
+            moment().startOf('day').valueOf(),
+            moment().endOf('day').valueOf(),
+          ).pipe(catchError((error) => {
+            console.error(error);
+            this.chartLoading = false;
+            this.loadingError = true;
+            return of([]);
+          }));
+        } else {
           this.chartLoading = false;
-          this.loadingError = true;
           return of([]);
-        }));
+        }
       })
     );
   }

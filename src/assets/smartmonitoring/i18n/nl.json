@@ -129,7 +129,8 @@
     "NO": "Nee",
     "TRUE": "Waar",
     "FALSE": "Vals",
-    "ZOOMIN_OUT": "Zoom in of uit op de locaties"
+    "ZOOMIN_OUT": "Zoom in of uit op de locaties",
+    "EXTRA_FIELDS": "Extra fields"
   },
   "LAYOUT": {
     "SEARCH": "Zoek assets of locaties",
@@ -353,8 +354,8 @@
     "ADD_TRAIL":"Add a trail"
   },
   "SMART_COUNTING": {
-    "STORES_OVERVIEW": "Winkels overzicht",
-    "NEW_STORE": "Nieuwe winkel",
+    "PLACES_OVERVIEW": "Plaatsen overzicht",
+    "NEW_PLACE": "Nieuwe plaats",
     "TOTAL_COUNT_YESTERDAY": "Totale telling gisteren",
     "TOTAL_COUNT_LAST_WEEK": "Totale telling vorige week",
     "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Verschil tussen vorige week en de week ervoor",

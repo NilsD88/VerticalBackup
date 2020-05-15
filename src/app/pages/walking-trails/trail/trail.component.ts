@@ -6,10 +6,10 @@ import { WalkingTrailsLocationService } from './../../../services/walking-trails
 import { Component, OnInit } from '@angular/core';
 import { IImage } from 'ng-simple-slideshow';
 import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.model';
-import * as randomColor from 'randomcolor';
 import { UNKNOWN_PARENT_ID } from 'src/app/shared/global';
 import { isNullOrUndefined } from 'util';
 import { IField } from 'src/app/models/field.model';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 
 @Component({
@@ -58,11 +58,11 @@ export class TrailComponent implements OnInit {
           console.error(error2);
         }
       }
-      this.assetColors = randomColor({
-        count: this.leaf.assets.length
-      });
+
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      this.assetColors = generatePxsGradientColor(this.assets.length);
       this.leaf.assets = this.assets;
+
       if (this.leaf.parent) {
         this.parentLocation = this.leaf.parent;
       } else {

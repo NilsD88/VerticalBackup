@@ -26,8 +26,8 @@ export class SmartCountingInventoryLocationsComponent extends InventoryLocations
       activatedRoute,
       sharedService
     );
-    this.leafUrl = 'private/smart-counting/store';
-    this.locationPlaceholderName = 'FILTERS.STORE_NAME';
+    this.leafUrl = 'private/smart-counting/place';
+    this.locationPlaceholderName = 'FILTERS.PLACE_NAME';
   }
 
   async ngOnInit() {

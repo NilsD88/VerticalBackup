@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public leafs: IPeopleCountingLocation[];
   public leafColors: ILeafColors[];
   public listStyleValue = 'map';
-  public leafUrl = '/private/smart-counting/store';
+  public leafUrl = '/private/smart-counting/place';
 
   public lastYearLeafs$: Subject<null> = new Subject();
   public lastYearLeafs: IPeopleCountingLocation[];

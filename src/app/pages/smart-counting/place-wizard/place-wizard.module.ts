@@ -5,9 +5,9 @@ import { LocationWizardDialogModule } from 'src/app/pages/admin/manage-locations
 import { LocationWizardDialogComponent } from 'src/app/pages/admin/manage-locations/location-wizard/locationWizardDialog.component';
 import { IconModule } from 'projects/ngx-proximus/src/lib/icon/icon.module';
 import { NgModule } from '@angular/core';
-import { StoreWizardComponent } from './store-wizard.component';
+import { PlaceWizardComponent } from './place-wizard.component';
 import { RouterModule } from '@angular/router';
-import { StoreWizardRoutes } from './store-wizard.routing';
+import { PlaceWizardRoutes } from './place-wizard.routing';
 import { MatStepperModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule, MatDialogModule } from '@angular/material';
 import { StepperNextModule } from 'projects/ngx-proximus/src/lib/stepper-next/stepper-next.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,7 +23,7 @@ import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule.forChild(StoreWizardRoutes),
+    RouterModule.forChild(PlaceWizardRoutes),
     MatStepperModule,
     StepperNextModule,
     FormsModule,
@@ -44,9 +44,9 @@ import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-
     FormCustomFieldsModule,
     TranslateModule
   ],
-  exports: [StoreWizardComponent],
+  exports: [PlaceWizardComponent],
   declarations: [
-    StoreWizardComponent
+    PlaceWizardComponent
   ],
   entryComponents: [
     PeopleCountingAssetWizardDialogComponent,
@@ -55,4 +55,4 @@ import { PeopleCountingAssetWizardDialogComponent } from 'src/app/shared/people-
   ]
 })
 
-export class StoreWizardModule { }
+export class PlaceWizardModule { }

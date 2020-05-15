@@ -596,6 +596,7 @@ button[disabled], button:disabled {
 
   .container {
     display: flex;
+    z-index: 2;
   }
 
   .pxs-small-logo {
@@ -1430,4 +1431,20 @@ mat-form-field {
   color: $white;
   text-align: center;
   height: 21px;
+}
+
+.location-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: $primary;
+  h1 {
+    color: white;
+  }
+}
+
+.object-name {
+  text-align: center;
+  color: #747474;
 }

@@ -14,18 +14,18 @@ export const SmartCountingRoutes: Routes = [
     }]
   },
   {
-    path: 'store/new',
-    loadChildren: () => import('./store-wizard/store-wizard.module').then(m => m.StoreWizardModule)
+    path: 'place/new',
+    loadChildren: () => import('./place-wizard/place-wizard.module').then(m => m.PlaceWizardModule)
   },
   {
-    path: 'store/update/:id',
-    loadChildren: () => import('./store-wizard/store-wizard.module').then(m => m.StoreWizardModule)
+    path: 'place/update/:id',
+    loadChildren: () => import('./place-wizard/place-wizard.module').then(m => m.PlaceWizardModule)
   },
   {
-    path: 'store/:id',
+    path: 'place/:id',
     children: [{
       path: '',
-      loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
+      loadChildren: () => import('./place/place.module').then(m => m.PlaceModule)
     }]
   },
   {

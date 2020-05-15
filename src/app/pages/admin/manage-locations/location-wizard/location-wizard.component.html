@@ -7,6 +7,7 @@
             <pxs-location-explorer
               *ngIf="canLoadLocationExplorer"
               [selectableLocation]="true"
+              [selectableSealedLeaf]="false"
               [selectedLocation]="location.parent"
               [ghostLocationId]="location.id"
               (changeLocation)="updateLocation($event)"
@@ -34,6 +35,7 @@
     </form>
   </mat-step>
   <mat-step [completed]="location.geolocation">
+    <h3 class="object-name">{{location.name}}</h3>
     <form>
       <ng-template matStepLabel>{{ 'LAYOUT.GEOLOCATION' | translate }}</ng-template>
       <pxs-form-geolocation 
@@ -46,6 +48,7 @@
     </form>
   </mat-step>
   <mat-step>
+    <h3 class="object-name">{{location.name}}</h3>
     <ng-template matStepLabel>{{ 'LAYOUT.FLOOR_PLAN' | translate }}</ng-template>
     <div class="row">
       <div class="col-xs-12 col-md-6 mx-auto">
