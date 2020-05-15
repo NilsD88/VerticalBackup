@@ -187,17 +187,22 @@ export class CountByAssetComponent implements OnInit, OnChanges, OnDestroy {
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
         // REAL DATA
-        return this.assetService.getAssetsDataByIds(
-          this.assets.map(asset => asset.id),
-          'DAILY',
-          moment().startOf('day').valueOf(),
-          moment().endOf('day').valueOf(),
-        ).pipe(catchError((error) => {
-          console.error(error);
+        if (this.assets.length) {
+          return this.assetService.getAssetsDataByIds(
+            this.assets.map(asset => asset.id),
+            'DAILY',
+            moment().startOf('day').valueOf(),
+            moment().endOf('day').valueOf(),
+          ).pipe(catchError((error) => {
+            console.error(error);
+            this.chartLoading = false;
+            this.loadingError = true;
+            return of([]);
+          }));
+        } else {
           this.chartLoading = false;
-          this.loadingError = true;
           return of([]);
-        }));
+        }
       })
     );
   }

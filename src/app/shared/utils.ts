@@ -104,12 +104,8 @@ function decreaseLeafs(leafs: IPeopleCountingLocation[]): IPeopleCountingLocatio
 }
 
 function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
-  const gradient = gradstop({
-    stops: leafs.length,
-    inputFormat: 'hex',
-    colorArray: [COLORS.blue, COLORS.red]
-  });
 
+  const gradient = generatePxsGradientColor(leafs.length);
   const leafColors = gradient.map((element, index) => ({
     id: leafs[index].id,
     color: element

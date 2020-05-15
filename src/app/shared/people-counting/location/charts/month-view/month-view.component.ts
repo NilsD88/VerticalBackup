@@ -319,15 +319,20 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
         this.chartLoading = true;
         this.loadingError = false;
         this.changeDetectorRef.detectChanges();
-        return this.assetService.getAssetsDataByIds(
-          this.assets.map(asset => asset.id),
-          filter.interval, filter.from, filter.to
-        ).pipe(catchError((error) => {
-          console.error(error);
+        if (this.assets.length) {
+          return this.assetService.getAssetsDataByIds(
+            this.assets.map(asset => asset.id),
+            filter.interval, filter.from, filter.to
+          ).pipe(catchError((error) => {
+            console.error(error);
+            this.chartLoading = false;
+            this.loadingError = true;
+            return of([]);
+          }));
+        } else {
           this.chartLoading = false;
-          this.loadingError = true;
           return of([]);
-        }));
+        }
       })
     );
   }
