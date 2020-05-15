@@ -129,7 +129,8 @@
     "NO": "Non",
     "TRUE": "Vrai",
     "FALSE": "Faux",
-    "ZOOMIN_OUT": "Zoom avant/arrière dans la structure des lieux"
+    "ZOOMIN_OUT": "Zoom avant/arrière dans la structure des lieux",
+    "EXTRA_FIELDS": "Champs supplémentaires"
   },
   "LAYOUT": {
     "SEARCH": "Rechercher des actifs ou des lieux",
@@ -352,8 +353,8 @@
     "ADD_TRAIL":"Ajouter un trail"
   },
   "SMART_COUNTING": {
-    "STORES_OVERVIEW": "Aperçu des emplacements",
-    "NEW_STORE": "Nouvel emplacement",
+    "PLACES_OVERVIEW": "Aperçu des emplacements",
+    "NEW_PLACE": "Nouvel emplacement",
     "TOTAL_COUNT_YESTERDAY": "Nombre total pour hier",
     "TOTAL_COUNT_LAST_WEEK": "Nombre total pour la semaine dernière",
     "DIFFERENCE_LAST_WEEK_AND_WEEK_BEFORE": "Différence entre la semaine dernière et la semaine avant la semaine dernière",

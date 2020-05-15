@@ -1,3 +1,4 @@
+import { LocationService } from 'src/app/services/location.service';
 import { SubSink } from 'subsink';
 import { Intervals } from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { LogsService } from './../../../services/logs.service';
@@ -19,6 +20,7 @@ import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/cha
 import { MatDialog } from '@angular/material';
 import { DialogComponent } from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
 import { IThing } from 'src/app/models/thing.model';
+import { IField } from 'src/app/models/field.model';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -40,6 +42,8 @@ export class DetailComponent implements OnInit, OnDestroy {
   public chartData$ = new Subject<any>();
   public chartData = [];
   public aggregatedValues = [];
+  public assetFields: IField[];
+  public locationFields: IField[];
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
@@ -64,6 +68,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     private router: Router,
+    private locationService: LocationService,
   ) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.routeReuseStrategy.shouldDetach = () => true;
@@ -90,7 +95,9 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  private init() {
+  private async init() {
+    this.assetFields = await this.assetService.getCustomFields().toPromise();
+    this.locationFields = await this.locationService.getCustomFields().toPromise();
     this.getLastAlerts();
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(

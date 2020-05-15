@@ -1,0 +1,6 @@
+
+<ng-container *ngFor="let customField of customFields">
+  <div class="customField" *ngIf="customField.value">
+    <b>{{customField.label}}</b>: <span>{{customField.value}}</span>
+  </div>
+</ng-container>

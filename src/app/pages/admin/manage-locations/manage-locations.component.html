@@ -22,7 +22,7 @@
           </a>
         </div>
         <div *ngIf="sharedService.user?.hasModule('PEOPLE_COUNTING_RETAIL')">
-          <a mat-menu-item [routerLink]="['/private','smart-counting', 'store', 'new']">
+          <a mat-menu-item [routerLink]="['/private','smart-counting', 'place', 'new']">
             <pxs-icon icon="plus"></pxs-icon>
             <span style="margin-left: 10px;">{{ 'SMART_COUNTING.ADD_PLACE' | translate }}</span>
           </a>

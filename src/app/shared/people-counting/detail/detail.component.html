@@ -42,6 +42,12 @@
           </div>
         </div>
       </div>
+      <div class="row" style="background: white; margin: 0; padding: 0 25px 25px;" *ngIf="fields && asset?.customFields?.length">
+        <div class="extra-fields">
+          <h2>{{'GENERAL.EXTRA_FIELDS' | translate}}</h2>
+          <pxs-custom-fields [fields]="fields" [customFields]="asset?.customFields"></pxs-custom-fields>
+        </div>
+      </div>
     </div>
   </div>
 </div>

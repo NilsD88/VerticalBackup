@@ -1,5 +1,8 @@
-<div class="container-fluid">
+<div class="container-fluid location-header">
+  <h1>{{leaf?.name}}</h1>
+</div>
 
+<div class="container-fluid">
   <div class="row">
     <div class="col-xl-7 col-md-12">
       <div class="center">
@@ -7,16 +10,14 @@
       </div>
       <pvf-peoplecounting-day-view [assetColors]="assetColors" [assets]="assets" [assetService]="assetService"  [assetUrl]="assetUrl"></pvf-peoplecounting-day-view>
     </div>
-    
    <div class="col-xl-5 col-md-12">
       <div class="center">
         <h2>{{'SMART_COUNTING.STATISTICS_SUMMERY' | translate}}</h2>
       </div>
       <div style="display: flex; justify-content: center; align-items: center;">
-       <pvf-peoplecounting-summary [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-summary>
+        <pvf-peoplecounting-summary [leaf]="leaf" [locationService]="locationService"></pvf-peoplecounting-summary>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -54,6 +55,12 @@
         [searchBar]="false"
       ></pxs-asset-explorer>
     </div>
+  </div>
+</div>
+<div class="container-fluid extra-fields-container" *ngIf="fields && leaf?.customFields?.length">
+  <div class="extra-fields">
+    <h2>{{'GENERAL.EXTRA_FIELDS' | translate}}</h2>
+    <pxs-custom-fields [fields]="fields" [customFields]="leaf?.customFields"></pxs-custom-fields>
   </div>
 </div>
 

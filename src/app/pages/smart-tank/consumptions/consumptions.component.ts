@@ -1,3 +1,4 @@
+import { LocationService } from 'src/app/services/location.service';
 import {SubSink} from 'subsink';
 import {Intervals} from './../../../../../projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import {SharedService} from 'src/app/services/shared.service';
@@ -17,6 +18,7 @@ import * as moment from 'moment';
 import * as jspdf from 'jspdf';
 import {MatDialog} from '@angular/material';
 import {DialogComponent} from 'projects/ngx-proximus/src/lib/dialog/dialog.component';
+import { IField } from 'src/app/models/field.model';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -35,6 +37,8 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
   public chartLoading = false;
   public chartData$ = new Subject<any>();
   public chartData = [];
+  public assetFields: IField[];
+  public locationFields: IField[];
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
@@ -53,6 +57,7 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     private router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
+    private locationService: LocationService,
   ) {
   }
 
@@ -78,7 +83,9 @@ export class ConsumptionsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private init() {
+  private async init() {
+    this.assetFields = await this.smartTankAssetService.getCustomFields().toPromise();
+    this.locationFields = await this.locationService.getCustomFields().toPromise();
     this.getLastAlerts();
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(things => {

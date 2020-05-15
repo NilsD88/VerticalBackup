@@ -16,7 +16,7 @@ import {
   TranslateService
 } from '@ngx-translate/core';
 
-import * as randomColor from 'randomcolor';
+
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -25,7 +25,7 @@ import { IPeopleCountingAsset } from 'src/app/models/peoplecounting/asset.model'
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
-import { allIntervalBetween } from 'src/app/shared/utils';
+import { allIntervalBetween, generatePxsGradientColor } from 'src/app/shared/utils';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
 
 declare global {
@@ -271,9 +271,7 @@ export class DayViewComponent implements OnInit, OnChanges, OnDestroy {
         break;
     }
 
-    const assetColors = this.assetColors || randomColor({
-      count: assets.length
-    });
+    const assetColors = this.assetColors || generatePxsGradientColor(assets.length);
 
     if ((assets || []).length) {
       assets.forEach((asset, assetIndex) => {

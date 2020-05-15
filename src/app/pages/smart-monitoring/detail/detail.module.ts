@@ -1,3 +1,4 @@
+import { CustomFieldsModule } from './../../../../../projects/ngx-proximus/src/lib/custom-fields/custom-fields.module';
 import { DialogModule } from './../../../../../projects/ngx-proximus/src/lib/dialog/dialog.module';
 import { LastAlertsModule } from 'projects/ngx-proximus/src/lib/last-alerts/last-alerts.module';
 import { NoDataModule } from 'projects/ngx-proximus/src/lib/no-data/no-data.module';
@@ -40,6 +41,7 @@ import { LinkedThingsModule } from 'projects/ngx-proximus/src/lib/linked-things/
     LastAlertsModule,
     NoDataModule,
     DialogModule,
+    CustomFieldsModule
   ],
 })
 export class DetailModule {

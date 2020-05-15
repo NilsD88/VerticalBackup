@@ -178,7 +178,11 @@ export class AssetService {
                         lat,
                         lng
                       },
-                      image
+                      image,
+                      customFields {
+                        keyId,
+                        value
+                      }
                     },
                     things {
                      id,
@@ -229,7 +233,11 @@ export class AssetService {
                           }
                       }
                     },
-                    image
+                    image,
+                    customFields {
+                      keyId,
+                      value
+                    }
                 }
             }
         `;

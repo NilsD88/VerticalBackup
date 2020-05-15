@@ -7,6 +7,7 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -43,12 +44,6 @@ interface IFilterChartData {
 }
 
 
-enum ESensorColors {
-  TEMPERATURE = 'orange',
-  HUMIDITY = 'blue',
-  BATTERY = 'monochrome'
-}
-
 interface IChartData {
   label: string;
   sensorId: string;
@@ -76,15 +71,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
   @Input() filter: IFilterChartData;
   @Input() loading: boolean;
   @Input() numeralValueFormatter = '';
-  @Input() colors = [
-    '#5C2D91', '#866C9D',
-    '#B22E87', '#C386A9',
-    '#EA4D71', '#F3A7B1',
-    '#FF835B', '#9E6450',
-    '#F9F871', '#C0BC84',
-    '#9BDE7E', '#7FA06F'
-  ];
-
   @Input() pointOfAttention: IPointOfAttention;
 
   @Output() updateChartData = new EventEmitter<IFilterChartData>();
@@ -102,6 +88,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
   };
   public Highcharts = Highcharts;
   public chartSettingsForPointOfAttention = {};
+  private colors = [];
 
   constructor(
     public translateService: TranslateService
@@ -141,7 +128,6 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
       credits: {
         enabled: false
       },
-      colors: this.colors,
       tooltip: {
         crosshairs: true,
         shared: true,
@@ -168,9 +154,10 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
       series: []
     };
 
-    for (const data of this.chartData) {
+    this.colors = generatePxsGradientColor(this.chartData.length);
+    for (const [index, data] of this.chartData.entries()) {
       this.addYAxisOption((data.series || []).length, data.label);
-      this.addYAxisValues(data);
+      this.addYAxisValues(data, this.colors[index]);
     }
 
     try {
@@ -210,10 +197,7 @@ export class PointOfAttentionChartComponent implements OnInit, OnChanges {
     }
   }
 
-  private addYAxisValues(item: IChartData) {
-    const color = randomColor({
-      hue: ESensorColors[String(item.label).toUpperCase()]
-    });
+  private addYAxisValues(item: IChartData, color: string) {
     if (this.filter.interval) {
       this.options.series.push({
         name: item.label,

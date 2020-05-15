@@ -1,3 +1,4 @@
+import { CustomFieldsModule } from './../../../../../projects/ngx-proximus/src/lib/custom-fields/custom-fields.module';
 import { TrailImagesModule } from './trail-images/trail-images.module';
 import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { SummaryStatisticsModule } from './summary-statistics/summary-statistics.module';
@@ -31,7 +32,8 @@ import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explore
     SummaryStatisticsModule,
     AssetExplorerModule,
     MapModule,
-    TranslateModule
+    TranslateModule,
+    CustomFieldsModule
   ],
   exports: [TrailComponent]
 })

@@ -17,7 +17,6 @@ import {
   TranslateService
 } from '@ngx-translate/core';
 
-import * as randomColor from 'randomcolor';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -27,6 +26,7 @@ import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { IFilterChartData } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -225,9 +225,7 @@ export class MonthViewComponent implements OnInit, OnChanges, OnDestroy {
 
     if ((assets || []).length) {
       // Generating asset colors
-      const assetColors = this.assetColors || randomColor({
-        count: assets.length
-      });
+      const assetColors = this.assetColors || generatePxsGradientColor(assets.length);
 
       // Creating the data series by asset
       assets.forEach((asset, assetIndex) => {

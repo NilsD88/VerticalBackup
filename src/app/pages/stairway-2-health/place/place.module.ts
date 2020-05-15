@@ -12,6 +12,7 @@ import { MonthViewModule } from 'src/app/shared/people-counting/location/charts/
 import { DayViewModule } from 'src/app/shared/people-counting/location/charts/day-view/day-view.module';
 import { SummaryModule } from 'src/app/shared/people-counting/location/summary/summary.module';
 import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explorer/asset-explorer.module';
+import { CustomFieldsModule } from 'projects/ngx-proximus/src/lib/custom-fields/custom-fields.module';
 
 @NgModule({
   declarations: [PlaceComponent],
@@ -28,7 +29,8 @@ import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explore
     SummaryModule,
     AssetExplorerModule,
     DayViewModule,
-    TranslateModule
+    TranslateModule,
+    CustomFieldsModule
   ],
   exports: [PlaceComponent]
 })

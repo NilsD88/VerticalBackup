@@ -16,6 +16,7 @@ import {debounceTime, switchMap} from 'rxjs/operators';
 import * as moment from 'moment';
 import * as jspdf from 'jspdf';
 import {IFilterChartData} from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
+import { IField } from 'src/app/models/field.model';
 
 declare var require: any;
 const canvg = require('canvg');
@@ -36,6 +37,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
   public chartData$ = new Subject<any>();
   public chartData = [];
   public aggregatedValues = [];
+  public fields: IField[];
 
   public currentFilter: IFilterChartData = {
     interval: 'HOURLY',
@@ -99,7 +101,8 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  private init() {
+  private async init() {
+    this.fields = await this.assetService.getCustomFields().toPromise();
     this.getLastAlerts();
     this.subs.add(
       this.getChartData(this.chartData$).subscribe(

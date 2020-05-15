@@ -36,7 +36,7 @@ export class SmartCountingMapPopupComponent extends MapPopupComponent implements
     if ((this.location.children || []).length) {
       this.goToChild(this.location);
     } else {
-      this.router.navigateByUrl(`/private/smart-counting/store/${this.location.id}`);
+      this.router.navigateByUrl(`/private/smart-counting/place/${this.location.id}`);
     }
   }
 

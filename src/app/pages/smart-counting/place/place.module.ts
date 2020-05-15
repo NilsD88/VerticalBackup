@@ -1,3 +1,4 @@
+import { CustomFieldsModule } from './../../../../../projects/ngx-proximus/src/lib/custom-fields/custom-fields.module';
 import { AssetExplorerModule } from 'projects/ngx-proximus/src/lib/asset-explorer/asset-explorer.module';
 import { AssetsCounterModule } from 'src/app/shared/people-counting/location/assets-counter/assets-counter.module';
 import { CountByAssetModule } from 'src/app/shared/people-counting/location/charts/count-by-asset/count-by-asset.module';
@@ -6,19 +7,19 @@ import { MapModule } from 'projects/ngx-proximus/src/lib/map/map.module';
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { StoreComponent } from './store.component';
+import { PlaceComponent } from './place.component';
 import { RouterModule } from '@angular/router';
-import { StoreRoutes } from './store.routing';
+import { PlaceRoutes } from './place.routing';
 import { MonthViewModule } from 'src/app/shared/people-counting/location/charts/month-view/month-view.module';
 import { DayViewModule } from 'src/app/shared/people-counting/location/charts/day-view/day-view.module';
 import { SummaryModule } from 'src/app/shared/people-counting/location/summary/summary.module';
 
 @NgModule({
-  declarations: [StoreComponent],
+  declarations: [PlaceComponent],
   imports: [
     CommonModule,
     TranslateModule,
-    RouterModule.forChild(StoreRoutes),
+    RouterModule.forChild(PlaceRoutes),
     CalendarViewModule,
     MonthViewModule,
     CalendarViewModule,
@@ -28,9 +29,10 @@ import { SummaryModule } from 'src/app/shared/people-counting/location/summary/s
     SummaryModule,
     AssetExplorerModule,
     DayViewModule,
-    TranslateModule
+    TranslateModule,
+    CustomFieldsModule
   ],
-  exports: [StoreComponent]
+  exports: [PlaceComponent]
 })
-export class StoreModule {
+export class PlaceModule {
 }

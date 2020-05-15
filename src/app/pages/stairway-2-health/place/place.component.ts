@@ -4,9 +4,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Component, OnInit} from '@angular/core';
 import {IPeopleCountingLocation} from 'src/app/models/peoplecounting/location.model';
 import {IPeopleCountingAsset} from 'src/app/models/peoplecounting/asset.model';
-import * as randomColor from 'randomcolor';
 import {Stairway2HealthAssetService} from 'src/app/services/stairway-2-health/asset.service';
 import { isNullOrUndefined } from 'util';
+import { IField } from 'src/app/models/field.model';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 @Component({
   selector: 'pvf-place',
@@ -22,6 +23,7 @@ export class PlaceComponent implements OnInit {
   public assetUrl = '/private/stairway-2-health/detail/';
   public assetColors: string[];
   public locale: string;
+  public fields: IField[];
 
   constructor(
     public locationService: Stairway2HealthLocationService,
@@ -37,6 +39,7 @@ export class PlaceComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params) => {
         try {
           this.leaf = await this.locationService.getLocationByIdWithoutParent(params.id).toPromise();
+          this.fields = await this.locationService.getCustomFields().toPromise();
           if (isNullOrUndefined(this.leaf)) {
             throw {
               message: '404'
@@ -47,9 +50,9 @@ export class PlaceComponent implements OnInit {
             await this.router.navigate(['/error/404']);
           }
         }
-        this.assetColors = randomColor({
-          count: this.leaf.assets.length
-        });
+
+        this.assetColors = generatePxsGradientColor(this.leaf.assets.length);
+
         try {
           this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
         } catch (error) {
