@@ -65,12 +65,54 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.assetFilter) {
       if (changes.assetFilter.currentValue !== changes.assetFilter.previousValue) {
-        this.populateAssets();
+        this.populateAssets('ngOnChanges');
       }
     }
   }
 
-  public ngOnInit() {
+  public async ngOnInit() {
+    console.log('ngOnInit');
+
+
+    this.center = DEFAULT_LOCATION;
+
+    this.markerClusterOptions = {
+      iconCreateFunction(cluster) {
+        const childCount = cluster.getChildCount();
+        let c = ' marker-cluster-';
+
+        if (childCount < 10) {
+          c += 'small';
+        } else if (childCount < 100) {
+          c += 'medium';
+        } else {
+          c += 'large';
+        }
+
+        return divIcon({ html: '<div><span>' + childCount + '</span></div>',
+         className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
+        }
+    };
+
+    if (this.rootLocation) {
+      await this.checkIfSelectedLocation();
+    } else {
+      const locations: ILocation[] = await this.locationService.getLocationsTree().toPromise();
+      if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
+        this.rootLocation = locations[0];
+      } else {
+        this.rootLocation = {
+          id: null,
+          parentId: null,
+          geolocation: null,
+          image: null,
+          name: 'Locations',
+          description: null,
+          children: locations,
+        };
+      }
+      await this.checkIfSelectedLocation();
+    }
 
     const assetsRequestSourcePipe = this.assetsRequestSource.pipe(
       switchMap(req => {
@@ -94,53 +136,10 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         (data: IAsset[]) => {
           this.markers = [];
           this.assets = data;
-          this.populateAssets();
+          this.populateAssets('assetsRequestSourcePipe');
         }
       )
     );
-
-    this.center = DEFAULT_LOCATION;
-
-    this.markerClusterOptions = {
-      iconCreateFunction(cluster) {
-        const childCount = cluster.getChildCount();
-        let c = ' marker-cluster-';
-
-        if (childCount < 10) {
-          c += 'small';
-        } else if (childCount < 100) {
-          c += 'medium';
-        } else {
-          c += 'large';
-        }
-
-        return divIcon({ html: '<div><span>' + childCount + '</span></div>',
-         className: 'marker-cluster' + c, iconSize: new Point(40, 40) });
-        }
-    };
-
-    if (this.rootLocation) {
-      this.checkIfSelectedLocation();
-    } else {
-      this.subs.add(
-        this.locationService.getLocationsTree().subscribe((locations: ILocation[]) => {
-          if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
-            this.rootLocation = locations[0];
-          } else {
-            this.rootLocation = {
-              id: null,
-              parentId: null,
-              geolocation: null,
-              image: null,
-              name: 'Locations',
-              description: null,
-              children: locations,
-            };
-          }
-          this.checkIfSelectedLocation();
-        })
-      );
-    }
   }
 
   public getAssetsByLocation() {
@@ -151,64 +150,68 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private checkIfSelectedLocation() {
+  private async checkIfSelectedLocation() {
     if (this.selectedLocation && !isNullOrUndefined(this.selectedLocation.id)) {
       const selectedLocation = {...this.selectedLocation};
       this.selectedLocation = this.rootLocation;
       const { path } = findLocationById(this.rootLocation, selectedLocation.id);
       for (const location of path) {
-        this.goToChild(location, false);
+        await this.goToChild(location, false);
       }
     }
-    this.initMap();
+    return await this.initMap();
   }
 
-  public populateAssets() {
-    this.markers = [];
-    const assetWithoutPosition: IAsset[] = [];
+  public populateAssets(somethine = null) {
+    setTimeout(() => {
+      console.log('populateAssets', somethine);
+      this.markers = [];
+      const assetWithoutPosition: IAsset[] = [];
 
-    if (this.assets && this.assets.length) {
-      for (const asset of this.assets) {
-        if (asset.geolocation) {
-          const assetIcon = this.generateAssetIcon(asset);
-          const newMarker = marker(
-            [asset.geolocation.lat, asset.geolocation.lng],
-            {
-              icon: assetIcon
-            }
-          ).bindPopup(() => this.createAssetPopup(asset, this.assetUrl, newMarker));
-          newMarker.on('mouseover', function() {
-            this.openPopup();
-          });
-          newMarker['asset'] = asset;
-          this.markers.push(newMarker);
-        } else {
-          assetWithoutPosition.push(asset);
+      if (this.assets && this.assets.length) {
+        for (const asset of this.assets) {
+          if (asset.geolocation) {
+            const assetIcon = this.generateAssetIcon(asset);
+            const newMarker = marker(
+              [asset.geolocation.lat, asset.geolocation.lng],
+              {
+                icon: assetIcon
+              }
+            ).bindPopup(() => this.createAssetPopup(asset, this.assetUrl, newMarker));
+            newMarker.on('mouseover', function() {
+              this.openPopup();
+            });
+            newMarker['asset'] = asset;
+            this.markers.push(newMarker);
+          } else {
+            assetWithoutPosition.push(asset);
+          }
         }
       }
-    }
-
-    if (assetWithoutPosition.length > 0) {
-      this.snackBar.open(
-        `${assetWithoutPosition.length} ${this.sharedService.translate.instant('NOTIFS.ASSETS_WITHOUT_POSITION')}`,
-        this.sharedService.translate.instant('GENERAL.SEE'),
-        {
-          duration: 3000
-        }).onAction().subscribe(() => {
-          this.dialog.open(MapDialogComponent, {
-            width: '300px',
-            data: {
-              assets: assetWithoutPosition,
-              assetUrl: this.assetUrl
-            }
-          });
-      });
-    }
-
-    if (!this.imageBounds) {
-      this.setBounds();
-      this.fitBoundsAndZoom();
-    }
+  
+      if (assetWithoutPosition.length > 0) {
+        this.snackBar.open(
+          `${assetWithoutPosition.length} ${this.sharedService.translate.instant('NOTIFS.ASSETS_WITHOUT_POSITION')}`,
+          this.sharedService.translate.instant('GENERAL.SEE'),
+          {
+            duration: 3000
+          }).onAction().subscribe(() => {
+            this.dialog.open(MapDialogComponent, {
+              width: '300px',
+              data: {
+                assets: assetWithoutPosition,
+                assetUrl: this.assetUrl
+              }
+            });
+        });
+      }
+  
+      if (!this.imageBounds) {
+        this.setBounds();
+        this.fitBoundsAndZoom();
+      }
+    }, 0);
+    
   }
 
   public generateAssetIcon(asset: IAsset = {}) {
@@ -246,8 +249,10 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private async initMap() {
-    this.populateLocations();
+  private async initMap(): Promise<boolean> {
+    console.log('initMap');
+    this.assetsRequestSource.next('STOP');
+
     this.imageBounds = null;
     this.floorplan = null;
 
@@ -282,6 +287,10 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>'
       };
     }
+
+    this.populateLocations();
+    console.log('initMap END');
+    return true;
   }
 
   private setBounds(assets = this.assets, location = this.selectedLocation) {
@@ -350,7 +359,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     return popupEl;
   }
 
-  public goToChild(location: ILocation, initMap = false) {
+  public async goToChild(location: ILocation, initMap = false) {
     const parent = {...this.selectedLocation};
     location.parent = parent;
     this.options = null;
@@ -358,23 +367,23 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     this.selectedLocation = location;
     this.changeLocation.emit(location);
     if (initMap) {
-      this.initMap();
+      await this.initMap();
     }
   }
 
-  public goToParentLocation(location: ILocation) {
+  public async goToParentLocation(location: ILocation) {
     this.options = null;
     this.changeDetectorRef.detectChanges();
     this.selectedLocation = location;
     this.changeLocation.emit(location);
-    this.initMap();
+    await this.initMap();
   }
 
   public getAssetsBySelectedLocation() {
     if (this.selectedLocation.assets && this.selectedLocation.assets.length) {
       this.assets = this.selectedLocation.assets;
       this.assetsRequestSource.next('STOP');
-      this.populateAssets();
+      this.populateAssets('getAssetsBySelectedLocation');
     } else {
       this.markers = [];
       this.assets = [];
@@ -383,7 +392,11 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public fitBoundsAndZoom() {
-    if (this.bounds.isValid()) {
+    if (!this.currentMap) {
+      return;
+    }
+
+    if (this.bounds && this.bounds.isValid()) {
       this.currentMap.fitBounds(this.bounds);
       setTimeout(() => {
         const currentZoom = this.currentMap.getZoom();

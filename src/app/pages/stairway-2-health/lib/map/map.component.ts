@@ -37,7 +37,7 @@ export class Stairway2HealthMapComponent extends MapComponent implements OnInit,
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     super.ngOnInit();
   }
 
