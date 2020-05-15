@@ -71,20 +71,49 @@
 </pxs-top-menu>
 
 <pxs-main-menu>
-  <pxs-menu-item [label]="'Smart monitoring'" [url]="'/private/smart-monitoring'"
-    [mat-menu-trigger-for]="smartMonitoring"></pxs-menu-item>
-  <pxs-menu-item [label]="'Smart tank'" [url]="'/private/smart-tank'"
-    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')" [mat-menu-trigger-for]="smartTank"></pxs-menu-item>
-  <pxs-menu-item [label]="'Walking trails'" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
-    [mat-menu-trigger-for]="walkingTrails"></pxs-menu-item>
-  <pxs-menu-item [label]="'Asset tracking'" *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
-    [mat-menu-trigger-for]="assetTracking"></pxs-menu-item>
-  <pxs-menu-item [label]="'Smart Counting'" [mat-menu-trigger-for]="smartCounting" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"></pxs-menu-item>
-  <pxs-menu-item [label]="'Stairway 2 health'" [mat-menu-trigger-for]="stairway2Health" *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"></pxs-menu-item>
-  <pxs-menu-item [label]="'LAYOUT.ALERTS' | translate" [url]="'/private/alerts'" [badge]="{
-    label: ((numberOfUnreadAlerts$ | async) > 99 ? '99+' : (numberOfUnreadAlerts$ | async)),
-    class: 'red-badge'
-  }"></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Smart monitoring'"
+    [url]="'/private/smart-monitoring'"
+    [mat-menu-trigger-for]="smartMonitoring"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Smart tank'"
+    [url]="'/private/smart-tank'"
+    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')"
+    [mat-menu-trigger-for]="smartTank"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Walking trails'"
+    [url]="'/private/walking-trails'"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
+    [mat-menu-trigger-for]="walkingTrails"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Asset tracking'"
+    [url]="'/private/asset-tracking'"
+    [mat-menu-trigger-for]="assetTracking"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_TRACKIN')"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Smart Counting'"
+    [url]="'/private/smart-counting'"
+    [mat-menu-trigger-for]="smartCounting"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'Stairway 2 health'"
+    [url]="'/private/stairway-2-health'"
+    [mat-menu-trigger-for]="stairway2Health"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"
+  ></pxs-menu-item>
+  <pxs-menu-item
+    [label]="'LAYOUT.ALERTS' | translate"
+    [url]="'/private/alerts'"
+    [badge]="{
+      label: ((numberOfUnreadAlerts$ | async) > 99 ? '99+' : (numberOfUnreadAlerts$ | async)),
+      class: 'red-badge'
+    }"
+  ></pxs-menu-item>
 </pxs-main-menu>
 
 <main>

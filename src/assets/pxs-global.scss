@@ -596,6 +596,7 @@ button[disabled], button:disabled {
 
   .container {
     display: flex;
+    z-index: 2;
   }
 
   .pxs-small-logo {
