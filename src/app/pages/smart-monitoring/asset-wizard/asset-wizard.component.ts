@@ -156,6 +156,44 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
+  public checkThings() {
+    if(this.oneThingCompatibleWithGPS()) {
+      this.dialog.open(PopupConfirmationComponent, {
+        data: {
+          title: this.translateService.instant('GENERAL.WARNING'),
+          content: this.translateService.instant('DIALOGS.WARNINGS.GPSASSIGNED')
+        },
+        minWidth: '320px',
+        maxWidth: '400px',
+        width: '100vw',
+        maxHeight: '80vh',
+      }).afterClosed().subscribe(
+        result => {
+          if (result) {
+            this.asset.overwriteGPS = true;
+          } else {
+            this.asset.overwriteGPS = false;
+          }
+          this.stepper.next();
+        }
+      );
+    } else {
+      this.asset.overwriteGPS = false;
+      this.stepper.next();
+    }
+  }
+
+  public oneThingCompatibleWithGPS(): boolean {
+    for (const thing of this.asset.things) {
+      for (const sensor of thing.sensors) {
+        if (sensor.sensorType.name.toLowerCase() === 'gps') {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   public wantToSaveAsset() {
     const compatibleThresholdTemplate = this.thresholdTemplateIsCompatibleWithThings();
     if (!compatibleThresholdTemplate) {
@@ -182,7 +220,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
   private submit() {
     this.isSavingOrUpdating = true;
     if (this.editMode) {
-      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
+      const includeProperties = ['name', 'description', 'overwriteGPS', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {

@@ -23,7 +23,7 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
   public isLoading = false;
 
   public dataSource: MatTableDataSource<IAsset>;
-  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'actions'];
+  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'overwriteGPS' , 'actions'];
   public filter = {
     name: '',
   };
