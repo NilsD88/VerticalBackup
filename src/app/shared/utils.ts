@@ -118,8 +118,8 @@ function generateLeafColors(leafs: IPeopleCountingLocation[]): ILeafColors[] {
   return leafColors;
 }
 
-function generatePxsGradientColor(count: number = 1): string[] {
-  count = count || 1;
+function generatePxsGradientColor(count: number = 2): string[] {
+  count = (count && count > 1) ? count : 2;
   return gradstop({
     stops: count,
     inputFormat: 'hex',

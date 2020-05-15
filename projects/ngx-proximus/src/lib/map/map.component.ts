@@ -65,17 +65,14 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.assetFilter) {
       if (changes.assetFilter.currentValue !== changes.assetFilter.previousValue) {
-        this.populateAssets('ngOnChanges');
+        this.populateAssets();
       }
     }
   }
 
   public async ngOnInit() {
-    console.log('ngOnInit');
-
 
     this.center = DEFAULT_LOCATION;
-
     this.markerClusterOptions = {
       iconCreateFunction(cluster) {
         const childCount = cluster.getChildCount();
@@ -136,7 +133,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
         (data: IAsset[]) => {
           this.markers = [];
           this.assets = data;
-          this.populateAssets('assetsRequestSourcePipe');
+          this.populateAssets();
         }
       )
     );
@@ -162,9 +159,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     return await this.initMap();
   }
 
-  public populateAssets(somethine = null) {
+  public populateAssets() {
     setTimeout(() => {
-      console.log('populateAssets', somethine);
       this.markers = [];
       const assetWithoutPosition: IAsset[] = [];
 
@@ -250,9 +246,8 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private async initMap(): Promise<boolean> {
-    console.log('initMap');
+    
     this.assetsRequestSource.next('STOP');
-
     this.imageBounds = null;
     this.floorplan = null;
 
@@ -289,7 +284,6 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.populateLocations();
-    console.log('initMap END');
     return true;
   }
 
@@ -383,7 +377,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
     if (this.selectedLocation.assets && this.selectedLocation.assets.length) {
       this.assets = this.selectedLocation.assets;
       this.assetsRequestSource.next('STOP');
-      this.populateAssets('getAssetsBySelectedLocation');
+      this.populateAssets();
     } else {
       this.markers = [];
       this.assets = [];
