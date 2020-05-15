@@ -58,9 +58,11 @@ export class TrailComponent implements OnInit {
           console.error(error2);
         }
       }
-      this.assetColors = generatePxsGradientColor(this.leaf.assets.length);
+
       this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
+      this.assetColors = generatePxsGradientColor(this.assets.length);
       this.leaf.assets = this.assets;
+
       if (this.leaf.parent) {
         this.parentLocation = this.leaf.parent;
       } else {

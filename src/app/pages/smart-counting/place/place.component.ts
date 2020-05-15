@@ -54,7 +54,7 @@ export class PlaceComponent implements OnInit {
 
       try {
         this.assets = await this.assetService.getAssetsByLocationId(this.leaf.id).toPromise();
-        this.assetColors = generatePxsGradientColor(this.leaf.assets.length || 1);
+        this.assetColors = generatePxsGradientColor(this.leaf?.assets.length);
       } catch (error) {
         if (error.message.indexOf('404') !== -1) {
           await this.router.navigate(['/error/404']);
