@@ -87,7 +87,7 @@ export class SmartTankMapComponent extends MapComponent implements OnInit, OnCha
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     super.ngOnInit();
     // If there is only one root location, open it
     if (!this.rootLocation.id && this.rootLocation.children.length === 1) {

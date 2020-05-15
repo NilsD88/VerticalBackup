@@ -37,7 +37,7 @@ export class WalkingTrailsMapComponent extends MapComponent implements OnInit, O
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     super.ngOnInit();
   }
 
