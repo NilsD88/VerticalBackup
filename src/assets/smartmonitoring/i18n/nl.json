@@ -130,7 +130,8 @@
     "TRUE": "Waar",
     "FALSE": "Vals",
     "ZOOMIN_OUT": "Zoom in of uit op de locaties",
-    "EXTRA_FIELDS": "Extra fields"
+    "EXTRA_FIELDS": "Extra fields",
+    "ALERTS_DEFINITION_IN_USE": "Alerts definition in use"
   },
   "LAYOUT": {
     "SEARCH": "Zoek assets of locaties",

@@ -130,7 +130,8 @@
     "TRUE": "Vrai",
     "FALSE": "Faux",
     "ZOOMIN_OUT": "Zoom avant/arrière dans la structure des lieux",
-    "EXTRA_FIELDS": "Champs supplémentaires"
+    "EXTRA_FIELDS": "Champs supplémentaires",
+    "ALERTS_DEFINITION_IN_USE": "Définition d’alerte utilisée"
   },
   "LAYOUT": {
     "SEARCH": "Rechercher des actifs ou des lieux",

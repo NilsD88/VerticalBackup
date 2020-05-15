@@ -130,7 +130,8 @@
     "TRUE": "True",
     "FALSE": "False",
     "ZOOMIN_OUT":"Zoom in or out on your locations structure",
-    "EXTRA_FIELDS": "Extra fields"
+    "EXTRA_FIELDS": "Extra fields",
+    "ALERTS_DEFINITION_IN_USE": "Alerts definition in use"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",

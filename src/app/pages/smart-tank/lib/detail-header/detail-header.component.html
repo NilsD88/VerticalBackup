@@ -21,7 +21,9 @@
         <p>
           {{asset?.description?.trunc(120)}}
         </p>
-        <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
+        <div class="threshold-template" *ngIf="asset?.thresholdTemplate">
+          {{'GENERAL.ALERTS_DEFINITION_IN_USE' | translate}}: <a routerLink="/private/admin/manage-threshold-templates/{{asset.thresholdTemplate.id}}">{{asset?.thresholdTemplate?.name}}</a>
+        </div>
         <p>
           <i *ngIf="asset?.lastRefill?.timestamp">{{'SMART_TANK.CONSUMPTIONS.FILLED_TO' | translate}} {{asset?.lastRefill.value}}% {{'SMART_TANK.CONSUMPTIONS.FILLED_TO_ON' | translate}}
             : {{asset?.lastRefill?.timestamp | date: 'dd/MM/yyyy' }}</i>

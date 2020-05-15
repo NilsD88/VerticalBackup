@@ -31,7 +31,7 @@
       <div class="row">
         <div class="col-lg-8 col-md-7">
           <pxs-threshold-templates-detail *ngIf="asset?.thresholdTemplate"
-            [thresholdTemplate]="asset?.thresholdTemplate"></pxs-threshold-templates-detail>
+            [thresholdTemplate]="asset?.thresholdTemplate" [withLink]="true"></pxs-threshold-templates-detail>
           <pxs-no-data *ngIf="!asset?.thresholdTemplate" [title]="'THRESHOLD_TEMPLATE.NO_THRESHOLD_TEMPLATE' | translate"></pxs-no-data>
         </div>
         <div class="col-lg-4 col-md-5">

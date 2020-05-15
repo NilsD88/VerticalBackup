@@ -20,7 +20,9 @@
         <p>
           {{asset?.description?.trunc(120)}}
         </p>
-        <h3 *ngIf="asset?.thresholdTemplate?.name">{{asset?.thresholdTemplate?.name}}</h3>
+        <div class="threshold-template" *ngIf="asset?.thresholdTemplate">
+          {{'GENERAL.ALERTS_DEFINITION_IN_USE' | translate}}: <a routerLink="/private/admin/manage-threshold-templates/{{asset.thresholdTemplate.id}}">{{asset?.thresholdTemplate?.name}}</a>
+        </div>
         <br>
       </div>
       <div class="col-sm-6 col-xs-12">

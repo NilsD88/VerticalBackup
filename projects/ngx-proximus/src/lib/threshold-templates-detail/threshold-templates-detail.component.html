@@ -1,3 +1,6 @@
-<h3>{{thresholdTemplate?.name}}</h3>
+
+<h3 *ngIf="!withLink">{{thresholdTemplate?.name}}</h3>
+<h3 *ngIf="withLink"><span>{{'GENERAL.ALERTS_DEFINITION_IN_USE' | translate}}: </span><a routerLink="/private/admin/manage-threshold-templates/{{thresholdTemplate.id}}">{{thresholdTemplate?.name}}</a></h3>
+
 
 <pxs-threshold-templates-detail-item [thresholdTemplate]="thresholdTemplate" [lastValues]="lastValues"></pxs-threshold-templates-detail-item>
