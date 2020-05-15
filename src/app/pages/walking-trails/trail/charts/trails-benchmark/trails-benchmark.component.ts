@@ -4,7 +4,6 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, ChangeDetectorRef, 
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import {uniq} from 'lodash';
 
-import * as randomColor from 'randomcolor';
 import * as Highcharts from 'highcharts';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
@@ -17,6 +16,7 @@ import {
 import { Subject, Observable, of } from 'rxjs';
 import { debounceTime, switchMap, catchError } from 'rxjs/operators';
 import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
+import { generatePxsGradientColor } from 'src/app/shared/utils';
 
 declare global {
   interface Window {
@@ -203,7 +203,7 @@ export class TrailsBenchmarkComponent implements OnInit, OnChanges, OnDestroy {
     this.chartOptions.series = [];
     this.chartOptions.xAxis.categories = [];
 
-    const colors = randomColor({count: locations.length});
+    const colors = generatePxsGradientColor(locations.length);
     const data = [];
     const xAxisCategories = [];
     this.chartOptions.colors = [];
