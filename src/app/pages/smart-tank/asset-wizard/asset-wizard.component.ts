@@ -111,7 +111,7 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
     if (thingIndex > -1) {
       this.asset.things.splice(thingIndex, 1);
     } else {
-      const alreadyAssigned = this.thingService.checkIfThingAssignedToOtherAssets(thing.id, this.asset.id);
+      const alreadyAssigned = await this.thingService.checkIfThingAssignedToOtherAssets(thing.id, this.asset.id);
       if (alreadyAssigned) {
         this.dialog.open(PopupConfirmationComponent, {
           data: {
