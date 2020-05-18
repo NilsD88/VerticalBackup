@@ -11,6 +11,7 @@ export class ThresholdTemplatesDetailComponent implements OnInit {
 
   @Input() thresholdTemplate: IThresholdTemplate;
   @Input() lastValues;
+  @Input() withLink = false;
 
   constructor(@Optional() @Inject(MAT_DIALOG_DATA) public data: any) { }
 

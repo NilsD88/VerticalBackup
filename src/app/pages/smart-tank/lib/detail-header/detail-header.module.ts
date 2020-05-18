@@ -9,11 +9,13 @@ import {ImgFallbackModule} from 'ngx-img-fallback';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SmartTankLocationPopupModule } from '../location-popup/location-popup.module';
 import { SmartTankLocationPopupComponent } from '../location-popup/location-popup.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [DetailHeaderComponent],
   imports: [
     CommonModule,
+    RouterModule,
     MatTooltipModule,
     ImgFallbackModule,
     MatDialogModule,

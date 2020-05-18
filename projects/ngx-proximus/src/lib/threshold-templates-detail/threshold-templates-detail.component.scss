@@ -1,4 +1,18 @@
+@import "variables.scss";
+
 h3 {
     text-align: center;
     padding-bottom: 20px;
+    span {
+        color: black;
+        font-weight: lighter;
+        font-family: inherit;
+    }
+    a {
+        text-decoration: none;
+        font-weight: inherit;
+        font-style: inherit;
+        font-family: inherit;
+        color: inherit
+    }
 }

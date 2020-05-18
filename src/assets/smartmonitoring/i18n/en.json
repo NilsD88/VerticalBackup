@@ -130,7 +130,8 @@
     "TRUE": "True",
     "FALSE": "False",
     "ZOOMIN_OUT":"Zoom in or out on your locations structure",
-    "EXTRA_FIELDS": "Extra fields"
+    "EXTRA_FIELDS": "Extra fields",
+    "ALERTS_DEFINITION_IN_USE": "Alerts definition in use"
   },
   "LAYOUT": {
     "SEARCH": "Search assets or locations",
@@ -165,6 +166,7 @@
     "PARENT": "Parent",
     "FLOOR_PLAN": "Floor plan",
     "GEOLOCATION": "Geolocation",
+    "OVERWRITEGPS": "Overwrite GPS",
     "THRESHOLD_TEMPLATE": "Threshold template",
     "THRESHOLD_TEMPLATES": "Threshold templates",
     "LANGUAGE": "Language",
@@ -618,7 +620,8 @@
     },
     "WARNINGS": {
       "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Not all the sensors defined in the threshold template are matching the sensor assigned to this asset",
-      "PAY_ATTENTION_FLOOR_PLAN": "Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?"
+      "PAY_ATTENTION_FLOOR_PLAN": "Pay attention if you replace the floor plan, the sub-locations and assets would need to be re-positioned on the new floorplan image, do you want to proceed?",
+      "GPSASSIGNED": "This thing has a GPS sensor assigned, do you want to auto update the asset location?"
     }
   },
   "MAPS": {

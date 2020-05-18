@@ -8,11 +8,15 @@ import {ImgFallbackModule} from 'ngx-img-fallback';
 import { LocationPopupModule } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.module';
 import { LocationPopupComponent } from 'projects/ngx-proximus/src/lib/location-popup/location-popup.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [PeopleCountingDetailHeaderComponent],
   imports: [
     CommonModule,
+    RouterModule,
+    TranslateModule,
     MatTooltipModule,
     ImgFallbackModule,
     MatDialogModule,

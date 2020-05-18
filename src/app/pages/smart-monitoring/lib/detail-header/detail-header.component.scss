@@ -33,18 +33,28 @@
       color: rgba(255,255,255, 0.17);
     }
     
-    h3 {
-      background-color : $promo;
-      padding: .2em .5em;
-      border-radius: 0 0 10px 0;
-      color: white;
-      max-width: 100%;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    .threshold-template {
       font-size: 18px;
-      white-space: nowrap;
-      display: inline-block;
-      margin: 0;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      color: white;
+      
+      a {
+        text-decoration: none;
+        background-color : $promo;
+        padding: 10px 15px;
+        border-radius: 0 0 10px 0;
+        color: white;
+        max-width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 18px;
+        white-space: nowrap;
+        display: inline-block;
+        margin: 0 0 0 10px;
+        font-weight: bold;
+      }
     }
     
     h4 {
