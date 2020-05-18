@@ -172,34 +172,7 @@ export class ThingService {
   public async checkIfThingAssignedToOtherAssets(thingId: string, assetId: string): Promise<boolean> {
     const thingWithAssetsAssigned = await this.getThingAndAssetsById(thingId).toPromise();
     const assetsAssigned = thingWithAssetsAssigned.assets.filter(asset => asset.id !== assetId);
-    return !!assetsAssigned;
+    return !!assetsAssigned.length;
   }
-
-
-    // END APOLLO
-    /*
-
-    getThingsByName(name: string): Promise<IThing[]> {
-        return new Promise(async (resolve, reject) => {
-            return this.http.get<IThing[]>(`${this.thingsUrl}/?name=${name}`)
-                .subscribe((things: IThing[]) => {
-                    resolve(things);
-                }, () => {
-                    reject(console.error('Error! Failed to fetch things. Please reload.'));
-                });
-        });
-    }
-
-    getThingsByDevEui(devEui: string): Promise<IThing[]> {
-        return new Promise(async (resolve, reject) => {
-            return this.http.get<IThing[]>(`${this.thingsUrl}/?devEui=${devEui}`)
-                .subscribe((things: IThing[]) => {
-                    resolve(things);
-                }, () => {
-                    reject(console.error('Error! Failed to fetch things. Please reload.'));
-                });
-        });
-    }
-    */
 
 }
