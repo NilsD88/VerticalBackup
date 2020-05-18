@@ -172,6 +172,7 @@ export class ThingService {
   public async checkIfThingAssignedToOtherAssets(thingId: string, assetId: string): Promise<boolean> {
     const thingWithAssetsAssigned = await this.getThingAndAssetsById(thingId).toPromise();
     const assetsAssigned = thingWithAssetsAssigned.assets.filter(asset => asset.id !== assetId);
+    console.log(assetsAssigned);
     return !!assetsAssigned.length;
   }
 
