@@ -6,7 +6,7 @@ import {TranslateService} from '@ngx-translate/core';
 import * as moment from 'moment';
 import * as mTZ from 'moment-timezone';
 import {IAsset} from 'src/app/models/asset.model';
-import { HIGHCHARTS_MENU_ITEMS } from 'src/app/shared/global';
+import { HIGHCHARTS_MENU_ITEMS, SENSOR_TYPE_COLORS } from 'src/app/shared/global';
 
 
 declare global {
@@ -54,6 +54,7 @@ interface IChartData {
   label: string;
   sensorId: string;
   sensorTypeId: string;
+  sensorTypeName: string;
   sensorDefinition: ISensorDefinition;
   series: IChartSerie[];
 }
@@ -220,9 +221,7 @@ export class PeopleCountingAssetChartComponent implements OnInit, OnChanges {
 
   private addYAxisValues(item: IChartData) {
     const direction = (item.sensorDefinition || {}).inOutType;
-    const color = randomColor({
-      hue: ESensorColors[String(item.label).toUpperCase()]
-    });
+    const color = SENSOR_TYPE_COLORS[item.sensorTypeName] || randomColor();
     if (this.filter.interval !== 'ALL') {
         if (direction === 'BOTH') {
           // IN: SUM

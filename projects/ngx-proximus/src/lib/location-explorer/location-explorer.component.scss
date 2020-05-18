@@ -115,10 +115,14 @@
       cursor: move;
     }
 
-    >div,> a {
+    >div, > a {
       display: inline-flex;
       align-items: center;
       text-decoration: none;
+      
+      &.asset-link {
+        color: $primary;
+      }
       
       > pxs-icon {
         color: white;
@@ -126,12 +130,14 @@
         border-radius: 2px;
         display: inline-flex;
         margin-right: 8px; 
+        font-size: 18px;
+        padding: 8px;
 
         &.location {
-          background: $primary;
+          background: $accent;
         }
         &.asset {
-          background: $link;
+          background: $primary;
         }
       }      
     }

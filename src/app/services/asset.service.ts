@@ -183,7 +183,8 @@ export class AssetService {
                       customFields {
                         keyId,
                         value
-                      }
+                      },
+                      module
                     },
                     things {
                      id,

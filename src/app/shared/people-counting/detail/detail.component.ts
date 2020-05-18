@@ -74,7 +74,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
       case 'walking-trails':
         this.moduleName = 'PEOPLE_COUNTING_WALKING_TRAIL';
         break;
-      case 'peoplecounting':
+      case 'smart-counting':
         this.moduleName = 'PEOPLE_COUNTING_RETAIL';
         break;
       case 'stairway-2-health':
@@ -166,6 +166,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
           label: labelTranslation,
           sensorId: sensor.id,
           sensorTypeId: sensor.sensorType.id,
+          sensorTypeName: sensor.sensorType.name,
           sensorDefinition: sensor.sensorDefinition,
           series: sensor.series,
         });

@@ -19,6 +19,8 @@ import { MapPopupComponent } from './popup/popup.component';
 import { IAsset } from 'src/app/models/asset.model';
 import {MAP_TILES_URL_ACTIVE, UNKNOWN_PARENT_ID, DEFAULT_LOCATION} from 'src/app/shared/global';
 
+
+
 @Component({
   selector: 'pxs-map',
   templateUrl: './map.component.html',
@@ -167,7 +169,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
       if (this.assets && this.assets.length) {
         for (const asset of this.assets) {
           if (asset.geolocation) {
-            const assetIcon = this.generateAssetIcon(asset);
+            const assetIcon = generateAssetIcon(asset);
             const newMarker = marker(
               [asset.geolocation.lat, asset.geolocation.lng],
               {
@@ -184,7 +186,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
           }
         }
       }
-  
+
       if (assetWithoutPosition.length > 0) {
         this.snackBar.open(
           `${assetWithoutPosition.length} ${this.sharedService.translate.instant('NOTIFS.ASSETS_WITHOUT_POSITION')}`,
@@ -201,40 +203,28 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
             });
         });
       }
-  
+
       if (!this.imageBounds) {
         this.setBounds();
         this.fitBoundsAndZoom();
       }
     }, 0);
-    
   }
 
-  public generateAssetIcon(asset: IAsset = {}) {
-    return divIcon({
-        className: 'map-marker-asset',
-        iconSize: null,
-        html: '<div><span class="pxi-map-marker"></span></div>'
-    });
-  }
 
   protected populateLocations() {
     this.locationsLayer = [];
-    const locationIcon = divIcon({
-      className: 'map-marker-location',
-      iconSize: null,
-      html: '<div><span class="pxi-map-hotspot"></span></div>'
-    });
-
     this.selectedLocation = this.selectedLocation ? this.selectedLocation : this.rootLocation;
+
     const children = this.selectedLocation.children;
     if (children && children.length) {
       for (const child of children) {
         child.parent = this.selectedLocation;
+        console.log(child);
         const newMarker = marker(
           [child.geolocation.lat, child.geolocation.lng],
           {
-            icon: locationIcon
+            icon: generateLocationIcon(child.module)
           }
         ).bindPopup(() => this.createLocationPopup(child, this.leafUrl, newMarker));
         newMarker.on('mouseover', function() {
@@ -246,7 +236,7 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private async initMap(): Promise<boolean> {
-    
+
     this.assetsRequestSource.next('STOP');
     this.imageBounds = null;
     this.floorplan = null;
@@ -427,5 +417,47 @@ export class MapComponent implements OnInit, OnChanges, OnDestroy {
 
   public ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+}
+
+
+function generateAssetIcon(asset: IAsset = {}) {
+  return divIcon({
+      className: 'map-marker-asset',
+      iconSize: null,
+      html: '<div><span class="pxi-map-marker"></span></div>'
+  });
+}
+
+function generateLocationIcon(moduleName: string = null) {
+  switch (moduleName) {
+    case 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH': {
+      return divIcon({
+        className: 'map-marker-location',
+        iconSize: null,
+        html: '<div><span class="pxi-building-circle"></span></div>'
+      });
+    }
+    case 'PEOPLE_COUNTING_RETAIL': {
+      return divIcon({
+        className: 'map-marker-location',
+        iconSize: null,
+        html: '<div><span class="pxi-building-circle"></span></div>'
+      });
+    }
+    case 'PEOPLE_COUNTING_WALKING_TRAIL': {
+      return divIcon({
+        className: 'map-marker-location',
+        iconSize: null,
+        html: '<div><span class="pxi-map-arrows"></span></div>'
+      });
+    }
+    default: {
+      return divIcon({
+        className: 'map-marker-location',
+        iconSize: null,
+        html: '<div><span class="pxi-map-hotspot"></span></div>'
+      });
+    }
   }
 }
