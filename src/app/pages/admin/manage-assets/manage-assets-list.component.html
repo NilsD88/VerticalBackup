@@ -69,6 +69,14 @@
             </td>
         </ng-container>
 
+        <!-- Overwrite GPS -->
+        <ng-container matColumnDef="overwriteGPS">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'LAYOUT.OVERWRITEGPS' | translate}}</th>
+          <td mat-cell *matCellDef="let element" > 
+            <pxs-icon icon="check" *ngIf="element.overwriteGPS"> </pxs-icon>
+          </td>
+        </ng-container>
+
         <!-- Actions template -->
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> {{'GENERAL.ACTIONS' | translate}} </th>

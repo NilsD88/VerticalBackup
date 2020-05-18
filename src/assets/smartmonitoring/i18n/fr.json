@@ -166,6 +166,7 @@
     "PARENT": "Parent",
     "FLOOR_PLAN": "Plan du site",
     "GEOLOCATION": "Géolocalisation",
+    "OVERWRITEGPS": "Overwrite GPS",
     "THRESHOLD_TEMPLATE": "Template de seuil",
     "THRESHOLD_TEMPLATES": "Template de seuils",
     "LANGUAGE": "Langue",
@@ -619,7 +620,8 @@
     },
     "WARNINGS": {
       "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Tous les capteurs définis dans le template de seuil ne correspondent pas au capteur attribué à cet actif",
-      "PAY_ATTENTION_FLOOR_PLAN": "Attention, si vous remplacez le plan du site, les localisations enfants et leurs actifs devront être repositionnés sur la nouvelle image du plan de site, voulez-vous procéder?"
+      "PAY_ATTENTION_FLOOR_PLAN": "Attention, si vous remplacez le plan du site, les localisations enfants et leurs actifs devront être repositionnés sur la nouvelle image du plan de site, voulez-vous procéder?",
+      "GPSASSIGNED": "This thing has a GPS sensor assigned, do you want to auto update the asset location?"
     }
   },
   "MAPS": {

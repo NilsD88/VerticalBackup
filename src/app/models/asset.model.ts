@@ -10,6 +10,7 @@ export interface IAbstractAsset<TLocation> {
   id?: string;
   name?: string;
   description?: string;
+  overwriteGPS?: Boolean;
   location?: TLocation;
   locationId?: string;
   geolocation?: IGeolocation;
@@ -32,6 +33,7 @@ export class Asset {
   id: string;
   name: string;
   description: string;
+  overwriteGPS: Boolean;
   location: ILocation;
   locationId: string;
   geolocation: IGeolocation;
