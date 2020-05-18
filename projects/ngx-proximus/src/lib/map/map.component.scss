@@ -55,11 +55,11 @@
             top: -17px;
         }
 
-        .pxi-map-hotspot {
+        .pxi-map-hotspot, .pxi-building-circle, .pxi-map-arrows{
             position: relative;
             font-size: 20px;
             color: white;
-            background: $link;
+            background: $accent;
             border-radius: 35px;
             padding: 10px;
             box-shadow: 0 0 15px 0 rgba(0,0,0,0.2);

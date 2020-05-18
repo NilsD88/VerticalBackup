@@ -15,8 +15,8 @@
         <div *ngIf="parent.currentLocation">
           <div class="dropListItem" *ngFor="let asset of parent.currentLocation.assets"
             [ngClass]="{'selected': parent.selectedAsset === asset}">
-            <a (click)="parent.clickOnAsset(asset)">
-              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+            <a (click)="parent.clickOnAsset(asset)" class="asset-link">
+              <pxs-icon icon="map-marker" class="asset"></pxs-icon>
               {{asset.name}}
             </a>
           </div>

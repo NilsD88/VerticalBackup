@@ -24,7 +24,10 @@
              [ngClass]="{'selected': ((currentLocation) ? (currentLocation.id === location.id) : false), 'ghost': location.id === ghostLocationId}"
              (click)="clickOnLocation(location)">
           <div>
-            <pxs-icon icon="globe" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'SMART_MONITORING' || !location?.module" icon="map-hotspot" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'" icon="building-circle" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_RETAIL'" icon="building-circle" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="map-arrows" class="location"></pxs-icon>
             {{location.name}}
             <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent"
                     [ngSwitch]="location.module">
