@@ -166,6 +166,7 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
           label: labelTranslation,
           sensorId: sensor.id,
           sensorTypeId: sensor.sensorType.id,
+          sensorTypeName: sensor.sensorType.name,
           sensorDefinition: sensor.sensorDefinition,
           series: sensor.series,
         });
