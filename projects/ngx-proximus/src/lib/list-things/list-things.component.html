@@ -54,6 +54,14 @@
         </td>
       </ng-container>
 
+      <!-- Assets Column -->
+      <ng-container matColumnDef="assets">
+        <th mat-header-cell *matHeaderCellDef>{{'LAYOUT.ASSETS' | translate}}</th>
+        <td mat-cell *matCellDef="let element">
+          {{displayAssetNames(element.assets)}}
+        </td>
+      </ng-container>
+
       <!-- Actions template -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>{{'GENERAL.ACTIONS' | translate}}</th>
