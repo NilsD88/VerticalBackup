@@ -244,7 +244,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
         this.assetService.updateAsset(asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
-            this.goToInventory();
+            this.goToManageAssets();
           },
           (error) => {
             this.isSavingOrUpdating = false;
@@ -257,7 +257,7 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
         this.assetService.createAsset(this.asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
-            this.goToInventory();
+            this.goToManageAssets();
           },
           (error) => {
             this.isSavingOrUpdating = false;
@@ -268,8 +268,8 @@ export class SmartMonitoringAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private goToInventory() {
-    this.router.navigateByUrl('/private/smart-monitoring/inventory');
+  private goToManageAssets() {
+    this.router.navigateByUrl(`/private/admin/manage-assets`);
   }
 
 

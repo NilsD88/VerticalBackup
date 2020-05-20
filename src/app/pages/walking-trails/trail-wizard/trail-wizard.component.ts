@@ -227,7 +227,7 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
         this.walkingTrailsLocationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             if (updatedLocation) {
-              this.goToTrailPage(this.location.id);
+              this.goToManageLocation();
             }
             this.isSavingOrUpdating = false;
           },
@@ -239,13 +239,26 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
         )
       );
     } else {
-      this.goToTrailPage(this.location.id);
+      this.goToManageLocation();
     }
   }
 
 
   private goToTrailPage(locationId: string) {
     this.router.navigateByUrl(`/private/walking-trails/trail/${locationId}`);
+  }
+
+  private goToManageLocation() {
+    if (!isNullOrUndefined(this.location.parentId)) {
+      this.router.navigateByUrl(`/private/admin/manage-locations/${this.location.parentId}`);
+    } else {
+      const parentId = (this.location.parent) ? this.location.parent.id : null;
+      if (parentId) {
+        this.router.navigateByUrl(`/private/admin/manage-locations/${parentId}`);
+      } else {
+        this.router.navigateByUrl('/private/admin/manage-locations');
+      }
+    }
   }
 
 

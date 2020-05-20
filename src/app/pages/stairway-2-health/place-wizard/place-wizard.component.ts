@@ -213,7 +213,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
         this.stairway2HealthLocationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             if (updatedLocation) {
-              this.goToPlacePage(this.location.id);
+              this.goToManageLocation();
             }
             this.isSavingOrUpdating = false;
           },
@@ -225,7 +225,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
         )
       );
     } else {
-      this.goToPlacePage(this.location.id);
+      this.goToManageLocation();
     }
   }
 
@@ -234,6 +234,18 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl(`/private/stairway-2-health/place/${locationId}`);
   }
 
+  private goToManageLocation() {
+    if (!isNullOrUndefined(this.location.parentId)) {
+      this.router.navigateByUrl(`/private/admin/manage-locations/${this.location.parentId}`);
+    } else {
+      const parentId = (this.location.parent) ? this.location.parent.id : null;
+      if (parentId) {
+        this.router.navigateByUrl(`/private/admin/manage-locations/${parentId}`);
+      } else {
+        this.router.navigateByUrl('/private/admin/manage-locations');
+      }
+    }
+  }
 
   public addImage() {
     this.location.images.push(null);

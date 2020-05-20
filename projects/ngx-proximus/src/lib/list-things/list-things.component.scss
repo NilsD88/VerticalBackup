@@ -26,6 +26,10 @@
           }
       }
 
+      td.mat-cell, th.mat-header-cell {
+        padding: 0 15px;
+      }
+
       .mat-sort-header-button {
           overflow: hidden;
           white-space: nowrap;

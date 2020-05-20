@@ -1,3 +1,4 @@
+import { IThing } from 'src/app/models/thing.model';
 import { SubSink } from 'subsink';
 import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import {MatSort} from '@angular/material/sort';
@@ -23,7 +24,7 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
   public isLoading = false;
 
   public dataSource: MatTableDataSource<IAsset>;
-  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'overwriteGPS' , 'actions'];
+  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'overwriteGPS' , 'things', 'actions'];
   public filter = {
     name: '',
   };
@@ -98,6 +99,10 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+
+  public displayThingNames(things: IThing[]): string {
+    return things.map(thing => thing.name).join(', ');
   }
 
   ngOnDestroy() {

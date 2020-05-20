@@ -213,7 +213,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
         this.smartCountingLocationService.updateLocation(location).subscribe(
           (updatedLocation: ILocation | null) => {
             if (updatedLocation) {
-              this.goToPlacePage(this.location.id);
+              this.goToManageLocation();
             }
             this.isSavingOrUpdating = false;
           },
@@ -225,13 +225,26 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
         )
       );
     } else {
-      this.goToPlacePage(this.location.id);
+      this.goToManageLocation();
     }
   }
 
 
   private goToPlacePage(locationId: string) {
     this.router.navigateByUrl(`/private/smart-counting/place/${locationId}`);
+  }
+
+  private goToManageLocation() {
+    if (!isNullOrUndefined(this.location.parentId)) {
+      this.router.navigateByUrl(`/private/admin/manage-locations/${this.location.parentId}`);
+    } else {
+      const parentId = (this.location.parent) ? this.location.parent.id : null;
+      if (parentId) {
+        this.router.navigateByUrl(`/private/admin/manage-locations/${parentId}`);
+      } else {
+        this.router.navigateByUrl('/private/admin/manage-locations');
+      }
+    }
   }
 
 

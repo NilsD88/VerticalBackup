@@ -10,6 +10,7 @@ import { isNullOrUndefined } from 'util';
 import { findItemsWithTermOnKey } from 'src/app/shared/utils';
 import {uniqBy} from 'lodash';
 import { MAT_CHECKBOX_CLICK_ACTION} from '@angular/material/checkbox';
+import { IAsset } from 'src/app/models/asset.model';
 
 
 
@@ -29,7 +30,7 @@ interface IThingEditing extends IThing {
 })
 export class ListThingsComponent implements OnInit, OnDestroy {
 
-  @Input() admin = true;
+  @Input() admin = false;
   @Input() selectedThings: IThing[];
 
   @Output() selectChange: EventEmitter<IThing> = new EventEmitter<IThing>();
@@ -65,6 +66,7 @@ export class ListThingsComponent implements OnInit, OnDestroy {
       this.displayedColumns.unshift('select');
     }
     if (this.admin) {
+      this.displayedColumns.push('assets');
       this.displayedColumns.push('actions');
     }
     await this.getThings();
@@ -79,6 +81,10 @@ export class ListThingsComponent implements OnInit, OnDestroy {
 
   public checkOneThing(id: string) {
     return this.selectedThings.some((thing) => thing.id === id);
+  }
+
+  public displayAssetNames(assets: IAsset[]): string {
+    return assets.map(asset => asset.name).join(', ');
   }
 
   private updateDataSource(things: IThing[]) {

@@ -77,6 +77,10 @@ export class AssetService {
               id,
               name
           },
+          things {
+            id,
+            name
+          },
           module
         }
       }
