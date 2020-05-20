@@ -271,7 +271,7 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
         this.smartTankAssetService.updateAsset(asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
-            this.goToInventory();
+            this.goToManageAssets();
           },
           (error) => {
             this.isSavingOrUpdating = false;
@@ -284,7 +284,7 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
         this.smartTankAssetService.createAsset(this.asset).subscribe(
           () => {
             this.isSavingOrUpdating = false;
-            this.goToInventory();
+            this.goToManageAssets();
           },
           (error) => {
             this.isSavingOrUpdating = false;
@@ -295,8 +295,8 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private goToInventory() {
-    this.router.navigateByUrl('/private/smart-tank/inventory');
+  private goToManageAssets() {
+    this.router.navigateByUrl(`/private/admin/manage-assets`);
   }
 
 
