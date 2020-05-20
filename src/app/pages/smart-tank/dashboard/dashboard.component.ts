@@ -241,7 +241,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public updateDataSourceWithFilteredAssets(assets: ISmartTankAsset[]) {
-    this.filteredAssetsOnTable = assets;
+    this.filteredAssetsOnTable = assets = this.assets.sort((a, b) => a.fillLevel - b.fillLevel);
     this.dataSource = new MatTableDataSource(assets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
