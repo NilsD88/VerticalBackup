@@ -4,8 +4,8 @@
       <div class="col-sm-6 col-xs-12">
         <h2>{{orgName}}</h2>
         <h4 (click)="openDialog()" class="text-accent" *ngIf="asset">
-          <pxs-icon *ngIf="asset?.location?.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="map-arrows"></pxs-icon>
-          <pxs-icon *ngIf="asset?.location?.module !== 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="building-circle"></pxs-icon>
+          <pxs-icon *ngIf="asset?.location?.module === 'PEOPLE_COUNTING_WALKING_TRAILS'" icon="map-arrows"></pxs-icon>
+          <pxs-icon *ngIf="asset?.location?.module !== 'PEOPLE_COUNTING_WALKING_TRAILS'" icon="building-circle"></pxs-icon>
           {{asset?.location?.name}}
         </h4>
         <h4 class="text-accent" *ngIf="!asset">

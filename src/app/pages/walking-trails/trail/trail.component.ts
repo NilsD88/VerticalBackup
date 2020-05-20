@@ -67,7 +67,7 @@ export class TrailComponent implements OnInit {
         this.parentLocation = this.leaf.parent;
       } else {
         let locationTree = await this.locationService.getLocationsTree().toPromise();
-        locationTree = locationTree.filter(location => location.module === 'PEOPLE_COUNTING_WALKING_TRAIL');
+        locationTree = locationTree.filter(location => location.module === 'PEOPLE_COUNTING_WALKING_TRAILS');
         if (locationTree.length > 1 && locationTree.some(location => location.id === this.leaf.id)) {
           this.parentLocation = {
             id: null,

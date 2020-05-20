@@ -15,7 +15,7 @@
             <span style="margin-left: 10px;">{{ 'ASSETS.NEW_ASSET' | translate }}</span>
           </a>
         </div>
-        <div *ngIf="sharedService.user?.hasModule('TANK_MONITORING')">
+        <div *ngIf="sharedService.user?.hasModule('SMART_TANK')">
           <a mat-menu-item [routerLink]="['/private', 'smart-tank', 'assets', 'new']">
             <pxs-icon icon="plus"></pxs-icon>
             <span style="margin-left: 10px;">{{ 'SMART_TANK.NEW_TANK' | translate }}</span>
@@ -91,7 +91,7 @@
             <th mat-header-cell *matHeaderCellDef> {{'GENERAL.ACTIONS' | translate}} </th>
             <td mat-cell *matCellDef="let element" >
               <span [ngSwitch]="element.module">
-                <span *ngSwitchCase="'TANK_MONITORING'">
+                <span *ngSwitchCase="'SMART_TANK'">
                   <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/smart-tank/consumptions/{{element.id}}">
                     <pxs-icon icon="eye"></pxs-icon>
                   </button>
@@ -99,7 +99,7 @@
                     <pxs-icon icon="edit"></pxs-icon>
                   </button>
                 </span>
-                <span *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAIL'">
+                <span *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAILS'">
                   <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/walking-trails/detail/{{element.id}}">
                     <pxs-icon icon="eye"></pxs-icon>
                   </button>
@@ -107,7 +107,7 @@
                     <pxs-icon icon="edit"></pxs-icon>
                   </button>
                 </span> 
-                <span *ngSwitchCase="'PEOPLE_COUNTING_RETAIL'">
+                <span *ngSwitchCase="'PEOPLE_COUNTING_SMART_COUNTING'">
                   <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/smart-counting/detail/{{element.id}}">
                     <pxs-icon icon="eye"></pxs-icon>
                   </button>
@@ -115,7 +115,7 @@
                     <pxs-icon icon="edit"></pxs-icon>
                   </button>
                 </span>
-                <span *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'">
+                <span *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_2_HEALTH'">
                   <button mat-icon-button matTooltip="View asset" color="primary" routerLink="/private/stairway-2-health/detail/{{element.id}}">
                     <pxs-icon icon="eye"></pxs-icon>
                   </button>

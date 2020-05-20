@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 
 
-const MODULE_NAME = 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH';
+const MODULE_NAME = 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH';
 @Injectable({
   providedIn: 'root'
 })

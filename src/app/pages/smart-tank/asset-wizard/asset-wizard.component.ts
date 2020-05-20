@@ -63,7 +63,7 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
     });
 
     this.fields = await this.smartTankAssetService.getCustomFields().toPromise();
-    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule('TANK_MONITORING').toPromise();
+    this.compatibleSensorTypes = await this.sensorService.getSensorTypesByModule('SMART_TANK').toPromise();
 
     const assetId = this.activatedRoute.snapshot.params.id;
     if (!isNullOrUndefined(assetId) && assetId !== 'new') {

@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 import gql from 'graphql-tag';
 
 
-const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_SMART_COUNTING';
 @Injectable({
   providedIn: 'root'
 })

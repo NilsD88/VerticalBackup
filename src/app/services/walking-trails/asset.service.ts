@@ -23,7 +23,7 @@ import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 
 
-const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAILS';
 @Injectable({
   providedIn: 'root'
 })
