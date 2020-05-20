@@ -7,7 +7,7 @@ import { IPeopleCountingLocation } from 'src/app/models/peoplecounting/location.
 import { ILocation } from 'src/app/models/location.model';
 import { environment } from 'src/environments/environment';
 
-const MODULE_NAME = 'TANK_MONITORING';
+const MODULE_NAME = 'SMART_TANK';
 
 @Injectable({
     providedIn: 'root'

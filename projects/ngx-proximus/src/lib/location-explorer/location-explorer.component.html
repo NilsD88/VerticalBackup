@@ -25,17 +25,17 @@
              (click)="clickOnLocation(location)">
           <div>
             <pxs-icon *ngIf="location?.module === 'SMART_MONITORING' || !location?.module" icon="map-hotspot" class="location"></pxs-icon>
-            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'" icon="building-circle" class="location"></pxs-icon>
-            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_RETAIL'" icon="building-circle" class="location"></pxs-icon>
-            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_WALKING_TRAIL'" icon="map-arrows" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH'" icon="building-circle" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_SMART_COUNTING'" icon="building-circle" class="location"></pxs-icon>
+            <pxs-icon *ngIf="location?.module === 'PEOPLE_COUNTING_WALKING_TRAILS'" icon="map-arrows" class="location"></pxs-icon>
             {{location.name}}
             <button *ngIf="admin" mat-icon-button matTooltip="Edit location" color="accent"
                     [ngSwitch]="location.module">
-              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAIL'" icon="edit"
+              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAILS'" icon="edit"
                         [routerLink]="['/private/walking-trails/trail/update/'+location.id]"></pxs-icon>
-              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_RETAIL'" icon="edit"
+              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_SMART_COUNTING'" icon="edit"
                         [routerLink]="['/private/smart-counting/place/update/'+location.id]"></pxs-icon>
-              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'" icon="edit"
+              <pxs-icon *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_2_HEALTH'" icon="edit"
                         [routerLink]="['/private/stairway-2-health/place/update/'+location.id]"></pxs-icon>
               <pxs-icon *ngSwitchCase="'SMART_MONITORING'" icon="edit"
                         [routerLink]="['/private/admin/manage-locations/location/'+location.id]"></pxs-icon>

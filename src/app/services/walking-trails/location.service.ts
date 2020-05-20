@@ -28,7 +28,7 @@ import {
   Intervals
 } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
-const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_WALKING_TRAILS';
 
 @Injectable({
   providedIn: 'root'

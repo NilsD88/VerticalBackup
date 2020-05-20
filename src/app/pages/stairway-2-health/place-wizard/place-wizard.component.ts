@@ -118,7 +118,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
       image: null,
       geolocation: null,
       customFields: [],
-      module: 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'
+      module: 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH'
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.locationService.getLocationById(parentId).toPromise();
@@ -267,7 +267,7 @@ export class PlaceWizardComponent implements OnInit, OnDestroy {
       maxHeight: '80vh',
       data: {
         location: this.location,
-        module: 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH'
+        module: 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH'
       }
     });
     const result: IPeopleCountingAsset = await dialogRef.afterClosed().toPromise();

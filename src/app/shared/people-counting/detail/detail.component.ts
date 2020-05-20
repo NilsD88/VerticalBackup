@@ -72,13 +72,13 @@ export class PeopleCountingDetailComponent implements OnInit, OnDestroy {
     const moduleName = this.router.url.match(re)[1];
     switch (moduleName) {
       case 'walking-trails':
-        this.moduleName = 'PEOPLE_COUNTING_WALKING_TRAIL';
+        this.moduleName = 'PEOPLE_COUNTING_WALKING_TRAILS';
         break;
       case 'smart-counting':
-        this.moduleName = 'PEOPLE_COUNTING_RETAIL';
+        this.moduleName = 'PEOPLE_COUNTING_SMART_COUNTING';
         break;
       case 'stairway-2-health':
-        this.moduleName = 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH';
+        this.moduleName = 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH';
         break;
     }
 

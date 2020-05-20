@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Intervals } from 'projects/ngx-proximus/src/lib/chart-controls/chart-controls.component';
 
-const MODULE_NAME = 'PEOPLE_COUNTING_RETAIL';
+const MODULE_NAME = 'PEOPLE_COUNTING_SMART_COUNTING';
 
 @Injectable({
     providedIn: 'root'
