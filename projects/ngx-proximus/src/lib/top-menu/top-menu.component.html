@@ -43,8 +43,8 @@
 
 <mat-autocomplete  #auto="matAutocomplete" [displayWith]="displayNull">
     <mat-option *ngFor="let option of searchResults" [value]="option" (onSelectionChange)="selectAnAutocompletedOption(option)" (click)="selectAnAutocompletedOption(option)">
-      <pxs-icon *ngIf="option.type === 'location'" icon="globe" class="location"></pxs-icon>
-      <pxs-icon *ngIf="option.type === 'asset'" icon="document-img" class="asset"></pxs-icon>
+      <pxs-icon *ngIf="option.type === 'location'" icon="map-hotspot" class="location"></pxs-icon>
+      <pxs-icon *ngIf="option.type === 'asset'" icon="map-marker" class="asset"></pxs-icon>
       {{ option.name }}
     </mat-option>
 </mat-autocomplete>

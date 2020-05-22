@@ -13,7 +13,7 @@
         <div *ngIf="parent.currentLocation">
           <div class="dropListItem" *ngFor="let pointOfAttention of parent.currentLocation.pointsOfAttention">
             <a (click)="parent.clickOnPointOfAttention(pointOfAttention)">
-              <pxs-icon icon="document-img" class="asset"></pxs-icon>
+              <pxs-icon icon="map-marker" class="asset"></pxs-icon>
               {{pointOfAttention.name}}
             </a>
           </div>
