@@ -101,10 +101,6 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
     );
   }
 
-  public displayThingNames(things: IThing[]): string {
-    return things.map(thing => thing.name).join(', ');
-  }
-
   ngOnDestroy() {
     this.subs.unsubscribe();
   }
