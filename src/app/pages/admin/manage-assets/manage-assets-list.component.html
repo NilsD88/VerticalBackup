@@ -81,8 +81,11 @@
         <!-- Things -->
         <ng-container matColumnDef="things">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'LAYOUT.THINGS' | translate}}</th>
-          <td mat-cell *matCellDef="let element" > 
-            {{displayThingNames(element.things)}}
+          <td mat-cell *matCellDef="let element" >
+            <ng-container *ngFor="let thing of element.things; let i = index">
+              <a routerLink="/private/admin/manage-things">{{thing.name}}</a>
+              <ng-container *ngIf="i < element.things.length - 1">, </ng-container>
+            </ng-container>
           </td>
         </ng-container>
 

@@ -27,7 +27,8 @@ export class ThingService {
                   name,
                   assets {
                     id,
-                    name
+                    name,
+                    module
                   },
                   sensors {
                       id,

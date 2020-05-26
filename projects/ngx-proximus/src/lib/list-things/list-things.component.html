@@ -58,7 +58,14 @@
       <ng-container matColumnDef="assets">
         <th mat-header-cell *matHeaderCellDef>{{'LAYOUT.ASSETS' | translate}}</th>
         <td mat-cell *matCellDef="let element">
-          {{displayAssetNames(element.assets)}}
+          <ng-container *ngFor="let asset of element.assets; let i = index" [ngSwitch]="asset.module">
+            <a *ngSwitchCase="'SMART_MONITORING'" routerLink="/private/smart-monitoring/detail/{{asset.id}}">{{asset.name}}</a>
+            <a *ngSwitchCase="'SMART_TANK'" routerLink="/private/smart-tank/consumptions/{{asset.id}}">{{asset.name}}</a>
+            <a *ngSwitchCase="'PEOPLE_COUNTING_WALKING_TRAILS'" routerLink="/private/walking-trails/detail/{{asset.id}}">{{asset.name}}</a>
+            <a *ngSwitchCase="'PEOPLE_COUNTING_STAIRWAY_2_HEALTH'" routerLink="/private/stairway-2-health/detail/{{asset.id}}">{{asset.name}}</a>
+            <a *ngSwitchCase="'PEOPLE_COUNTING_SMART_COUNTING'" routerLink="/private/smart-counting/detail/{{asset.id}}">{{asset.name}}</a>
+            <ng-container *ngIf="i < element.assets.length - 1">, </ng-container>
+          </ng-container>
         </td>
       </ng-container>
 
