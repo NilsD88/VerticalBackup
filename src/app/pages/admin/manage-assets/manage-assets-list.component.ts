@@ -1,14 +1,14 @@
-import { IThing } from 'src/app/models/thing.model';
-import { SubSink } from 'subsink';
-import { Component, OnInit, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import {IThing} from 'src/app/models/thing.model';
+import {SubSink} from 'subsink';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
-import { AssetService } from 'src/app/services/asset.service';
-import { IAsset } from 'src/app/models/asset.model';
-import { findItemsWithTermOnKey } from 'src/app/shared/utils';
-import { MatPaginator, MatDialog } from '@angular/material';
-import { PopupConfirmationComponent } from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
-import { SharedService } from 'src/app/services/shared.service';
+import {AssetService} from 'src/app/services/asset.service';
+import {IAsset} from 'src/app/models/asset.model';
+import {findItemsWithTermOnKey} from 'src/app/shared/utils';
+import {MatDialog, MatPaginator} from '@angular/material';
+import {PopupConfirmationComponent} from 'projects/ngx-proximus/src/lib/popup-confirmation/popup-confirmation.component';
+import {SharedService} from 'src/app/services/shared.service';
 
 @Component({
   selector: 'pvf-manage-assets-list',
@@ -24,7 +24,7 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
   public isLoading = false;
 
   public dataSource: MatTableDataSource<IAsset>;
-  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'overwriteGPS' , 'things', 'actions'];
+  public displayedColumns: string[] = ['name', 'location.name', 'thresholdTemplate.name', 'things', 'actions'];
   public filter = {
     name: '',
   };
@@ -37,7 +37,8 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private dialog: MatDialog,
     public sharedService: SharedService
-  ) {}
+  ) {
+  }
 
   public async ngOnInit() {
     this.getAssets();
@@ -54,16 +55,16 @@ export class ManageAssetsListComponent implements OnInit, OnDestroy {
     this.dataSource = new MatTableDataSource(assets);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sortingDataAccessor = (asset, property) => {
-        if (property.includes('.')) {
-          return property.split('.').reduce((object, key) => {
-            if (object && object[key]) {
-              return object[key];
-            } else {
-              return null;
-            }
-          }, asset);
-        }
-        return asset[property].toLocaleLowerCase();
+      if (property.includes('.')) {
+        return property.split('.').reduce((object, key) => {
+          if (object && object[key]) {
+            return object[key];
+          } else {
+            return null;
+          }
+        }, asset);
+      }
+      return asset[property].toLocaleLowerCase();
     };
     this.dataSource.sort = this.sort;
   }
