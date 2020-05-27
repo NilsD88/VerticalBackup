@@ -166,7 +166,6 @@
     "PARENT": "Ouder",
     "FLOOR_PLAN": "Plattegrond",
     "GEOLOCATION": "Geolocatie",
-    "OVERWRITEGPS": "Overwrite GPS",
     "THRESHOLD_TEMPLATE": "Drempelwaarde template",
     "THRESHOLD_TEMPLATES": "Drempelwaarde templates",
     "LANGUAGE": "Taal",
@@ -621,8 +620,7 @@
     },
     "WARNINGS": {
       "NOT_ALL_SENSORS_ARE_NOT_MATCHING_WITH_THRESHOLD_TEMPLATE": "Niet alle sensoren die in de drempel template zijn gedefinieerd, komen overeen met de sensor die aan deze asset is toegewezen.",
-      "PAY_ATTENTION_FLOOR_PLAN": "Let op: als u de plattegrond vervangt, moeten de sublocaties en assets opnieuw worden gepositioneerd op de nieuwe plattegrond afbeelding, wilt u verdergaan?",
-      "GPSASSIGNED": "This thing has a GPS sensor assigned, do you want to auto update the asset location?"
+      "PAY_ATTENTION_FLOOR_PLAN": "Let op: als u de plattegrond vervangt, moeten de sublocaties en assets opnieuw worden gepositioneerd op de nieuwe plattegrond afbeelding, wilt u verdergaan?"
     }
   },
   "MAPS": {

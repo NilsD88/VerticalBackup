@@ -68,7 +68,6 @@ export class AssetService {
           id,
           name,
           description,
-          overwriteGPS,
           location {
             id,
             name

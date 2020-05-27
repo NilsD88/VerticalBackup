@@ -139,7 +139,6 @@ export class SmartTankAssetService extends AssetService {
                   id,
                   name,
                   description,
-                  overwriteGPS,
                   lastRefill {
                       timestamp,
                       value

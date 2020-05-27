@@ -86,7 +86,6 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
       id: null,
       name: null,
       locationId: null,
-      overwriteGPS: null,
       things: [],
       thresholdTemplate: null,
       customFields: [],
@@ -135,32 +134,10 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
     }
   }
 
+
   public checkThings() {
     if (this.oneThingCompatibleWithModule()) {
-      if(this.oneThingCompatibleWithGPS()) {
-        this.dialog.open(PopupConfirmationComponent, {
-          data: {
-            title: this.translateService.instant('GENERAL.WARNING'),
-            content: this.translateService.instant('DIALOGS.WARNINGS.GPSASSIGNED')
-          },
-          minWidth: '320px',
-          maxWidth: '400px',
-          width: '100vw',
-          maxHeight: '80vh',
-        }).afterClosed().subscribe(
-          result => {
-            if (result) {
-              this.asset.overwriteGPS = true;
-            } else {
-              this.asset.overwriteGPS = false;
-            }
-            this.stepper.next();
-          }
-        );
-      } else {
-        this.asset.overwriteGPS = false;
-        this.stepper.next();
-      }
+      this.stepper.next();
     } else {
       this.dialog.open(PopupConfirmationComponent, {
         minWidth: '320px',
@@ -175,18 +152,6 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  public oneThingCompatibleWithGPS(): boolean {
-    for (const thing of this.asset.things) {
-      for (const sensor of thing.sensors) {
-        if (sensor.sensorType.name.toLowerCase() === 'gps') {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
 
   public oneThingCompatibleWithModule(): boolean {
     for (const thing of this.asset.things) {
@@ -248,7 +213,7 @@ export class SmartTankAssetWizardComponent implements OnInit, OnDestroy {
   private submit() {
     this.isSavingOrUpdating = true;
     if (this.editMode) {
-      const includeProperties = ['name', 'description', 'overwriteGPS', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
       const asset: IAsset = {
         id: this.asset.id,

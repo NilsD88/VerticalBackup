@@ -159,30 +159,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
 
   public checkThings() {
     if (this.oneThingCompatibleWithModule()) {
-      if(this.oneThingCompatibleWithGPS()) {
-        this.dialog.open(PopupConfirmationComponent, {
-          data: {
-             title: this.translateService.instant('GENERAL.WARNING'),
-             content: this.translateService.instant('DIALOGS.WARNINGS.GPSASSIGNED')
-          },
-          minWidth: '320px',
-          maxWidth: '400px',
-          width: '100vw',
-          maxHeight: '80vh',
-        }).afterClosed().subscribe(
-          result => {
-            if (result) {
-              this.asset.overwriteGPS = true;
-            } else {
-              this.asset.overwriteGPS = false;
-            }
-            this.stepper.next();
-          }
-        );
-      } else {
-        this.asset.overwriteGPS = false;
-        this.stepper.next();
-      }
+      this.stepper.next();
     } else {
       this.dialog.open(PopupConfirmationComponent, {
         minWidth: '320px',
@@ -202,17 +179,6 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
     for (const thing of this.asset.things) {
       for (const sensor of thing.sensors) {
         if (this.compatibleSensorTypes.findIndex( x => x.id === sensor.sensorType.id) > -1) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  public oneThingCompatibleWithGPS(): boolean {
-    for (const thing of this.asset.things) {
-      for (const sensor of thing.sensors) {
-        if (sensor.sensorType.name.toLowerCase() === 'gps') {
           return true;
         }
       }
@@ -247,7 +213,7 @@ export class PeopleCountingAssetWizardComponent implements OnInit, OnDestroy {
     this.isSavingOrUpdating = true;
     if (this.editMode) {
 
-      const includeProperties = ['name', 'description', 'overwriteGPS', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
+      const includeProperties = ['name', 'description', 'geolocation', 'locationId', 'image', 'things', 'thresholdTemplate', 'customFields'];
       const differences = compareTwoObjectOnSpecificProperties(this.asset, this.originalAsset, includeProperties);
 
       const asset: IAsset = {

@@ -69,7 +69,7 @@
             </pxs-list-things>
           </div>
         </div>
-        <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="asset.things.length > 0" (next)="checkThings()"></pxs-stepper-next>
+        <pxs-stepper-next [showCancel]="true" (cancel)="cancelWizard()" [completed]="asset.things.length > 0" (next)="stepper.next()"></pxs-stepper-next>
       </div>
     </form>
   </mat-step>
