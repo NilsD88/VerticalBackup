@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.sharedService.user.hasRole('pxs:iot:location_admin')) {
       this.rootLocation = (await this.locationService.getLocationsTree().toPromise())[0];
       const { module, id } = this.rootLocation;
-      if (module === 'PEOPLE_COUNTING_RETAIL') {
+      if (module === 'PEOPLE_COUNTING_SMART_COUNTING') {
         this.router.navigateByUrl(`${this.leafUrl}/${id}`);
       }
     } else {

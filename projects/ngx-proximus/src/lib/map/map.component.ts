@@ -431,21 +431,21 @@ function generateAssetIcon(asset: IAsset = {}) {
 
 function generateLocationIcon(moduleName: string = null) {
   switch (moduleName) {
-    case 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH': {
+    case 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH': {
       return divIcon({
         className: 'map-marker-location',
         iconSize: null,
         html: '<div><span class="pxi-building-circle"></span></div>'
       });
     }
-    case 'PEOPLE_COUNTING_RETAIL': {
+    case 'PEOPLE_COUNTING_SMART_COUNTING': {
       return divIcon({
         className: 'map-marker-location',
         iconSize: null,
         html: '<div><span class="pxi-building-circle"></span></div>'
       });
     }
-    case 'PEOPLE_COUNTING_WALKING_TRAIL': {
+    case 'PEOPLE_COUNTING_WALKING_TRAILS': {
       return divIcon({
         className: 'map-marker-location',
         iconSize: null,

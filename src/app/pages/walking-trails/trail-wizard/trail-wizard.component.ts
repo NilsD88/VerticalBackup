@@ -126,7 +126,7 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
       images: [],
       geolocation: null,
       customFields: [],
-      module: 'PEOPLE_COUNTING_WALKING_TRAIL'
+      module: 'PEOPLE_COUNTING_WALKING_TRAILS'
     };
     if (!isNullOrUndefined(parentId)) {
       this.location.parent = await this.locationService.getLocationById(parentId).toPromise();
@@ -288,7 +288,7 @@ export class TrailWizardComponent implements OnInit, OnDestroy {
       maxHeight: '80vh',
       data: {
         location: this.location,
-        module: 'PEOPLE_COUNTING_WALKING_TRAIL'
+        module: 'PEOPLE_COUNTING_WALKING_TRAILS'
       }
     });
     const result: IPeopleCountingAsset = await dialogRef.afterClosed().toPromise();

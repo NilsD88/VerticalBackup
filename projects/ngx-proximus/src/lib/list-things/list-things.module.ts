@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditSensorPopupComponent } from './edit-sensor-popup/edit-sensor-popup.component';
 import { NgModule } from '@angular/core';
@@ -15,6 +16,7 @@ import { LoaderModule } from '../loader/loader.module';
     CommonModule,
     FormsModule,
     IconModule,
+    RouterModule,
     MatProgressSpinnerModule,
     MatCardModule,
     ImgFallbackModule,

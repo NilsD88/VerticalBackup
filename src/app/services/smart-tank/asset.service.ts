@@ -10,7 +10,7 @@ import {HttpClient} from '@angular/common/http';
 import {IPagedAssets} from 'src/app/models/asset.model';
 
 
-const MODULE_NAME = 'TANK_MONITORING';
+const MODULE_NAME = 'SMART_TANK';
 
 @Injectable({
   providedIn: 'root'

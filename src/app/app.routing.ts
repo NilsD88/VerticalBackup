@@ -78,16 +78,16 @@ export class HomeUserAuthGuard implements CanActivate {
       const modules = this.sharedService.user.modules;
       if (modules.length === 1) {
         switch (modules[0]) {
-          case 'TANK_MONITORING':
+          case 'SMART_TANK':
             this.router.navigate(['private/smart-tank/dashboard']);
             break;
-          case 'PEOPLE_COUNTING_WALKING_TRAIL':
+          case 'PEOPLE_COUNTING_WALKING_TRAILS':
             this.router.navigate(['private/walking-trails/dashboard']);
             break;
-          case 'PEOPLE_COUNTING_RETAIL':
+          case 'PEOPLE_COUNTING_SMART_COUNTING':
             this.router.navigate(['private/smart-counting/dashboard']);
             break;
-          case 'PEOPLE_COUNTING_STAIRWAY_TO_HEALTH':
+          case 'PEOPLE_COUNTING_STAIRWAY_2_HEALTH':
             this.router.navigate(['private/stairway-2-health/dashboard']);
             break;
           default:

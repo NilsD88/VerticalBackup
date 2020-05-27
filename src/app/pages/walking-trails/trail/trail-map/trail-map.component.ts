@@ -145,7 +145,7 @@ export class TrailMapComponent implements OnInit {
       html: `<div class="trail"><span class="status ${status} ${selected ? 'selected' : ''}"></span><div class="name"><span>${name}</span></div></div>`
     });
 
-    const children = this.location.children.filter(child => child.module === 'PEOPLE_COUNTING_WALKING_TRAIL');
+    const children = this.location.children.filter(child => child.module === 'PEOPLE_COUNTING_WALKING_TRAILS');
 
     if (children && children.length) {
 

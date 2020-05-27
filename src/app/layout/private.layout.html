@@ -79,13 +79,13 @@
   <pxs-menu-item
     [label]="'Smart tank'"
     [url]="'/private/smart-tank'"
-    *ngIf="layoutService.user?.hasModule('TANK_MONITORING')"
+    *ngIf="layoutService.user?.hasModule('SMART_TANK')"
     [mat-menu-trigger-for]="smartTank"
   ></pxs-menu-item>
   <pxs-menu-item
     [label]="'Walking trails'"
     [url]="'/private/walking-trails'"
-    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAIL')"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_WALKING_TRAILS')"
     [mat-menu-trigger-for]="walkingTrails"
   ></pxs-menu-item>
   <pxs-menu-item
@@ -98,13 +98,13 @@
     [label]="'Smart Counting'"
     [url]="'/private/smart-counting'"
     [mat-menu-trigger-for]="smartCounting"
-    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_RETAIL')"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_SMART_COUNTING')"
   ></pxs-menu-item>
   <pxs-menu-item
     [label]="'Stairway 2 health'"
     [url]="'/private/stairway-2-health'"
     [mat-menu-trigger-for]="stairway2Health"
-    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_TO_HEALTH')"
+    *ngIf="layoutService.user?.hasModule('PEOPLE_COUNTING_STAIRWAY_2_HEALTH')"
   ></pxs-menu-item>
   <pxs-menu-item
     [label]="'LAYOUT.ALERTS' | translate"

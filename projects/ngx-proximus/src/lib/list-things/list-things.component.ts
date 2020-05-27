@@ -83,10 +83,6 @@ export class ListThingsComponent implements OnInit, OnDestroy {
     return this.selectedThings.some((thing) => thing.id === id);
   }
 
-  public displayAssetNames(assets: IAsset[]): string {
-    return assets.map(asset => asset.name).join(', ');
-  }
-
   private updateDataSource(things: IThing[]) {
     this.dataSource = new MatTableDataSource(things);
     this.dataSource.paginator = this.paginator;
