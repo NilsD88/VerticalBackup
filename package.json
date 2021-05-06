@@ -60,7 +60,7 @@
     "graphql-tag": "^2.10.0",
     "hammerjs": "^2.0.8",
     "helmet": "^3.20.0",
-    "highcharts": "^7.2.1",
+    "highcharts": "^9.0.0",
     "highcharts-grouped-categories": "^1.1.3",
     "highcharts-more": "^0.1.7",
     "i": "^0.3.6",
